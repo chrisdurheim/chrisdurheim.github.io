@@ -9,7 +9,7 @@ layout: page
 
 > "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
 
-```ruby
+{% highlight ruby %}
 def show
   @widget = Widget(params[:id]).sort_by_type.make_it_a_bit_longer.looking_for_an_overflow_situation_here_people
   respond_to do |format|
@@ -17,7 +17,7 @@ def show
     format.json { render json: @widget }
   end
 end
-```
+{% endhighlight %}
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et erat et dui gravida consequat. Morbi scelerisque, est convallis venenatis luctus, purus turpis accumsan purus, at fermentum nibh nisi mollis metus. Nullam sed tincidunt sapien, sit amet auctor mauris. Praesent luctus, nulla quis suscipit sodales, turpis tortor congue dolor, eu iaculis ex massa a eros. Fusce nec elit sed leo consequat molestie. Nulla tempus molestie felis, et bibendum sapien mollis et. Vivamus urna ligula, laoreet et condimentum a, pretium nec est. Aenean maximus dui ex. Vivamus malesuada sapien nisi, vel molestie massa viverra venenatis.
 
