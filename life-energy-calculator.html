@@ -1,0 +1,166 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="../css/ymoyl-style.css">
+    <link rel="stylesheet" href="../css/calculator.css">
+    <title>Life Energy Calculator</title>
+  </head>
+
+  <body>
+    <!--- Start here !-->
+    <div class="content">
+      <div class="calculator-wrapper">
+        <h2 class="calculator-title">Life Energy Calculator</h2>
+        <p class="calculator-description">How much does an hour of your time cost you? Would you rather spend that money or get your time back?</p>
+        <form action="" id="life-energy-calculator" class="calculator">
+          <div class="calculator-row">
+            <div class="calculator-field">
+              <label for="age">Annual Salary</label>
+              <span class="input prefixed-input">
+                <span class="input-prefix">
+                  $
+                </span>
+                <input type="number" name="annual-salary" min="0" max="1000000000" value="50000" step="0.01">
+              </span>
+            </div>
+            <div class="calculator-field">
+              <label for="age">Hourly Wage</label>
+              <span class="input prefixed-input suffixed-input">
+                <span class="input-prefix">
+                  $
+                </span>
+                <input type="number" name="hourly-wage" min="0" value="25" max="500000" step="0.01">
+                <span class="input-suffix">
+                  per hour
+                </span>
+              </span>
+            </div>
+            <div class="calculator-field">
+              <label for="age">Daily Commute Time</label>
+              <span class="input suffixed-input">
+                <input type="number" name="commute-time" min="0" value="60" max="960">
+                <span class="input-suffix">
+                  minutes
+                </span>
+              </span>
+            </div>
+            <div class="calculator-field">
+              <label for="funds-today">Tax Bracket</label>
+              <span class="input suffixed-input">
+                <input type="number" name="tax-rate" min="0" value="22" max="99">
+                <span class="input-suffix">
+                  %
+                </span>
+              </span>
+            </div>
+            <div class="calculator-result">
+              <h3>One hour of your time is worth<br><span class="takeaway">$17.33</span></h3>
+            </div>
+          </div>
+        </form>
+      </div>
+      <script type="text/javascript">
+      const lifeEnergyCalculatorForm = document.querySelector('form#life-energy-calculator');
+      const annualSalaryInput = lifeEnergyCalculatorForm.querySelector('input[name=annual-salary]');
+      const hourlyWageInput = lifeEnergyCalculatorForm.querySelector('input[name=hourly-wage]');
+      const dailyCommuteTimeInput = lifeEnergyCalculatorForm.querySelector('input[name=commute-time]');
+      const taxBracketInput = lifeEnergyCalculatorForm.querySelector('input[name=tax-rate]');
+      function formatAsCurrency(value) {
+        return value.toFixed(2).replace(/(\d)(?=(\d{100})+\.)/g, '$1,');
+      }
+      function clearInputErrors() {
+        const errors = lifeEnergyCalculatorForm.querySelectorAll('.input-error')
+        for (let i = 0; i < errors.length; i += 1) {
+          parent = errors[i].parentNode;
+          parent.removeChild(errors[i]);
+        }
+        annualSalaryInput.classList.remove('error');
+        hourlyWageInput.classList.remove('error');
+        dailyCommuteTimeInput.classList.remove('error');
+        taxBracketInput.classList.remove('error');
+      }
+      function flagInputWithError(input, message) {
+        parent = input.parentNode.parentNode;
+        error = document.createElement('span');
+        error.className = 'input-error';
+        error.textContent = message;
+        parent.appendChild(error);
+        input.classList.add('error');
+      }
+      function validate(input, label, min, max, prefix='', suffix='') {
+        value = parseFloat(input.value);
+        if (isNaN(value)) {
+          flagInputWithError(input, "Enter a " + label + " between " + prefix + min + suffix + " and " + prefix + max + suffix);
+          return false;
+        } else if (value < min) {
+          flagInputWithError(input, label + " must be " + prefix + min + suffix + " or greater");
+          return false;
+        } else if (value > max) {
+          flagInputWithError(input, label + " must be " + prefix + max + suffix + " or less");
+          return false;
+        }
+        return true;
+      }
+      function validateSalary()  { return validate(annualSalaryInput, "Salary", 0, 1000000000, '$', ''); }
+      function validateWage()    { return validate(hourlyWageInput, "Wage", 0, 500000, '$', '/hour'); }
+      function validateCommute() { return validate(dailyCommuteTimeInput, "Commute time", 0, 960, '', ' minutes'); }
+      function validateTax()     { return validate(taxBracketInput, "Tax bracket", 0, 100, '', '%');}
+      function validateInputs() {
+        clearInputErrors();
+        let salaryValid = validateSalary();
+        let wageValid = validateWage();
+        let commuteValid = validateCommute();
+        let taxValid = validateTax();
+        return (salaryValid && wageValid && commuteValid && taxValid);
+      }
+      function updateLifeEnergyResult() {
+        const result = lifeEnergyCalculatorForm.querySelector('.calculator-result h3');
+        let resultText = ""
+        if (validateInputs()) {
+          const salary = parseFloat(annualSalaryInput.value);
+          const wage = parseFloat(hourlyWageInput.value);
+          const commute = parseFloat(dailyCommuteTimeInput.value) / 60.0;
+          const taxRate = parseFloat(taxBracketInput.value) / 100.0;
+          const totalHours = 250.0 * (8.0 + commute);
+          const rate = salary / totalHours * (1 - taxRate);
+          resultText += 'One hour of your time is worth<br><span class="takeaway">$' + formatAsCurrency(rate) + '</span>';
+        } else {
+          resultText += "Input valid data to compute how much one hour of your time is worth";
+        }
+        result.innerHTML = resultText;
+        result.scrollIntoView({behavior: "smooth", block: "nearest", inline: "nearest"});
+      }
+      annualSalaryInput.addEventListener('input', (e) => {
+        if (validateSalary()) {
+          hourlyWageInput.value = formatAsCurrency(parseFloat(annualSalaryInput.value) / 2000.0);
+        }
+        updateLifeEnergyResult();
+      });
+      hourlyWageInput.addEventListener('input', (e) => {
+        if (validateWage()) {
+          annualSalaryInput.value = formatAsCurrency(parseFloat(hourlyWageInput.value) * 2000.0);
+        }
+        updateLifeEnergyResult();
+      });
+      dailyCommuteTimeInput.addEventListener('input', (e) => {
+        validateCommute();
+        updateLifeEnergyResult();
+      });
+      taxBracketInput.addEventListener('input', (e) => {
+        validateTax();
+        updateLifeEnergyResult();
+      });
+      lifeEnergyCalculatorForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+      });
+      </script>
+    </div>
+    <!---End here !-->
+  </body>
+</html>
