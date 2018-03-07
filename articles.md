@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Articles
+sitemap: false
 ---
 
 <ul>
