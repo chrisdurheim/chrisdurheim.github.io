@@ -1,0 +1,261 @@
+---
+layout: null
+sitemap: false
+permalink: /trc.html
+---
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>True Retirement Cost of Anything Calculator</title>
+  </head>
+
+  <style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='metro-pro-css'  href='https://www.campfirefinance.com/wp-content/themes/metro-pro/style.css?ver=2.2.2' type='text/css' media='all' />
+<style id='metro-pro-inline-css' type='text/css'>
+
+
+		a,
+		.entry-content a,
+		.entry-title a:focus,
+		.entry-title a:hover,
+		.genesis-nav-menu > .right > a:focus,
+		.genesis-nav-menu > .right > a:hover {
+			color: #569d3a;
+		}
+
+
+		a.social-buttons:focus,
+		a.social-buttons:hover,
+		button:focus,
+		button:hover,
+		input:focus[type="button"],
+		input:focus[type="reset"],
+		input:focus[type="submit"],
+		input:hover[type="button"],
+		input:hover[type="reset"],
+		input:hover[type="submit"],
+		.archive-pagination li a:focus,
+		.archive-pagination li a:hover,
+		.archive-pagination li.active a,
+		.button:focus,
+		.button:hover,
+		.content .entry-meta .entry-comments-link a,
+		.entry-content .button:focus,
+		.entry-content .button:hover,
+		.genesis-nav-menu .current-menu-item > a,
+		.genesis-nav-menu a:focus,
+		.genesis-nav-menu a:hover,
+		.nav-primary .sub-menu a:focus,
+		.nav-primary .sub-menu a:hover,
+		.nav-secondary .sub-menu a:focus,
+		.nav-secondary .sub-menu a:hover,
+		.sidebar .enews-widget input[type="submit"],
+		.site-title a,
+		.site-title a:focus,
+		.site-title a:hover {
+			background-color: #569d3a;
+			color: #333333;
+		}
+
+
+</style>
+<link rel='stylesheet' id='authorship-css'  href='https://www.campfirefinance.com/wp-content/plugins/molongui-authorship-premium/premium/public/css/molongui-authorship-premium.5ff8.min.css?ver=2.0.6' type='text/css' media='all' />
+<link rel='stylesheet' id='usp_style-css'  href='https://www.campfirefinance.com/wp-content/plugins/user-submitted-posts/resources/usp.css' type='text/css' media='all' />
+<link rel='stylesheet' id='wprss-et-styles-css'  href='https://www.campfirefinance.com/wp-content/plugins/wp-rss-excerpts-thumbnails/css/styles.css?ver=4.9.5' type='text/css' media='all' />
+<link rel='stylesheet' id='dashicons-css'  href='https://www.campfirefinance.com/wp-includes/css/dashicons.min.css?ver=4.9.5' type='text/css' media='all' />
+<link rel='stylesheet' id='google-font-css'  href='//fonts.googleapis.com/css?family=Oswald%3A400&#038;ver=2.2.2' type='text/css' media='all' />
+<!-- Inline jetpack_facebook_likebox -->
+<style id='jetpack_facebook_likebox-inline-css' type='text/css'>
+.widget_facebook_likebox {
+	overflow: hidden;
+}
+
+</style>
+<link rel='stylesheet' id='jetpack-widget-social-icons-styles-css'  href='https://www.campfirefinance.com/wp-content/plugins/jetpack/modules/widgets/social-icons/social-icons.css?ver=20170506' type='text/css' media='all' />
+<link rel='stylesheet' id='mc4wp-form-themes-css'  href='https://www.campfirefinance.com/wp-content/plugins/mailchimp-for-wp/assets/css/form-themes.min.css?ver=4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-add-custom-css-css'  href='https://www.campfirefinance.com?display_custom_css=css&#038;ver=4.9.5' type='text/css' media='all' />
+<link rel='stylesheet' id='social-logos-css'  href='https://www.campfirefinance.com/wp-content/plugins/jetpack/_inc/social-logos/social-logos.min.css?ver=1' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack_css-css'  href='https://www.campfirefinance.com/wp-content/plugins/jetpack/css/jetpack.css?ver=6.0' type='text/css' media='all' />
+
+  <body>
+    <!--- Start here !-->
+    <style>
+      .calculator {
+        margin: 2rem;
+        padding: 2rem;
+        border: 1px solid #ddd;
+        max-width: 600px;
+      }
+      h3.calculator-title {
+        text-align: center;
+      }
+      .calculator-input {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 1rem 0;
+      }
+      .calculator-input label {
+        flex: 0 0 100%;
+      }
+      .calculator-input .input-prefix {
+        flex: 0 0 auto;
+        padding: 0.5rem;
+        margin: 0 0.25rem;
+      }
+      .calculator-input input {
+        flex: 1 0 auto;
+        width: auto;
+        max-width: 50%;
+        padding: 0.5rem;
+        margin: 0 0.25rem;
+      }
+      .calculator-input select.input-suffix {
+        flex: 0 0 auto;
+        width: auto;
+        padding: 0.5rem;
+        margin: 0 0.25rem;
+      }
+      input.calculator-slider {
+        margin-top: 1rem;
+        width: 100%;
+        max-width: 100%;
+      }
+      .calculator-slider {
+        -webkit-appearance: none;  /* Override default CSS styles */
+        appearance: none;
+        width: 100%; /* Full-width */
+        height: 0.5rem; /* Specified height */
+        border-radius: 0.5rem;
+        border-color: #ddd;
+        color: #ddd;
+        background: #f5f5f5; /* Grey background */
+        outline: none; /* Remove outline */
+        opacity: 1; /* Set transparency (for mouse-over effects on hover) */
+        -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+        transition: opacity .2s;
+        margin-top: 1rem !important;
+      }
+      .calculator-slider:hover {
+        background: #ddd; /* Fully shown on mouse-over */
+      }
+      .calculator-slider::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+        appearance: none;
+        width: 2rem; /* Set a specific slider handle width */
+        height: 2rem; /* Specified height */
+        border-radius: 50%;
+        background: #569d3a; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+      }
+
+      .calculator-slider::-moz-range-thumb {
+        width: 2rem; /* Set a specific slider handle width */
+        height: 2rem; /* Specified height */
+        border-radius: 50%;
+        background: #569d3a; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+      }
+      #calculator-result {
+        font-size: 1.8rem;
+        margin-top: 2rem;
+        text-align: center;
+      }
+    </style>
+    <form action="" class="calculator" id="true-retirement-cost-calculator">
+      <h3 class="calculator-title">True Retirement Cost of Anything Calculator</h1>
+      <div class="calculator-input">
+        <label for="amount" id="amount_label">Amount</label>
+        <span class="input-prefix">$</span>
+        <input type="number" id="amount" name="amount" min="0" value="3" step="0.01" />
+        <select id="frequency" class="input-suffix">
+          <option value="365.2425">Daily</option>
+          <option value="52.1775">Weekly</option>
+          <option value="12">Monthly</option>
+          <option value="1">Yearly</option>
+        </select>
+      </div>
+      <div class="calculator-input">
+        <label id="safe_withdrawal_rate_label" for="safe_withdrawal_rate">4% safe withdrawal rate</label>
+        <input value="4" class="calculator-slider" min="1.0" max="10.0" step="0.25" type="range" name="safe_withdrawal_rate[]" id="safe_withdrawal_rate" />
+      </div>
+      <div id="calculator-result">
+        Takes an additional retirement balance of $91,310.63
+      </div>
+    </form>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', () => {
+        const calculator = document.querySelector('#true-retirement-cost-calculator');
+
+        if (calculator) {
+          const inputs = calculator.querySelectorAll('input');
+          const selects = calculator.querySelectorAll('select');
+          const amountInput = calculator.querySelector('input#amount');
+          const frequencyInput = calculator.querySelector('#frequency');
+          const safeWithdrawalRateInput = calculator.querySelector('input#safe_withdrawal_rate');
+          const safeWithdrawalRateLabel = calculator.querySelector('#safe_withdrawal_rate_label');
+          const result = calculator.querySelector('#calculator-result');
+
+          function updateResults() {
+            const amount = parseFloat(amountInput.value) || 0;
+            const safeWithdrawalRate = parseFloat(safeWithdrawalRateInput.value) / 100.0 || 0;
+            const frequencyLabel = frequencyInput.selectedOptions[0].text || 'Daily';
+            const frequency = parseFloat(frequencyInput.value) || 365.2425;
+
+            /* Update labels */
+            let safeWithdrawalRateLabelText = (safeWithdrawalRate * 100).toFixed(2);
+            safeWithdrawalRateLabel.innerHTML = safeWithdrawalRateLabelText + '% safe withdrawal rate';
+
+            /* Validate inputs */
+            if (amount <= 0.0) {
+              result.innerHTML = "Input an amount greater than $0.00";
+              return;
+            }
+            if (safeWithdrawalRate < 0.01 || safeWithdrawalRate > 0.10) {
+              result.innerHTML = "Input a safe withdrawal rate between 1 and 10";
+              return;
+            }
+
+            /* Update output */
+            const balanceNeeded = amount * frequency / safeWithdrawalRate;
+            let resultText = 'Takes an additional retirement balance of $';
+            resultText += balanceNeeded.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+
+            result.innerHTML = resultText;
+          }
+
+          /* Auto-update on changes */
+          for (let i = 0; i < inputs.length; i += 1) {
+            inputs[i].addEventListener('input', () => {
+              updateResults();
+            });
+          }
+          for (let i = 0; i < selects.length; i += 1) {
+            selects[i].addEventListener('input', () => {
+              updateResults();
+            });
+          }
+
+          /* Update on load */
+          updateResults();
+        }
+      });
+    </script>
+    <!---End here !-->
+  </body>
+</html>
