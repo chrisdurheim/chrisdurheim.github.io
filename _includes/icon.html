@@ -1,0 +1,12 @@
+{% if include.link %}
+<a class="simpleicon simpleicon--{{ include.icon }}" href={{include.link}} target="_blank">
+{% else %}
+<span class="simpleicon simpleicon--{{ include.icon}}">
+{% endif %}
+  {% assign icon = 'icons/' | append: include.icon | append: '.svg' %}
+  {% include {{icon}} %}
+{% if include.link %}
+</a>
+{% else %}
+</span>
+{% endif %}

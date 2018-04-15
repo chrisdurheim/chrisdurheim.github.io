@@ -1,0 +1,78 @@
+---
+# You don't need to edit this file, it's empty on purpose.
+# Edit theme's home layout instead if you wanna make some changes
+# See: https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+layout: default
+class: landing
+---
+
+<div class="landing-box landing-box--intro">
+  <div class="site-heading">
+    <h1 class="site-title">Chris Durheim</h1>
+  </div>
+  <img src="{{site.url}}/assets/images/headshot.jpg" class="headshot">
+
+  <ul class="personality-list">
+    <li class="personality-list-item">
+      <a class="personality-list-item__title personality-list-item__title--writer" href="#writer">finance writer</a>
+      <div class="icon-set">
+        {% include icon.html icon="twitter" %}
+        {% include icon.html icon="facebook" %}
+        {% include icon.html icon="pinterest" %}
+        {% include icon.html icon="medium" %}
+      </div>
+    </li>
+    <li class="personality-list-item">
+      <a class="personality-list-item__title personality-list-item__title--freelancer" href="#freelancer">freelancer</a>
+      <div class="icon-set">
+        {% include icon.html icon="jekyll" %}
+        {% include icon.html icon="html5" %}
+        {% include icon.html icon="css3" %}
+        {% include icon.html icon="javascript" %}
+        {% include icon.html icon="microsoftexcel" %}
+      </div>
+    </li>
+    <li class="personality-list-item">
+      <a class="personality-list-item__title personality-list-item__title--developer" href="#developer">software developer</a>
+      <div class="icon-set">
+        {% include icon.html icon="heroku" %}
+        {% include icon.html icon="rails" %}
+        {% include icon.html icon="ruby" %}
+        {% include icon.html icon="github" %}
+      </div>
+    </li>
+  </ul>
+</div>
+<div class="landing-box landing-box--writer" id="writer">
+  <h2 class="section-title">Writer</h2>
+  <div class="icon-set">
+    {% include icon.html icon="twitter" link="https://www.twitter.com/keepthrifty" %}
+    {% include icon.html icon="facebook" link="https://www.facebook.com/keepthrifty" %}
+    {% include icon.html icon="pinterest" link="https://www.pinterest.com/keepthrifty" %}
+    {% include icon.html icon="medium" link="https://medium.com/@chrisdurheim" %}
+  </div>
+  <div class="section-text">
+    <p>In 2016, Chris launched a personal finance blog - <a href="https://www.keepthrifty.com" target="_blank">Keep Thrifty</a> - to help others think differently about money so they can create freedom and pursue their dreams.</p>
+    <p>Keep Thrifty has become a well-regarded resource with a healthy mix of money philosophy, financial calculations, and inspiring stories.</p>
+    <p>Keep Thrifty is also home to the <a href="https://thrifty.keepthrifty.com" target="_blank">Thrifty web app</a>, an expense-tracking tool that gives people a deeper connection to their finances.</p>
+  </div>
+</div>
+<div class="landing-box landing-box--freelancer" id="freelancer">
+  <h2 class="section-title">Freelancer</h2>
+  <div class="icon-set">
+    {% include icon.html icon="jekyll" %}
+    {% include icon.html icon="html5" %}
+    {% include icon.html icon="css3" %}
+    {% include icon.html icon="javascript" %}
+    {% include icon.html icon="microsoftexcel" %}
+  </div>
+</div>
+<div class="landing-box landing-box--developer" id="developer">
+  <h2 class="section-title">Software Developer</h2>
+  <div class="icon-set">
+    {% include icon.html icon="heroku" %}
+    {% include icon.html icon="rails" %}
+    {% include icon.html icon="ruby" %}
+    {% include icon.html icon="github" %}
+  </div>
+</div>

@@ -1,0 +1,181 @@
+.landing-box {
+  box-shadow: 0 0 1rem 0 rgba(0,0,0,0.2);
+  padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  background: red;
+  position: relative;
+  &--intro {
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                url("/assets/images/bg.jpg") center center;
+    z-index: 4;
+  }
+  &--writer {
+    background: #558b2f;
+    z-index: 3;
+  }
+  &--freelancer {
+    background: #1572B6;
+    z-index: 2;
+  }
+  &--developer {
+    background: #CC0000;
+    z-index: 1;
+  }
+  &:after {
+    content: '\021E3';
+    position: absolute;
+    bottom: 0;
+    font-size: 3rem;
+    color: white;
+  }
+  &:last-child {
+    &:after {
+      content: none;
+    }
+  }
+}
+
+.site-title, .section-title {
+  color: white;
+  text-align: center;
+  letter-spacing: 0.5rem;
+  text-transform: uppercase;
+  display: block;
+  padding: 1rem 2rem;
+}
+
+.section-text {
+  flex: 0 0 100%;
+  font-size: 1.5rem;
+  font-weight: 300;
+  p {
+    max-width: 80%;
+    margin: 2rem auto;
+    color: white;
+    line-height: 1.5;
+  }
+  a {
+    color: white;
+    text-decoration: underline;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
+ul.personality-list {
+  list-style: none;
+  padding: 0 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+li.personality-list-item {
+  flex: 0 0 auto;
+  margin: 0.5rem;
+  font-size: 2rem;
+  padding: 0 1rem;
+  display: inline;
+  color: white;
+  a {
+    color: white;
+  }
+  a.personality-list-item__title {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 300;
+    font-size: 1rem;
+    transition: background-color 250ms, border-color 250ms;
+    border: 2px solid transparent;
+    border-radius: 1rem;
+    width: max-content;
+    padding: 0.5rem 1rem;
+    margin: 0 auto;
+    background-color: white;
+    text-transform: uppercase;
+    &:hover {
+      background-color: transparent;
+      border-color: white;
+    }
+    &--writer {
+      background: #558b2f;
+    }
+    &--freelancer {
+      background: #1572B6;
+    }
+    &--developer {
+      background: #CC0000;
+    }
+  }
+}
+
+img.headshot {
+  max-width: 240px;
+  height: auto;
+  border-radius: 50%;
+  margin: 2rem;
+  filter: grayscale(25%);
+}
+
+$icon-size: 2rem;
+$icon-padding: 1rem;
+$icon-border-size: 2px;
+$icon-element-size: calc(#{$icon-size} + #{$icon-padding} * 2 + #{$icon-border-size} * 2);
+$icons: (twitter #1DA1F2),
+        (facebook #3B5998),
+        (css3, #1572B6),
+        (github, #181717),
+        (heroku, #430098),
+        (html5, #E34F26),
+        (javascript, #F7DF1E),
+        (jekyll, #CC0000),
+        (linkedin, #0077B5),
+        (medium, #1C1B1A),
+        (microsoftexcel, #217346),
+        (pinterest, #BD081C),
+        (rails, #CC0000),
+        (ruby, #CC342D);
+
+.icon-set {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+a.simpleicon, span.simpleicon {
+  flex: 0 0 auto;
+  margin: 0.5rem;
+  display: inline-block;
+  padding: $icon-padding;
+  border-radius: 50%;
+  border: $icon-border-size solid transparent;
+  width: $icon-element-size;
+  height: $icon-element-size;
+  background-color: transparent;
+  transition: background-color 250ms, border-color 250ms;
+  svg {
+    fill: white;
+    width: $icon-size;
+    height: $icon-size;
+  }
+}
+a.simpleicon {
+  @each $icon, $color in $icons {
+    &--#{$icon} {
+      background-color: #{$color};
+      &:hover {
+        background-color: transparent;
+        border-color: white;
+      }
+    }
+  }
+}

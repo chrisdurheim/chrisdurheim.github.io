@@ -7,11 +7,20 @@
 html, body {
   height: 100%;
   font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 10px;
+  @media screen and (min-width: 320px) {
+    font-size: 11px;
+  }
+  @media screen and (min-width: 425px) {
+    font-size: 12px;
+  }
+  @media screen and (min-width: 768px) {
+    font-size: 16px;
+  }
 }
 
 body {
-  background-color: $primary-color;
-  margin: 5rem 0 0;
+  background-color: $background-color;
   display: flex;
   flex-direction: column;
 }
@@ -28,10 +37,6 @@ footer {
 
 h1, h2, h3, h4, h5, h6, p, li {
   color: $text-color;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Palatino', 'Times', serif;
 }
 
 a {
@@ -61,10 +66,10 @@ pre {
 /* Footer */
 
 footer {
-  color: white;
-  background-color: $secondary-color;
+  color: $black-hint;
+  background-color: white;
   text-align: center;
-  padding: 1rem 0;
+  //padding: 1rem 0;
 }
 
 .footer-nav {
