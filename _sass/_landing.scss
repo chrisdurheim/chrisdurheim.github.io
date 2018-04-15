@@ -11,7 +11,7 @@
   position: relative;
   &--intro {
     background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
-                url("/assets/images/bg.jpg") center center;
+                url("/assets/images/bg.jpg") left center/cover;
     z-index: 4;
   }
   &--writer {
@@ -46,7 +46,7 @@
   letter-spacing: 0.5rem;
   text-transform: uppercase;
   display: block;
-  padding: 1rem 2rem;
+  padding: 6rem 2rem;
 }
 
 .section-text {
