@@ -1,5 +1,6 @@
 ---
 layout: null
+permalink: life-energy-calculator.html
 sitemap: false
 ---
 <!DOCTYPE html>
@@ -8,160 +9,747 @@ sitemap: false
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="{{site.url}}/css/ymoyl-style.css">
-    <link rel="stylesheet" href="{{site.url}}/css/calculator.css">
     <title>Life Energy Calculator</title>
   </head>
 
   <body>
     <!--- Start here !-->
-    <div class="content">
-      <div class="calculator-wrapper">
-        <h2 class="calculator-title">Life Energy Calculator</h2>
-        <p class="calculator-description">How much does an hour of your time cost you? Would you rather spend that money or get your time back?</p>
-        <form action="" id="life-energy-calculator" class="calculator">
-          <div class="calculator-row">
-            <div class="calculator-field">
-              <label for="age">Annual Salary</label>
-              <span class="input prefixed-input">
-                <span class="input-prefix">
-                  $
-                </span>
-                <input type="number" name="annual-salary" min="0" max="1000000000" value="50000" step="0.01">
-              </span>
-            </div>
-            <div class="calculator-field">
-              <label for="age">Hourly Wage</label>
-              <span class="input prefixed-input suffixed-input">
-                <span class="input-prefix">
-                  $
-                </span>
-                <input type="number" name="hourly-wage" min="0" value="25" max="500000" step="0.01">
-                <span class="input-suffix">
-                  per hour
-                </span>
-              </span>
-            </div>
-            <div class="calculator-field">
-              <label for="age">Daily Commute Time</label>
-              <span class="input suffixed-input">
-                <input type="number" name="commute-time" min="0" value="60" max="960">
-                <span class="input-suffix">
-                  minutes
-                </span>
-              </span>
-            </div>
-            <div class="calculator-field">
-              <label for="funds-today">Tax Bracket</label>
-              <span class="input suffixed-input">
-                <input type="number" name="tax-rate" min="0" value="22" max="99">
-                <span class="input-suffix">
-                  %
-                </span>
-              </span>
-            </div>
-            <div class="calculator-result">
-              <h3>One hour of your time is worth<br><span class="takeaway">$17.33</span></h3>
-            </div>
-          </div>
-        </form>
-      </div>
-      <script type="text/javascript">
-      const lifeEnergyCalculatorForm = document.querySelector('form#life-energy-calculator');
-      const annualSalaryInput = lifeEnergyCalculatorForm.querySelector('input[name=annual-salary]');
-      const hourlyWageInput = lifeEnergyCalculatorForm.querySelector('input[name=hourly-wage]');
-      const dailyCommuteTimeInput = lifeEnergyCalculatorForm.querySelector('input[name=commute-time]');
-      const taxBracketInput = lifeEnergyCalculatorForm.querySelector('input[name=tax-rate]');
-      function formatAsCurrency(value) {
-        return value.toFixed(2).replace(/(\d)(?=(\d{100})+\.)/g, '$1,');
-      }
-      function clearInputErrors() {
-        const errors = lifeEnergyCalculatorForm.querySelectorAll('.input-error')
-        for (let i = 0; i < errors.length; i += 1) {
-          parent = errors[i].parentNode;
-          parent.removeChild(errors[i]);
+    <style type="text/css">
+    .ymoyl-calculator {
+        box-sizing: border-box;
+        font-size: 14px;
+        margin: 4em auto;
+        padding: 1.25em 1.5em;
+        border: 1px solid black;
+        border-radius: 1.25em;
+        box-shadow: 0 0 0.2rem 0 rgba(0, 0, 0, 0.15);
+        background: rgba(0, 0, 0, 0);
+        max-width: 35em;
+        width: 95%;
+    }
+
+    .ymoyl-calculator * {
+        box-sizing: border-box;
+    }
+
+    .ymoyl-calculator h1.calculator-title {
+        margin: 20px 0 8px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: 300;
+        text-transform: uppercase;
+    }
+
+    .ymoyl-calculator h2.calculator-subtitle {
+        margin-top: 0;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 300;
+        text-transform: lowercase;
+    }
+
+    .ymoyl-calculator h2.calculator-result {
+        margin: 20px 0 8px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: 300;
+        text-transform: uppercase;
+    }
+
+    .ymoyl-calculator p,
+    .ymoyl-calculator li {
+        font-size: 16px;
+    }
+
+    .ymoyl-calculator ul {
+        list-style: disc;
+        padding-left: 20px;
+    }
+
+    .ymoyl-calculator li {
+        margin: 0.5rem 0;
+    }
+
+    .ymoyl-calculator .calculator-subsection {
+        margin: 32px 0;
+    }
+
+    .ymoyl-calculator .calculator-subsection h2.calculator-subsection-title {
+        margin: 20px 0 8px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 300;
+        text-transform: uppercase;
+    }
+
+    .ymoyl-calculator .calculator-subsection h3.calculator-subsection-subtitle {
+        margin: 16px 0 8px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 300;
+    }
+
+    .ymoyl-calculator .input-group {
+        position: relative;
+        margin: 1.5em 0;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .ymoyl-calculator .input-group[data-input-label]:before {
+        content: attr(data-input-label);
+        flex: 0 0 100%;
+        padding: 0 0 0.5em 0;
+    }
+
+    .ymoyl-calculator .input-group.invalid[data-input-error-message]:after {
+        content: attr(data-input-error-message);
+        font-size: 14px;
+        color: #ffdedb;
+        flex: 0 0 100%;
+        padding: 0.5em 1.25em;
+    }
+
+    .ymoyl-calculator .input-group input {
+        border: 1px solid black !important;
+        flex: 1 1 3em !important;
+    }
+
+    .ymoyl-calculator .input-group .input-connector {
+        flex: 0 1 12em;
+        text-align: right;
+    }
+
+    .ymoyl-calculator .input-group *:nth-child(n) {
+        padding: 0 10px;
+        line-height: 38px;
+    }
+
+    .ymoyl-calculator .input-group *:nth-child(n)[type=number] {
+        text-align: left;
+    }
+
+    .ymoyl-calculator .input-group--prefix-only *:first-child,
+    .ymoyl-calculator .input-group--suffix-only *:first-child {
+        border-top-left-radius: 1.25em;
+        border-bottom-left-radius: 1.25em;
+        border: 1px solid black;
+        border-right: none;
+    }
+
+    .ymoyl-calculator .input-group--prefix-only *:first-child[type=number],
+    .ymoyl-calculator .input-group--suffix-only *:first-child[type=number] {
+        text-align: right;
+    }
+
+    .ymoyl-calculator .input-group--prefix-only *:last-child,
+    .ymoyl-calculator .input-group--suffix-only *:last-child {
+        border-top-right-radius: 1.25em;
+        border-bottom-right-radius: 1.25em;
+        border: 1px solid black;
+        border-left: none;
+    }
+
+    .ymoyl-calculator .input-group--prefix-only *:last-child select,
+    .ymoyl-calculator .input-group--suffix-only *:last-child select {
+        border: 1px solid transparent;
+    }
+
+    .ymoyl-calculator .input-group--prefix-only *:last-child span,
+    .ymoyl-calculator .input-group--suffix-only *:last-child span {
+        border: 1px solid transparent;
+    }
+
+    .ymoyl-calculator .input-group--prefix-and-suffix *:first-child {
+        border-top-left-radius: 1.25em;
+        border-bottom-left-radius: 0;
+        border: 1px solid black;
+        border-right: none;
+    }
+
+    @media (min-width: 375px) {
+        .ymoyl-calculator .input-group--prefix-and-suffix *:first-child {
+            border-bottom-left-radius: 1.25em;
         }
-        annualSalaryInput.classList.remove('error');
-        hourlyWageInput.classList.remove('error');
-        dailyCommuteTimeInput.classList.remove('error');
-        taxBracketInput.classList.remove('error');
-      }
-      function flagInputWithError(input, message) {
-        parent = input.parentNode.parentNode;
-        error = document.createElement('span');
-        error.className = 'input-error';
-        error.textContent = message;
-        parent.appendChild(error);
-        input.classList.add('error');
-      }
-      function validate(input, label, min, max, prefix='', suffix='') {
-        value = parseFloat(input.value);
-        if (isNaN(value)) {
-          flagInputWithError(input, "Enter a " + label + " between " + prefix + min + suffix + " and " + prefix + max + suffix);
-          return false;
-        } else if (value < min) {
-          flagInputWithError(input, label + " must be " + prefix + min + suffix + " or greater");
-          return false;
-        } else if (value > max) {
-          flagInputWithError(input, label + " must be " + prefix + max + suffix + " or less");
-          return false;
+    }
+
+    .ymoyl-calculator .input-group--prefix-and-suffix *:nth-child(2) {
+        border-top-right-radius: 1.25em;
+        border: 1px solid black;
+    }
+
+    @media (min-width: 375px) {
+        .ymoyl-calculator .input-group--prefix-and-suffix *:nth-child(2) {
+            border-top-right-radius: 0;
         }
-        return true;
-      }
-      function validateSalary()  { return validate(annualSalaryInput, "Salary", 0, 1000000000, '$', ''); }
-      function validateWage()    { return validate(hourlyWageInput, "Wage", 0, 500000, '$', '/hour'); }
-      function validateCommute() { return validate(dailyCommuteTimeInput, "Commute time", 0, 960, '', ' minutes'); }
-      function validateTax()     { return validate(taxBracketInput, "Tax bracket", 0, 100, '', '%');}
-      function validateInputs() {
-        clearInputErrors();
-        let salaryValid = validateSalary();
-        let wageValid = validateWage();
-        let commuteValid = validateCommute();
-        let taxValid = validateTax();
-        return (salaryValid && wageValid && commuteValid && taxValid);
-      }
-      function updateLifeEnergyResult() {
-        const result = lifeEnergyCalculatorForm.querySelector('.calculator-result h3');
-        let resultText = ""
-        if (validateInputs()) {
-          const salary = parseFloat(annualSalaryInput.value);
-          const wage = parseFloat(hourlyWageInput.value);
-          const commute = parseFloat(dailyCommuteTimeInput.value) / 60.0;
-          const taxRate = parseFloat(taxBracketInput.value) / 100.0;
-          const totalHours = 250.0 * (8.0 + commute);
-          const rate = salary / totalHours * (1 - taxRate);
-          resultText += 'One hour of your time is worth<br><span class="takeaway">$' + formatAsCurrency(rate) + '</span>';
-        } else {
-          resultText += "Input valid data to compute how much one hour of your time is worth";
+    }
+
+    .ymoyl-calculator .input-group--prefix-and-suffix *:last-child {
+        border-bottom-left-radius: 1.25em;
+        border-bottom-right-radius: 1.25em;
+        border: 1px solid black;
+        border-top: 1px solid transparent;
+    }
+
+    @media (min-width: 375px) {
+        .ymoyl-calculator .input-group--prefix-and-suffix *:last-child {
+            border-top: 1px solid black;
+            border-bottom-left-radius: 0;
+            border-top-right-radius: 1.25em;
+            border-left: none;
         }
-        result.innerHTML = resultText;
-        result.scrollIntoView({behavior: "smooth", block: "nearest", inline: "nearest"});
-      }
-      annualSalaryInput.addEventListener('input', (e) => {
-        if (validateSalary()) {
-          hourlyWageInput.value = formatAsCurrency(parseFloat(annualSalaryInput.value) / 2000.0);
+    }
+
+    .ymoyl-calculator .input-group--prefix-and-suffix *:last-child select {
+        border: 1px solid transparent;
+    }
+
+    .ymoyl-calculator .input-group--prefix-and-suffix *:last-child span {
+        border: 1px solid transparent;
+    }
+
+    .ymoyl-calculator .input-group--prefix-and-suffix .input-connector {
+        text-align: center;
+        flex: 0 0 100%;
+    }
+
+    @media (min-width: 375px) {
+        .ymoyl-calculator .input-group--prefix-and-suffix .input-connector {
+            text-align: right;
+            flex: 0 1 12em;
         }
-        updateLifeEnergyResult();
-      });
-      hourlyWageInput.addEventListener('input', (e) => {
-        if (validateWage()) {
-          annualSalaryInput.value = formatAsCurrency(parseFloat(hourlyWageInput.value) * 2000.0);
-        }
-        updateLifeEnergyResult();
-      });
-      dailyCommuteTimeInput.addEventListener('input', (e) => {
-        validateCommute();
-        updateLifeEnergyResult();
-      });
-      taxBracketInput.addEventListener('input', (e) => {
-        validateTax();
-        updateLifeEnergyResult();
-      });
-      lifeEnergyCalculatorForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-      });
-      </script>
+    }
+
+    .ymoyl-calculator input,
+    .ymoyl-calculator textarea,
+    .ymoyl-calculator select,
+    .ymoyl-calculator button {
+        border: 1px solid transparent;
+        padding: 0 8px;
+        line-height: 38px;
+        font-size: 14px;
+        color: black;
+        background-color: transparent;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .ymoyl-calculator input:focus,
+    .ymoyl-calculator textarea:focus,
+    .ymoyl-calculator select:focus,
+    .ymoyl-calculator button:focus {
+        border: 1px solid #49b266 !important;
+        background-color: #fcfefd;
+        color: #49b266;
+        outline: none;
+    }
+
+    .ymoyl-calculator input:invalid,
+    .ymoyl-calculator input.invalid {
+        border: 1px solid #db1200 !important;
+        background-color: #ffdedb;
+        color: #db1200;
+    }
+
+    .ymoyl-calculator .table-border {
+        border: 1px solid black;
+        border-radius: 1.25em;
+        margin: 1em 0.5em;
+    }
+
+    .ymoyl-calculator table.result-table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border-radius: 1.25em;
+    }
+
+    .ymoyl-calculator table.result-table th {
+        font-weight: 700;
+        background-color: #49b266;
+    }
+
+    .ymoyl-calculator table.result-table th,
+    .ymoyl-calculator table.result-table td {
+        text-align: left;
+        overflow: hidden;
+        padding: 1em 0.5em;
+        border-bottom: 1px solid black;
+    }
+
+    .ymoyl-calculator table.result-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .ymoyl-calculator #calculator-invalid-results {
+        border: 1px solid #db1200;
+        border-radius: 1.25em;
+        padding: 2em;
+        background-color: #ffdedb;
+        color: #db1200;
+        margin: 2em 0 0;
+    }
+
+    .ymoyl-calculator #calculator-invalid-results h2 {
+        color: #db1200;
+    }
+
+    .ymoyl-calculator .hidden {
+        display: none;
+    }
+</style>
+<div id="life-energy-calculator" class="ymoyl-calculator">
+    <h1 class="calculator-title">Life Energy Calculator</h1>
+    <h2 class="calculator-subtitle">(Your Real Hourly Wage)</h2>
+    <div class="calculator-subsection">
+        <h2 class="calculator-subsection-title">Income and Working Hours</h2>
+        <p>First, let&#8217;s get a sense of your work situation:</p>
+        <div class="input-group input-group--prefix-and-suffix" data-input-label="Income" data-input-error-message="Enter an income greater than $0"><span class="input-prefix"> $ </span>
+            <input min="0.01" name="income-amount" required="" step="0.01" type="number" value="50000" /> <span class="input-connector"> per<select name="income-frequency"><option value="year">year</option><option value="hour">hour</option></select></span></div>
+        <div class="input-group input-group--suffix-only" data-input-label="Work Hours" data-input-error-message="Enter work hours greater than 0 and less than 168 per week/730 per month/8765 per year">
+            <input min="1" name="hours-amount" required="" type="number" value="40" /> <span class="input-connector"> hour(s) per<select name="hours-frequency"><option value="week">week</option><option value="month">month</option><option value="year">year</option></select></span></div>
+        <div id="work-weeks-per-year" class="input-group input-group--suffix-only" data-input-label="Work Weeks" data-input-error-message="Enter work weeks greater than 0">
+            <input max="52" min="1" name="work-weeks-per-year" required="" type="number" value="50" /> <span class="input-connector"> week(s) per year </span></div>
     </div>
+    <hr />
+    <div class="calculator-subsection">
+        <h2 class="calculator-subsection-title">Taxes</h2>
+        <p>We&#8217;ll calculate your federal taxes for you. If you&#8217;d like, you can add an optional State/local tax rate:</p>
+        <div class="input-group input-group--suffix-only" data-input-label="State/Local Tax Rate (optional)" data-input-error-message="Enter taxes between 0 and 100">
+            <input max="100" min="0" name="state-local-tax-rate" type="number" /> <span class="input-suffix"> % </span></div>
+    </div>
+    <hr />
+    <div class="calculator-subsection">
+        <h2 class="calculator-subsection-title">Work-Related Expenses</h2>
+        <p>In order to do your job, you may spend time and money getting ready for work (time, outfits), commuting (daily, biz trips), extras (extras, networking, meetings, lunch and work dinners) and daily recovery (time, substances).</p>
+        <p>Estimate how much time and money you spend on each of these below and we&#8217;ll factor them in.</p>
+        <h3 class="calculator-subsection-subtitle">Getting Ready</h3>
+        <div class="input-group input-group--suffix-only" data-input-label="Getting Ready Time" data-input-error-message="Enter a value of 0 or greater">
+            <input min="0" name="getting-ready-time-amount" step="0.01" type="number" /> <span class="input-connector"> hour(s) per<select name="getting-ready-time-frequency"><option value="week">week</option><option value="month">month</option><option value="year">year</option></select></span></div>
+        <div class="input-group input-group--prefix-and-suffix" data-input-label="Getting Ready Cost" data-input-error-message="Enter a value of 0 or greater"><span class="input-prefix"> $ </span>
+            <input min="0" name="getting-ready-dollar-amount" step="0.01" type="number" /> <span class="input-connector"> per<select name="getting-ready-dollar-frequency"><option value="week">week</option><option value="month">month</option><option value="year">year</option></select></span></div>
+        <h3 class="calculator-subsection-subtitle">Commuting</h3>
+        <div class="input-group input-group--suffix-only" data-input-label="Commuting Time" data-input-error-message="Enter a value of 0 or greater">
+            <input min="0" name="commuting-time-amount" step="0.01" type="number" /> <span class="input-connector"> hour(s) per<select name="commuting-time-frequency"><option value="week">week</option><option value="month">month</option><option value="year">year</option></select></span></div>
+        <div class="input-group input-group--prefix-and-suffix" data-input-label="Commuting Cost" data-input-error-message="Enter a value of 0 or greater"><span class="input-prefix"> $ </span>
+            <input min="0" name="commuting-dollar-amount" step="0.01" type="number" /> <span class="input-connector"> per<select name="commuting-dollar-frequency"><option value="week">week</option><option value="month">month</option><option value="year">year</option></select></span></div>
+        <h3 class="calculator-subsection-subtitle">Extras</h3>
+        <div class="input-group input-group--suffix-only" data-input-label="Extras Time" data-input-error-message="Enter a value of 0 or greater">
+            <input min="0" name="extras-time-amount" step="0.01" type="number" /> <span class="input-connector"> hour(s) per<select name="extras-time-frequency"><option value="week">week</option><option value="month">month</option><option value="year">year</option></select></span></div>
+        <div class="input-group input-group--prefix-and-suffix" data-input-label="Extras Cost" data-input-error-message="Enter a value of 0 or greater"><span class="input-prefix"> $ </span>
+            <input min="0" name="extras-dollar-amount" step="0.01" type="number" /> <span class="input-connector"> per<select name="extras-dollar-frequency"><option value="week">week</option><option value="month">month</option><option value="year">year</option></select></span></div>
+        <h3 class="calculator-subsection-subtitle">Recovery</h3>
+        <div class="input-group input-group--suffix-only" data-input-label="Recovery Time" data-input-error-message="Enter a value of 0 or greater">
+            <input min="0" name="recovery-time-amount" step="0.01" type="number" /> <span class="input-connector"> hour(s) per<select name="recovery-time-frequency"><option value="week">week</option><option value="month">month</option><option value="year">year</option></select></span></div>
+        <div class="input-group input-group--prefix-and-suffix" data-input-label="Recovery Cost" data-input-error-message="Enter a value of 0 or greater"><span class="input-prefix"> $ </span>
+            <input min="0" name="recovery-dollar-amount" step="0.01" type="number" /> <span class="input-connector"> per<select name="recovery-dollar-frequency"><option value="week">week</option><option value="month">month</option><option value="year">year</option></select></span></div>
+    </div>
+    <hr />
+    <div id="calculator-valid-results">
+        <div class="calculator-subsection">
+            <h2 class="calculator-result">Your Real Hourly Wage is $<span id="real-hourly-wage">TK</span></h2>
+            <div id="real-hourly-wage-chart"></div>
+        </div>
+        <hr />
+        <div class="calculator-subsection">
+            <h2 class="calculator-subsection-title">Life Energy Examples</h2>
+            <p>With your real hourly wage of $<span id="real-hourly-wage-2">TK</span>/hour, here&#8217;s how much of your time each some common items costs:</p>
+            <div class="table-border">
+                <table class="result-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Cost</th>
+                            <th>Your Life Energy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Coffee</td>
+                            <td>$3</td>
+                            <td id="coffee-cost">TK</td>
+                        </tr>
+                        <tr>
+                            <td>Netflix (1 year)</td>
+                            <td>$132</td>
+                            <td id="netflix-cost">TK</td>
+                        </tr>
+                        <tr>
+                            <td>Car</td>
+                            <td>$25,000</td>
+                            <td id="car-cost">TK</td>
+                        </tr>
+                        <tr>
+                            <td>House</td>
+                            <td>$300,000</td>
+                            <td id="house-cost">TK</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Care to see how much time something else costs? Enter the cost of the item below.</p>
+            <div class="input-group input-group--prefix-only" data-input-label="Cost" data-input-error-message="Enter a value of 0 or greater"><span class="input-prefix"> $ </span>
+                <input min="0.01" name="life-energy-cost" step="0.01" type="number" />
+            </div>
+            <h2 class="calculator-result">takes <span id="life-energy-time">TK minutes/hours/months/years</span> to earn</h2>
+        </div>
+    </div>
+    <div id="calculator-invalid-results" class="hidden">
+        <div class="calculator-subsection">
+            <h2 class="calculator-result">Whoops!</h2>
+            <p id="invalid-message">Something you input needs to be corrected. Please scroll up and fix any errors.</p>
+        </div>
+    </div>
+    <p>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            let chartInitialized = false;
+            const calculator = document.querySelector('#life-energy-calculator');
+            const inputs = calculator.querySelectorAll('input');
+            const selects = calculator.querySelectorAll('select'); /* getCalculatorInputByName('income-amount');*/
+            function getCalculatorInputByName(name) {
+                return calculator.querySelector('input[name=' + name + ']');
+            }; /* getCalculatorInputValueByName('income-amount');*/
+            function getCalculatorInputValueByName(name) {
+                const value = parseFloat(getCalculatorInputByName(name).value);
+                return value;
+            }; /* getCalculatorSelectValueByName('income-frequency');*/
+            function getCalculatorSelectValueByName(name) {
+                const value = calculator.querySelector('select[name=' + name + ']').value;
+                return value;
+            }; /* updateValue('gross-annual-wage', 50000);*/
+            function updateValue(id, value) {
+                calculator.querySelector("#" + id).textContent = value;
+            };
+
+            function annualScaledValue(prefix) {
+                const amount = getCalculatorInputValueByName(prefix + '-amount');
+                if (isNaN(amount)) {
+                    return 0;
+                }
+                const frequency = getCalculatorSelectValueByName(prefix + '-frequency');
+                const workWeeksPerYear = getCalculatorInputValueByName('work-weeks-per-year');
+                let annual = 0;
+                if (frequency == 'week') {
+                    return amount * workWeeksPerYear;
+                } else if (frequency == 'month') {
+                    return amount * 12;
+                } else if (frequency == 'year') {
+                    return amount;
+                }
+            }
+
+            function marginalTaxRate(amount) { /* 2018 tax brackets*/ /* Rate Individuals Married Filing Jointly*/ /* 10% Up to $9,525 Up to $19,050*/ /* 12% $9,526 to $38,700 $19,051 to $77,400*/ /* 22% 38,701 to $82,500 $77,401 to $165,000*/ /* 24% $82,501 to $157,500 $165,001 to $315,000*/ /* 32% $157,501 to $200,000 $315,001 to $400,000*/ /* 35% $200,001 to $500,000 $400,001 to $600,000*/ /* 37% over $500,000 over $600,000*/
+                const agi = amount - 12000;
+                if (agi <= 0) {
+                    return 0;
+                } else if (agi <= 9525) {
+                    return 10;
+                } else if (agi <= 38700) {
+                    return 12;
+                } else if (agi <= 82500) {
+                    return 22;
+                } else if (agi <= 157500) {
+                    return 24;
+                } else if (agi <= 200000) {
+                    return 32;
+                } else if (agi <= 500000) {
+                    return 35;
+                } else {
+                    return 37;
+                }
+            };
+
+            function taxDue(amount) { /* compute federal tax*/
+                let federalTax = 0;
+                const agi = amount - 12000;
+                if (agi <= 0) {
+                    federalTax = 0;
+                } else if (agi <= 9525) {
+                    federalTax = 0.10 * agi;
+                } else if (agi <= 38700) {
+                    federalTax = 0.12 * (agi - 9525) + 952.5;
+                } else if (agi <= 82500) {
+                    federalTax = 0.22 * (agi - 38700) + 4453.50;
+                } else if (agi <= 157500) {
+                    federalTax = 0.24 * (agi - 82500) + 14089.5;
+                } else if (agi <= 200000) {
+                    federalTax = 0.32 * (agi - 157500) + 32089.5;
+                } else if (agi <= 500000) {
+                    federalTax = 0.35 * (agi - 200000) + 45689.5;
+                } else {
+                    federalTax = 0.37 * (agi - 500000) + 150689.5;
+                } /* compute social security tax*/
+                let socialSecurityTax = 0;
+                if (amount >= 128700) {
+                    socialSecurityTax = 128400 * 0.062;
+                } else {
+                    socialSecurityTax = amount * 0.062;
+                } /* compute medicare tax*/
+                let medicareTax = 0;
+                if (amount <= 200000) {
+                    medicareTax = amount * 0.0145;
+                } else {
+                    medicareTax = (amount - 200000) * 0.0235 + 200000 * 0.0145;
+                } /* compute state and local tax*/
+                let stateLocalTax = 0;
+                let stateLocalTaxRate = getCalculatorInputValueByName('state-local-tax-rate') / 100.0;
+                if (isNaN(stateLocalTaxRate)) {
+                    stateLocalTax = 0;
+                } else if (agi <= 0) {
+                    stateLocalTax = 0;
+                } else {
+                    stateLocalTax = agi * stateLocalTaxRate;
+                }
+                return federalTax + socialSecurityTax + medicareTax + stateLocalTax;
+            };
+
+            function timeCost(value, wage, workHours) {
+                if (isNaN(value) || (value < 0)) {
+                    return "?";
+                }
+                hours = (value / wage);
+                if (hours < 1) {
+                    return (hours * 60).toFixed(1) + " minutes";
+                } else if (hours < (workHours / 12)) {
+                    return hours.toFixed(1) + " hours";
+                } else if (hours < workHours) {
+                    return (hours / workHours * 12).toFixed(1) + " months";
+                } else {
+                    return (hours / workHours).toFixed(1) + " years";
+                }
+            }
+
+            function chartReady() {
+                chartInitialized = true;
+                refreshValues();
+            }
+
+            function drawChart(hourlyWage, realHourlyWage, taxHourlyWageLost) {
+                const expenseHourlyWageLost = hourlyWage - realHourlyWage - taxHourlyWageLost;
+                if (chartInitialized) {
+                    var dataTable = new google.visualization.DataTable();
+                    dataTable.addColumn('string', 'Allocation');
+                    dataTable.addColumn('number', 'Wage'); /* A column for custom tooltip content*/
+                    dataTable.addColumn({
+                        type: 'string',
+                        role: 'tooltip'
+                    });
+                    dataTable.addRows([
+                        ['Real Hourly Wage', Math.round(realHourlyWage * 100) / 100, 'Real Wage: $' + realHourlyWage.toFixed(2) + "/hour"],
+                        ['Tax Loss', Math.round(taxHourlyWageLost * 100) / 100, 'Lost to Taxes: $' + taxHourlyWageLost.toFixed(2) + "/hour"],
+                        ['Expense Loss', Math.round(expenseHourlyWageLost * 100) / 100, 'Lost to Expenses: $' + expenseHourlyWageLost.toFixed(2) + "/hour"]
+                    ]);
+                    var options = {
+                        height: 300,
+                        legend: 'none',
+                        pieSliceText: 'percentage',
+                        pieSliceTextStyle: {
+                            color: 'black',
+                            fontSize: 14
+                        },
+                        slices: {
+                            0: {
+                                offset: 0.1
+                            },
+                            1: {
+                                offset: 0.1
+                            },
+                            2: {
+                                offset: 0.1
+                            }
+                        },
+                        backgroundColor: 'transparent',
+                        colors: ['#49b266', 'black', '#444444'],
+                        chartArea: {
+                            width: '80%',
+                            height: '80%'
+                        }
+                    };
+                    var chart = new google.visualization.PieChart(document.getElementById('real-hourly-wage-chart'));
+                    chart.draw(dataTable, options);
+                }
+            }
+
+            function validateInputs() {
+                let allValid = true;
+                for (let i = 0; i < inputs.length; i += 1) {
+                    inputWrapper = inputs[i].parentNode;
+                    if (inputs[i].checkValidity()) {
+                        inputWrapper.classList.remove('invalid');
+                    } else {
+                        inputWrapper.classList.add('invalid'); /* Don't flag for final calculator or it'll be hidden and unfixable */
+                        if (inputs[i] !== getCalculatorInputByName('life-energy-cost')) {
+                            allValid = false;
+                        }
+                    }
+                };
+                return allValid;
+            }
+
+            function flagValidInputs() {
+                document.getElementById('calculator-invalid-results').classList.add('hidden');
+                document.getElementById('calculator-valid-results').classList.remove('hidden');
+            }
+
+            function flagInvalidInputs(msg = 'Something you input needs to be corrected. Please scroll up and fix any errors.') {
+                document.getElementById('calculator-valid-results').classList.add('hidden');
+                document.getElementById('calculator-invalid-results').classList.remove('hidden');
+                document.getElementById('invalid-message').textContent = msg;
+            }
+
+            function markHoursValid() {
+                getCalculatorInputByName('hours-amount').classList.remove('invalid');
+                getCalculatorInputByName('work-weeks-per-year').classList.remove('invalid');
+                getCalculatorInputByName('commuting-time-amount').classList.remove('invalid');
+                getCalculatorInputByName('getting-ready-time-amount').classList.remove('invalid');
+                getCalculatorInputByName('extras-time-amount').classList.remove('invalid');
+                getCalculatorInputByName('recovery-time-amount').classList.remove('invalid');
+            }
+
+            function markDollarsValid() {
+                getCalculatorInputByName('income-amount').classList.remove('invalid');
+                getCalculatorInputByName('extras-dollar-amount').classList.remove('invalid');
+                getCalculatorInputByName('commuting-dollar-amount').classList.remove('invalid');
+                getCalculatorInputByName('getting-ready-dollar-amount').classList.remove('invalid');
+                getCalculatorInputByName('recovery-dollar-amount').classList.remove('invalid');
+            }
+
+            function markHoursInvalid() {
+                getCalculatorInputByName('hours-amount').classList.add('invalid');
+                getCalculatorInputByName('work-weeks-per-year').classList.add('invalid');
+                getCalculatorInputByName('commuting-time-amount').classList.add('invalid');
+                getCalculatorInputByName('getting-ready-time-amount').classList.add('invalid');
+                getCalculatorInputByName('extras-time-amount').classList.add('invalid');
+                getCalculatorInputByName('recovery-time-amount').classList.add('invalid');
+            }
+
+            function markDollarsInvalid() {
+                getCalculatorInputByName('income-amount').classList.add('invalid');
+                getCalculatorInputByName('extras-dollar-amount').classList.add('invalid');
+                getCalculatorInputByName('commuting-dollar-amount').classList.add('invalid');
+                getCalculatorInputByName('getting-ready-dollar-amount').classList.add('invalid');
+                getCalculatorInputByName('recovery-dollar-amount').classList.add('invalid');
+            }
+
+            function adjustHourRange(inputBase) {
+                const input = getCalculatorInputByName(inputBase + '-amount');
+                const inputFrequency = getCalculatorSelectValueByName(inputBase + '-frequency');
+                if (inputFrequency == 'week') {
+                    input.max = 168;
+                    input.parentNode.dataset.inputErrorMessage = "Enter hours greater than 0 and less than 169 per week";
+                } else if (inputFrequency == 'month') {
+                    input.max = 730;
+                    input.parentNode.dataset.inputErrorMessage = "Enter hours greater than 0 and less than 731 per month";
+                } else if (inputFrequency == 'year') {
+                    input.max = 8765;
+                    input.parentNode.dataset.inputErrorMessage = "Enter hours greater than 0 and less than 8766 per year";
+                }
+            }
+
+            function refreshValues() { /* Gather primary inputs */
+                const hoursAmount = getCalculatorInputValueByName('hours-amount');
+                const hoursFrequency = getCalculatorSelectValueByName('hours-frequency');
+                const workWeeksPerYear = getCalculatorInputValueByName('work-weeks-per-year');
+                const incomeAmount = getCalculatorInputValueByName('income-amount');
+                const incomeFrequency = getCalculatorSelectValueByName('income-frequency'); /* Gather incremental hours and costs from commuting */
+                const commutingHours = annualScaledValue('commuting-time');
+                const commutingAnnualCost = annualScaledValue('commuting-dollar'); /* Gather incremental hours and costs from getting-ready*/
+                const gettingReadyHours = annualScaledValue('getting-ready-time');
+                const gettingReadyAnnualCost = annualScaledValue('getting-ready-dollar'); /* Gather incremental hours and costs from extras*/
+                const extrasHours = annualScaledValue('extras-time');
+                const extrasAnnualCost = annualScaledValue('extras-dollar'); /* Gather incremental hours and costs from recovery */
+                const recoveryHours = annualScaledValue('recovery-time');
+                const recoveryAnnualCost = annualScaledValue('recovery-dollar'); /* Gather user's proposed cost */
+                const varDollar = getCalculatorInputValueByName('life-energy-cost');
+                let hoursPerYear = 0;
+                const hoursInput = getCalculatorInputByName('hours-amount');
+                adjustHourRange('hours');
+                if (hoursFrequency == 'week') {
+                    hoursPerYear = hoursAmount * workWeeksPerYear;
+                    calculator.querySelector('#work-weeks-per-year').classList.remove('hidden');
+                } else if (hoursFrequency == 'month') {
+                    hoursPerYear = hoursAmount * 12;
+                    calculator.querySelector('#work-weeks-per-year').classList.add('hidden');
+                } else if (hoursFrequency == 'year') {
+                    hoursPerYear = hoursAmount;
+                    calculator.querySelector('#work-weeks-per-year').classList.add('hidden');
+                }
+                adjustHourRange('getting-ready-time');
+                adjustHourRange('commuting-time');
+                adjustHourRange('extras-time');
+                adjustHourRange('recovery-time');
+                if (!validateInputs()) {
+                    flagInvalidInputs();
+                } else {
+                    flagValidInputs();
+                } /* Compute annual and hourly wages*/
+                let hourlyWage = 0;
+                let annualWage = 0;
+                if (incomeFrequency == 'hour') {
+                    hourlyWage = incomeAmount;
+                    annualWage = hourlyWage * hoursPerYear;
+                } else if (incomeFrequency == 'year') {
+                    annualWage = incomeAmount;
+                    hourlyWage = annualWage / hoursPerYear;
+                } /* Compute after-tax income */
+                const marginalRate = marginalTaxRate(annualWage);
+                const taxesPaid = taxDue(annualWage);
+                const afterTaxIncome = annualWage - taxesPaid;
+                const taxHourlyWageLost = taxesPaid / hoursPerYear; /* Compute total hours invested in working and net income */
+                const totalInvestedHours = hoursPerYear + commutingHours + gettingReadyHours + extrasHours + recoveryHours;
+                const netIncome = afterTaxIncome - commutingAnnualCost - gettingReadyAnnualCost - extrasAnnualCost - recoveryAnnualCost; /* Calculate real hourly wage and % loss */
+                const realHourlyWage = netIncome / totalInvestedHours;
+                const wageLoss = (hourlyWage - realHourlyWage) / hourlyWage * 100; /* Life Energy Calculator Table calculations */
+                const coffeeCost = timeCost(3.00, realHourlyWage, totalInvestedHours);
+                const netflixCost = timeCost(132.00, realHourlyWage, totalInvestedHours);
+                const carCost = timeCost(25000.00, realHourlyWage, totalInvestedHours);
+                const houseCost = timeCost(300000.00, realHourlyWage, totalInvestedHours);
+                const varCost = timeCost(varDollar, realHourlyWage, totalInvestedHours); /* console.log("After-tax $" + afterTaxIncome + " | " + totalInvestedHours + " hours | Net $ " + netIncome + " | RHW=$" + realHourlyWage + "/hr"); */ /* Collect Errors */
+                if (totalInvestedHours > 8765) {
+                    markHoursInvalid();
+                    flagInvalidInputs("Your total work-related hours exceed the total number of hours in a year. Please go back and adjust your work hours and time invested in getting ready, commuting, extras, and recovery.");
+                } else if (netIncome < 0) {
+                    markDollarsInvalid();
+                    flagInvalidInputs("Your net income is negative. Please go back and adjust your income and costs for getting ready, commuting, extras, and recovery.");
+                } else if (realHourlyWage.toFixed(2) <= 0.00) {
+                    markHoursInvalid();
+                    markDollarsInvalid();
+                    flagInvalidInputs("Your real hourly wage is zero. Please go back and increase your income or decrease your hours invested.");
+                } else {
+                    markHoursValid();
+                    markDollarsValid();
+                } /* Refresh values */ /* updateValue('annual-hours-worked', hoursPerYear); */ /* updateValue('gross-hourly-wage', hourlyWage.toFixed(2)); */ /* updateValue('gross-annual-wage', annualWage.toFixed(2)); */ /* updateValue('marginal-tax-rate', marginalRate); */ /* updateValue('taxes-paid', taxesPaid.toFixed(2)); */ /* updateValue('after-tax-income', afterTaxIncome.toFixed(2)); */
+                updateValue('real-hourly-wage', realHourlyWage.toFixed(2));
+                updateValue('real-hourly-wage-2', realHourlyWage.toFixed(2)); /* updateValue('wage-loss', wageLoss.toFixed(1)); */
+                updateValue('coffee-cost', coffeeCost);
+                updateValue('netflix-cost', netflixCost);
+                updateValue('car-cost', carCost);
+                updateValue('house-cost', houseCost);
+                updateValue('life-energy-time', varCost);
+                drawChart(hourlyWage, realHourlyWage, Math.max(taxHourlyWageLost, 0));
+            };
+            for (let i = 0; i < inputs.length; i += 1) {
+                inputs[i].addEventListener('input', () => {
+                    validateInputs();
+                    refreshValues();
+                });
+            };
+            for (let i = 0; i < selects.length; i += 1) {
+                selects[i].addEventListener('input', () => {
+                    validateInputs();
+                    refreshValues();
+                });
+            };
+            document.addEventListener("DOMContentLoaded", () => {
+                google.charts.load("current", {
+                    packages: ["corechart"]
+                });
+                google.charts.setOnLoadCallback(chartReady);
+                refreshValues();
+            });
+        </script>
+    </p>
     <!---End here !-->
   </body>
 </html>
