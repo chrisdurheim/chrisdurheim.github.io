@@ -1,0 +1,122 @@
+<style>
+  .calculator {
+    background-color: #F3F3F3;
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 1px solid #d6d6d6;
+    max-width: 600px;
+    clear: both;
+  }
+  .calculator-section {
+    margin: 3rem 0;
+  }
+  h3.calculator-title {
+    text-align: center;
+  }
+  .calculator-input {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+  }
+  .calculator-input label {
+    flex: 0 0 100%;
+    color: black;
+  }
+  .calculator-input .input-prefix {
+    flex: 0 0 auto;
+    padding: 0.5rem;
+    margin: 0 0.25rem;
+    line-height: 2rem;
+  }
+  .calculator-input input {
+    flex: 1 0 auto;
+    width: auto;
+    max-width: 50%;
+    padding: 0.5rem;
+    margin: 0 0.25rem;
+    font-size: 1rem;
+    border: 1px solid #d6d6d6;
+  }
+  .calculator-input input:focus {
+    outline: none;
+    border: 1px solid #aaaaaa;
+  }
+  .calculator-input select.input-suffix {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0.5rem;
+    margin: 0 0.25rem;
+  }
+  input.calculator-slider {
+    margin-top: 1rem;
+    width: 100%;
+    max-width: 100%;
+  }
+  .calculator-slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    height: 0.5rem; /* Specified height */
+    border-radius: 0.5rem;
+    border-color: #ddd;
+    color: #ddd;
+    background: #ddd; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 1; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+    padding: 0 !important;
+  }
+  .calculator-slider:hover {
+    background: #f5f5f5; /* Fully shown on mouse-over */
+  }
+  .calculator-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 1.5rem; /* Set a specific slider handle width */
+    height: 1.5rem; /* Specified height */
+    border-radius: 50%;
+    background: #0000B3; /* ESI Blue background */
+    cursor: pointer; /* Cursor on hover */
+  }
+
+  .calculator-slider::-moz-range-thumb {
+    width: 1.5rem; /* Set a specific slider handle width */
+    height: 1.5rem; /* Specified height */
+    border-radius: 50%;
+    background: #0000B3; /* ESI Blue background */
+    cursor: pointer; /* Cursor on hover */
+  }
+  .input-error {
+    color: #ac0000;
+    flex: 1 1 10rem;
+    display: none;
+  }
+  .calculator-result {
+    font-size: 1rem;
+    margin-top: 2rem;
+    overflow-x: auto;
+  }
+  .calculator-result .result-value {
+    font-weight: bold;
+  }
+  .calculator-result .result-error {
+    font-size: 1.5rem;
+    color: #ac0000;
+  }
+  .calculator-result-table {
+    max-width: 100%;
+    overflow-x: scroll;
+    font-size: 0.8rem;
+  }
+  .calculator-result-table th {
+    text-align: center;
+  }
+  .calculator-result-table td, .calculator-result-table th {
+    padding: 0 0.5rem;
+  }
+  .calculator-result-table .currency-column {
+    text-align: right;
+  }
+</style>

@@ -1,0 +1,171 @@
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    const calculator = document.querySelector('#career-calculator-simple');
+
+    if (calculator) {
+      const inputs = document.querySelectorAll('input');
+
+      /* Basic inputs */
+      const startingSalaryInput = calculator.querySelector('input#starting-salary');
+      const annualRaiseRateInput = calculator.querySelector('input#annual-raise-rate');
+      const annualRaiseRateLabel = calculator.querySelector('#annual-raise-rate-label');
+      const investmentGainRateInput = calculator.querySelector('input#investment-gain-rate');
+      const investmentGainRateLabel = calculator.querySelector('#investment-gain-rate-label');
+      const yearsOfEmploymentInput = calculator.querySelector('input#years-of-employment');
+      const yearsOfEmploymentLabel = calculator.querySelector('#years-of-employment-label');
+
+      /* Negotiated salary inputs */
+      const negotiatedSalaryInput = calculator.querySelector('input#negotiated-salary');
+
+      /* Higher annual raises inputs */
+      const increasedRaiseRateInput = calculator.querySelector('input#increased-raise-rate');
+      const increasedRaiseRateLabel = calculator.querySelector('#increased-raise-rate-label');
+
+      /* Output */
+      const outputDiv = calculator.querySelector('#career-calculator-simple-result');
+
+      /* Calculate and update labels and results, flag errors */
+      function updateResults() {
+        const startingSalary = parseFloat(startingSalaryInput.value) || 0;
+        const annualRaiseRate = parseFloat(annualRaiseRateInput.value) / 100.0 || 0;
+        const investmentGainRate = parseFloat(investmentGainRateInput.value) / 100.0 || 0;
+        const yearsOfEmployment = parseFloat(yearsOfEmploymentInput.value) || 0;
+        const negotiatedSalary = parseFloat(negotiatedSalaryInput.value) || 0;
+        const increasedRaiseRate = parseFloat(increasedRaiseRateInput.value) / 100.0 || 0;
+
+        /* Update labels */
+        let annualRaiseText = (annualRaiseRate * 100).toFixed(0);
+        annualRaiseText +=  '% annual raise';
+        annualRaiseRateLabel.innerHTML = annualRaiseText;
+
+        let increasedRaiseText = (increasedRaiseRate * 100).toFixed(0);
+        increasedRaiseText +=  '% annual raise';
+        increasedRaiseRateLabel.innerHTML = increasedRaiseText;
+
+        let investmentGainRateText = (investmentGainRate * 100).toFixed(0);
+        investmentGainRateText +=  '% annual return on investments';
+        investmentGainRateLabel.innerHTML = investmentGainRateText;
+
+        let yearsOfEmploymentText = yearsOfEmployment + ' year';
+        if (yearsOfEmployment != 1) {
+          yearsOfEmploymentText += 's';
+        }
+        yearsOfEmploymentText += ' of employment';
+        yearsOfEmploymentLabel.innerHTML = yearsOfEmploymentText;
+
+        if (outputDiv) {
+          /* Validate Inputs */
+          if (startingSalary <= 0.0) {
+            outputDiv.innerHTML = '<span class="result-error">Set a starting salary greater than zero</span>';
+            return;
+          }
+          if (negotiatedSalary <= startingSalary) {
+            outputDiv.innerHTML = '<span class="result-error">Set a negotiated higher salary greater than the base case starting salary</span>';
+            return;
+          }
+          if (increasedRaiseRate <= annualRaiseRate) {
+            outputDiv.innerHTML = '<span class="result-error">Set an increased annual raise greater than the base case annual raise</span>';
+            return;
+          }
+
+          function toCurrency(value) {
+            return '$' + value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          }
+
+          function futureValue(payment, returnRate, increaseRate, years) {
+            if (returnRate == increaseRate) {
+              return payment * years * Math.pow(1 + returnRate, years - 1);
+            } else {
+              let numerator = Math.pow(1 + returnRate, years) - Math.pow(1 + increaseRate, years);
+              let denomenator = (returnRate - increaseRate);
+              return payment * numerator / denomenator;
+            }
+          }
+
+          function lifetimeEarnings(start, raise, years) {
+            return futureValue(start, 0.0, raise, years);
+          }
+          const lifetimeEarningsResult = lifetimeEarnings(startingSalary, annualRaiseRate, yearsOfEmployment);
+          const negotiatedLifetimeEarnings = lifetimeEarnings(negotiatedSalary, annualRaiseRate, yearsOfEmployment);
+          const raiseLifetimeEarnings = lifetimeEarnings(startingSalary, increasedRaiseRate, yearsOfEmployment);
+          const bothLifetimeEarnings = lifetimeEarnings(negotiatedSalary, increasedRaiseRate, yearsOfEmployment);
+
+          const negotiatedDifference = negotiatedLifetimeEarnings - lifetimeEarningsResult;
+          const raiseDifference = raiseLifetimeEarnings - lifetimeEarningsResult;
+          const bothDifference = bothLifetimeEarnings - lifetimeEarningsResult;
+
+          const lifetimeEarningsInvested = futureValue(startingSalary, investmentGainRate, annualRaiseRate, yearsOfEmployment);
+          const negotiatedEarningsInvested = futureValue(negotiatedSalary, investmentGainRate, annualRaiseRate, yearsOfEmployment);
+          const raiseEarningsInvested = futureValue(startingSalary, investmentGainRate, increasedRaiseRate, yearsOfEmployment);
+          const bothEarningsInvested = futureValue(negotiatedSalary, investmentGainRate, increasedRaiseRate, yearsOfEmployment);
+
+          const negotiatedNestEgg = negotiatedEarningsInvested - lifetimeEarningsInvested;
+          const raiseNestEgg = raiseEarningsInvested - lifetimeEarningsInvested;
+          const bothNestEgg = bothEarningsInvested - lifetimeEarningsInvested;
+
+          /* Update output */
+          let outputText = '';
+          outputText += '<p>With a starting salary of <span class="result-value" id="result-starting-salary">';
+          outputText += toCurrency(startingSalary);
+          outputText += '</span> and <span class="result-value" id="result-annual-raise-rate">';
+          outputText += (annualRaiseRate * 100).toFixed(0);
+          outputText += '%</span> annual raises, your lifetime earnings would be <span class="result-value" id="result-lifetime-earnings">';
+          outputText += toCurrency(lifetimeEarningsResult);
+          outputText += '</span>.</p>';
+
+          outputText += '<p>Negotiating a starting salary of <span class="result-value" id="result-negotiated-salary">';
+          outputText += toCurrency(negotiatedSalary);
+          outputText += '</span> would increase those earnings to <span class="result-value" id="result-negotiated-lifetime-earnings">';
+          outputText += toCurrency(negotiatedLifetimeEarnings);
+          outputText += '</span>. Investing the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-negotiated-nest-egg">';
+          outputText += toCurrency(negotiatedNestEgg);
+          outputText += '</span> at retirement.</p>';
+
+          outputText += '<p>Working to get higher annual raises of <span class="result-value" id="result-increased-raise-rate">';
+          outputText += (increasedRaiseRate * 100).toFixed(0);;
+          outputText += '%</span> instead would increase your earnings to <span class="result-value" id="result-raise-lifetime-earnings">';
+          outputText += toCurrency(raiseLifetimeEarnings);
+          outputText += '</span>. Investing the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-raise-nest-egg">';
+          outputText += toCurrency(raiseNestEgg);
+          outputText += '</span> at retirement.</p>';
+
+          outputText += '<p>Doing both would increase your earnings to <span class="result-value" id="result-both-lifetime-earnings">';
+          outputText += toCurrency(bothLifetimeEarnings);
+          outputText += '</span>. Investing the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-negotiated-nest-egg">';
+          outputText += toCurrency(bothNestEgg);
+          outputText += '</span> at retirement.</p>';
+
+          let outputTable = '';
+          outputTable += '<table class="calculator-result-table">'
+          outputTable += '<tr><th>Scenario</th><th>Lifetime Earnings</th><th>Difference</th><th>Difference If Invested</th></tr>';
+          outputTable += '<tr><td>Base</td><td class="currency-column">' + toCurrency(lifetimeEarningsResult) + '</td><td class="currency-column">N/A</td><td class="currency-column">N/A</td></tr>';
+          outputTable += '<tr><td>Negotiated Salary</td><td class="currency-column">' + toCurrency(negotiatedLifetimeEarnings) + '</td><td class="currency-column">' + toCurrency(negotiatedDifference) + '</td><td class="currency-column">' + toCurrency(negotiatedNestEgg) + '</td></tr>';
+          outputTable += '<tr><td>Increased Raises</td><td class="currency-column">' + toCurrency(raiseLifetimeEarnings) + '</td><td class="currency-column">' + toCurrency(raiseDifference) + '</td><td class="currency-column">' + toCurrency(raiseNestEgg) + '</td></tr>';
+          outputTable += '<tr><td>Both</td><td class="currency-column">' + toCurrency(bothLifetimeEarnings) + '</td><td class="currency-column">' + toCurrency(bothDifference) + '</td><td class="currency-column">' + toCurrency(bothNestEgg) + '</td></tr>';
+          outputTable += '</table>';
+
+          let out = '<h4>Results</h4>';
+
+          {% if include.text %}
+            out += outputText;
+          {% endif %}
+          {% if include.table %}
+            out += outputTable;
+          {% endif %}
+
+          outputDiv.innerHTML = out;
+        }
+      }
+
+      /* Set calculator to auto-update on input changes */
+      for (let i = 0; i < inputs.length; i += 1) {
+        inputs[i].addEventListener('input', () => {
+          updateResults();
+        });
+      }
+
+      /* Update on load */
+      updateResults();
+    }
+  });
+</script>
