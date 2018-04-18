@@ -8,7 +8,6 @@
       <label for="starting-salary">Starting Salary</label><br />
       <span class="input-prefix">$</span>
       <input type="number" name="starting-salary" id="starting-salary" value="40000" min="0" />
-      <span class="input-error" id="starting-salary-error">Enter a starting salary greater than zero</span>
     </div>
     <div class="calculator-input">
       <label id="annual-raise-rate-label" for="annual-raise-rate">3% annual raise</label><br />
@@ -29,7 +28,6 @@
       <label for="negotiated-salary">Negotiated Salary</label><br />
       <span class="input-prefix">$</span>
       <input type="number" name="negotiated-salary" id="negotiated-salary" value="45000" min="0" />
-      <span class="input-error" id="negotiated-salary-error">Enter a negotiated salary greater than the base starting salary</span>
     </div>
   </div>
   <div class="calculator-section">
@@ -37,7 +35,6 @@
     <div class="calculator-input">
       <label id="increased-raise-rate-label" for="increased-raise-rate">4% annual raise</label><br />
       <input value="4" class="calculator-slider" min="1" max="20" type="range" name="increased-raise-rate[]" id="increased-raise-rate" />
-      <span class="input-error" id="increased-raise-rate-error">Enter an increased raise rate greater than the base expected annual raise</span>
     </div>
   </div>
   <div class="calculator-result" id="career-calculator-simple-result">
@@ -45,6 +42,9 @@
     <p>Negotiating a starting salary of <span class="result-value" id="result-negotiated-salary">$45,000</span> would increase those earnings to <span class="result-value" id="result-negotiated-lifetime-earnings">$5,075,859</span>. Investing the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-negotiated-nest-egg">$4,251,771</span> at retirement.</p>
     <p>Working to get higher annual raises of <span class="result-value" id="result-increased-raise-rate">4%</span> instead would increase your earnings to <span class="result-value" id="result-raise-lifetime-earnings">$6,106,683</span>. Investing the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-raise-nest-egg">$5,780,764</span> at retirement.</p>
     <p>Doing both would increase your earnings to <span class="result-value" id="result-both-lifetime-earnings">$6,870,019</span>. Investing the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-negotiated-nest-egg">$10,755,130</span> at retirement.</p>
+  </div>
+  <div class="calculator-result">
+    <div id="result-chart"></div>
   </div>
 </form>
 {% include esi-money/scripts/career-calc.html %}
