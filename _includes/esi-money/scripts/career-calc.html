@@ -109,26 +109,35 @@
             const bothBumpNestEgg = bothBumpEarningsInvested - baseEarningsInvested;
             const nestEgg = [0, salaryBumpNestEgg, raiseBumpNestEgg, bothBumpNestEgg];
 
+            const salary = salaryStart * Math.pow(1 + raiseStart, year - 1);
+            const negotiatedSalary = salaryBump * Math.pow(1 + raiseStart, year - 1);
+            const raiseSalary = salaryStart * Math.pow(1 + raiseBump, year - 1);
+            const bothSalary = salaryBump * Math.pow(1 + raiseBump, year - 1);
+
             return { year: year,
                      base: {       label: 'Base',
-                                   salary: salaryStart * Math.pow(1 + raiseStart, year - 1),
+                                   salary: salary,
                                    lifetimeEarnings: baseLE,
                                    difference: 0,
+                                   totalDifference: 0,
                                    nestEgg: 0 },
                      salaryBump: { label: 'Negotiated Salary',
-                                   salary: salaryBump * Math.pow(1 + raiseStart, year - 1),
+                                   salary: negotiatedSalary,
                                    lifetimeEarnings: salaryBumpLE,
-                                   difference: salaryBumpDiff,
+                                   difference: negotiatedSalary - salary,
+                                   totalDifference: salaryBumpDiff,
                                    nestEgg: salaryBumpNestEgg },
                      raiseBump:  { label: 'Increased Raises',
-                                   salary: salaryStart * Math.pow(1 + raiseBump, year - 1),
+                                   salary: raiseSalary,
                                    lifetimeEarnings: raiseBumpLE,
-                                   difference: raiseBumpDiff,
+                                   difference: raiseSalary - salary,
+                                   totalDifference: raiseBumpDiff,
                                    nestEgg: raiseBumpNestEgg },
                      bothBump:  {  label: 'Both',
-                                   salary: salaryBump * Math.pow(1 + raiseBump, year - 1),
+                                   salary: bothSalary,
                                    lifetimeEarnings: bothBumpLE,
-                                   difference: bothBumpDiff,
+                                   difference: bothSalary - salary,
+                                   totalDifference: bothBumpDiff,
                                    nestEgg: bothBumpNestEgg }
              };
           }
@@ -202,7 +211,7 @@
               tableRow = '<tr>';
               tableRow += '<td>' + scenario.label + '</td>';
               tableRow += '<td class="currency-column">' + toCurrency(scenario.lifetimeEarnings) + '</td>';
-              tableRow += '<td class="currency-column">' + toCurrency(scenario.difference) + '</td>';
+              tableRow += '<td class="currency-column">' + toCurrency(scenario.totalDifference) + '</td>';
               tableRow += '<td class="currency-column">' + toCurrency(scenario.nestEgg) + '</td>';
               tableRow += '</tr>';
               return tableRow;
@@ -220,19 +229,28 @@
           }
 
           function bigTable(table) {
-            function yearRow(row) {
+            function salaryRow(row) {
               let html = '<tr>';
               html += '<td>' + row.year + '</td>';
-              html += '<td></td>';
               html += '<td class="currency-column">' + toCurrency(row.base.salary) + '</td>';
               html += '<td class="currency-column">' + toCurrency(row.salaryBump.salary) + '</td>';
               html += '<td class="currency-column">' + toCurrency(row.raiseBump.salary) + '</td>';
               html += '<td class="currency-column">' + toCurrency(row.bothBump.salary) + '</td>';
-              html += '<td></td>';
+              html += '</tr>';
+              return html;
+            }
+            function differenceRow(row) {
+              let html = '<tr>';
+              html += '<td>' + row.year + '</td>';
               html += '<td class="currency-column">' + toCurrency(row.salaryBump.difference) + '</td>';
               html += '<td class="currency-column">' + toCurrency(row.raiseBump.difference) + '</td>';
               html += '<td class="currency-column">' + toCurrency(row.bothBump.difference) + '</td>';
-              html += '<td></td>';
+              html += '</tr>';
+              return html;
+            }
+            function nestEggRow(row) {
+              let html = '<tr>';
+              html += '<td>' + row.year + '</td>';
               html += '<td class="currency-column">' + toCurrency(row.salaryBump.nestEgg) + '</td>';
               html += '<td class="currency-column">' + toCurrency(row.raiseBump.nestEgg) + '</td>';
               html += '<td class="currency-column">' + toCurrency(row.bothBump.nestEgg) + '</td>';
@@ -240,34 +258,55 @@
               return html;
             }
 
-            let output = '<h5>Year-by-Year Numbers</h5>';
-            output += '<div class="calculator-result-table"><table>';
-            output += '<tr>';
-            output += '<th rowspan="2">Year</th>';
-            output += '<th rowspan="2"></th>';
-            output += '<th colspan="4">Salary</th>';
-            output += '<th rowspan="2"></th>';
-            output += '<th colspan="3">Difference from Base</th>';
-            output += '<th rowspan="2"></th>';
-            output += '<th colspan="3">Difference if Invested</th>';
-            output += '</tr>'
-            output += '<tr>';
-            output += '<th>Base Salary</th>';
-            output += '<th>Higher Start</th>';
-            output += '<th>Higher Raise</th>';
-            output += '<th>Both</th>';
-            output += '<th>Higher Start</th>';
-            output += '<th>Higher Raise</th>';
-            output += '<th>Both</th>';
-            output += '<th>Higher Start</th>';
-            output += '<th>Higher Raise</th>';
-            output += '<th>Both</th>';
-            output += '</tr>'
+            let salaryOutput = '<h5>Year-by-Year Salaries</h5>';
+            salaryOutput += '<div class="calculator-result-table"><table>';
+            salaryOutput += '<tr>';
+            salaryOutput += '<th rowspan="2">Year</th>';
+            salaryOutput += '<th colspan="4">Salary</th>';
+            salaryOutput += '</tr>'
+            salaryOutput += '<tr>';
+            salaryOutput += '<th>Base Salary</th>';
+            salaryOutput += '<th>Higher Start</th>';
+            salaryOutput += '<th>Higher Raise</th>';
+            salaryOutput += '<th>Both</th>';
+            salaryOutput += '</tr>'
+
+
+            let differenceOutput = '<h5>Earnings Difference from Base</h5>';
+            differenceOutput += '<div class="calculator-result-table"><table>';
+            differenceOutput += '<tr>';
+            differenceOutput += '<th rowspan="2">Year</th>';
+            differenceOutput += '<th colspan="3">Difference from Base</th>';
+            differenceOutput += '</tr>'
+            differenceOutput += '<tr>';
+            differenceOutput += '<th>Higher Start</th>';
+            differenceOutput += '<th>Higher Raise</th>';
+            differenceOutput += '<th>Both</th>';
+            differenceOutput += '</tr>'
+
+            let nestEggOutput = '<h5>Difference from Base if Invested</h5>';
+            nestEggOutput += '<div class="calculator-result-table"><table>';
+            nestEggOutput += '<tr>';
+            nestEggOutput += '<th rowspan="2">Year</th>';
+            nestEggOutput += '<th colspan="3">Difference if Invested</th>';
+            nestEggOutput += '</tr>'
+            nestEggOutput += '<tr>';
+            nestEggOutput += '<th>Higher Start</th>';
+            nestEggOutput += '<th>Higher Raise</th>';
+            nestEggOutput += '<th>Both</th>';
+            nestEggOutput += '</tr>'
+
             for (let i = 0; i < table.length - 1; i += 1) {
-              output += yearRow(table[i]);
+              dataRow = table[i];
+              salaryOutput += salaryRow(dataRow);
+              differenceOutput += differenceRow(dataRow);
+              nestEggOutput += nestEggRow(dataRow);
             }
-            output += '</table></div>';
-            return output;
+
+            salaryOutput += '</table></div>';
+            differenceOutput += '</table></div>';
+            nestEggOutput += '</table></div>';
+            return salaryOutput + differenceOutput + nestEggOutput;
           }
 
           let out = '<h4>Results</h4>';
