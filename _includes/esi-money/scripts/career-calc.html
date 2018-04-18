@@ -209,13 +209,13 @@
             }
 
             let outputTable = '';
-            outputTable += '<table class="calculator-result-table">'
+            outputTable += '<div class="calculator-result-table"><table>'
             outputTable += '<tr><th>Scenario</th><th>Lifetime Earnings</th><th>Difference</th><th>Difference If Invested</th></tr>';
             outputTable += summaryTableRow(data.base);
             outputTable += summaryTableRow(data.salaryBump);
             outputTable += summaryTableRow(data.raiseBump);
             outputTable += summaryTableRow(data.bothBump);
-            outputTable += '</table>';
+            outputTable += '</table></div>';
             return outputTable;
           }
 
