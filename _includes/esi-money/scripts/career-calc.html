@@ -1,5 +1,15 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {
+    function toCurrency(value) {
+      if (value == 0) {
+        return '-'
+      } else {
+        return '$' + value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+    }
+
+    let chartInitialized = false;
     const calculator = document.querySelector('#career-calculator-simple');
 
     if (calculator) {
@@ -66,14 +76,6 @@
           if (increasedRaiseRate <= annualRaiseRate) {
             outputDiv.innerHTML = '<span class="result-error">Set an increased annual raise greater than the base case annual raise</span>';
             return;
-          }
-
-          function toCurrency(value) {
-            if (value == 0) {
-              return '-'
-            } else {
-              return '$' + value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            }
           }
 
           function futureValue(payment, returnRate, increaseRate, years) {
@@ -259,6 +261,7 @@
             }
 
             let salaryOutput = '<h5>Year-by-Year Salaries</h5>';
+            salaryOutput += '<div id="salary-chart"></div>'
             salaryOutput += '<div class="calculator-result-table"><table>';
             salaryOutput += '<tr>';
             salaryOutput += '<th rowspan="2">Year</th>';
@@ -273,6 +276,7 @@
 
 
             let differenceOutput = '<h5>Earnings Difference from Base</h5>';
+            differenceOutput += '<div id="difference-chart"></div>';
             differenceOutput += '<div class="calculator-result-table"><table>';
             differenceOutput += '<tr>';
             differenceOutput += '<th rowspan="2">Year</th>';
@@ -285,6 +289,7 @@
             differenceOutput += '</tr>'
 
             let nestEggOutput = '<h5>Difference from Base if Invested</h5>';
+            nestEggOutput += '<div id="nest-egg-chart"></div>';
             nestEggOutput += '<div class="calculator-result-table"><table>';
             nestEggOutput += '<tr>';
             nestEggOutput += '<th rowspan="2">Year</th>';
@@ -306,7 +311,9 @@
             salaryOutput += '</table></div>';
             differenceOutput += '</table></div>';
             nestEggOutput += '</table></div>';
-            return salaryOutput + differenceOutput + nestEggOutput;
+
+            const preface = '<p>See the charts and tables below for detailed year-by-year results</p>'
+            return preface + salaryOutput + differenceOutput + nestEggOutput;
           }
 
           let out = '<h4>Results</h4>';
@@ -321,6 +328,7 @@
             out += bigTable(yearTable);
           {% endif %}
           outputDiv.innerHTML = out;
+          drawCharts(yearTable);
         }
       }
 
@@ -330,12 +338,115 @@
           updateResults();
         });
       }
-      document.addEventListener("DOMContentLoaded", () => {
-          google.charts.load("current", {
-              packages: ["corechart"]
-          });
-          google.charts.setOnLoadCallback(chartReady);
-          refreshValues();
+      function chartReady() {
+          chartInitialized = true;
+          updateResults();
+      }
+      function drawCharts(data) {
+        if (chartInitialized) {
+          let salaryTable = new google.visualization.DataTable();
+          salaryTable.addColumn('number', 'Year');
+          salaryTable.addColumn('number', 'Base Salary');
+          salaryTable.addColumn('number', 'Higher Start');
+          salaryTable.addColumn('number', 'Higher Raise');
+          salaryTable.addColumn('number', 'Both');
+
+          let differenceTable = new google.visualization.DataTable();
+          differenceTable.addColumn('number', 'Year');
+          differenceTable.addColumn('number', 'Higher Start');
+          differenceTable.addColumn('number', 'Higher Raise');
+          differenceTable.addColumn('number', 'Both');
+
+          let nestEggTable = new google.visualization.DataTable();
+          nestEggTable.addColumn('number', 'Year');
+          nestEggTable.addColumn('number', 'Higher Start');
+          nestEggTable.addColumn('number', 'Higher Raise');
+          nestEggTable.addColumn('number', 'Both');
+
+          for (let i = 0; i < data.length - 1; i += 1) {
+            dataRow = data[i];
+            salaryTable.addRows([[{ v: dataRow.year,
+                                    f: 'Year ' + dataRow.year },
+                                  { v: Math.round(dataRow.base.salary) / 1000,
+                                    f: toCurrency(Math.round(dataRow.base.salary / 1000)) + 'k' },
+                                  { v: Math.round(dataRow.salaryBump.salary) / 1000,
+                                    f: toCurrency(Math.round(dataRow.salaryBump.salary / 1000)) + 'k' },
+                                  { v: Math.round(dataRow.raiseBump.salary) / 1000,
+                                    f: toCurrency(Math.round(dataRow.raiseBump.salary / 1000)) + 'k' },
+                                  { v: Math.round(dataRow.bothBump.salary) / 1000,
+                                    f: toCurrency(Math.round(dataRow.bothBump.salary / 1000)) + 'k' }
+                              ]]);
+            differenceTable.addRows([[{ v: dataRow.year,
+                                        f: 'Year ' + dataRow.year },
+                                      { v: Math.round(dataRow.salaryBump.difference) / 1000,
+                                        f: toCurrency(Math.round(dataRow.salaryBump.difference / 1000)) + 'k' },
+                                      { v: Math.round(dataRow.raiseBump.difference) / 1000,
+                                        f: toCurrency(Math.round(dataRow.raiseBump.difference / 1000)) + 'k' },
+                                      { v: Math.round(dataRow.bothBump.difference) / 1000,
+                                        f: toCurrency(Math.round(dataRow.bothBump.difference / 1000)) + 'k' }
+                              ]]);
+            nestEggTable.addRows([[{ v: dataRow.year,
+                                     f: 'Year ' + dataRow.year },
+                                   { v: Math.round(dataRow.salaryBump.nestEgg) / 1000,
+                                     f: toCurrency(Math.round(dataRow.salaryBump.nestEgg / 1000)) + 'k' },
+                                   { v: Math.round(dataRow.raiseBump.nestEgg) / 1000,
+                                     f: toCurrency(Math.round(dataRow.raiseBump.nestEgg / 1000)) + 'k' },
+                                   { v: Math.round(dataRow.bothBump.nestEgg) / 1000,
+                                     f: toCurrency(Math.round(dataRow.bothBump.nestEgg / 1000)) + 'k' }
+                              ]]);
+          }
+
+          let baseOptions = {
+            animation: {
+              duration: 100,
+              startup: true,
+              easing: 'inAndOut'
+            },
+            colors:['#0000B3', 'green', '#ac0000' ],
+            chartArea: {left: '20%', top: '10%', width: '70%', height: '80%'},
+            hAxis: {
+              maxValue: data.length - 1,
+              minValue: 1,
+              textStyle: {
+                fontName: 'Fjalla One',
+                fontSize: 11
+              }
+            },
+            height: 300,
+            legend: {
+              position: 'none'
+            },
+            titleTextStyle: {
+              fontName: 'Fjalla One',
+              fontSize: 20
+            },
+            vAxis: {
+              format: '$#,###k',
+              textStyle: {
+                fontName: 'Fjalla One',
+                fontSize: 11
+              }
+            }
+          };
+          differenceChartElement = new google.visualization.LineChart(document.getElementById('difference-chart'));
+          differenceChartElement.draw(differenceTable, baseOptions);
+          nestEggChartElement = new google.visualization.LineChart(document.getElementById('nest-egg-chart'));
+          nestEggChartElement.draw(nestEggTable, baseOptions);
+          salaryOptions = baseOptions;
+          salaryOptions.colors = ['black', '#0000B3', 'green', '#ac0000' ];
+          salaryChartElement = new google.visualization.LineChart(document.getElementById('salary-chart'));
+          salaryChartElement.draw(salaryTable, salaryOptions);
+        }
+      }
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(chartReady);
+
+      var windowResizeTimer;
+      window.addEventListener('resize', function(e){
+          clearTimeout(windowResizeTimer);
+          windowResizeTimer = setTimeout(function(){
+              updateResults();
+          }, 500);
       });
 
       /* Update on load */
