@@ -239,28 +239,28 @@
             function salaryRow(row) {
               let html = '<tr>';
               html += '<td>' + row.year + '</td>';
-              html += '<td class="currency-column">' + toCurrency(row.base.salary) + '</td>';
-              html += '<td class="currency-column">' + toCurrency(row.salaryBump.salary) + '</td>';
-              html += '<td class="currency-column">' + toCurrency(row.raiseBump.salary) + '</td>';
-              html += '<td class="currency-column">' + toCurrency(row.bothBump.salary) + '</td>';
+              html += '<td class="currency-column base-color">' + toCurrency(row.base.salary) + '</td>';
+              html += '<td class="currency-column salary-color">' + toCurrency(row.salaryBump.salary) + '</td>';
+              html += '<td class="currency-column raise-color">' + toCurrency(row.raiseBump.salary) + '</td>';
+              html += '<td class="currency-column both-color">' + toCurrency(row.bothBump.salary) + '</td>';
               html += '</tr>';
               return html;
             }
             function differenceRow(row) {
               let html = '<tr>';
               html += '<td>' + row.year + '</td>';
-              html += '<td class="currency-column">' + toCurrency(row.salaryBump.difference) + '</td>';
-              html += '<td class="currency-column">' + toCurrency(row.raiseBump.difference) + '</td>';
-              html += '<td class="currency-column">' + toCurrency(row.bothBump.difference) + '</td>';
+              html += '<td class="currency-column salary-color">' + toCurrency(row.salaryBump.difference) + '</td>';
+              html += '<td class="currency-column raise-color">' + toCurrency(row.raiseBump.difference) + '</td>';
+              html += '<td class="currency-column both-color">' + toCurrency(row.bothBump.difference) + '</td>';
               html += '</tr>';
               return html;
             }
             function nestEggRow(row) {
               let html = '<tr>';
               html += '<td>' + row.year + '</td>';
-              html += '<td class="currency-column">' + toCurrency(row.salaryBump.nestEgg) + '</td>';
-              html += '<td class="currency-column">' + toCurrency(row.raiseBump.nestEgg) + '</td>';
-              html += '<td class="currency-column">' + toCurrency(row.bothBump.nestEgg) + '</td>';
+              html += '<td class="currency-column salary-color">' + toCurrency(row.salaryBump.nestEgg) + '</td>';
+              html += '<td class="currency-column raise-color">' + toCurrency(row.raiseBump.nestEgg) + '</td>';
+              html += '<td class="currency-column both-color">' + toCurrency(row.bothBump.nestEgg) + '</td>';
               html += '</tr>';
               return html;
             }
