@@ -273,10 +273,10 @@
             salaryOutput += '<th colspan="4">Salary</th>';
             salaryOutput += '</tr>'
             salaryOutput += '<tr>';
-            salaryOutput += '<th>Base Salary</th>';
-            salaryOutput += '<th>Higher Start</th>';
-            salaryOutput += '<th>Higher Raise</th>';
-            salaryOutput += '<th>Both</th>';
+            salaryOutput += '<th class="base-color">Base Salary</th>';
+            salaryOutput += '<th class="salary-color">Higher Start</th>';
+            salaryOutput += '<th class="raise-color">Higher Raise</th>';
+            salaryOutput += '<th class="both-color">Both</th>';
             salaryOutput += '</tr>'
 
 
@@ -288,9 +288,9 @@
             differenceOutput += '<th colspan="3">Difference from Base</th>';
             differenceOutput += '</tr>'
             differenceOutput += '<tr>';
-            differenceOutput += '<th>Higher Start</th>';
-            differenceOutput += '<th>Higher Raise</th>';
-            differenceOutput += '<th>Both</th>';
+            differenceOutput += '<th class="salary-color">Higher Start</th>';
+            differenceOutput += '<th class="raise-color">Higher Raise</th>';
+            differenceOutput += '<th class="both-color">Both</th>';
             differenceOutput += '</tr>'
 
             let nestEggOutput = '<h5>Difference from Base if Invested</h5>';
@@ -301,9 +301,9 @@
             nestEggOutput += '<th colspan="3">Difference if Invested</th>';
             nestEggOutput += '</tr>'
             nestEggOutput += '<tr>';
-            nestEggOutput += '<th>Higher Start</th>';
-            nestEggOutput += '<th>Higher Raise</th>';
-            nestEggOutput += '<th>Both</th>';
+            nestEggOutput += '<th class="salary-color">Higher Start</th>';
+            nestEggOutput += '<th class="raise-color">Higher Raise</th>';
+            nestEggOutput += '<th class="both-color">Both</th>';
             nestEggOutput += '</tr>'
 
             for (let i = 0; i < table.length - 1; i += 1) {
@@ -374,7 +374,7 @@
         if (chartInitialized) {
           let salaryTable = new google.visualization.DataTable();
           salaryTable.addColumn('number', 'Year');
-          salaryTable.addColumn('number', 'Base Salary');
+          salaryTable.addColumn('number', 'Base');
           salaryTable.addColumn('number', 'Higher Start');
           salaryTable.addColumn('number', 'Higher Raise');
           salaryTable.addColumn('number', 'Both');
@@ -430,8 +430,8 @@
               startup: true,
               easing: 'inAndOut'
             },
-            colors:['#0000B3', 'green', '#ac0000' ],
-            chartArea: {left: '20%', top: '10%', width: '70%', height: '80%'},
+            colors:[ 'green', '#ac0000', '#0000B3' ],
+            chartArea: {left: '20%', top: '10%', width: '70%', height: '70%'},
             hAxis: {
               maxValue: data.length - 1,
               minValue: 1,
@@ -442,7 +442,11 @@
             },
             height: 300,
             legend: {
-              position: 'none'
+              position: 'bottom',
+              textStyle: {
+                fontName: 'Fjalla One',
+                fontSize: 11
+              }
             },
             titleTextStyle: {
               fontName: 'Fjalla One',
@@ -461,7 +465,7 @@
           nestEggChartElement = new google.visualization.LineChart(document.getElementById('nest-egg-chart'));
           nestEggChartElement.draw(nestEggTable, baseOptions);
           salaryOptions = baseOptions;
-          salaryOptions.colors = ['black', '#0000B3', 'green', '#ac0000' ];
+          salaryOptions.colors = ['black', 'green', '#ac0000', '#0000B3' ];
           salaryChartElement = new google.visualization.LineChart(document.getElementById('salary-chart'));
           salaryChartElement.draw(salaryTable, salaryOptions);
         }
