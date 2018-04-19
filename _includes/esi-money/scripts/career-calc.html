@@ -10,6 +10,7 @@
     }
 
     let chartInitialized = false;
+    let showDetails = false;
     const calculator = document.querySelector('#career-calculator-simple');
 
     if (calculator) {
@@ -33,6 +34,7 @@
 
       /* Output */
       const outputDiv = calculator.querySelector('#career-calculator-simple-result');
+      const detailedOutputDiv = calculator.querySelector('#career-calculator-detailed-result');
 
       /* Calculate and update labels and results, flag errors */
       function updateResults() {
@@ -67,14 +69,17 @@
           /* Validate Inputs */
           if (startingSalary <= 0.0) {
             outputDiv.innerHTML = '<span class="result-error">Set a starting salary greater than zero</span>';
+            detailedOutputDiv.innerHTML = '';
             return;
           }
           if (negotiatedSalary <= startingSalary) {
             outputDiv.innerHTML = '<span class="result-error">Set a negotiated higher salary greater than the base case starting salary</span>';
+            detailedOutputDiv.innerHTML = '';
             return;
           }
           if (increasedRaiseRate <= annualRaiseRate) {
             outputDiv.innerHTML = '<span class="result-error">Set an increased annual raise greater than the base case annual raise</span>';
+            detailedOutputDiv.innerHTML = '';
             return;
           }
 
@@ -324,20 +329,43 @@
           {% if include.text %}
             out += summaryText(endYearData);
           {% endif %}
-          {% if include.big_table %}
-            out += bigTable(yearTable);
-          {% endif %}
+          if (showDetails) {
+            {% if include.big_table %}
+              detailedOutputDiv.innerHTML = bigTable(yearTable);
+            {% endif %}
+          } else {
+            detailedOutputDiv.innerHTML = '';
+          }
           outputDiv.innerHTML = out;
-          drawCharts(yearTable);
+          if (showDetails) {
+            drawCharts(yearTable);
+          }
         }
       }
 
       /* Set calculator to auto-update on input changes */
       for (let i = 0; i < inputs.length; i += 1) {
         inputs[i].addEventListener('input', () => {
+          showDetails = false;
+          detailButton.innerHTML = 'Click to Show Detailed Results ↓';
           updateResults();
         });
       }
+
+      const detailButton = document.querySelector('#calculator-details-button');
+      detailButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (showDetails) {
+          showDetails = false;
+          detailButton.innerHTML = 'Click to Show Detailed Results ↓';
+          updateResults();
+        } else {
+          showDetails = true;
+          detailButton.innerHTML = 'Click to Hide Detailed Results ↑';
+          updateResults();
+        }
+      });
+
       function chartReady() {
           chartInitialized = true;
           updateResults();
@@ -441,13 +469,7 @@
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(chartReady);
 
-      var windowResizeTimer;
-      window.addEventListener('resize', function(e){
-          clearTimeout(windowResizeTimer);
-          windowResizeTimer = setTimeout(function(){
-              updateResults();
-          }, 500);
-      });
+
 
       /* Update on load */
       updateResults();
