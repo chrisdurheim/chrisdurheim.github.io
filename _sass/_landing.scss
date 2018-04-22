@@ -34,11 +34,20 @@
   letter-spacing: 0.5rem;
   text-transform: uppercase;
   display: block;
-  padding: 6rem 2rem;
+  margin: 0.5rem 0;
 }
 
 .site-title {
   flex: 0 0 100%;
+}
+
+.site-subtitle {
+  flex: 0 0 100%;
+  font-size: 1.2rem;
+  text-align: center;
+  color: white;
+  font-weight: 300;
+  font-style: italic;
 }
 
 .section-text {
@@ -101,8 +110,7 @@ li.personality-list-item {
       border-color: white;
     }
     &--intro {
-      text-transform: lowercase;
-      background: transparent;
+      background: black;
     }
     &--writer {
       background: #558b2f;
