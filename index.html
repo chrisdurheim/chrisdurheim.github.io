@@ -6,32 +6,35 @@ layout: default
 class: landing
 ---
 
-<div class="landing-box landing-box--intro">
+<ul class="personality-list">
+  <li class="personality-list-item">
+    <a class="personality-list-item__title personality-list-item__title--intro smooth-scroller" href="#intro">chris durheim</a>
+  </li>
+  <li class="personality-list-item">
+    <a class="personality-list-item__title personality-list-item__title--writer smooth-scroller" href="#writer">writer</a>
+  </li>
+  <li class="personality-list-item">
+    <a class="personality-list-item__title personality-list-item__title--freelancer smooth-scroller" href="#freelancer">freelancer</a>
+  </li>
+  <li class="personality-list-item">
+    <a class="personality-list-item__title personality-list-item__title--developer smooth-scroller" href="#developer">web developer</a>
+  </li>
+</ul>
+<div class="landing-box landing-box--intro" id="intro">
   <h1 class="site-title">Chris Durheim</h1>
-  <ul class="personality-list">
-    <li class="personality-list-item">
-      <a class="personality-list-item__title personality-list-item__title--writer smooth-scroller" href="#writer">writer</a>
-    </li>
-    <li class="personality-list-item">
-      <a class="personality-list-item__title personality-list-item__title--freelancer smooth-scroller" href="#freelancer">freelancer</a>
-    </li>
-    <li class="personality-list-item">
-      <a class="personality-list-item__title personality-list-item__title--developer smooth-scroller" href="#developer">web developer</a>
-    </li>
-  </ul>
 </div>
 <div class="landing-box landing-box--writer" id="writer">
   <h2 class="section-title">Writer</h2>
   <div class="icon-set">
-    {% include icon.html icon="twitter" link="https://www.twitter.com/keepthrifty" %}
-    {% include icon.html icon="facebook" link="https://www.facebook.com/keepthrifty" %}
-    {% include icon.html icon="pinterest" link="https://www.pinterest.com/keepthrifty" %}
-    {% include icon.html icon="medium" link="https://medium.com/@chrisdurheim" %}
+    {% include icon.html icon="twitter" %}
+    {% include icon.html icon="facebook" %}
+    {% include icon.html icon="pinterest" %}
+    {% include icon.html icon="medium" %}
   </div>
   <div class="section-text">
-    <p>In 2016, Chris launched a personal finance blog - <a href="https://www.keepthrifty.com" target="_blank">Keep Thrifty</a> - to encourage others to think differently about money.</p>
+    <p>In 2016, I launched a personal finance blog - <a href="https://www.keepthrifty.com" target="_blank">Keep Thrifty</a> - to encourage others to think differently about money.</p>
     <p>Keep Thrifty has become a well-regarded resource with a mix of money philosophy, financial calculations, and inspiring stories.</p>
-    <p>Keep Thrifty is also home to <a href="https://thrifty.keepthrifty.com" target="_blank">Thrifty web app</a>, an expense-tracking tool Chris created that helps people develop a deeper understanding of their finances.</p>
+    <p>Keep Thrifty is also home to <a href="https://thrifty.keepthrifty.com" target="_blank">Thrifty web app</a>, an expense-tracking tool I created that helps people develop a deeper understanding of their finances.</p>
   </div>
 </div>
 <div class="landing-box landing-box--freelancer" id="freelancer">
@@ -43,6 +46,11 @@ class: landing
     {% include icon.html icon="javascript" %}
     {% include icon.html icon="microsoftexcel" %}
   </div>
+  <div class="section-text">
+    <p>I'm a software engineer by background with a strong focus in math and finance. I'm also a bit of a spreadsheet fanatic.</p>
+    <p>I've coded a number of high-quality calculators for personal finance websites (blogs and otherwise) to help convey financial concepts to readers in an easy-to-use format.</p>
+    <p>Got a project you'd like to discuss? Reach out and I'll see how I can help you!</p>
+  </div>
 </div>
 <div class="landing-box landing-box--developer" id="developer">
   <h2 class="section-title">Web Developer</h2>
@@ -51,5 +59,11 @@ class: landing
     {% include icon.html icon="rails" %}
     {% include icon.html icon="ruby" %}
     {% include icon.html icon="github" %}
+  </div>
+  <div class="section-text">
+    <p>I've been dabbling in Ruby on Rails since 2010.</p>
+    <p>Early on, I mostly worked on tutorials and hobby projects but I've since developed three web apps - one for personal use and two for everyone (<a href="https://thrifty.keepthrifty.com" target="_blank">Thrifty</a> and <a href="https://mny.millennialmoney.com" target="_blank">mny</a>)</p>
+    <p>While I'm currently rockin' the freelancing life, I'm always open to hear about opportunities.</p>
+    <p>Feel free to reach out</p>
   </div>
 </div>
