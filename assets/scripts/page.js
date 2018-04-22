@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
   function smoothScroll(id) {
-    console.log(id);
     document.querySelector(id).scrollIntoView({
       block: "start",
       inline: "nearest",
