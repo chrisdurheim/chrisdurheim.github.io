@@ -3,7 +3,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     function toCurrency(value) {
       if (value == 0) {
-        return '-'
+        return '-';
       } else {
         return '$' + value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
@@ -155,7 +155,7 @@
             }
             return table;
           }
-          yearTable = yearByYearTable(startingSalary, negotiatedSalary, annualRaiseRate, increasedRaiseRate, investmentGainRate, yearsOfEmployment)
+          yearTable = yearByYearTable(startingSalary, negotiatedSalary, annualRaiseRate, increasedRaiseRate, investmentGainRate, yearsOfEmployment);
 
           endYearData = yearTable[yearsOfEmployment - 1];
 
@@ -225,7 +225,7 @@
             }
 
             let outputTable = '';
-            outputTable += '<div class="calculator-result-table"><table>'
+            outputTable += '<div class="calculator-result-table"><table>';
             outputTable += '<tr><th>Scenario</th><th>Lifetime Earnings</th><th>Difference</th><th>Difference If Invested</th></tr>';
             outputTable += summaryTableRow(data.base);
             outputTable += summaryTableRow(data.salaryBump);
@@ -266,18 +266,18 @@
             }
 
             let salaryOutput = '<h5>Year-by-Year Salaries</h5>';
-            salaryOutput += '<div id="salary-chart"></div>'
+            salaryOutput += '<div id="salary-chart"></div>';
             salaryOutput += '<div class="calculator-result-table"><table>';
             salaryOutput += '<tr>';
             salaryOutput += '<th rowspan="2">Year</th>';
             salaryOutput += '<th colspan="4">Salary</th>';
-            salaryOutput += '</tr>'
+            salaryOutput += '</tr>';
             salaryOutput += '<tr>';
             salaryOutput += '<th class="base-color">Base Salary</th>';
             salaryOutput += '<th class="salary-color">Higher Start</th>';
             salaryOutput += '<th class="raise-color">Higher Raise</th>';
             salaryOutput += '<th class="both-color">Both</th>';
-            salaryOutput += '</tr>'
+            salaryOutput += '</tr>';
 
 
             let differenceOutput = '<h5>Earnings Difference from Base</h5>';
@@ -286,12 +286,12 @@
             differenceOutput += '<tr>';
             differenceOutput += '<th rowspan="2">Year</th>';
             differenceOutput += '<th colspan="3">Difference from Base</th>';
-            differenceOutput += '</tr>'
+            differenceOutput += '</tr>';
             differenceOutput += '<tr>';
             differenceOutput += '<th class="salary-color">Higher Start</th>';
             differenceOutput += '<th class="raise-color">Higher Raise</th>';
             differenceOutput += '<th class="both-color">Both</th>';
-            differenceOutput += '</tr>'
+            differenceOutput += '</tr>';
 
             let nestEggOutput = '<h5>Difference from Base if Invested</h5>';
             nestEggOutput += '<div id="nest-egg-chart"></div>';
@@ -299,12 +299,12 @@
             nestEggOutput += '<tr>';
             nestEggOutput += '<th rowspan="2">Year</th>';
             nestEggOutput += '<th colspan="3">Difference if Invested</th>';
-            nestEggOutput += '</tr>'
+            nestEggOutput += '</tr>';
             nestEggOutput += '<tr>';
             nestEggOutput += '<th class="salary-color">Higher Start</th>';
             nestEggOutput += '<th class="raise-color">Higher Raise</th>';
             nestEggOutput += '<th class="both-color">Both</th>';
-            nestEggOutput += '</tr>'
+            nestEggOutput += '</tr>';
 
             for (let i = 0; i < table.length - 1; i += 1) {
               dataRow = table[i];
@@ -317,7 +317,7 @@
             differenceOutput += '</table></div>';
             nestEggOutput += '</table></div>';
 
-            const preface = '<p>See the charts and tables below for detailed year-by-year results</p>'
+            const preface = '<p>See the charts and tables below for detailed year-by-year results</p>';
             return preface + salaryOutput + differenceOutput + nestEggOutput;
           }
 
