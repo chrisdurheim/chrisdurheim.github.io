@@ -20,10 +20,14 @@
       const startingSalaryInput = calculator.querySelector('input#starting-salary');
       const annualRaiseRateInput = calculator.querySelector('input#annual-raise-rate');
       const annualRaiseRateLabel = calculator.querySelector('#annual-raise-rate-label');
-      const investmentGainRateInput = calculator.querySelector('input#investment-gain-rate');
-      const investmentGainRateLabel = calculator.querySelector('#investment-gain-rate-label');
       const yearsOfEmploymentInput = calculator.querySelector('input#years-of-employment');
       const yearsOfEmploymentLabel = calculator.querySelector('#years-of-employment-label');
+
+      /* Investment Inputs */
+      const investmentGainRateInput = calculator.querySelector('input#investment-gain-rate');
+      const investmentGainRateLabel = calculator.querySelector('#investment-gain-rate-label');
+      const investmentPortionInput = calculator.querySelector('input#investment-portion');
+      const investmentPortionLabel = calculator.querySelector('#investment-portion-label');
 
       /* Negotiated salary inputs */
       const negotiatedSalaryInput = calculator.querySelector('input#negotiated-salary');
@@ -44,6 +48,7 @@
         const yearsOfEmployment = parseFloat(yearsOfEmploymentInput.value) || 0;
         const negotiatedSalary = parseFloat(negotiatedSalaryInput.value) || 0;
         const increasedRaiseRate = parseFloat(increasedRaiseRateInput.value) / 100.0 || 0;
+        const investmentPortion = parseFloat(investmentPortionInput.value) / 100.0 || 1;
 
         /* Update labels */
         let annualRaiseText = (annualRaiseRate * 100).toFixed(0);
@@ -57,6 +62,10 @@
         let investmentGainRateText = (investmentGainRate * 100).toFixed(0);
         investmentGainRateText +=  '% annual return on investments';
         investmentGainRateLabel.innerHTML = investmentGainRateText;
+
+        let investmentPortionText = (investmentPortion * 100).toFixed(0);
+        investmentPortionText +=  '% of salary difference invested';
+        investmentPortionLabel.innerHTML = investmentPortionText;
 
         let yearsOfEmploymentText = yearsOfEmployment + ' year';
         if (yearsOfEmployment != 1) {
@@ -96,7 +105,7 @@
           function lifetimeEarnings(start, raise, years) {
             return futureValue(start, 0.0, raise, years);
           }
-          function yearValues(salaryStart, salaryBump, raiseStart, raiseBump, investmentRate, year) {
+          function yearValues(salaryStart, salaryBump, raiseStart, raiseBump, investmentRate, year, investmentPercent = 1) {
             const baseLE = lifetimeEarnings(salaryStart, raiseStart, year);
             const salaryBumpLE = lifetimeEarnings(salaryBump, raiseStart, year);
             const raiseBumpLE = lifetimeEarnings(salaryStart, raiseBump, year);
@@ -111,10 +120,9 @@
             const raiseBumpEarningsInvested = futureValue(salaryStart, investmentRate, raiseBump, year);
             const bothBumpEarningsInvested = futureValue(salaryBump, investmentRate, raiseBump, year);
 
-            const salaryBumpNestEgg = salaryBumpEarningsInvested - baseEarningsInvested;
-            const raiseBumpNestEgg = raiseBumpEarningsInvested - baseEarningsInvested;
-            const bothBumpNestEgg = bothBumpEarningsInvested - baseEarningsInvested;
-            const nestEgg = [0, salaryBumpNestEgg, raiseBumpNestEgg, bothBumpNestEgg];
+            const salaryBumpNestEgg = (salaryBumpEarningsInvested - baseEarningsInvested) * investmentPercent;
+            const raiseBumpNestEgg = (raiseBumpEarningsInvested - baseEarningsInvested) * investmentPercent;
+            const bothBumpNestEgg = (bothBumpEarningsInvested - baseEarningsInvested) * investmentPercent;
 
             const salary = salaryStart * Math.pow(1 + raiseStart, year - 1);
             const negotiatedSalary = salaryBump * Math.pow(1 + raiseStart, year - 1);
@@ -148,14 +156,14 @@
                                    nestEgg: bothBumpNestEgg }
              };
           }
-          function yearByYearTable(salaryStart, salaryBump, raiseStart, raiseBump, investmentRate, years) {
+          function yearByYearTable(salaryStart, salaryBump, raiseStart, raiseBump, investmentRate, years, investmentPercent = 1) {
             table = [];
             for (let i = 0; i <= years; i += 1) {
-              table[i] = yearValues(salaryStart, salaryBump, raiseStart, raiseBump, investmentRate, i + 1);
+              table[i] = yearValues(salaryStart, salaryBump, raiseStart, raiseBump, investmentRate, i + 1, investmentPercent);
             }
             return table;
           }
-          yearTable = yearByYearTable(startingSalary, negotiatedSalary, annualRaiseRate, increasedRaiseRate, investmentGainRate, yearsOfEmployment);
+          yearTable = yearByYearTable(startingSalary, negotiatedSalary, annualRaiseRate, increasedRaiseRate, investmentGainRate, yearsOfEmployment, investmentPortion);
 
           endYearData = yearTable[yearsOfEmployment - 1];
 
@@ -192,7 +200,9 @@
             outputText += toCurrency(negotiatedSalary);
             outputText += '</span> would increase those earnings to <span class="result-value" id="result-negotiated-lifetime-earnings">';
             outputText += toCurrency(data.salaryBump.lifetimeEarnings);
-            outputText += '</span>. Investing the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-negotiated-nest-egg">';
+            outputText += '</span>. Investing <span class="result-value">';
+            outputText += (investmentPortion * 100).toFixed(0);
+            outputText += '%</span> of the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-negotiated-nest-egg">';
             outputText += toCurrency(data.salaryBump.nestEgg);
             outputText += '</span> at retirement.</p>';
 
@@ -200,13 +210,17 @@
             outputText += (increasedRaiseRate * 100).toFixed(0);
             outputText += '%</span> instead would increase your earnings to <span class="result-value" id="result-raise-lifetime-earnings">';
             outputText += toCurrency(data.raiseBump.lifetimeEarnings);
-            outputText += '</span>. Investing the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-raise-nest-egg">';
+            outputText += '</span>. Investing <span class="result-value">';
+            outputText += (investmentPortion * 100).toFixed(0);
+            outputText += '%</span> of the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-raise-nest-egg">';
             outputText += toCurrency(data.raiseBump.nestEgg);
             outputText += '</span> at retirement.</p>';
 
             outputText += '<p>Doing both would increase your earnings to <span class="result-value" id="result-both-lifetime-earnings">';
             outputText += toCurrency(data.bothBump.lifetimeEarnings);
-            outputText += '</span>. Investing the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-negotiated-nest-egg">';
+            outputText += '</span>. Investing <span class="result-value">';
+            outputText += (investmentPortion * 100).toFixed(0);
+            outputText += '%</span> of the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-negotiated-nest-egg">';
             outputText += toCurrency(data.bothBump.nestEgg);
             outputText += '</span> at retirement.</p>';
 
