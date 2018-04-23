@@ -1,0 +1,53 @@
+<!--- Start here !-->
+{% include esi-money/styling.html %}
+<form class="calculator" id="when-can-i-retire-calculator" action="#" accept-charset="UTF-8" method="post">
+  <h3 class="calculator-title">When Can I Retire?</h3>
+  <div class="calculator-section">
+    <h4>Retirement Spending</h4>
+    <div class="calculator-input">
+      <label for="retirement-needs">Retirement Spending Needs</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" name="retirement-needs" id="retirement-needs" value="60000" min="0" />
+    </div>
+    <div class="calculator-input">
+      <label id="inflation-rate-label" for="inflation-rate">2.5% annual spending inflation</label><br />
+      <input value="2.5" class="calculator-slider" min="0" max="20" step="0.5" type="range" name="inflation-rate[]" id="inflation-rate" />
+    </div>
+    <div class="calculator-input">
+      <label id="safe-withdrawal-rate-label" for="safe-withrdrawal-rate">4.00% assumed withdrawal rate or earnings on assets</label><br />
+      <input value="4" class="calculator-slider" min="0.25" max="20" step="0.25" type="range" name="safe-withdrawal-rate[]" id="safe-withdrawal-rate" />
+    </div>
+    <div class="calculator-input">
+      <label for="side-hustle-income">Annual Side Hustle Income At Retirement</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" name="side-hustle-income" id="side-hustle-income" value="10000" min="0" />
+    </div>
+  </div>
+  <div class="calculator-section">
+    <h4>Savings for Retirement</h4>
+    <div class="calculator-input">
+      <label for="current-assets">Current Assets to be Used for Retirement Drawdown</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" name="current-assets" id="current-assets" value="100000" min="0" />
+    </div>
+    <div class="calculator-input">
+      <label id="investment-gain-rate-label" for="investment-gain-rate">8% annual return on investments</label><br />
+      <input value="8" class="calculator-slider" min="1" max="20" step="0.5" type="range" name="investment-gain-rate[]" id="investment-gain-rate" />
+    </div>
+    <div class="calculator-input">
+      <label for="annual-contribution">Annual Contributions to Assets</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" name="annual-contribution" id="annual-contribution" value="5000" min="0" />
+    </div>
+    <div class="calculator-input">
+      <label id="contribution-increase-rate-label" for="contribution-increase-rate">0% annual increase in contributions</label><br />
+      <input value="0" class="calculator-slider" min="0" max="20" step="0.5" type="range" name="contribution-increase-rate[]" id="contribution-increase-rate" />
+    </div>
+
+  </div>
+  <div class="calculator-result" id="when-can-i-retire-result">
+
+  </div>
+</form>
+{% include esi-money/scripts/when-retire.html %}
+<!---End here !-->

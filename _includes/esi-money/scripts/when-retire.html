@@ -1,0 +1,128 @@
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    function toCurrency(value) {
+      if (value == 0) {
+        return '-';
+      } else {
+        return '$' + value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+    }
+
+    const calculator = document.querySelector('#when-can-i-retire-calculator');
+
+    if (calculator) {
+      const inputs = calculator.querySelectorAll('input');
+
+      /* Retirement Spending inputs */
+      const retirementNeedsInput = calculator.querySelector('input#retirement-needs');
+      const inflationRateInput = calculator.querySelector('input#inflation-rate');
+      const inflationRateLabel = calculator.querySelector('#inflation-rate-label');
+      const safeWithdrawalRateInput = calculator.querySelector('input#safe-withdrawal-rate');
+      const safeWithdrawalRateLabel = calculator.querySelector('#safe-withdrawal-rate-label');
+      const sideHustleIncomeInput = calculator.querySelector('input#side-hustle-income');
+
+      /* Retirement Savings inputs */
+      const currentAssetsInput = calculator.querySelector('input#current-assets');
+      const investmentGainRateInput = calculator.querySelector('input#investment-gain-rate');
+      const investmentGainRateLabel = calculator.querySelector('#investment-gain-rate-label');
+      const contributionIncreaseRateInput = calculator.querySelector('input#contribution-increase-rate');
+      const contributionIncreaseRateLabel = calculator.querySelector('#contribution-increase-rate-label');
+      const annualContributionInput = calculator.querySelector('input#annual-contribution');
+
+      /* Output */
+      const outputDiv = calculator.querySelector('#when-can-i-retire-result');
+
+      /* Calculate and update labels and results, flag errors */
+      function updateResults() {
+        const retirementNeeds = parseFloat(retirementNeedsInput.value) || 0;
+        const inflationRate = parseFloat(inflationRateInput.value) / 100.0 || 0;
+        const safeWithdrawalRate = parseFloat(safeWithdrawalRateInput.value) / 100.0 || 1.00;
+        const sideHustleIncome = parseFloat(sideHustleIncomeInput.value) || 0;
+
+        const currentAssets = parseFloat(currentAssetsInput.value) || 0;
+        const investmentGainRate = parseFloat(investmentGainRateInput.value) / 100.0 || 0;
+        const annualContribution = parseFloat(annualContributionInput.value) || 0;
+        const contributionIncreaseRate = parseFloat(contributionIncreaseRateInput.value) / 100.0 || 0;
+
+        /* Update slider labels */
+        let inflationRateText = (inflationRate * 100).toFixed(1);
+        inflationRateText +=  '% annual spending inflation';
+        inflationRateLabel.innerHTML = inflationRateText;
+
+        let safeWithdrawalRateText = (safeWithdrawalRate * 100).toFixed(2);
+        safeWithdrawalRateText +=  '% assumed withdrawal rate or earnings on assets';
+        safeWithdrawalRateLabel.innerHTML = safeWithdrawalRateText;
+
+        let investmentGainRateText = (investmentGainRate * 100).toFixed(1);
+        investmentGainRateText +=  '% annual return on investments';
+        investmentGainRateLabel.innerHTML = investmentGainRateText;
+
+        let contributionIncreaseRateText = (contributionIncreaseRate * 100).toFixed(1);
+        contributionIncreaseRateText +=  '% annual increase in contributions';
+        contributionIncreaseRateLabel.innerHTML = contributionIncreaseRateText;
+
+        if (outputDiv) {
+          /* Validate Inputs */
+          if (retirementNeeds <= 0.0) {
+            outputDiv.innerHTML = '<span class="result-error">Set a retirement spending needs value greater than zero</span>';
+            return;
+          }
+          if (annualContribution <= 0.0) {
+            outputDiv.innerHTML = '<span class="result-error">Set an annual contribution amount greater than zero</span>';
+            return;
+          }
+          if (currentAssets * safeWithdrawalRate >= (retirementNeeds - sideHustleIncome)) {
+            outputDiv.innerHTML = "<h4>You're already there!</h4>";
+            return;
+          }
+
+          function futureValue(payment, returnRate, increaseRate, years) {
+            if (returnRate == increaseRate) {
+              return payment * years * Math.pow(1 + returnRate, years - 1);
+            } else {
+              let numerator = Math.pow(1 + returnRate, years) - Math.pow(1 + increaseRate, years);
+              let denomenator = (returnRate - increaseRate);
+              return payment * numerator / denomenator;
+            }
+          }
+
+          /* Update output */
+          let out = '<h4>';
+
+          let years = -1;
+          for (let i = 0; i < 100; i += 1) {
+            const need = ((retirementNeeds - sideHustleIncome) * Math.pow(1 + inflationRate, i-1));
+            const base = currentAssets * Math.pow(1 + investmentGainRate, i);
+            const contrib = futureValue(annualContribution, investmentGainRate, contributionIncreaseRate, i);
+
+            if (need < (base + contrib) * safeWithdrawalRate) {
+              years = i;
+              break;
+            }
+          }
+          if (years >= 0) {
+            out += 'You are on track to retire in ' + years + ' year';
+            if (years !== 1) {
+              out += 's';
+            }
+          } else {
+            out += 'Your retirement is more than 100 years out';
+          }
+          out += '</h4>';
+
+          outputDiv.innerHTML = out;
+        }
+      }
+
+      /* Set calculator to auto-update on input changes */
+      for (let i = 0; i < inputs.length; i += 1) {
+        inputs[i].addEventListener('input', () => {
+          updateResults();
+        });
+      }
+
+      /* Update on load */
+      updateResults();
+    }
+  });
+</script>
