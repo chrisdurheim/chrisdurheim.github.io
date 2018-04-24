@@ -100,15 +100,17 @@
               break;
             }
           }
+          out += 'You are on track to retire in:</h4>';
+          out += '<div class="calculator-highlighted-result">'
           if (years >= 0) {
-            out += 'You are on track to retire in ' + years + ' year';
+            out +=  years + ' year';
             if (years !== 1) {
               out += 's';
             }
           } else {
-            out += 'Your retirement is more than 100 years out';
+            out += 'More than 100 years';
           }
-          out += '</h4>';
+          out += '</div>'
 
           outputDiv.innerHTML = out;
         }

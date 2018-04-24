@@ -1,0 +1,527 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    function toCurrency(value) {
+      if (value == 0) {
+        return '-';
+      } else {
+        return '$' + value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+    }
+
+    let chartInitialized = false;
+    let showDetails = false;
+    const calculator = document.querySelector('.calculator#esi-scale-calculator');
+
+    if (calculator) {
+      const inputs = calculator.querySelectorAll('input');
+
+      /* Earn inputs */
+      const startingSalaryInput = calculator.querySelector('input#current-salary');
+      const annualRaiseRateInput = calculator.querySelector('input#annual-raise-rate');
+      const annualRaiseRateLabel = calculator.querySelector('#annual-raise-rate-label');
+      const sideHustleYear1Input = calculator.querySelector('input#side-hustle-year-1');
+      const sideHustleYear2Input = calculator.querySelector('input#side-hustle-year-2');
+      const sideHustleYear3Input = calculator.querySelector('input#side-hustle-year-3');
+      const sideHustleYear4Input = calculator.querySelector('input#side-hustle-year-4');
+      const sideHustleYear5Input = calculator.querySelector('input#side-hustle-year-5');
+
+      /* Save Inputs */
+      const savingsRateInput = calculator.querySelector('input#savings-rate');
+      const savingsRateLabel = calculator.querySelector('#savings-rate-label');
+      const savingsAmountInput = calculator.querySelector('input#annual-savings');
+      const savingsIncreaseRateInput = calculator.querySelector('input#savings-increase-rate');
+      const savingsIncreaseRateLabel = calculator.querySelector('#savings-increase-rate-label');
+
+      /* Invest Inputs */
+      const startingBalanceInput = calculator.querySelector('input#current-balance');
+      const investmentGrowthRateInput = calculator.querySelector('input#growth-rate');
+      const investmentGrowthRateLabel = calculator.querySelector('#growth-rate-label');
+
+      /* FI Inputs */
+      const startingSpendingInput = calculator.querySelector('input#annual-spending');
+      const inflationRateInput = calculator.querySelector('input#inflation-rate');
+      const inflationRateLabel = calculator.querySelector('#inflation-rate-label');
+      const withdrawalRateInput = calculator.querySelector('input#withdrawal-rate');
+      const withdrawalRateLabel = calculator.querySelector('#withdrawal-rate-label');
+
+      /* Output */
+      const outputDiv = calculator.querySelector('.calculator-result#simple-result');
+      const detailedOutputDiv = calculator.querySelector('.calculator-result#detailed-result');
+
+      /* Calculate and update labels and results, flag errors */
+      function updateResults() {
+        const startingSalary = parseFloat(startingSalaryInput.value) || 0;
+        const annualRaiseRate = parseFloat(annualRaiseRateInput.value) / 100.0 || 0;
+        const sideHustleYear1 = parseFloat(sideHustleYear1Input.value) || 0;
+        const sideHustleYear2 = parseFloat(sideHustleYear2Input.value) || 0;
+        const sideHustleYear3 = parseFloat(sideHustleYear3Input.value) || 0;
+        const sideHustleYear4 = parseFloat(sideHustleYear4Input.value) || 0;
+        const sideHustleYear5 = parseFloat(sideHustleYear5Input.value) || 0;
+        const savingsRate = parseFloat(savingsRateInput.value) / 100.0 || 0;
+        const savingsAmount = parseFloat(savingsAmountInput.value) || 0;
+        const savingsIncreaseRate = parseFloat(savingsIncreaseRateInput.value) / 100.0 || 0;
+        const startingBalance = parseFloat(startingBalanceInput.value) || 0;
+        const investmentGrowthRate = parseFloat(investmentGrowthRateInput.value) / 100.0 || 0;
+        const startingSpending = parseFloat(startingSpendingInput.value) || 0;
+        const inflationRate = parseFloat(inflationRateInput.value) / 100.0 || 0;
+        const withdrawalRate = parseFloat(withdrawalRateInput.value) / 100.0 || 0;
+
+        /* Update labels */
+        let annualRaiseText = (annualRaiseRate * 100).toFixed(2);
+        annualRaiseText +=  '% annual raise';
+        annualRaiseRateLabel.innerHTML = annualRaiseText;
+
+        let savingsRateText = 'Saving ';
+        savingsRateText += (savingsRate * 100).toFixed(0);
+        savingsRateText += '% of income (salary and side hustle)';
+        savingsRateLabel.innerHTML = savingsRateText;
+
+        let savingsIncreaseRateText = (savingsIncreaseRate * 100).toFixed(2);
+        savingsIncreaseRateText += '% annual increase in contribution to savings';
+        savingsIncreaseRateLabel.innerHTML = savingsIncreaseRateText;
+
+        let investmentGrowthRateText = (investmentGrowthRate * 100).toFixed(2);
+        investmentGrowthRateText +=  '% annual return on investments';
+        investmentGrowthRateLabel.innerHTML = investmentGrowthRateText;
+
+        let inflationRateText = (inflationRate * 100).toFixed(2);
+        inflationRateText +=  '% annual spending inflation rate';
+        inflationRateLabel.innerHTML = inflationRateText;
+
+        let withdrawalRateText = (withdrawalRate * 100).toFixed(2);
+        withdrawalRateText +=  '% expected annual withdrawal rate';
+        withdrawalRateLabel.innerHTML = withdrawalRateText;
+
+        if (outputDiv) {
+          /* Validate Inputs */
+          if (startingSalary <= 0.0) {
+            outputDiv.innerHTML = '<span class="result-error">Set a starting salary greater than zero</span>';
+            detailedOutputDiv.innerHTML = '';
+            return;
+          }
+          if (savingsAmount < 0.0) {
+            outputDiv.innerHTML = '<span class="result-error">Set a starting salary of at least zero</span>';
+            detailedOutputDiv.innerHTML = '';
+            return;
+          }
+          if (startingBalance < 0.0) {
+            outputDiv.innerHTML = '<span class="result-error">Set a current investment balance of at least zero</span>';
+            detailedOutputDiv.innerHTML = '';
+            return;
+          }
+          if (startingSpending <= 0.0) {
+            outputDiv.innerHTML = '<span class="result-error">Set an expected annual spending in FI greater than $0</span>';
+            detailedOutputDiv.innerHTML = '';
+            return;
+          }
+          if (startingSpending <= startingBalance * withdrawalRate) {
+            outputDiv.innerHTML = '<span>You\'re already financially independent!</span>';
+            detailedOutputDiv.innerHTML = '';
+            return;
+          }
+
+          /* Compute Years to FI */
+
+          function futureValue(payment, returnRate, increaseRate, years) {
+            if (returnRate == increaseRate) {
+              return payment * years * Math.pow(1 + returnRate, years - 1);
+            } else {
+              let numerator = Math.pow(1 + returnRate, years) - Math.pow(1 + increaseRate, years);
+              let denomenator = (returnRate - increaseRate);
+              return payment * numerator / denomenator;
+            }
+          }
+
+          function lifetimeEarnings(start, raise, years) {
+            return futureValue(start, 0.0, raise, years);
+          }
+          function yearValues(salaryStart, salaryBump, raiseStart, raiseBump, investmentRate, year, investmentPercent = 1) {
+            const baseLE = lifetimeEarnings(salaryStart, raiseStart, year);
+            const salaryBumpLE = lifetimeEarnings(salaryBump, raiseStart, year);
+            const raiseBumpLE = lifetimeEarnings(salaryStart, raiseBump, year);
+            const bothBumpLE = lifetimeEarnings(salaryBump, raiseBump, year);
+
+            const salaryBumpDiff = salaryBumpLE - baseLE;
+            const raiseBumpDiff = raiseBumpLE - baseLE;
+            const bothBumpDiff = bothBumpLE - baseLE;
+
+            const baseEarningsInvested = futureValue(salaryStart, investmentRate, raiseStart, year);
+            const salaryBumpEarningsInvested = futureValue(salaryBump, investmentRate, raiseStart, year);
+            const raiseBumpEarningsInvested = futureValue(salaryStart, investmentRate, raiseBump, year);
+            const bothBumpEarningsInvested = futureValue(salaryBump, investmentRate, raiseBump, year);
+
+            const salaryBumpNestEgg = (salaryBumpEarningsInvested - baseEarningsInvested) * investmentPercent;
+            const raiseBumpNestEgg = (raiseBumpEarningsInvested - baseEarningsInvested) * investmentPercent;
+            const bothBumpNestEgg = (bothBumpEarningsInvested - baseEarningsInvested) * investmentPercent;
+
+            const salary = salaryStart * Math.pow(1 + raiseStart, year - 1);
+            const negotiatedSalary = salaryBump * Math.pow(1 + raiseStart, year - 1);
+            const raiseSalary = salaryStart * Math.pow(1 + raiseBump, year - 1);
+            const bothSalary = salaryBump * Math.pow(1 + raiseBump, year - 1);
+
+            return { year: year,
+                     base: {       label: 'Base',
+                                   salary: salary,
+                                   lifetimeEarnings: baseLE,
+                                   difference: 0,
+                                   totalDifference: 0,
+                                   nestEgg: 0 },
+                     salaryBump: { label: 'Negotiated Salary',
+                                   salary: negotiatedSalary,
+                                   lifetimeEarnings: salaryBumpLE,
+                                   difference: negotiatedSalary - salary,
+                                   totalDifference: salaryBumpDiff,
+                                   nestEgg: salaryBumpNestEgg },
+                     raiseBump:  { label: 'Increased Raises',
+                                   salary: raiseSalary,
+                                   lifetimeEarnings: raiseBumpLE,
+                                   difference: raiseSalary - salary,
+                                   totalDifference: raiseBumpDiff,
+                                   nestEgg: raiseBumpNestEgg },
+                     bothBump:  {  label: 'Both',
+                                   salary: bothSalary,
+                                   lifetimeEarnings: bothBumpLE,
+                                   difference: bothSalary - salary,
+                                   totalDifference: bothBumpDiff,
+                                   nestEgg: bothBumpNestEgg }
+             };
+          }
+          function yearByYearTable(salaryStart, salaryBump, raiseStart, raiseBump, investmentRate, years, investmentPercent = 1) {
+            table = [];
+            for (let i = 0; i <= years; i += 1) {
+              table[i] = yearValues(salaryStart, salaryBump, raiseStart, raiseBump, investmentRate, i + 1, investmentPercent);
+            }
+            return table;
+          }
+          yearTable = yearByYearTable(startingSalary, negotiatedSalary, annualRaiseRate, increasedRaiseRate, investmentGainRate, yearsOfEmployment, investmentPortion);
+
+          endYearData = yearTable[yearsOfEmployment - 1];
+
+          const lifetimeEarningsResult = endYearData.base.lifetimeEarnings;
+          const negotiatedLifetimeEarnings = lifetimeEarnings(negotiatedSalary, annualRaiseRate, yearsOfEmployment);
+          const raiseLifetimeEarnings = lifetimeEarnings(startingSalary, increasedRaiseRate, yearsOfEmployment);
+          const bothLifetimeEarnings = lifetimeEarnings(negotiatedSalary, increasedRaiseRate, yearsOfEmployment);
+
+          const negotiatedDifference = negotiatedLifetimeEarnings - lifetimeEarningsResult;
+          const raiseDifference = raiseLifetimeEarnings - lifetimeEarningsResult;
+          const bothDifference = bothLifetimeEarnings - lifetimeEarningsResult;
+
+          const lifetimeEarningsInvested = futureValue(startingSalary, investmentGainRate, annualRaiseRate, yearsOfEmployment);
+          const negotiatedEarningsInvested = futureValue(negotiatedSalary, investmentGainRate, annualRaiseRate, yearsOfEmployment);
+          const raiseEarningsInvested = futureValue(startingSalary, investmentGainRate, increasedRaiseRate, yearsOfEmployment);
+          const bothEarningsInvested = futureValue(negotiatedSalary, investmentGainRate, increasedRaiseRate, yearsOfEmployment);
+
+          const negotiatedNestEgg = negotiatedEarningsInvested - lifetimeEarningsInvested;
+          const raiseNestEgg = raiseEarningsInvested - lifetimeEarningsInvested;
+          const bothNestEgg = bothEarningsInvested - lifetimeEarningsInvested;
+
+          /* Update output */
+          function summaryText(data) {
+            let outputText = '';
+            outputText += '<p>With a starting salary of <span class="result-value" id="result-starting-salary">';
+            outputText += toCurrency(startingSalary);
+            outputText += '</span> and <span class="result-value" id="result-annual-raise-rate">';
+            outputText += (annualRaiseRate * 100).toFixed(0);
+            outputText += '%</span> annual raises, your lifetime earnings would be <span class="result-value" id="result-lifetime-earnings">';
+            outputText += toCurrency(data.base.lifetimeEarnings);
+            outputText += '</span>.</p>';
+
+            outputText += '<p>Negotiating a starting salary of <span class="result-value" id="result-negotiated-salary">';
+            outputText += toCurrency(negotiatedSalary);
+            outputText += '</span> would increase those earnings to <span class="result-value" id="result-negotiated-lifetime-earnings">';
+            outputText += toCurrency(data.salaryBump.lifetimeEarnings);
+            outputText += '</span>. Investing <span class="result-value">';
+            outputText += (investmentPortion * 100).toFixed(0);
+            outputText += '%</span> of the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-negotiated-nest-egg">';
+            outputText += toCurrency(data.salaryBump.nestEgg);
+            outputText += '</span> at retirement.</p>';
+
+            outputText += '<p>Working to get higher annual raises of <span class="result-value" id="result-increased-raise-rate">';
+            outputText += (increasedRaiseRate * 100).toFixed(0);
+            outputText += '%</span> instead would increase your earnings to <span class="result-value" id="result-raise-lifetime-earnings">';
+            outputText += toCurrency(data.raiseBump.lifetimeEarnings);
+            outputText += '</span>. Investing <span class="result-value">';
+            outputText += (investmentPortion * 100).toFixed(0);
+            outputText += '%</span> of the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-raise-nest-egg">';
+            outputText += toCurrency(data.raiseBump.nestEgg);
+            outputText += '</span> at retirement.</p>';
+
+            outputText += '<p>Doing both would increase your earnings to <span class="result-value" id="result-both-lifetime-earnings">';
+            outputText += toCurrency(data.bothBump.lifetimeEarnings);
+            outputText += '</span>. Investing <span class="result-value">';
+            outputText += (investmentPortion * 100).toFixed(0);
+            outputText += '%</span> of the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-negotiated-nest-egg">';
+            outputText += toCurrency(data.bothBump.nestEgg);
+            outputText += '</span> at retirement.</p>';
+
+            return outputText
+          }
+
+          function littleTable(data) {
+            function summaryTableRow(scenario) {
+              tableRow = '<tr>';
+              tableRow += '<td>' + scenario.label + '</td>';
+              tableRow += '<td class="currency-column">' + toCurrency(scenario.lifetimeEarnings) + '</td>';
+              tableRow += '<td class="currency-column">' + toCurrency(scenario.totalDifference) + '</td>';
+              tableRow += '<td class="currency-column">' + toCurrency(scenario.nestEgg) + '</td>';
+              tableRow += '</tr>';
+              return tableRow;
+            }
+
+            let outputTable = '';
+            outputTable += '<div class="calculator-result-table"><table>';
+            outputTable += '<tr><th>Scenario</th><th>Lifetime Earnings</th><th>Difference</th><th>Difference If Invested</th></tr>';
+            outputTable += summaryTableRow(data.base);
+            outputTable += summaryTableRow(data.salaryBump);
+            outputTable += summaryTableRow(data.raiseBump);
+            outputTable += summaryTableRow(data.bothBump);
+            outputTable += '</table></div>';
+            return outputTable;
+          }
+
+          function bigTable(table) {
+            function salaryRow(row) {
+              let html = '<tr>';
+              html += '<td>' + row.year + '</td>';
+              html += '<td class="currency-column base-color">' + toCurrency(row.base.salary) + '</td>';
+              html += '<td class="currency-column salary-color">' + toCurrency(row.salaryBump.salary) + '</td>';
+              html += '<td class="currency-column raise-color">' + toCurrency(row.raiseBump.salary) + '</td>';
+              html += '<td class="currency-column both-color">' + toCurrency(row.bothBump.salary) + '</td>';
+              html += '</tr>';
+              return html;
+            }
+            function differenceRow(row) {
+              let html = '<tr>';
+              html += '<td>' + row.year + '</td>';
+              html += '<td class="currency-column salary-color">' + toCurrency(row.salaryBump.difference) + '</td>';
+              html += '<td class="currency-column raise-color">' + toCurrency(row.raiseBump.difference) + '</td>';
+              html += '<td class="currency-column both-color">' + toCurrency(row.bothBump.difference) + '</td>';
+              html += '</tr>';
+              return html;
+            }
+            function nestEggRow(row) {
+              let html = '<tr>';
+              html += '<td>' + row.year + '</td>';
+              html += '<td class="currency-column salary-color">' + toCurrency(row.salaryBump.nestEgg) + '</td>';
+              html += '<td class="currency-column raise-color">' + toCurrency(row.raiseBump.nestEgg) + '</td>';
+              html += '<td class="currency-column both-color">' + toCurrency(row.bothBump.nestEgg) + '</td>';
+              html += '</tr>';
+              return html;
+            }
+
+            let salaryOutput = '<h5>Year-by-Year Salaries</h5>';
+            salaryOutput += '<div id="salary-chart"></div>';
+            salaryOutput += '<div class="calculator-result-table"><table>';
+            salaryOutput += '<tr>';
+            salaryOutput += '<th rowspan="2">Year</th>';
+            salaryOutput += '<th colspan="4">Salary</th>';
+            salaryOutput += '</tr>';
+            salaryOutput += '<tr>';
+            salaryOutput += '<th class="base-color">Base Salary</th>';
+            salaryOutput += '<th class="salary-color">Higher Start</th>';
+            salaryOutput += '<th class="raise-color">Higher Raise</th>';
+            salaryOutput += '<th class="both-color">Both</th>';
+            salaryOutput += '</tr>';
+
+
+            let differenceOutput = '<h5>Earnings Difference from Base</h5>';
+            differenceOutput += '<div id="difference-chart"></div>';
+            differenceOutput += '<div class="calculator-result-table"><table>';
+            differenceOutput += '<tr>';
+            differenceOutput += '<th rowspan="2">Year</th>';
+            differenceOutput += '<th colspan="3">Difference from Base</th>';
+            differenceOutput += '</tr>';
+            differenceOutput += '<tr>';
+            differenceOutput += '<th class="salary-color">Higher Start</th>';
+            differenceOutput += '<th class="raise-color">Higher Raise</th>';
+            differenceOutput += '<th class="both-color">Both</th>';
+            differenceOutput += '</tr>';
+
+            let nestEggOutput = '<h5>Difference from Base if Invested</h5>';
+            nestEggOutput += '<div id="nest-egg-chart"></div>';
+            nestEggOutput += '<div class="calculator-result-table"><table>';
+            nestEggOutput += '<tr>';
+            nestEggOutput += '<th rowspan="2">Year</th>';
+            nestEggOutput += '<th colspan="3">Difference if Invested</th>';
+            nestEggOutput += '</tr>';
+            nestEggOutput += '<tr>';
+            nestEggOutput += '<th class="salary-color">Higher Start</th>';
+            nestEggOutput += '<th class="raise-color">Higher Raise</th>';
+            nestEggOutput += '<th class="both-color">Both</th>';
+            nestEggOutput += '</tr>';
+
+            for (let i = 0; i < table.length - 1; i += 1) {
+              dataRow = table[i];
+              salaryOutput += salaryRow(dataRow);
+              differenceOutput += differenceRow(dataRow);
+              nestEggOutput += nestEggRow(dataRow);
+            }
+
+            salaryOutput += '</table></div>';
+            differenceOutput += '</table></div>';
+            nestEggOutput += '</table></div>';
+
+            const preface = '<p>See the charts and tables below for detailed year-by-year results</p>';
+            return preface + salaryOutput + differenceOutput + nestEggOutput;
+          }
+
+          let out = '<h4>Results</h4>';
+
+          {% if include.table %}
+            out += littleTable(endYearData);
+          {% endif %}
+          {% if include.text %}
+            out += summaryText(endYearData);
+          {% endif %}
+          if (showDetails) {
+            {% if include.big_table %}
+              detailedOutputDiv.innerHTML = bigTable(yearTable);
+            {% endif %}
+          } else {
+            detailedOutputDiv.innerHTML = '';
+          }
+          outputDiv.innerHTML = out;
+          if (showDetails) {
+            drawCharts(yearTable);
+          }
+        }
+      }
+
+      /* Set calculator to auto-update on input changes */
+      for (let i = 0; i < inputs.length; i += 1) {
+        inputs[i].addEventListener('input', () => {
+          showDetails = false;
+          detailButton.innerHTML = 'Click to Show Detailed Results ↓';
+          updateResults();
+        });
+      }
+
+      const detailButton = document.querySelector('#calculator-details-button');
+      detailButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (showDetails) {
+          showDetails = false;
+          detailButton.innerHTML = 'Click to Show Detailed Results ↓';
+          updateResults();
+        } else {
+          showDetails = true;
+          detailButton.innerHTML = 'Click to Hide Detailed Results ↑';
+          updateResults();
+        }
+      });
+
+      function chartReady() {
+          chartInitialized = true;
+          updateResults();
+      }
+      function drawCharts(data) {
+        if (chartInitialized) {
+          let salaryTable = new google.visualization.DataTable();
+          salaryTable.addColumn('number', 'Year');
+          salaryTable.addColumn('number', 'Base');
+          salaryTable.addColumn('number', 'Higher Start');
+          salaryTable.addColumn('number', 'Higher Raise');
+          salaryTable.addColumn('number', 'Both');
+
+          let differenceTable = new google.visualization.DataTable();
+          differenceTable.addColumn('number', 'Year');
+          differenceTable.addColumn('number', 'Higher Start');
+          differenceTable.addColumn('number', 'Higher Raise');
+          differenceTable.addColumn('number', 'Both');
+
+          let nestEggTable = new google.visualization.DataTable();
+          nestEggTable.addColumn('number', 'Year');
+          nestEggTable.addColumn('number', 'Higher Start');
+          nestEggTable.addColumn('number', 'Higher Raise');
+          nestEggTable.addColumn('number', 'Both');
+
+          for (let i = 0; i < data.length - 1; i += 1) {
+            dataRow = data[i];
+            salaryTable.addRows([[{ v: dataRow.year,
+                                    f: 'Year ' + dataRow.year },
+                                  { v: Math.round(dataRow.base.salary) / 1000,
+                                    f: toCurrency(Math.round(dataRow.base.salary / 1000)) + 'k' },
+                                  { v: Math.round(dataRow.salaryBump.salary) / 1000,
+                                    f: toCurrency(Math.round(dataRow.salaryBump.salary / 1000)) + 'k' },
+                                  { v: Math.round(dataRow.raiseBump.salary) / 1000,
+                                    f: toCurrency(Math.round(dataRow.raiseBump.salary / 1000)) + 'k' },
+                                  { v: Math.round(dataRow.bothBump.salary) / 1000,
+                                    f: toCurrency(Math.round(dataRow.bothBump.salary / 1000)) + 'k' }
+                              ]]);
+            differenceTable.addRows([[{ v: dataRow.year,
+                                        f: 'Year ' + dataRow.year },
+                                      { v: Math.round(dataRow.salaryBump.difference) / 1000,
+                                        f: toCurrency(Math.round(dataRow.salaryBump.difference / 1000)) + 'k' },
+                                      { v: Math.round(dataRow.raiseBump.difference) / 1000,
+                                        f: toCurrency(Math.round(dataRow.raiseBump.difference / 1000)) + 'k' },
+                                      { v: Math.round(dataRow.bothBump.difference) / 1000,
+                                        f: toCurrency(Math.round(dataRow.bothBump.difference / 1000)) + 'k' }
+                              ]]);
+            nestEggTable.addRows([[{ v: dataRow.year,
+                                     f: 'Year ' + dataRow.year },
+                                   { v: Math.round(dataRow.salaryBump.nestEgg) / 1000,
+                                     f: toCurrency(Math.round(dataRow.salaryBump.nestEgg / 1000)) + 'k' },
+                                   { v: Math.round(dataRow.raiseBump.nestEgg) / 1000,
+                                     f: toCurrency(Math.round(dataRow.raiseBump.nestEgg / 1000)) + 'k' },
+                                   { v: Math.round(dataRow.bothBump.nestEgg) / 1000,
+                                     f: toCurrency(Math.round(dataRow.bothBump.nestEgg / 1000)) + 'k' }
+                              ]]);
+          }
+
+          let baseOptions = {
+            animation: {
+              duration: 100,
+              startup: true,
+              easing: 'inAndOut'
+            },
+            colors:[ 'green', '#ac0000', '#0000B3' ],
+            chartArea: {left: '20%', top: '10%', width: '70%', height: '70%'},
+            hAxis: {
+              maxValue: data.length - 1,
+              minValue: 1,
+              textStyle: {
+                fontName: 'Fjalla One',
+                fontSize: 11
+              }
+            },
+            height: 300,
+            legend: {
+              position: 'bottom',
+              textStyle: {
+                fontName: 'Fjalla One',
+                fontSize: 11
+              }
+            },
+            titleTextStyle: {
+              fontName: 'Fjalla One',
+              fontSize: 20
+            },
+            vAxis: {
+              format: '$#,###k',
+              textStyle: {
+                fontName: 'Fjalla One',
+                fontSize: 11
+              }
+            }
+          };
+          differenceChartElement = new google.visualization.LineChart(document.getElementById('difference-chart'));
+          differenceChartElement.draw(differenceTable, baseOptions);
+          nestEggChartElement = new google.visualization.LineChart(document.getElementById('nest-egg-chart'));
+          nestEggChartElement.draw(nestEggTable, baseOptions);
+          salaryOptions = baseOptions;
+          salaryOptions.colors = ['black', 'green', '#ac0000', '#0000B3' ];
+          salaryChartElement = new google.visualization.LineChart(document.getElementById('salary-chart'));
+          salaryChartElement.draw(salaryTable, salaryOptions);
+        }
+      }
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(chartReady);
+
+
+
+      /* Update on load */
+      updateResults();
+    }
+  });
+</script>

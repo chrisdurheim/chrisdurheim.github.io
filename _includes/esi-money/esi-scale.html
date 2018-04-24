@@ -1,0 +1,99 @@
+<!--- Start here !-->
+{% include esi-money/styling.html %}
+<form class="calculator" id="esi-scale-calculator" action="#" accept-charset="UTF-8" method="post">
+  <h3 class="calculator-title">ESI Scale Calculator</h3>
+  <div class="calculator-section">
+    <h4>Earn</h4>
+    <h5>Salary</h5>
+    <div class="calculator-input">
+      <label for="current-salary">Current Annual Salary</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" name="current-salary" id="current-salary" value="40000" min="0" />
+    </div>
+    <div class="calculator-input">
+      <label id="annual-raise-rate-label" for="annual-raise-rate">3% annual salary raise</label><br />
+      <input value="3" class="calculator-slider" min="1" max="20" step="0.25" type="range" name="annual-raise-rate[]" id="annual-raise-rate" />
+    </div>
+    <h5>Side Hustle Income</h5>
+    <div class="calculator-input calculator-input--2-col">
+      <label for="side-hustle-year-1">Year 1</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" name="side-hustle-year-1" id="side-hustle-year-1" value="1000" min="0" />
+    </div>
+    <div class="calculator-input calculator-input--2-col">
+      <label for="side-hustle-year-2">Year 2</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" name="side-hustle-year-2" id="side-hustle-year-2" value="2000" min="0" />
+    </div>
+    <div class="calculator-input calculator-input--2-col">
+      <label for="side-hustle-year-3">Year 3</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" name="side-hustle-year-3" id="side-hustle-year-3" value="5000" min="0" />
+    </div>
+    <div class="calculator-input calculator-input--2-col">
+      <label for="side-hustle-year-4">Year 4</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" name="side-hustle-year-4" id="side-hustle-year-4" value="8000" min="0" />
+    </div>
+    <div class="calculator-input calculator-input--2-col">
+      <label for="side-hustle-year-5">Year 5 (and beyond)</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" name="side-hustle-year-5" id="side-hustle-year-5" value="10000" min="0" />
+    </div>
+  </div>
+  <div class="calculator-section">
+    <h4>Save</h4>
+    <div class="calculator-input">
+      <label id="savings-rate-label" for="savings-rate">Saving 20% of income (salary and side hustle)</label><br />
+      <input value="20" class="calculator-slider" min="1" max="100" type="range" name="savings-rate[]" id="savings-rate" />
+    </div>
+    <h5>OR</h5>
+    <div class="calculator-input calculator-input--2-col">
+      <label for="annual-savings">Annual Savings Contribution</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" name="annual-savings" id="annual-savings" value="5000" min="0" />
+    </div>
+    <div class="calculator-input">
+      <label id="savings-increase-rate-label" for="savings-increase-rate">3% annual increase in contribution to savings</label><br />
+      <input value="3" class="calculator-slider" min="1" max="20" step="0.25" type="range" name="savings-increase-rate[]" id="savings-increase-rate" />
+    </div>
+  </div>
+  <div class="calculator-section">
+    <h4>Invest</h4>
+    <div class="calculator-input">
+      <label for="current-balance">Current Investment Balance</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" name="current-balance" id="current-balance" value="100000" min="0" />
+    </div>
+    <div class="calculator-input">
+      <label id="growth-rate-label" for="growth-rate">8% annual return on investments</label><br />
+      <input value="8" class="calculator-slider" min="1" max="20" step="0.25" type="range" name="growth-rate[]" id="growth-rate" />
+    </div>
+  </div>
+  <div class="calculator-section">
+    <h4>Financial Independence</h4>
+    <div class="calculator-input">
+      <label for="annual-spending">Expected Annual Spending in FI</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" name="annual-spending" id="annual-spending" value="40000" min="0" />
+    </div>
+    <div class="calculator-input">
+      <label id="inflation-rate-label" for="inflation-rate">2.5% annual spending inflation rate</label><br />
+      <input value="2.5" class="calculator-slider" min="1" max="20" step="0.25" type="range" name="inflation-rate[]" id="inflation-rate" />
+    </div>
+    <div class="calculator-input">
+      <label id="withdrawal-rate-label" for="withdrawal-rate">4% expected annual withdrawal rate</label><br />
+      <input value="4" class="calculator-slider" min="1" max="20" step="0.25" type="range" name="withdrawal-rate[]" id="withdrawal-rate" />
+    </div>
+  </div>
+  <div class="calculator-result" id="simple-result">
+    <p>You're on-track to reach financial independence in <span class="result-value">20 years</span></p>
+  </div>
+  <div class="calculator-section">
+    <button class="calculator-button" id="calculator-details-button">Click to Show Detailed Results ↓</button>
+  </div>
+  <div class="calculator-result" id="detailed-result">
+  </div>
+</form>
+{% include esi-money/scripts/esi-scale.html %}
+<!---End here !-->
