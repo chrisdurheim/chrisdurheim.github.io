@@ -25,13 +25,10 @@
       const sideHustleYear3Input = calculator.querySelector('input#side-hustle-year-3');
       const sideHustleYear4Input = calculator.querySelector('input#side-hustle-year-4');
       const sideHustleYear5Input = calculator.querySelector('input#side-hustle-year-5');
-
+      const otherIncomeInput = calculator.querySelector('input#other-income');
       /* Save Inputs */
       const savingsRateInput = calculator.querySelector('input#savings-rate');
       const savingsRateLabel = calculator.querySelector('#savings-rate-label');
-      const savingsAmountInput = calculator.querySelector('input#annual-savings');
-      const savingsIncreaseRateInput = calculator.querySelector('input#savings-increase-rate');
-      const savingsIncreaseRateLabel = calculator.querySelector('#savings-increase-rate-label');
 
       /* Invest Inputs */
       const startingBalanceInput = calculator.querySelector('input#current-balance');
@@ -58,9 +55,8 @@
         const sideHustleYear3 = parseFloat(sideHustleYear3Input.value) || 0;
         const sideHustleYear4 = parseFloat(sideHustleYear4Input.value) || 0;
         const sideHustleYear5 = parseFloat(sideHustleYear5Input.value) || 0;
+        const otherIncome = parseFloat(otherIncomeInput.value) || 0;
         const savingsRate = parseFloat(savingsRateInput.value) / 100.0 || 0;
-        const savingsAmount = parseFloat(savingsAmountInput.value) || 0;
-        const savingsIncreaseRate = parseFloat(savingsIncreaseRateInput.value) / 100.0 || 0;
         const startingBalance = parseFloat(startingBalanceInput.value) || 0;
         const investmentGrowthRate = parseFloat(investmentGrowthRateInput.value) / 100.0 || 0;
         const startingSpending = parseFloat(startingSpendingInput.value) || 0;
@@ -74,12 +70,10 @@
 
         let savingsRateText = 'Saving ';
         savingsRateText += (savingsRate * 100).toFixed(0);
-        savingsRateText += '% of income (salary and side hustle)';
+        savingsRateText += '% of total income (';
+        savingsRateText += toCurrency(savingsRate * (startingSalary + sideHustleYear1 + otherIncome));
+        savingsRateText += ' this year)';
         savingsRateLabel.innerHTML = savingsRateText;
-
-        let savingsIncreaseRateText = (savingsIncreaseRate * 100).toFixed(2);
-        savingsIncreaseRateText += '% annual increase in contribution to savings';
-        savingsIncreaseRateLabel.innerHTML = savingsIncreaseRateText;
 
         let investmentGrowthRateText = (investmentGrowthRate * 100).toFixed(2);
         investmentGrowthRateText +=  '% annual return on investments';
@@ -100,8 +94,8 @@
             detailedOutputDiv.innerHTML = '';
             return;
           }
-          if (savingsAmount < 0.0) {
-            outputDiv.innerHTML = '<span class="result-error">Set a starting salary of at least zero</span>';
+          if (otherIncome < 0.0) {
+            outputDiv.innerHTML = '<span class="result-error">Set other income to something zero or greater</span>';
             detailedOutputDiv.innerHTML = '';
             return;
           }
@@ -121,267 +115,58 @@
             return;
           }
 
-          /* Compute Years to FI */
-
-          function futureValue(payment, returnRate, increaseRate, years) {
-            if (returnRate == increaseRate) {
-              return payment * years * Math.pow(1 + returnRate, years - 1);
+          function sideHustleIncome(year, inflation) {
+            if (year == 0) {
+              return sideHustleYear1;
+            } else if (year == 1) {
+              return sideHustleYear2;
+            } else if (year == 2) {
+              return sideHustleYear3;
+            } else if (year == 3) {
+              return sideHustleYear4;
+            } else if (year == 4) {
+              return sideHustleYear5;
             } else {
-              let numerator = Math.pow(1 + returnRate, years) - Math.pow(1 + increaseRate, years);
-              let denomenator = (returnRate - increaseRate);
-              return payment * numerator / denomenator;
+              return sideHustleYear5 * Math.pow(1 + inflation, year - 4);
             }
           }
 
-          function lifetimeEarnings(start, raise, years) {
-            return futureValue(start, 0.0, raise, years);
-          }
-          function yearValues(salaryStart, salaryBump, raiseStart, raiseBump, investmentRate, year, investmentPercent = 1) {
-            const baseLE = lifetimeEarnings(salaryStart, raiseStart, year);
-            const salaryBumpLE = lifetimeEarnings(salaryBump, raiseStart, year);
-            const raiseBumpLE = lifetimeEarnings(salaryStart, raiseBump, year);
-            const bothBumpLE = lifetimeEarnings(salaryBump, raiseBump, year);
+          let currentBalance = startingBalance;
+          let fiYear = -1;
+          yearData = []
 
-            const salaryBumpDiff = salaryBumpLE - baseLE;
-            const raiseBumpDiff = raiseBumpLE - baseLE;
-            const bothBumpDiff = bothBumpLE - baseLE;
+          /* Compute Years to FI */
+          for (let i = 0; i < 100; i += 1) {
+            const spending = startingSpending * Math.pow(1 + inflationRate, i);
+            const sideHustle = sideHustleIncome(i, inflationRate);
+            const other = otherIncome * Math.pow(1 + inflationRate, i);
+            const balNeeded = (spending - sideHustle - other) / withdrawalRate;
+            const year = i;
+            const salary = startingSalary * Math.pow(1 + annualRaiseRate, i);
 
-            const baseEarningsInvested = futureValue(salaryStart, investmentRate, raiseStart, year);
-            const salaryBumpEarningsInvested = futureValue(salaryBump, investmentRate, raiseStart, year);
-            const raiseBumpEarningsInvested = futureValue(salaryStart, investmentRate, raiseBump, year);
-            const bothBumpEarningsInvested = futureValue(salaryBump, investmentRate, raiseBump, year);
+            const totalIncome = salary + sideHustle + other;
+            const savings = totalIncome * savingsRate;
+            const interest = currentBalance * investmentGrowthRate;
+            const endBalance = currentBalance + savings + interest;
 
-            const salaryBumpNestEgg = (salaryBumpEarningsInvested - baseEarningsInvested) * investmentPercent;
-            const raiseBumpNestEgg = (raiseBumpEarningsInvested - baseEarningsInvested) * investmentPercent;
-            const bothBumpNestEgg = (bothBumpEarningsInvested - baseEarningsInvested) * investmentPercent;
+            yearData[i] = { balance: currentBalance,
+                            needed: balNeeded
+                          };
 
-            const salary = salaryStart * Math.pow(1 + raiseStart, year - 1);
-            const negotiatedSalary = salaryBump * Math.pow(1 + raiseStart, year - 1);
-            const raiseSalary = salaryStart * Math.pow(1 + raiseBump, year - 1);
-            const bothSalary = salaryBump * Math.pow(1 + raiseBump, year - 1);
-
-            return { year: year,
-                     base: {       label: 'Base',
-                                   salary: salary,
-                                   lifetimeEarnings: baseLE,
-                                   difference: 0,
-                                   totalDifference: 0,
-                                   nestEgg: 0 },
-                     salaryBump: { label: 'Negotiated Salary',
-                                   salary: negotiatedSalary,
-                                   lifetimeEarnings: salaryBumpLE,
-                                   difference: negotiatedSalary - salary,
-                                   totalDifference: salaryBumpDiff,
-                                   nestEgg: salaryBumpNestEgg },
-                     raiseBump:  { label: 'Increased Raises',
-                                   salary: raiseSalary,
-                                   lifetimeEarnings: raiseBumpLE,
-                                   difference: raiseSalary - salary,
-                                   totalDifference: raiseBumpDiff,
-                                   nestEgg: raiseBumpNestEgg },
-                     bothBump:  {  label: 'Both',
-                                   salary: bothSalary,
-                                   lifetimeEarnings: bothBumpLE,
-                                   difference: bothSalary - salary,
-                                   totalDifference: bothBumpDiff,
-                                   nestEgg: bothBumpNestEgg }
-             };
-          }
-          function yearByYearTable(salaryStart, salaryBump, raiseStart, raiseBump, investmentRate, years, investmentPercent = 1) {
-            table = [];
-            for (let i = 0; i <= years; i += 1) {
-              table[i] = yearValues(salaryStart, salaryBump, raiseStart, raiseBump, investmentRate, i + 1, investmentPercent);
-            }
-            return table;
-          }
-          yearTable = yearByYearTable(startingSalary, negotiatedSalary, annualRaiseRate, increasedRaiseRate, investmentGainRate, yearsOfEmployment, investmentPortion);
-
-          endYearData = yearTable[yearsOfEmployment - 1];
-
-          const lifetimeEarningsResult = endYearData.base.lifetimeEarnings;
-          const negotiatedLifetimeEarnings = lifetimeEarnings(negotiatedSalary, annualRaiseRate, yearsOfEmployment);
-          const raiseLifetimeEarnings = lifetimeEarnings(startingSalary, increasedRaiseRate, yearsOfEmployment);
-          const bothLifetimeEarnings = lifetimeEarnings(negotiatedSalary, increasedRaiseRate, yearsOfEmployment);
-
-          const negotiatedDifference = negotiatedLifetimeEarnings - lifetimeEarningsResult;
-          const raiseDifference = raiseLifetimeEarnings - lifetimeEarningsResult;
-          const bothDifference = bothLifetimeEarnings - lifetimeEarningsResult;
-
-          const lifetimeEarningsInvested = futureValue(startingSalary, investmentGainRate, annualRaiseRate, yearsOfEmployment);
-          const negotiatedEarningsInvested = futureValue(negotiatedSalary, investmentGainRate, annualRaiseRate, yearsOfEmployment);
-          const raiseEarningsInvested = futureValue(startingSalary, investmentGainRate, increasedRaiseRate, yearsOfEmployment);
-          const bothEarningsInvested = futureValue(negotiatedSalary, investmentGainRate, increasedRaiseRate, yearsOfEmployment);
-
-          const negotiatedNestEgg = negotiatedEarningsInvested - lifetimeEarningsInvested;
-          const raiseNestEgg = raiseEarningsInvested - lifetimeEarningsInvested;
-          const bothNestEgg = bothEarningsInvested - lifetimeEarningsInvested;
-
-          /* Update output */
-          function summaryText(data) {
-            let outputText = '';
-            outputText += '<p>With a starting salary of <span class="result-value" id="result-starting-salary">';
-            outputText += toCurrency(startingSalary);
-            outputText += '</span> and <span class="result-value" id="result-annual-raise-rate">';
-            outputText += (annualRaiseRate * 100).toFixed(0);
-            outputText += '%</span> annual raises, your lifetime earnings would be <span class="result-value" id="result-lifetime-earnings">';
-            outputText += toCurrency(data.base.lifetimeEarnings);
-            outputText += '</span>.</p>';
-
-            outputText += '<p>Negotiating a starting salary of <span class="result-value" id="result-negotiated-salary">';
-            outputText += toCurrency(negotiatedSalary);
-            outputText += '</span> would increase those earnings to <span class="result-value" id="result-negotiated-lifetime-earnings">';
-            outputText += toCurrency(data.salaryBump.lifetimeEarnings);
-            outputText += '</span>. Investing <span class="result-value">';
-            outputText += (investmentPortion * 100).toFixed(0);
-            outputText += '%</span> of the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-negotiated-nest-egg">';
-            outputText += toCurrency(data.salaryBump.nestEgg);
-            outputText += '</span> at retirement.</p>';
-
-            outputText += '<p>Working to get higher annual raises of <span class="result-value" id="result-increased-raise-rate">';
-            outputText += (increasedRaiseRate * 100).toFixed(0);
-            outputText += '%</span> instead would increase your earnings to <span class="result-value" id="result-raise-lifetime-earnings">';
-            outputText += toCurrency(data.raiseBump.lifetimeEarnings);
-            outputText += '</span>. Investing <span class="result-value">';
-            outputText += (investmentPortion * 100).toFixed(0);
-            outputText += '%</span> of the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-raise-nest-egg">';
-            outputText += toCurrency(data.raiseBump.nestEgg);
-            outputText += '</span> at retirement.</p>';
-
-            outputText += '<p>Doing both would increase your earnings to <span class="result-value" id="result-both-lifetime-earnings">';
-            outputText += toCurrency(data.bothBump.lifetimeEarnings);
-            outputText += '</span>. Investing <span class="result-value">';
-            outputText += (investmentPortion * 100).toFixed(0);
-            outputText += '%</span> of the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-negotiated-nest-egg">';
-            outputText += toCurrency(data.bothBump.nestEgg);
-            outputText += '</span> at retirement.</p>';
-
-            return outputText
-          }
-
-          function littleTable(data) {
-            function summaryTableRow(scenario) {
-              tableRow = '<tr>';
-              tableRow += '<td>' + scenario.label + '</td>';
-              tableRow += '<td class="currency-column">' + toCurrency(scenario.lifetimeEarnings) + '</td>';
-              tableRow += '<td class="currency-column">' + toCurrency(scenario.totalDifference) + '</td>';
-              tableRow += '<td class="currency-column">' + toCurrency(scenario.nestEgg) + '</td>';
-              tableRow += '</tr>';
-              return tableRow;
+            if (fiYear == -1 && currentBalance >= balNeeded) {
+              fiYear = i;
             }
 
-            let outputTable = '';
-            outputTable += '<div class="calculator-result-table"><table>';
-            outputTable += '<tr><th>Scenario</th><th>Lifetime Earnings</th><th>Difference</th><th>Difference If Invested</th></tr>';
-            outputTable += summaryTableRow(data.base);
-            outputTable += summaryTableRow(data.salaryBump);
-            outputTable += summaryTableRow(data.raiseBump);
-            outputTable += summaryTableRow(data.bothBump);
-            outputTable += '</table></div>';
-            return outputTable;
+            /* Set up for next year */
+            currentBalance = endBalance;
           }
 
-          function bigTable(table) {
-            function salaryRow(row) {
-              let html = '<tr>';
-              html += '<td>' + row.year + '</td>';
-              html += '<td class="currency-column base-color">' + toCurrency(row.base.salary) + '</td>';
-              html += '<td class="currency-column salary-color">' + toCurrency(row.salaryBump.salary) + '</td>';
-              html += '<td class="currency-column raise-color">' + toCurrency(row.raiseBump.salary) + '</td>';
-              html += '<td class="currency-column both-color">' + toCurrency(row.bothBump.salary) + '</td>';
-              html += '</tr>';
-              return html;
-            }
-            function differenceRow(row) {
-              let html = '<tr>';
-              html += '<td>' + row.year + '</td>';
-              html += '<td class="currency-column salary-color">' + toCurrency(row.salaryBump.difference) + '</td>';
-              html += '<td class="currency-column raise-color">' + toCurrency(row.raiseBump.difference) + '</td>';
-              html += '<td class="currency-column both-color">' + toCurrency(row.bothBump.difference) + '</td>';
-              html += '</tr>';
-              return html;
-            }
-            function nestEggRow(row) {
-              let html = '<tr>';
-              html += '<td>' + row.year + '</td>';
-              html += '<td class="currency-column salary-color">' + toCurrency(row.salaryBump.nestEgg) + '</td>';
-              html += '<td class="currency-column raise-color">' + toCurrency(row.raiseBump.nestEgg) + '</td>';
-              html += '<td class="currency-column both-color">' + toCurrency(row.bothBump.nestEgg) + '</td>';
-              html += '</tr>';
-              return html;
-            }
+          /* TODO: ERROR HANDLING IF FI = -1 TKTKTKTKT*/
 
-            let salaryOutput = '<h5>Year-by-Year Salaries</h5>';
-            salaryOutput += '<div id="salary-chart"></div>';
-            salaryOutput += '<div class="calculator-result-table"><table>';
-            salaryOutput += '<tr>';
-            salaryOutput += '<th rowspan="2">Year</th>';
-            salaryOutput += '<th colspan="4">Salary</th>';
-            salaryOutput += '</tr>';
-            salaryOutput += '<tr>';
-            salaryOutput += '<th class="base-color">Base Salary</th>';
-            salaryOutput += '<th class="salary-color">Higher Start</th>';
-            salaryOutput += '<th class="raise-color">Higher Raise</th>';
-            salaryOutput += '<th class="both-color">Both</th>';
-            salaryOutput += '</tr>';
-
-
-            let differenceOutput = '<h5>Earnings Difference from Base</h5>';
-            differenceOutput += '<div id="difference-chart"></div>';
-            differenceOutput += '<div class="calculator-result-table"><table>';
-            differenceOutput += '<tr>';
-            differenceOutput += '<th rowspan="2">Year</th>';
-            differenceOutput += '<th colspan="3">Difference from Base</th>';
-            differenceOutput += '</tr>';
-            differenceOutput += '<tr>';
-            differenceOutput += '<th class="salary-color">Higher Start</th>';
-            differenceOutput += '<th class="raise-color">Higher Raise</th>';
-            differenceOutput += '<th class="both-color">Both</th>';
-            differenceOutput += '</tr>';
-
-            let nestEggOutput = '<h5>Difference from Base if Invested</h5>';
-            nestEggOutput += '<div id="nest-egg-chart"></div>';
-            nestEggOutput += '<div class="calculator-result-table"><table>';
-            nestEggOutput += '<tr>';
-            nestEggOutput += '<th rowspan="2">Year</th>';
-            nestEggOutput += '<th colspan="3">Difference if Invested</th>';
-            nestEggOutput += '</tr>';
-            nestEggOutput += '<tr>';
-            nestEggOutput += '<th class="salary-color">Higher Start</th>';
-            nestEggOutput += '<th class="raise-color">Higher Raise</th>';
-            nestEggOutput += '<th class="both-color">Both</th>';
-            nestEggOutput += '</tr>';
-
-            for (let i = 0; i < table.length - 1; i += 1) {
-              dataRow = table[i];
-              salaryOutput += salaryRow(dataRow);
-              differenceOutput += differenceRow(dataRow);
-              nestEggOutput += nestEggRow(dataRow);
-            }
-
-            salaryOutput += '</table></div>';
-            differenceOutput += '</table></div>';
-            nestEggOutput += '</table></div>';
-
-            const preface = '<p>See the charts and tables below for detailed year-by-year results</p>';
-            return preface + salaryOutput + differenceOutput + nestEggOutput;
-          }
-
-          let out = '<h4>Results</h4>';
-
-          {% if include.table %}
-            out += littleTable(endYearData);
-          {% endif %}
-          {% if include.text %}
-            out += summaryText(endYearData);
-          {% endif %}
-          if (showDetails) {
-            {% if include.big_table %}
-              detailedOutputDiv.innerHTML = bigTable(yearTable);
-            {% endif %}
-          } else {
-            detailedOutputDiv.innerHTML = '';
-          }
+          let out = '<h4>' + fiYear + ' years</h4>';
+          console.log(yearData[fiYear]);
           outputDiv.innerHTML = out;
+
           if (showDetails) {
             drawCharts(yearTable);
           }
