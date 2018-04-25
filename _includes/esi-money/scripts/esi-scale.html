@@ -136,7 +136,7 @@
           yearData = []
 
           /* Compute Years to FI */
-          for (let i = 0; i < 100; i += 1) {
+          for (let i = 0; i <= 100; i += 1) {
             const spending = startingSpending * Math.pow(1 + inflationRate, i);
             const sideHustle = sideHustleIncome(i, inflationRate);
             const other = otherIncome * Math.pow(1 + inflationRate, i);
@@ -149,7 +149,8 @@
             const interest = currentBalance * investmentGrowthRate;
             const endBalance = currentBalance + savings + interest;
 
-            yearData[i] = { balance: currentBalance,
+            yearData[i] = { year: i,
+                            balance: currentBalance,
                             needed: balNeeded
                           };
 
@@ -161,14 +162,56 @@
             currentBalance = endBalance;
           }
 
-          /* TODO: ERROR HANDLING IF FI = -1 TKTKTKTKT*/
-
-          let out = '<h4>' + fiYear + ' years</h4>';
-          console.log(yearData[fiYear]);
+          let out = '<h4>You\'re on-track to reach financial independence in:</h4>'
+          out += '<div class="calculator-highlighted-result">'
+          if (fiYear !== -1) {
+            out += fiYear + ' year';
+            if (fiYear !== 1) {
+              out += 's';
+            }
+          } else {
+            out += 'More than 100 years';
+          }
+          out += "</div>"
           outputDiv.innerHTML = out;
 
+          function bigTable(table) {
+            function tableRow(row) {
+              let html = '<tr>';
+              html += '<td>' + row.year + '</td>';
+              html += '<td class="currency-column">' + toCurrency(row.needed) + '</td>';
+              html += '<td class="currency-column">' + toCurrency(row.balance) + '</td>';
+              html += '</tr>';
+              return html;
+            }
+
+            let balanceOutput = '<h5>Account Balance vs Target</h5>';
+            balanceOutput += '<div id="balance-chart"></div>';
+            balanceOutput += '<div class="calculator-result-table"><table>';
+            balanceOutput += '<tr>';
+            balanceOutput += '<th>Year</th>';
+            balanceOutput += '<th class="needed-color">Balance Needed for FI</th>';
+            balanceOutput += '<th class="actual-color">Actual Balance</th>';
+            balanceOutput += '</tr>';
+
+            outputRows = (fiYear !== -1) ? fiYear + 1 : 101;
+
+            for (let i = 0; i < outputRows; i += 1) {
+              dataRow = table[i];
+              balanceOutput += tableRow(dataRow);
+            }
+
+            balanceOutput += '</table></div>';
+
+            const preface = '<p>See the chart and table below for detailed year-by-year results</p>';
+            return preface + balanceOutput;
+          }
+
           if (showDetails) {
-            drawCharts(yearTable);
+            detailedOutputDiv.innerHTML = bigTable(yearData);
+            drawCharts(yearData, outputRows);
+          } else {
+            detailedOutputDiv.innerHTML = '';
           }
         }
       }
@@ -176,8 +219,6 @@
       /* Set calculator to auto-update on input changes */
       for (let i = 0; i < inputs.length; i += 1) {
         inputs[i].addEventListener('input', () => {
-          showDetails = false;
-          detailButton.innerHTML = 'Click to Show Detailed Results ↓';
           updateResults();
         });
       }
@@ -200,57 +241,21 @@
           chartInitialized = true;
           updateResults();
       }
-      function drawCharts(data) {
+      function drawCharts(data, rows) {
         if (chartInitialized) {
-          let salaryTable = new google.visualization.DataTable();
-          salaryTable.addColumn('number', 'Year');
-          salaryTable.addColumn('number', 'Base');
-          salaryTable.addColumn('number', 'Higher Start');
-          salaryTable.addColumn('number', 'Higher Raise');
-          salaryTable.addColumn('number', 'Both');
+          let balanceTable = new google.visualization.DataTable();
+          balanceTable.addColumn('number', 'Year');
+          balanceTable.addColumn('number', 'Needed for FI');
+          balanceTable.addColumn('number', 'Actual');
 
-          let differenceTable = new google.visualization.DataTable();
-          differenceTable.addColumn('number', 'Year');
-          differenceTable.addColumn('number', 'Higher Start');
-          differenceTable.addColumn('number', 'Higher Raise');
-          differenceTable.addColumn('number', 'Both');
-
-          let nestEggTable = new google.visualization.DataTable();
-          nestEggTable.addColumn('number', 'Year');
-          nestEggTable.addColumn('number', 'Higher Start');
-          nestEggTable.addColumn('number', 'Higher Raise');
-          nestEggTable.addColumn('number', 'Both');
-
-          for (let i = 0; i < data.length - 1; i += 1) {
+          for (let i = 0; i < rows; i += 1) {
             dataRow = data[i];
-            salaryTable.addRows([[{ v: dataRow.year,
+            balanceTable.addRows([[{ v: dataRow.year,
                                     f: 'Year ' + dataRow.year },
-                                  { v: Math.round(dataRow.base.salary) / 1000,
-                                    f: toCurrency(Math.round(dataRow.base.salary / 1000)) + 'k' },
-                                  { v: Math.round(dataRow.salaryBump.salary) / 1000,
-                                    f: toCurrency(Math.round(dataRow.salaryBump.salary / 1000)) + 'k' },
-                                  { v: Math.round(dataRow.raiseBump.salary) / 1000,
-                                    f: toCurrency(Math.round(dataRow.raiseBump.salary / 1000)) + 'k' },
-                                  { v: Math.round(dataRow.bothBump.salary) / 1000,
-                                    f: toCurrency(Math.round(dataRow.bothBump.salary / 1000)) + 'k' }
-                              ]]);
-            differenceTable.addRows([[{ v: dataRow.year,
-                                        f: 'Year ' + dataRow.year },
-                                      { v: Math.round(dataRow.salaryBump.difference) / 1000,
-                                        f: toCurrency(Math.round(dataRow.salaryBump.difference / 1000)) + 'k' },
-                                      { v: Math.round(dataRow.raiseBump.difference) / 1000,
-                                        f: toCurrency(Math.round(dataRow.raiseBump.difference / 1000)) + 'k' },
-                                      { v: Math.round(dataRow.bothBump.difference) / 1000,
-                                        f: toCurrency(Math.round(dataRow.bothBump.difference / 1000)) + 'k' }
-                              ]]);
-            nestEggTable.addRows([[{ v: dataRow.year,
-                                     f: 'Year ' + dataRow.year },
-                                   { v: Math.round(dataRow.salaryBump.nestEgg) / 1000,
-                                     f: toCurrency(Math.round(dataRow.salaryBump.nestEgg / 1000)) + 'k' },
-                                   { v: Math.round(dataRow.raiseBump.nestEgg) / 1000,
-                                     f: toCurrency(Math.round(dataRow.raiseBump.nestEgg / 1000)) + 'k' },
-                                   { v: Math.round(dataRow.bothBump.nestEgg) / 1000,
-                                     f: toCurrency(Math.round(dataRow.bothBump.nestEgg / 1000)) + 'k' }
+                                  { v: Math.round(dataRow.needed / 1000),
+                                    f: toCurrency(Math.round(dataRow.needed / 1000)) + 'k' },
+                                  { v: Math.round(dataRow.balance / 1000),
+                                    f: toCurrency(Math.round(dataRow.balance / 1000)) + 'k' },
                               ]]);
           }
 
@@ -260,10 +265,10 @@
               startup: true,
               easing: 'inAndOut'
             },
-            colors:[ 'green', '#ac0000', '#0000B3' ],
+            colors:[ '#ac0000', '#0000B3' ],
             chartArea: {left: '20%', top: '10%', width: '70%', height: '70%'},
             hAxis: {
-              maxValue: data.length - 1,
+              maxValue: rows,
               minValue: 1,
               textStyle: {
                 fontName: 'Fjalla One',
@@ -290,20 +295,12 @@
               }
             }
           };
-          differenceChartElement = new google.visualization.LineChart(document.getElementById('difference-chart'));
-          differenceChartElement.draw(differenceTable, baseOptions);
-          nestEggChartElement = new google.visualization.LineChart(document.getElementById('nest-egg-chart'));
-          nestEggChartElement.draw(nestEggTable, baseOptions);
-          salaryOptions = baseOptions;
-          salaryOptions.colors = ['black', 'green', '#ac0000', '#0000B3' ];
-          salaryChartElement = new google.visualization.LineChart(document.getElementById('salary-chart'));
-          salaryChartElement.draw(salaryTable, salaryOptions);
+          balanceChartElement = new google.visualization.LineChart(document.getElementById('balance-chart'));
+          balanceChartElement.draw(balanceTable, baseOptions);
         }
       }
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(chartReady);
-
-
 
       /* Update on load */
       updateResults();
