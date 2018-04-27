@@ -9,12 +9,26 @@
       }
     }
 
+    function parseCurrencyToFloat(value) {
+      result = parseFloat(value.replace(/[($)\s\._\-]+/g, '').replace(/,/g, ''));
+      if (isNaN(result)) {
+        return 0;
+      } else {
+        return result;
+      }
+    }
+
+    function convertToCurrency(value) {
+      return value.toLocaleString()
+    }
+
     let chartInitialized = false;
     let showDetails = false;
     const calculator = document.querySelector('.calculator#esi-scale-calculator');
 
     if (calculator) {
       const inputs = calculator.querySelectorAll('input');
+      const currencyInputs = calculator.querySelectorAll('input.currency');
 
       /* Earn inputs */
       const startingSalaryInput = calculator.querySelector('input#current-salary');
@@ -48,18 +62,19 @@
 
       /* Calculate and update labels and results, flag errors */
       function updateResults() {
-        const startingSalary = parseFloat(startingSalaryInput.value) || 0;
+        const startingSalary = parseCurrencyToFloat(startingSalaryInput.value) || 0;
+        const sideHustleYear1 = parseCurrencyToFloat(sideHustleYear1Input.value) || 0;
+        const sideHustleYear2 = parseCurrencyToFloat(sideHustleYear2Input.value) || 0;
+        const sideHustleYear3 = parseCurrencyToFloat(sideHustleYear3Input.value) || 0;
+        const sideHustleYear4 = parseCurrencyToFloat(sideHustleYear4Input.value) || 0;
+        const sideHustleYear5 = parseCurrencyToFloat(sideHustleYear5Input.value) || 0;
+        const otherIncome = parseCurrencyToFloat(otherIncomeInput.value) || 0;
+        const startingBalance = parseCurrencyToFloat(startingBalanceInput.value) || 0;
+        const startingSpending = parseCurrencyToFloat(startingSpendingInput.value) || 0;
+
         const annualRaiseRate = parseFloat(annualRaiseRateInput.value) / 100.0 || 0;
-        const sideHustleYear1 = parseFloat(sideHustleYear1Input.value) || 0;
-        const sideHustleYear2 = parseFloat(sideHustleYear2Input.value) || 0;
-        const sideHustleYear3 = parseFloat(sideHustleYear3Input.value) || 0;
-        const sideHustleYear4 = parseFloat(sideHustleYear4Input.value) || 0;
-        const sideHustleYear5 = parseFloat(sideHustleYear5Input.value) || 0;
-        const otherIncome = parseFloat(otherIncomeInput.value) || 0;
         const savingsRate = parseFloat(savingsRateInput.value) / 100.0 || 0;
-        const startingBalance = parseFloat(startingBalanceInput.value) || 0;
         const investmentGrowthRate = parseFloat(investmentGrowthRateInput.value) / 100.0 || 0;
-        const startingSpending = parseFloat(startingSpendingInput.value) || 0;
         const inflationRate = parseFloat(inflationRateInput.value) / 100.0 || 0;
         const withdrawalRate = parseFloat(withdrawalRateInput.value) / 100.0 || 0;
 
@@ -110,7 +125,7 @@
             return;
           }
           if (startingSpending <= startingBalance * withdrawalRate) {
-            outputDiv.innerHTML = '<span>You\'re already financially independent!</span>';
+            outputDiv.innerHTML = '<h4>You\'re already financially independent!</h4>';
             detailedOutputDiv.innerHTML = '';
             return;
           }
@@ -162,17 +177,22 @@
             currentBalance = endBalance;
           }
 
-          let out = '<h4>You\'re on-track to reach financial independence in:</h4>'
-          out += '<div class="calculator-highlighted-result">'
-          if (fiYear !== -1) {
-            out += fiYear + ' year';
-            if (fiYear !== 1) {
-              out += 's';
-            }
+          let out = '';
+          if (fiYear == 0) {
+            out += '<h4>You\'re already financially independent!</h4>';
           } else {
-            out += 'More than 100 years';
+            out += '<h4>You\'re on-track to reach financial independence in:</h4>'
+            out += '<div class="calculator-highlighted-result">'
+            if (fiYear !== -1) {
+              out += fiYear + ' year';
+              if (fiYear !== 1) {
+                out += 's';
+              }
+            } else {
+              out += 'More than 100 years';
+            }
+            out += "</div>"
           }
-          out += "</div>"
           outputDiv.innerHTML = out;
 
           function bigTable(table) {
@@ -207,7 +227,7 @@
             return preface + balanceOutput;
           }
 
-          if (showDetails) {
+          if (showDetails && fiYear > 0) {
             detailedOutputDiv.innerHTML = bigTable(yearData);
             drawCharts(yearData, outputRows);
           } else {
@@ -220,6 +240,13 @@
       for (let i = 0; i < inputs.length; i += 1) {
         inputs[i].addEventListener('input', () => {
           updateResults();
+        });
+      }
+
+      /* Auto-format with commas */
+      for (let i = 0; i < currencyInputs.length; i += 1) {
+        currencyInputs[i].addEventListener('input', () => {
+          currencyInputs[i].value = convertToCurrency(parseCurrencyToFloat(currencyInputs[i].value));
         });
       }
 

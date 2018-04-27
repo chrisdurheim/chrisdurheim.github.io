@@ -7,11 +7,24 @@
         return '$' + value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
     }
+    function parseCurrencyToFloat(value) {
+      result = parseFloat(value.replace(/[($)\s\._\-]+/g, '').replace(/,/g, ''));
+      if (isNaN(result)) {
+        return 0;
+      } else {
+        return result;
+      }
+    }
+
+    function convertToCurrency(value) {
+      return value.toLocaleString()
+    }
 
     const calculator = document.querySelector('#when-can-i-retire-calculator');
 
     if (calculator) {
       const inputs = calculator.querySelectorAll('input');
+      const currencyInputs = calculator.querySelectorAll('input.currency');
 
       /* Retirement Spending inputs */
       const retirementNeedsInput = calculator.querySelector('input#retirement-needs');
@@ -34,14 +47,14 @@
 
       /* Calculate and update labels and results, flag errors */
       function updateResults() {
-        const retirementNeeds = parseFloat(retirementNeedsInput.value) || 0;
+        const retirementNeeds = parseCurrencyToFloat(retirementNeedsInput.value) || 0;
         const inflationRate = parseFloat(inflationRateInput.value) / 100.0 || 0;
         const safeWithdrawalRate = parseFloat(safeWithdrawalRateInput.value) / 100.0 || 1.00;
-        const sideHustleIncome = parseFloat(sideHustleIncomeInput.value) || 0;
+        const sideHustleIncome = parseCurrencyToFloat(sideHustleIncomeInput.value) || 0;
 
-        const currentAssets = parseFloat(currentAssetsInput.value) || 0;
+        const currentAssets = parseCurrencyToFloat(currentAssetsInput.value) || 0;
         const investmentGainRate = parseFloat(investmentGainRateInput.value) / 100.0 || 0;
-        const annualContribution = parseFloat(annualContributionInput.value) || 0;
+        const annualContribution = parseCurrencyToFloat(annualContributionInput.value) || 0;
         const contributionIncreaseRate = parseFloat(contributionIncreaseRateInput.value) / 100.0 || 0;
 
         /* Update slider labels */
@@ -120,6 +133,13 @@
       for (let i = 0; i < inputs.length; i += 1) {
         inputs[i].addEventListener('input', () => {
           updateResults();
+        });
+      }
+
+      /* Auto-format with commas */
+      for (let i = 0; i < currencyInputs.length; i += 1) {
+        currencyInputs[i].addEventListener('input', () => {
+          currencyInputs[i].value = convertToCurrency(parseCurrencyToFloat(currencyInputs[i].value));
         });
       }
 

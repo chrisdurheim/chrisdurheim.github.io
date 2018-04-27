@@ -8,6 +8,18 @@
         return '$' + value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
     }
+    function parseCurrencyToFloat(value) {
+      result = parseFloat(value.replace(/[($)\s\._\-]+/g, '').replace(/,/g, ''));
+      if (isNaN(result)) {
+        return 0;
+      } else {
+        return result;
+      }
+    }
+
+    function convertToCurrency(value) {
+      return value.toLocaleString()
+    }
 
     let chartInitialized = false;
     let showDetails = false;
@@ -15,6 +27,7 @@
 
     if (calculator) {
       const inputs = document.querySelectorAll('input');
+      const currencyInputs = calculator.querySelectorAll('input.currency');
 
       /* Basic inputs */
       const startingSalaryInput = calculator.querySelector('input#starting-salary');
@@ -42,11 +55,11 @@
 
       /* Calculate and update labels and results, flag errors */
       function updateResults() {
-        const startingSalary = parseFloat(startingSalaryInput.value) || 0;
+        const startingSalary = parseCurrencyToFloat(startingSalaryInput.value) || 0;
         const annualRaiseRate = parseFloat(annualRaiseRateInput.value) / 100.0 || 0;
         const investmentGainRate = parseFloat(investmentGainRateInput.value) / 100.0 || 0;
         const yearsOfEmployment = parseFloat(yearsOfEmploymentInput.value) || 0;
-        const negotiatedSalary = parseFloat(negotiatedSalaryInput.value) || 0;
+        const negotiatedSalary = parseCurrencyToFloat(negotiatedSalaryInput.value) || 0;
         const increasedRaiseRate = parseFloat(increasedRaiseRateInput.value) / 100.0 || 0;
         const investmentPortion = parseFloat(investmentPortionInput.value) / 100.0 || 1;
 
@@ -363,6 +376,13 @@
           showDetails = false;
           detailButton.innerHTML = 'Click to Show Detailed Results ↓';
           updateResults();
+        });
+      }
+
+      /* Auto-format with commas */
+      for (let i = 0; i < currencyInputs.length; i += 1) {
+        currencyInputs[i].addEventListener('input', () => {
+          currencyInputs[i].value = convertToCurrency(parseCurrencyToFloat(currencyInputs[i].value));
         });
       }
 
