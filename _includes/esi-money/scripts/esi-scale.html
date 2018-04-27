@@ -124,8 +124,8 @@
             detailedOutputDiv.innerHTML = '';
             return;
           }
-          if (startingSpending <= startingBalance * withdrawalRate) {
-            outputDiv.innerHTML = '<h4>You\'re already financially independent!</h4>';
+          if (startingSpending <= (startingBalance * withdrawalRate)) {
+            outputDiv.innerHTML = "<h4>You're already financially independent!</h4>";
             detailedOutputDiv.innerHTML = '';
             return;
           }
@@ -148,7 +148,7 @@
 
           let currentBalance = startingBalance;
           let fiYear = -1;
-          yearData = []
+          yearData = [];
 
           /* Compute Years to FI */
           for (let i = 0; i <= 100; i += 1) {
@@ -179,10 +179,10 @@
 
           let out = '';
           if (fiYear == 0) {
-            out += '<h4>You\'re already financially independent!</h4>';
+            out += "<h4>You're already financially independent!</h4>";
           } else {
-            out += '<h4>You\'re on-track to reach financial independence in:</h4>'
-            out += '<div class="calculator-highlighted-result">'
+            out += "<h4>You're on-track to reach financial independence in:</h4>";
+            out += '<div class="calculator-highlighted-result">';
             if (fiYear !== -1) {
               out += fiYear + ' year';
               if (fiYear !== 1) {
@@ -191,7 +191,7 @@
             } else {
               out += 'More than 100 years';
             }
-            out += "</div>"
+            out += "</div>";
           }
           outputDiv.innerHTML = out;
 
