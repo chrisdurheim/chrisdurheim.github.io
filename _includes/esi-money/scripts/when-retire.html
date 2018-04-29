@@ -1,5 +1,18 @@
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {
+    function tag(type, value = undefined, klass = undefined, id = undefined) {
+      let el = document.createElement(type);
+      if (klass) {
+        el.setAttribute('class', klass);
+      }
+      if (id) {
+        el.setAttribute('id', id);
+      }
+      if (value) {
+        el.innerText = value;
+      }
+      return el;
+    }
     function toCurrency(value) {
       if (value == 0) {
         return '-';
@@ -77,15 +90,18 @@
         if (outputDiv) {
           /* Validate Inputs */
           if (retirementNeeds <= 0.0) {
-            outputDiv.innerHTML = '<span class="result-error">Set a retirement spending needs value greater than zero</span>';
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set a retirement spending needs value greater than zero', 'result-error'));
             return;
           }
           if (annualContribution <= 0.0) {
-            outputDiv.innerHTML = '<span class="result-error">Set an annual contribution amount greater than zero</span>';
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set an annual contribution amount greater than zero', 'result-error'));
             return;
           }
           if (currentAssets * safeWithdrawalRate >= (retirementNeeds - sideHustleIncome)) {
-            outputDiv.innerHTML = "<h4>You're already there!</h4>";
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('h4', "You're already there!"));
             return;
           }
 
@@ -100,7 +116,8 @@
           }
 
           /* Update output */
-          let out = '<h4>';
+          let out = document.createDocumentFragment();
+
 
           let years = -1;
           for (let i = 0; i < 100; i += 1) {
@@ -113,19 +130,22 @@
               break;
             }
           }
-          out += 'You are on track to retire in:</h4>';
-          out += '<div class="calculator-highlighted-result">';
+          out.appendChild(tag('h4', 'You are on track to retire in:'));
+          let qty = '';
+
           if (years >= 0) {
-            out +=  years + ' year';
+            qty +=  years + ' year';
             if (years !== 1) {
-              out += 's';
+              qty += 's';
             }
           } else {
-            out += 'More than 100 years';
+            qty += 'More than 100 years';
           }
-          out += '</div>';
 
-          outputDiv.innerHTML = out;
+          out.appendChild(tag('div', qty, 'calculator-highlighted-result'));
+
+          outputDiv.innerHTML = '';
+          outputDiv.appendChild(out);
         }
       }
 

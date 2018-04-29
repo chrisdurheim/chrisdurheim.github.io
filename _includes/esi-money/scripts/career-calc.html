@@ -1,6 +1,19 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {
+    function tag(type, value = undefined, klass = undefined, id = undefined) {
+      let el = document.createElement(type);
+      if (klass) {
+        el.setAttribute('class', klass);
+      }
+      if (id) {
+        el.setAttribute('id', id);
+      }
+      if (value) {
+        el.innerText = value;
+      }
+      return el
+    }
     function toCurrency(value) {
       if (value == 0) {
         return '-';
@@ -90,17 +103,20 @@
         if (outputDiv) {
           /* Validate Inputs */
           if (startingSalary <= 0.0) {
-            outputDiv.innerHTML = '<span class="result-error">Set a starting salary greater than zero</span>';
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set a starting salary greater than zero', 'result-error'));
             detailedOutputDiv.innerHTML = '';
             return;
           }
           if (negotiatedSalary <= startingSalary) {
-            outputDiv.innerHTML = '<span class="result-error">Set a negotiated higher salary greater than the base case starting salary</span>';
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set a negotiated higher salary greater than the base case starting salary', 'result-error'));
             detailedOutputDiv.innerHTML = '';
             return;
           }
           if (increasedRaiseRate <= annualRaiseRate) {
-            outputDiv.innerHTML = '<span class="result-error">Set an increased annual raise greater than the base case annual raise</span>';
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set an increased annual raise greater than the base case annual raise', 'result-error'));
             detailedOutputDiv.innerHTML = '';
             return;
           }
@@ -198,172 +214,219 @@
           const raiseNestEgg = raiseEarningsInvested - lifetimeEarningsInvested;
           const bothNestEgg = bothEarningsInvested - lifetimeEarningsInvested;
 
+          function resultSpan(value) {
+            el = document.createElement('span');
+            el.setAttribute('class', 'result-value');
+            el.innerText = value;
+            return el;
+          }
+
           /* Update output */
           function summaryText(data) {
-            let outputText = '';
-            outputText += '<p>With a starting salary of <span class="result-value" id="result-starting-salary">';
-            outputText += toCurrency(startingSalary);
-            outputText += '</span> and <span class="result-value" id="result-annual-raise-rate">';
-            outputText += (annualRaiseRate * 100).toFixed(0);
-            outputText += '%</span> annual raises, your lifetime earnings would be <span class="result-value" id="result-lifetime-earnings">';
-            outputText += toCurrency(data.base.lifetimeEarnings);
-            outputText += '</span>.</p>';
+            let outputText = document.createDocumentFragment();
 
-            outputText += '<p>Negotiating a starting salary of <span class="result-value" id="result-negotiated-salary">';
-            outputText += toCurrency(negotiatedSalary);
-            outputText += '</span> would increase those earnings to <span class="result-value" id="result-negotiated-lifetime-earnings">';
-            outputText += toCurrency(data.salaryBump.lifetimeEarnings);
-            outputText += '</span>. Investing <span class="result-value">';
-            outputText += (investmentPortion * 100).toFixed(0);
-            outputText += '%</span> of the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-negotiated-nest-egg">';
-            outputText += toCurrency(data.salaryBump.nestEgg);
-            outputText += '</span> at retirement.</p>';
+            let baseText = document.createElement('p');
+            baseText.appendChild(document.createTextNode("With a starting salary of "));
+            baseText.appendChild(tag('span', toCurrency(startingSalary), 'result-value'));
+            baseText.appendChild(document.createTextNode(" and "));
+            baseText.appendChild(tag('span', (annualRaiseRate * 100).toFixed(0) + '%', 'result-value'));
+            baseText.appendChild(document.createTextNode(" annual raises, your lifetime earnings would be "));
+            baseText.appendChild(tag('span', toCurrency(data.base.lifetimeEarnings), 'result-value'));
+            baseText.appendChild(document.createTextNode("."));
+            outputText.appendChild(baseText);
 
-            outputText += '<p>Working to get higher annual raises of <span class="result-value" id="result-increased-raise-rate">';
-            outputText += (increasedRaiseRate * 100).toFixed(0);
-            outputText += '%</span> instead would increase your earnings to <span class="result-value" id="result-raise-lifetime-earnings">';
-            outputText += toCurrency(data.raiseBump.lifetimeEarnings);
-            outputText += '</span>. Investing <span class="result-value">';
-            outputText += (investmentPortion * 100).toFixed(0);
-            outputText += '%</span> of the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-raise-nest-egg">';
-            outputText += toCurrency(data.raiseBump.nestEgg);
-            outputText += '</span> at retirement.</p>';
+            let salaryBumpText = document.createElement('p');
+            salaryBumpText.appendChild(document.createTextNode("Negotiating a starting salary of "));
+            salaryBumpText.appendChild(tag('span', toCurrency(negotiatedSalary), 'result-value'));
+            salaryBumpText.appendChild(document.createTextNode(" would increase those earnings to "));
+            salaryBumpText.appendChild(tag('span', toCurrency(data.salaryBump.lifetimeEarnings), 'result-value'));
+            salaryBumpText.appendChild(document.createTextNode(". Investing "));
+            salaryBumpText.appendChild(tag('span', (investmentPortion * 100).toFixed(0) + '%', 'result-value'));
+            salaryBumpText.appendChild(document.createTextNode(" of the difference in earnings along the way would give you a nest egg of "));
+            salaryBumpText.appendChild(tag('span', toCurrency(data.salaryBump.nestEgg), 'result-value'));
+            salaryBumpText.appendChild(document.createTextNode(" at retirement."));
+            outputText.appendChild(salaryBumpText);
 
-            outputText += '<p>Doing both would increase your earnings to <span class="result-value" id="result-both-lifetime-earnings">';
-            outputText += toCurrency(data.bothBump.lifetimeEarnings);
-            outputText += '</span>. Investing <span class="result-value">';
-            outputText += (investmentPortion * 100).toFixed(0);
-            outputText += '%</span> of the difference in earnings along the way would give you a nest egg of <span class="result-value" id="result-negotiated-nest-egg">';
-            outputText += toCurrency(data.bothBump.nestEgg);
-            outputText += '</span> at retirement.</p>';
+            let raiseBumpText = document.createElement('p');
+            raiseBumpText.appendChild(document.createTextNode("Working to get higher annual raises of "));
+            raiseBumpText.appendChild(tag('span', (increasedRaiseRate * 100).toFixed(0) + '%', 'result-value'));
+            raiseBumpText.appendChild(document.createTextNode(" instead would increase your earnings to "));
+            raiseBumpText.appendChild(tag('span', toCurrency(data.raiseBump.lifetimeEarnings), 'result-value'));
+            raiseBumpText.appendChild(document.createTextNode(". Investing "));
+            raiseBumpText.appendChild(tag('span', (investmentPortion * 100).toFixed(0) + '%', 'result-value'));
+            raiseBumpText.appendChild(document.createTextNode(" of the difference in earnings along the way would give you a nest egg of "));
+            raiseBumpText.appendChild(tag('span', toCurrency(data.raiseBump.nestEgg), 'result-value'));
+            raiseBumpText.appendChild(document.createTextNode(" at retirement."));
+            outputText.appendChild(raiseBumpText);
+
+            let bothBumpText = document.createElement('p');
+            bothBumpText.appendChild(document.createTextNode("Doing both would increase your earnings to "));
+            bothBumpText.appendChild(tag('span', toCurrency(data.bothBump.lifetimeEarnings), 'result-value'));
+            bothBumpText.appendChild(document.createTextNode(". Investing "));
+            bothBumpText.appendChild(tag('span', (investmentPortion * 100).toFixed(0) + '%', 'result-value'));
+            bothBumpText.appendChild(document.createTextNode(" of the difference in earnings along the way would give you a nest egg of "));
+            bothBumpText.appendChild(tag('span', toCurrency(data.bothBump.nestEgg), 'result-value'));
+            bothBumpText.appendChild(document.createTextNode(" at retirement."));
+            outputText.appendChild(bothBumpText);
 
             return outputText
           }
 
           function littleTable(data) {
             function summaryTableRow(scenario) {
-              tableRow = '<tr>';
-              tableRow += '<td>' + scenario.label + '</td>';
-              tableRow += '<td class="currency-column">' + toCurrency(scenario.lifetimeEarnings) + '</td>';
-              tableRow += '<td class="currency-column">' + toCurrency(scenario.totalDifference) + '</td>';
-              tableRow += '<td class="currency-column">' + toCurrency(scenario.nestEgg) + '</td>';
-              tableRow += '</tr>';
+              let tableRow = document.createElement('tr');
+              tableRow.appendChild(tag('td', scenario.label));
+              tableRow.appendChild(tag('td', toCurrency(scenario.lifetimeEarnings), 'currency-column'));
+              tableRow.appendChild(tag('td', toCurrency(scenario.totalDifference), 'currency-column'));
+              tableRow.appendChild(tag('td', toCurrency(scenario.nestEgg), 'currency-column'));
               return tableRow;
             }
 
-            let outputTable = '';
-            outputTable += '<div class="calculator-result-table"><table>';
-            outputTable += '<tr><th>Scenario</th><th>Lifetime Earnings</th><th>Difference</th><th>Difference If Invested</th></tr>';
-            outputTable += summaryTableRow(data.base);
-            outputTable += summaryTableRow(data.salaryBump);
-            outputTable += summaryTableRow(data.raiseBump);
-            outputTable += summaryTableRow(data.bothBump);
-            outputTable += '</table></div>';
-            return outputTable;
+            let outputTableContainer = document.createElement('div');
+            outputTableContainer.setAttribute('class', 'calculator-result-table');
+            let table = document.createElement('table');
+
+            let tableHead = document.createElement('tr');
+            tableHead.appendChild(tag('th', 'Scenario'));
+            tableHead.appendChild(tag('th', 'Lifetime Earnings'));
+            tableHead.appendChild(tag('th', 'Difference'));
+            tableHead.appendChild(tag('th', 'Difference if Invested'));
+
+            table.appendChild(tableHead);
+            table.appendChild(summaryTableRow(data.base));
+            table.appendChild(summaryTableRow(data.salaryBump));
+            table.appendChild(summaryTableRow(data.raiseBump));
+            table.appendChild(summaryTableRow(data.bothBump));
+
+            outputTableContainer.appendChild(table);
+            return outputTableContainer;
           }
 
           function bigTable(table) {
             function salaryRow(row) {
-              let html = '<tr>';
-              html += '<td>' + row.year + '</td>';
-              html += '<td class="currency-column base-color">' + toCurrency(row.base.salary) + '</td>';
-              html += '<td class="currency-column salary-color">' + toCurrency(row.salaryBump.salary) + '</td>';
-              html += '<td class="currency-column raise-color">' + toCurrency(row.raiseBump.salary) + '</td>';
-              html += '<td class="currency-column both-color">' + toCurrency(row.bothBump.salary) + '</td>';
-              html += '</tr>';
-              return html;
+              let tableRow = document.createElement('tr');
+              tableRow.appendChild(tag('td', row.year));
+              tableRow.appendChild(tag('td', toCurrency(row.base.salary), 'currency-column'));
+              tableRow.appendChild(tag('td', toCurrency(row.salaryBump.salary), 'currency-column'));
+              tableRow.appendChild(tag('td', toCurrency(row.raiseBump.salary), 'currency-column'));
+              tableRow.appendChild(tag('td', toCurrency(row.bothBump.salary), 'currency-column'));
+              return tableRow;
             }
             function differenceRow(row) {
-              let html = '<tr>';
-              html += '<td>' + row.year + '</td>';
-              html += '<td class="currency-column salary-color">' + toCurrency(row.salaryBump.difference) + '</td>';
-              html += '<td class="currency-column raise-color">' + toCurrency(row.raiseBump.difference) + '</td>';
-              html += '<td class="currency-column both-color">' + toCurrency(row.bothBump.difference) + '</td>';
-              html += '</tr>';
-              return html;
+              let tableRow = document.createElement('tr');
+              tableRow.appendChild(tag('td', row.year));
+              tableRow.appendChild(tag('td', toCurrency(row.salaryBump.difference), 'currency-column'));
+              tableRow.appendChild(tag('td', toCurrency(row.raiseBump.difference), 'currency-column'));
+              tableRow.appendChild(tag('td', toCurrency(row.bothBump.difference), 'currency-column'));
+              return tableRow;
             }
             function nestEggRow(row) {
-              let html = '<tr>';
-              html += '<td>' + row.year + '</td>';
-              html += '<td class="currency-column salary-color">' + toCurrency(row.salaryBump.nestEgg) + '</td>';
-              html += '<td class="currency-column raise-color">' + toCurrency(row.raiseBump.nestEgg) + '</td>';
-              html += '<td class="currency-column both-color">' + toCurrency(row.bothBump.nestEgg) + '</td>';
-              html += '</tr>';
-              return html;
+              let tableRow = document.createElement('tr');
+              tableRow.appendChild(tag('td', row.year));
+              tableRow.appendChild(tag('td', toCurrency(row.salaryBump.nestEgg), 'currency-column'));
+              tableRow.appendChild(tag('td', toCurrency(row.raiseBump.nestEgg), 'currency-column'));
+              tableRow.appendChild(tag('td', toCurrency(row.bothBump.nestEgg), 'currency-column'));
+              return tableRow;
             }
 
-            let salaryOutput = '<h5>Year-by-Year Salaries</h5>';
-            salaryOutput += '<div id="salary-chart"></div>';
-            salaryOutput += '<div class="calculator-result-table"><table>';
-            salaryOutput += '<tr>';
-            salaryOutput += '<th rowspan="2">Year</th>';
-            salaryOutput += '<th colspan="4">Salary</th>';
-            salaryOutput += '</tr>';
-            salaryOutput += '<tr>';
-            salaryOutput += '<th class="base-color">Base Salary</th>';
-            salaryOutput += '<th class="salary-color">Higher Start</th>';
-            salaryOutput += '<th class="raise-color">Higher Raise</th>';
-            salaryOutput += '<th class="both-color">Both</th>';
-            salaryOutput += '</tr>';
+            let salaryOutput = document.createDocumentFragment();
+            salaryOutput.appendChild(tag('h5', 'Year-by-Year Salaries'));
+            salaryOutput.appendChild(tag('div', '', undefined, 'salary-chart'));
+            let salaryTableContainer = tag('div', undefined, 'calculator-result-table');
+            salaryOutput.appendChild(salaryTableContainer);
+            let salaryTableEl = tag('table');
+            salaryTableContainer.appendChild(salaryTableEl);
+            let salaryTableH1 = tag('tr');
+            let salaryTableH1E1 = tag('th', 'Year');
+            salaryTableH1E1.setAttribute('rowspan', '2');
+            let salaryTableH1E2 = tag('th', 'Salary');
+            salaryTableH1E2.setAttribute('colspan', '4');
+            salaryTableH1.appendChild(salaryTableH1E1);
+            salaryTableH1.appendChild(salaryTableH1E2);
+            let salaryTableH2 = tag('tr');
+            salaryTableH2.appendChild(tag('th', 'Base Salary', 'base-color'));
+            salaryTableH2.appendChild(tag('th', 'Higher Start', 'salary-color'));
+            salaryTableH2.appendChild(tag('th', 'Higher Raise', 'raise-color'));
+            salaryTableH2.appendChild(tag('th', 'Both', 'both-color'));
+            salaryTableEl.appendChild(salaryTableH1);
+            salaryTableEl.appendChild(salaryTableH2);
 
+            let differenceOutput = document.createDocumentFragment();
+            differenceOutput.appendChild(tag('h5', 'Earnings Difference from Base'));
+            differenceOutput.appendChild(tag('div', '', undefined, 'difference-chart'));
+            let differenceTableContainer = tag('div', undefined, 'calculator-result-table');
+            differenceOutput.appendChild(differenceTableContainer);
+            let differenceTableEl = tag('table');
+            differenceTableContainer.appendChild(differenceTableEl);
+            let differenceTableH1 = tag('tr');
+            let differenceTableH1E1 = tag('th', 'Year');
+            differenceTableH1E1.setAttribute('rowspan', '2');
+            let differenceTableH1E2 = tag('th', 'Difference from Base');
+            differenceTableH1E2.setAttribute('colspan', '4');
+            differenceTableH1.appendChild(differenceTableH1E1);
+            differenceTableH1.appendChild(differenceTableH1E2);
+            let differenceTableH2 = tag('tr');
+            differenceTableH2.appendChild(tag('th', 'Higher Start', 'salary-color'));
+            differenceTableH2.appendChild(tag('th', 'Higher Raise', 'raise-color'));
+            differenceTableH2.appendChild(tag('th', 'Both', 'both-color'));
+            differenceTableEl.appendChild(differenceTableH1);
+            differenceTableEl.appendChild(differenceTableH2);
 
-            let differenceOutput = '<h5>Earnings Difference from Base</h5>';
-            differenceOutput += '<div id="difference-chart"></div>';
-            differenceOutput += '<div class="calculator-result-table"><table>';
-            differenceOutput += '<tr>';
-            differenceOutput += '<th rowspan="2">Year</th>';
-            differenceOutput += '<th colspan="3">Difference from Base</th>';
-            differenceOutput += '</tr>';
-            differenceOutput += '<tr>';
-            differenceOutput += '<th class="salary-color">Higher Start</th>';
-            differenceOutput += '<th class="raise-color">Higher Raise</th>';
-            differenceOutput += '<th class="both-color">Both</th>';
-            differenceOutput += '</tr>';
-
-            let nestEggOutput = '<h5>Difference from Base if Invested</h5>';
-            nestEggOutput += '<div id="nest-egg-chart"></div>';
-            nestEggOutput += '<div class="calculator-result-table"><table>';
-            nestEggOutput += '<tr>';
-            nestEggOutput += '<th rowspan="2">Year</th>';
-            nestEggOutput += '<th colspan="3">Difference if Invested</th>';
-            nestEggOutput += '</tr>';
-            nestEggOutput += '<tr>';
-            nestEggOutput += '<th class="salary-color">Higher Start</th>';
-            nestEggOutput += '<th class="raise-color">Higher Raise</th>';
-            nestEggOutput += '<th class="both-color">Both</th>';
-            nestEggOutput += '</tr>';
+            let nestEggOutput = document.createDocumentFragment();
+            nestEggOutput.appendChild(tag('h5', 'Difference from Base if Invested'));
+            nestEggOutput.appendChild(tag('div', '', undefined, 'nest-egg-chart'));
+            let nestEggTableContainer = tag('div', undefined, 'calculator-result-table');
+            nestEggOutput.appendChild(nestEggTableContainer);
+            let nestEggTableEl = tag('table');
+            nestEggTableContainer.appendChild(nestEggTableEl);
+            let nestEggTableH1 = tag('tr');
+            let nestEggTableH1E1 = tag('th', 'Year');
+            nestEggTableH1E1.setAttribute('rowspan', '2');
+            let nestEggTableH1E2 = tag('th', 'Difference if Invested');
+            nestEggTableH1E2.setAttribute('colspan', '4');
+            nestEggTableH1.appendChild(nestEggTableH1E1);
+            nestEggTableH1.appendChild(nestEggTableH1E2);
+            let nestEggTableH2 = tag('tr');
+            nestEggTableH2.appendChild(tag('th', 'Higher Start', 'salary-color'));
+            nestEggTableH2.appendChild(tag('th', 'Higher Raise', 'raise-color'));
+            nestEggTableH2.appendChild(tag('th', 'Both', 'both-color'));
+            nestEggTableEl.appendChild(nestEggTableH1);
+            nestEggTableEl.appendChild(nestEggTableH2);
 
             for (let i = 0; i < table.length - 1; i += 1) {
               dataRow = table[i];
-              salaryOutput += salaryRow(dataRow);
-              differenceOutput += differenceRow(dataRow);
-              nestEggOutput += nestEggRow(dataRow);
+
+              salaryTableEl.appendChild(salaryRow(dataRow));
+              differenceTableEl.appendChild(differenceRow(dataRow));
+              nestEggTableEl.appendChild(nestEggRow(dataRow));
             }
 
-            salaryOutput += '</table></div>';
-            differenceOutput += '</table></div>';
-            nestEggOutput += '</table></div>';
+            let preface = tag('p', 'See the charts and tables below for detailed year-by-year results', 'calculator-result-text');
 
-            const preface = '<p>See the charts and tables below for detailed year-by-year results</p>';
-            return preface + salaryOutput + differenceOutput + nestEggOutput;
+            let out = document.createDocumentFragment();
+            out.appendChild(preface);
+            out.appendChild(salaryOutput);
+            out.appendChild(differenceOutput);
+            out.appendChild(nestEggOutput);
+
+            return out;
           }
 
-          let out = '<h4>Results</h4>';
 
-          {% if include.table %}
-            out += littleTable(endYearData);
-          {% endif %}
-          {% if include.text %}
-            out += summaryText(endYearData);
-          {% endif %}
+          outputDiv.innerHTML = '';
+
+          let outputHeading = document.createElement('h4');
+          outputHeading.innerText = 'Results';
+
+          outputDiv.appendChild(outputHeading);
+          outputDiv.appendChild(littleTable(endYearData));
+          outputDiv.appendChild(summaryText(endYearData));
+
+
+          detailedOutputDiv.innerHTML = '';
           if (showDetails) {
-            {% if include.big_table %}
-              detailedOutputDiv.innerHTML = bigTable(yearTable);
-            {% endif %}
-          } else {
-            detailedOutputDiv.innerHTML = '';
+            detailedOutputDiv.appendChild(bigTable(yearTable));
           }
-          outputDiv.innerHTML = out;
           if (showDetails) {
             drawCharts(yearTable);
           }

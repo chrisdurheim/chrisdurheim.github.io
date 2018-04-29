@@ -1,6 +1,19 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {
+    function tag(type, value = undefined, klass = undefined, id = undefined) {
+      let el = document.createElement(type);
+      if (klass) {
+        el.setAttribute('class', klass);
+      }
+      if (id) {
+        el.setAttribute('id', id);
+      }
+      if (value) {
+        el.innerText = value;
+      }
+      return el
+    }
     function toCurrency(value) {
       if (value == 0) {
         return '-';
@@ -105,27 +118,32 @@
         if (outputDiv) {
           /* Validate Inputs */
           if (startingSalary <= 0.0) {
-            outputDiv.innerHTML = '<span class="result-error">Set a starting salary greater than zero</span>';
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set a starting salary greater than zero', 'result-error'));
             detailedOutputDiv.innerHTML = '';
             return;
           }
           if (otherIncome < 0.0) {
-            outputDiv.innerHTML = '<span class="result-error">Set other income to something zero or greater</span>';
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set other income to something zero or greater', 'result-error'));
             detailedOutputDiv.innerHTML = '';
             return;
           }
           if (startingBalance < 0.0) {
-            outputDiv.innerHTML = '<span class="result-error">Set a current investment balance of at least zero</span>';
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set a current investment balance of at least zero', 'result-error'));
             detailedOutputDiv.innerHTML = '';
             return;
           }
           if (startingSpending <= 0.0) {
-            outputDiv.innerHTML = '<span class="result-error">Set an expected annual spending in FI greater than $0</span>';
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set an expected annual spending in FI greater than $0', 'result-error'));
             detailedOutputDiv.innerHTML = '';
             return;
           }
           if (startingSpending <= (startingBalance * withdrawalRate)) {
-            outputDiv.innerHTML = "<h4>You're already financially independent!</h4>";
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('h4', "You're already financially independent!"));
             detailedOutputDiv.innerHTML = '';
             return;
           }
@@ -169,69 +187,79 @@
                             needed: balNeeded
                           };
 
-            if (fiYear == -1 && currentBalance >= balNeeded) {
-              fiYear = i;
+            if (fiYear == -1) {
+              if (currentBalance >= balNeeded) {
+                fiYear = i;
+              }
             }
 
             /* Set up for next year */
             currentBalance = endBalance;
           }
 
-          let out = '';
+          let out = document.createDocumentFragment();
           if (fiYear == 0) {
-            out += "<h4>You're already financially independent!</h4>";
+            out.appendChild(tag('h4', "You're already financially independent!"));
           } else {
-            out += "<h4>You're on-track to reach financial independence in:</h4>";
-            out += '<div class="calculator-highlighted-result">';
+            out.appendChild(tag('h4', "You're on-track to reach financial independence in:"));
+            let qty = '';
+
             if (fiYear !== -1) {
-              out += fiYear + ' year';
+              qty += fiYear + ' year';
               if (fiYear !== 1) {
-                out += 's';
+                qty += 's';
               }
             } else {
-              out += 'More than 100 years';
+              qty += 'More than 100 years';
             }
-            out += "</div>";
+            out.appendChild(tag('div', qty, 'calculator-highlighted-result'));
           }
-          outputDiv.innerHTML = out;
+          outputDiv.innerHTML = '';
+          outputDiv.appendChild(out);
 
           function bigTable(table) {
             function tableRow(row) {
-              let html = '<tr>';
-              html += '<td>' + row.year + '</td>';
-              html += '<td class="currency-column">' + toCurrency(row.needed) + '</td>';
-              html += '<td class="currency-column">' + toCurrency(row.balance) + '</td>';
-              html += '</tr>';
-              return html;
+              let tableRow = document.createElement('tr');
+              tableRow.appendChild(tag('td', row.year));
+              tableRow.appendChild(tag('td', toCurrency(row.needed), 'currency-column'));
+              tableRow.appendChild(tag('td', toCurrency(row.balance), 'currency-column'));
+              return tableRow;
             }
 
-            let balanceOutput = '<h5>Account Balance vs Target</h5>';
-            balanceOutput += '<div id="balance-chart"></div>';
-            balanceOutput += '<div class="calculator-result-table"><table>';
-            balanceOutput += '<tr>';
-            balanceOutput += '<th>Year</th>';
-            balanceOutput += '<th class="needed-color">Balance Needed for FI</th>';
-            balanceOutput += '<th class="actual-color">Actual Balance</th>';
-            balanceOutput += '</tr>';
+            let balanceOutput = document.createDocumentFragment();
+            balanceOutput.appendChild(tag('p', 'See the chart and table below for detailed year-by-year results'));
+            balanceOutput.appendChild(tag('h5', 'Account Balance vs Target'));
+            balanceOutput.appendChild(tag('div', undefined, undefined, 'balance-chart'));
+            let tableContainer = tag('div', undefined, 'calculator-result-table');
+            balanceOutput.appendChild(tableContainer);
+            let tableElement = tag('table');
+            tableContainer.appendChild(tableElement);
+            let tableHeading = tag('tr');
+            tableHeading.appendChild(tag('th', 'Year'));
+            tableHeading.appendChild(tag('th', 'Balance Needed for FI', 'needed-color'));
+            tableHeading.appendChild(tag('th', 'Actual Balance', 'actual-color'));
+            tableElement.appendChild(tableHeading);
 
             outputRows = (fiYear !== -1) ? fiYear + 1 : 101;
 
             for (let i = 0; i < outputRows; i += 1) {
               dataRow = table[i];
-              balanceOutput += tableRow(dataRow);
+              tableElement.appendChild(tableRow(dataRow));
             }
 
-            balanceOutput += '</table></div>';
-
-            const preface = '<p>See the chart and table below for detailed year-by-year results</p>';
-            return preface + balanceOutput;
+            return balanceOutput;
           }
 
-          if (showDetails && fiYear > 0) {
-            detailedOutputDiv.innerHTML = bigTable(yearData);
-            drawCharts(yearData, outputRows);
-          } else {
-            detailedOutputDiv.innerHTML = '';
+          detailedOutputDiv.innerHTML = '';
+
+          if (showDetails) {
+
+            if (fiYear > 0) {
+              detailedOutputDiv.appendChild(bigTable(yearData));
+              drawCharts(yearData, outputRows);
+            } else {
+              detailedOutputDiv.appendChild(tag('h5', 'No data to display'));
+            }
           }
         }
       }
