@@ -125,6 +125,12 @@
             const base = currentAssets * Math.pow(1 + investmentGainRate, i);
             const contrib = futureValue(annualContribution, investmentGainRate, contributionIncreaseRate, i);
 
+            console.log("Retirement Needs: " + retirementNeeds);
+            console.log("Side Hustle Income: " + sideHustleIncome);
+            console.log("Scaling Factor: " + Math.pow(1 + inflationRate, i - 1));
+            console.log("Need: " + need);
+            console.log("Compare: " + (base + contrib) * safeWithdrawalRate);
+
             if (need < (base + contrib) * safeWithdrawalRate) {
               years = i;
               break;
