@@ -27,6 +27,7 @@ permalink: /cff-fire.html
     border-radius: 0.2rem;
     border: 2px solid #569D3A;
     max-width: 600px;
+    width: calc(100% - 4rem);
     clear: both;
   }
   .campfire-finance-calculator .calculator-input-group {
@@ -162,9 +163,16 @@ permalink: /cff-fire.html
     text-align: center;
   }
   .campfire-finance-calculator button.calculator-button {
-    width: 100%;
     background-color: #569D3A;
+    border: 1px solid #569D3A;
     margin: 0 auto;
+    cursor: pointer;
+    text-align: center;
+    display: inherit;
+  }
+  .campfire-finance-calculator button.calculator-button:hover {
+    background-color: #d6d6d6;
+    color: black;
     cursor: pointer;
     text-align: center;
   }
@@ -185,8 +193,18 @@ permalink: /cff-fire.html
     color: #aaaaaa;
     text-decoration: underline;
   }
+  .campfire-finance-calculator .calculator-footer, .campfire-finance-calculator .calculator-header {
+    margin: 2rem;
+    text-align: center;
+  }
+  .campfire-finance-calculator .calculator-footer p, .campfire-finance-calculator .calculator-header p {
+    font-size: 1.4rem;
+  }
 </style>
 <div class="campfire-finance-calculator" id="fire-calculator">
+  <div class="calculator-header">
+    <img class="calculator-header__image" src="https://www.campfirefinance.com/wp-content/uploads/2018/03/CFF_Header.png" />
+  </div>
   <h3 class="calculator-title">FIRE Calculator</h3>
   <div class="calculator-input-group" id="current-status-numbers">
     <h4 class="calculator-group-title">Current Numbers</h4>
@@ -232,7 +250,11 @@ permalink: /cff-fire.html
       <input type="range" class="slider slider--percent" name="assumptions-safe-withdrawal-rate" id="assumptions-safe-withdrawal-rate" value="0.04" min="0.01" max="0.1" step="0.0025" />
     </div>
   </div>
+  <hr />
   <div class="calculator-result"></div>
+  <div class="calculator-footer">
+    <img class="calculator-footer__image" src="https://www.campfirefinance.com/wp-content/uploads/2018/03/CFF_Header.png" />
+  </div>
 </div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -281,6 +303,7 @@ permalink: /cff-fire.html
     }
     console.log("Calculator helper functions loaded");
     const calculator = document.querySelector('#fire-calculator');
+    let results = [];
 
     if (calculator) {
       console.log("Calculator found");
@@ -307,7 +330,7 @@ permalink: /cff-fire.html
       const assumptionsSafeWithdrawalRateLabel = calculator.querySelector('#assumptions-safe-withdrawal-rate-label');
       const outputDiv = calculator.querySelector('#fire-calculator .calculator-result');
       function updateResults() {
-        let results = [];
+        results = [];
         const currentStatusNumbersPortfolioBalance = parseCurrencyToFloat(currentStatusNumbersPortfolioBalanceInput.value) || 0;
         const currentStatusNumbersMonthlyInvestment = parseCurrencyToFloat(currentStatusNumbersMonthlyInvestmentInput.value) || 0;
         const ageYears = parseInt(ageYearsInput.value) || 0;
@@ -530,8 +553,15 @@ permalink: /cff-fire.html
                 baseText.appendChild(document.createTextNode("when you're "));
                 baseText.appendChild(tag('span', toAge(endAge) + " old.", 'result-value'));
                 outputText.appendChild(baseText);
-
-                outputText.appendChild(tag('div', '', undefined, 'base-chart'));
+                let chartDiv = tag('div', '', undefined, 'base-chart');
+                let chartButton = tag('button', 'Show Charts', 'calculator-button', 'show-chart');
+                chartButton.onclick = function() {
+                  button = document.querySelector('#show-chart');
+                  button.parentNode.removeChild(button);
+                  drawCharts();
+                }
+                outputText.appendChild(chartButton);
+                outputText.appendChild(chartDiv);
               } else {
                 // Time to FIRE: You're not on track to achieve FIRE by age 80. Try to increase your savings and/or decrease your expenses.
                 let baseText = document.createElement('p');
@@ -594,7 +624,7 @@ permalink: /cff-fire.html
           outputHeading.innerText = 'Results';
           outputDiv.appendChild(outputHeading);
           outputDiv.appendChild(outputResult());
-          drawCharts(results);
+          //drawChart(results);
         }
       }
 
@@ -612,15 +642,31 @@ permalink: /cff-fire.html
         });
       }
 
-      function drawCharts(data) {
+      function drawCharts() {
+        console.log("Drawing calculator charts");
+        data = results
         // only bother drawing charts if there's a completed FIRE date
         if (chartsInitialized && (data[data.length - 1].progress >= 1)) {
           dataStart = data[0].age / 12.0;
           dataEnd = data[data.length - 1].age / 12.0
+
           let baseTable = new google.visualization.DataTable();
           baseTable.addColumn('number', 'Month');
           baseTable.addColumn('number', 'FIRE Balance');
           baseTable.addColumn('number', 'FIRE Target');
+          let bumpTable = new google.visualization.DataTable();
+          bumpTable.addColumn('number', 'Month');
+          bumpTable.addColumn('number', 'FIRE Balance');
+          bumpTable.addColumn('number', 'FIRE Target');
+          let dropTable = new google.visualization.DataTable();
+          dropTable.addColumn('number', 'Month');
+          dropTable.addColumn('number', 'FIRE Balance');
+          dropTable.addColumn('number', 'FIRE Target');
+          let bothTable = new google.visualization.DataTable();
+          bothTable.addColumn('number', 'Month');
+          bothTable.addColumn('number', 'FIRE Balance');
+          bothTable.addColumn('number', 'FIRE Target');
+
           let baseOptions = {
             animation: {
               duration: 100,
@@ -653,6 +699,27 @@ permalink: /cff-fire.html
                                 { v: Math.round(data[i].target) / 1000,
                                   f: toCurrency(Math.round(data[i].target / 1000)) + 'k' },
                               ]]);
+            bumpTable.addRows([[{ v: (data[i].age / 12.0),
+                                  f: toAge(data[i].age) },
+                                { v: Math.round(data[i].bumpBalance) / 1000,
+                                  f: toCurrency(Math.round(data[i].bumpBalance / 1000)) + 'k' },
+                                { v: Math.round(data[i].target) / 1000,
+                                  f: toCurrency(Math.round(data[i].target / 1000)) + 'k' },
+                              ]]);
+            dropTable.addRows([[{ v: (data[i].age / 12.0),
+                                  f: toAge(data[i].age) },
+                                { v: Math.round(data[i].balance) / 1000,
+                                  f: toCurrency(Math.round(data[i].balance / 1000)) + 'k' },
+                                { v: Math.round(data[i].dropTarget) / 1000,
+                                  f: toCurrency(Math.round(data[i].dropTarget / 1000)) + 'k' },
+                              ]]);
+            bothTable.addRows([[{ v: (data[i].age / 12.0),
+                                  f: toAge(data[i].age) },
+                                { v: Math.round(data[i].bumpBalance) / 1000,
+                                  f: toCurrency(Math.round(data[i].bumpBalance / 1000)) + 'k' },
+                                { v: Math.round(data[i].dropTarget) / 1000,
+                                  f: toCurrency(Math.round(data[i].dropTarget / 1000)) + 'k' },
+                              ]]);
           }
 
           baseTable.addRows([[{ v: (data[data.length - 1].age / 12.0),
@@ -662,9 +729,36 @@ permalink: /cff-fire.html
                               { v: Math.round(data[data.length - 1].target) / 1000,
                                 f: toCurrency(Math.round(data[data.length - 1].target / 1000)) + 'k' },
                             ]]);
+          bumpTable.addRows([[{ v: (data[data.length - 1].age / 12.0),
+                                f: toAge(data[data.length - 1].age) },
+                              { v: Math.round(data[data.length - 1].bumpBalance) / 1000,
+                                f: toCurrency(Math.round(data[data.length - 1].bumpBalance / 1000)) + 'k' },
+                              { v: Math.round(data[data.length - 1].target) / 1000,
+                                f: toCurrency(Math.round(data[data.length - 1].target / 1000)) + 'k' },
+                            ]]);
+          dropTable.addRows([[{ v: (data[data.length - 1].age / 12.0),
+                                f: toAge(data[data.length - 1].age) },
+                              { v: Math.round(data[data.length - 1].balance) / 1000,
+                                f: toCurrency(Math.round(data[data.length - 1].balance / 1000)) + 'k' },
+                              { v: Math.round(data[data.length - 1].dropTarget) / 1000,
+                                f: toCurrency(Math.round(data[data.length - 1].dropTarget / 1000)) + 'k' },
+                            ]]);
+          bothTable.addRows([[{ v: (data[data.length - 1].age / 12.0),
+                                f: toAge(data[data.length - 1].age) },
+                              { v: Math.round(data[data.length - 1].bumpBalance) / 1000,
+                                f: toCurrency(Math.round(data[data.length - 1].bumpBalance / 1000)) + 'k' },
+                              { v: Math.round(data[data.length - 1].dropTarget) / 1000,
+                                f: toCurrency(Math.round(data[data.length - 1].dropTarget / 1000)) + 'k' },
+                            ]]);
 
           baseChartElement = new google.visualization.LineChart(document.getElementById('base-chart'));
           baseChartElement.draw(baseTable, baseOptions);
+          bumpChartElement = new google.visualization.LineChart(document.getElementById('bump-chart'));
+          bumpChartElement.draw(bumpTable, baseOptions);
+          dropChartElement = new google.visualization.LineChart(document.getElementById('drop-chart'));
+          dropChartElement.draw(dropTable, baseOptions);
+          bothChartElement = new google.visualization.LineChart(document.getElementById('both-chart'));
+          bothChartElement.draw(bothTable, baseOptions);
         }
       }
       function chartReady() {
