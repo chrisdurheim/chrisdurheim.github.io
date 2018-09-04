@@ -1,7 +1,7 @@
 ---
 layout: null
 sitemap: false
-published: true 
+published: true
 permalink: /cff-fire-sbs.html
 ---
 
@@ -31,7 +31,7 @@ permalink: /cff-fire-sbs.html
     margin: 2rem auto;
     padding: 2rem 0;
     border-radius: 0.2rem;
-    border: 2px solid #569D3A;
+    border: 2px solid #569D3A
     max-width: 700px;
     width: calc(100% - 4rem);
     clear: both;
@@ -329,7 +329,7 @@ permalink: /cff-fire-sbs.html
       if (ageMonths != 0) {
         result += ' ' + ageMonths.toFixed(0) + ' months';
       }
-      return result
+      return result;
     }
 
     function convertToCurrency(value) {
@@ -375,8 +375,8 @@ permalink: /cff-fire-sbs.html
         const assumptionsInflationRate = parseFloat(assumptionsInflationRateInput.value) || 0;
         const assumptionsSafeWithdrawalRate = parseFloat(assumptionsSafeWithdrawalRateInput.value) || 0;
 
-        ageYearsLabel.innerHTML = ageYears.toFixed(0) + ' years' ;
-        ageMonthsLabel.innerHTML = ageMonths.toFixed(0) + ' months' ;
+        ageYearsLabel.innerHTML = ageYears.toFixed(0) + ' years';
+        ageMonthsLabel.innerHTML = ageMonths.toFixed(0) + ' months';
 
         assumptionsPortfolioGrowthRateLabel.innerHTML = (assumptionsPortfolioGrowthRate * 100).toFixed(2) + '% portfolio growth rate' ;
         assumptionsInflationRateLabel.innerHTML = (assumptionsInflationRate * 100).toFixed(2) + '% inflation rate' ;
@@ -429,25 +429,25 @@ permalink: /cff-fire-sbs.html
           }
 
           function futureValue(scenario, month) {
-            const b0 = scenario.startingBalance
-            const r = scenario.growth
-            const n = month
-            const p = scenario.monthlyInvestment
+            const b0 = scenario.startingBalance;
+            const r = scenario.growth;
+            const n = month;
+            const p = scenario.monthlyInvestment;
 
-            const gf = Math.pow(1 + r, n) // Growth factor
+            const gf = Math.pow(1 + r, n);
 
             return (b0 * gf) + (p / r) * (gf - 1)
           }
 
           function futureTarget(scenario, month) {
-            const e0 = scenario.annualExpenses
-            const r = scenario.inflation
-            const s = scenario.safeWithdrawalRate
-            const n = month
+            const e0 = scenario.annualExpenses;
+            const r = scenario.inflation;
+            const s = scenario.safeWithdrawalRate;
+            const n = month;
 
-            const gf = Math.pow(1 + r, n) // Growth factor
+            const gf = Math.pow(1 + r, n);
 
-            return (e0 * gf) / s
+            return (e0 * gf) / s;
           }
 
           function projectMonth(month, invBump = 0, expDrop = 0) {
@@ -525,9 +525,9 @@ permalink: /cff-fire-sbs.html
             if (result.bothProgress >= 1.0) {
               bothAchievedMonths.push(0);
             }
-            results.push(result)
+            results.push(result);
 
-            let expDropValue = result.expDrop
+            let expDropValue = result.expDrop;
 
             // FIRE number: "You'd need $X to achieve FIRE today"
             let fireText = document.createElement('p');
@@ -606,7 +606,7 @@ permalink: /cff-fire-sbs.html
 
               let recoHeading = document.createElement('h4');
               recoHeading.innerHTML = 'Recommendations';
-              outputText.appendChild(recoHeading)
+              outputText.appendChild(recoHeading);
 
               let invBumpText = document.createElement('p');
               let expDropText = document.createElement('p');
@@ -677,11 +677,11 @@ permalink: /cff-fire-sbs.html
 
       function drawCharts() {
         console.log("Drawing calculator charts");
-        data = results
+        data = results;
         // only bother drawing charts if there's a completed FIRE date
         if (chartsInitialized && (data[data.length - 1].progress >= 1)) {
           dataStart = data[0].age / 12.0;
-          dataEnd = data[data.length - 1].age / 12.0
+          dataEnd = data[data.length - 1].age / 12.0;
 
           let baseTable = new google.visualization.DataTable();
           baseTable.addColumn('number', 'Month');
@@ -801,7 +801,6 @@ permalink: /cff-fire-sbs.html
       }
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(chartReady);
-
 
       updateResults();
     }
