@@ -32,7 +32,7 @@ permalink: /cff-fire.html
     padding: 2rem 2rem 0;
     border-radius: 0.2rem;
     border: 2px solid #569D3A;
-    max-width: 600px;
+    max-width: 700px;
     width: calc(100% - 4rem);
     clear: both;
   }
@@ -41,7 +41,6 @@ permalink: /cff-fire.html
   }
   .campfire-finance-calculator h3.calculator-title, .campfire-finance-calculator .calculator-result h4 {
     padding: 1rem 0;
-    //font-size: 2rem;
     text-align: center;
     text-transform: uppercase;
   }
@@ -74,8 +73,7 @@ permalink: /cff-fire.html
     width: auto;
     max-width: 50%;
     padding: 0.5rem;
-    margin: 0 0.25rem;
-    //font-size: 1rem;
+    margin: 0 0.25rem;;
     border: 1px solid #d6d6d6;
   }
   .campfire-finance-calculator .calculator-input input:focus {
@@ -130,7 +128,6 @@ permalink: /cff-fire.html
     cursor: pointer;
   }
   .campfire-finance-calculator .calculator-result {
-    //font-size: 0.9rem;
     margin-top: 2rem;
     overflow-x: auto;
   }
@@ -138,19 +135,16 @@ permalink: /cff-fire.html
     font-weight: bold;
   }
   .campfire-finance-calculator .calculator-result .result-error {
-    //font-size: 1.5rem;
     color: #ac0000;
   }
   .campfire-finance-calculator .calculator-result .calculator-highlighted-result {
     text-align: center;
     background-color: #ac0000;
     color: white;
-    //font-size: 1.8rem;
   }
   .campfire-finance-calculator .calculator-result-table {
     max-width: 100%;
     overflow-x: scroll;
-    //font-size: 0.8rem;
   }
   .campfire-finance-calculator .calculator-result-table tr {
     transition: background-color 50ms, color 50ms;
@@ -443,13 +437,13 @@ permalink: /cff-fire.html
               annualExpenses: (assumptionsMonthlyExpenses) * 12,
               safeWithdrawalRate: assumptionsSafeWithdrawalRate,
               inflation: Math.pow((1 + assumptionsInflationRate), 1.0/12.0) - 1
-            }
+            };
 
             const expDropScenario = {
               annualExpenses: (assumptionsMonthlyExpenses - expDrop) * 12,
               safeWithdrawalRate: assumptionsSafeWithdrawalRate,
               inflation: Math.pow((1 + assumptionsInflationRate), 1.0/12.0) - 1
-            }
+            };
 
             let balance = futureValue(balanceScenario, month);
             let bumpBalance = futureValue(invBumpScenario, month);
@@ -485,8 +479,6 @@ permalink: /cff-fire.html
 
             let outputText = document.createDocumentFragment();
 
-            // See if already there
-
             let result = projectMonth(0, invBump, expDrop);
             if (result.progress >= 1.0) {
               achievedMonths.push(0);
@@ -504,7 +496,6 @@ permalink: /cff-fire.html
 
             let expDropValue = result.expDrop;
 
-            // FIRE number: "You'd need $X to achieve FIRE today"
             let fireText = document.createElement('p');
             fireText.appendChild(tag('span', 'FIRE Number: ', 'result-value'));
             fireText.appendChild(document.createTextNode("You'd need "));
@@ -512,7 +503,6 @@ permalink: /cff-fire.html
             fireText.appendChild(document.createTextNode(" to achieve FIRE today"));
             outputText.appendChild(fireText);
 
-            // % of FIRE number hit: You are currently X% of the way to your goal
             let progressText = document.createElement('p');
             progressText.appendChild(tag('span', 'Progress: ', 'result-value'));
             if (result.progress < 1) {
@@ -525,36 +515,42 @@ permalink: /cff-fire.html
 
             outputText.appendChild(progressText);
 
-            // Simulate until achieved FIRE or 80 yrs old
             let month = 0;
-            while ((result.progress < 1.0) && ((ageTotalMonths + month) < 960)) {
+            while ((ageTotalMonths + month) < 960) {
+              if (result.progress >= 1.0){
+                break;
+              }
               month += 1;
               result = projectMonth(month, invBump, expDrop);
               if (result.progress >= 1.0) {
                 achievedMonths.push(month);
               }
-              if (bumpAchievedMonths.length == 0 && result.bumpProgress >= 1.0) {
-                bumpAchievedMonths.push(month);
+              if (bumpAchievedMonths.length == 0) {
+                if (result.bumpProgress >= 1.0) {
+                  bumpAchievedMonths.push(month);
+                }
               }
-              if (dropAchievedMonths.length == 0 && result.dropProgress >= 1.0) {
-                dropAchievedMonths.push(month);
+              if (dropAchievedMonths.length == 0) {
+                if (result.dropProgress >= 1.0) {
+                  dropAchievedMonths.push(month);
+                }
               }
-              if (result.bothProgress >= 1.0) {
-                bothAchievedMonths.push(month);
+              if (bothAchievedMonths.length == 0) {
+                if (result.bothProgress >= 1.0) {
+                  bothAchievedMonths.push(month);
+                }
               }
 
               results.push(result)
             }
 
-            // Results that only apply if user isn't already to FIRE
             if (achievedMonths[0] > 0 || achievedMonths.length == 0) {
               if (result.progress >= 1.0) {
                 for (i = 1; i <= 5; i += 1) {
-                  res = projectMonth(month + i, invBump, expDrop)
+                  res = projectMonth(month + i, invBump, expDrop);
                   results.push(res);
                 }
                 endAge = ageTotalMonths + result.month;
-                // Time to FIRE: It will take you X months to achieve FIRE
                 let baseText = document.createElement('p');
                 baseText.appendChild(tag('span', 'FIRE Age: ', 'result-value'));
                 baseText.appendChild(document.createTextNode("You're on track to achieve fire in "));
@@ -568,11 +564,10 @@ permalink: /cff-fire.html
                   button = document.querySelector('#show-chart');
                   button.parentNode.removeChild(button);
                   drawCharts();
-                }
+                };
                 outputText.appendChild(chartButton);
                 outputText.appendChild(chartDiv);
               } else {
-                // Time to FIRE: You're not on track to achieve FIRE by age 80. Try to increase your savings and/or decrease your expenses.
                 let baseText = document.createElement('p');
                 baseText.appendChild(tag('span', 'Time to FIRE: ', 'result-value'));
                 baseText.appendChild(document.createTextNode("You're not on track to achieve FI by age 80."));
@@ -595,24 +590,24 @@ permalink: /cff-fire.html
               if (result.progress >= 1.0) {
                 invBumpText.appendChild(document.createTextNode('If you '));
                 invBumpText.appendChild(tag('span', 'invest ' + toCurrency(invBump) + ' more ', 'result-value'));
-                invBumpText.appendChild(document.createTextNode('each month, you\'ll reach FIRE '));
+                invBumpText.appendChild(document.createTextNode("each month, you'll reach FIRE "));
                 invBumpText.appendChild(tag('span', (achievedMonths[0] - bumpAchievedMonths[0]).toFixed(0) + ' months ', 'result-value'));
                 invBumpText.appendChild(document.createTextNode('faster.'));
-                invBumpText.appendChild(tag('div', '', undefined, 'bump-chart'));
+                invBumpText.appendChild(tag('div', '', 'calculator-chart', 'bump-chart'));
 
                 expDropText.appendChild(document.createTextNode('If you '));
                 expDropText.appendChild(tag('span', 'spend ' + toCurrency(expDrop) + ' less ', 'result-value'));
-                expDropText.appendChild(document.createTextNode('each month, you\'ll reduce your FIRE target by '));
+                expDropText.appendChild(document.createTextNode("each month, you'll reduce your FIRE target by "));
                 expDropText.appendChild(tag('span', toCurrency(expDropValue), 'result-value'));
                 expDropText.appendChild(document.createTextNode(' and reach FIRE '));
                 expDropText.appendChild(tag('span', (achievedMonths[0] - dropAchievedMonths[0]).toFixed(0) + ' months ', 'result-value'));
                 expDropText.appendChild(document.createTextNode('faster.'));
-                expDropText.appendChild(tag('div', '', undefined, 'drop-chart'));
+                expDropText.appendChild(tag('div', '', 'calculator-chart', 'drop-chart'));
 
-                bothText.appendChild(document.createTextNode('If you do both, you\'ll reach FIRE '));
+                bothText.appendChild(document.createTextNode("If you do both, you'll reach FIRE "));
                 bothText.appendChild(tag('span', (achievedMonths[0] - bothAchievedMonths[0]).toFixed(0) + ' months ', 'result-value'));
                 bothText.appendChild(document.createTextNode('faster.'));
-                bothText.appendChild(tag('div', '', undefined, 'both-chart'));
+                bothText.appendChild(tag('div', '', 'calculator-chart', 'both-chart'));
 
                 outputText.appendChild(invBumpText);
                 outputText.appendChild(expDropText);
@@ -633,7 +628,6 @@ permalink: /cff-fire.html
           outputHeading.innerText = 'Results';
           outputDiv.appendChild(outputHeading);
           outputDiv.appendChild(outputResult());
-          //drawChart(results);
         }
       }
 
@@ -653,121 +647,122 @@ permalink: /cff-fire.html
 
       function drawCharts() {
         console.log("Drawing calculator charts");
-        data = results
-        // only bother drawing charts if there's a completed FIRE date
-        if (chartsInitialized && (data[data.length - 1].progress >= 1)) {
-          dataStart = data[0].age / 12.0;
-          dataEnd = data[data.length - 1].age / 12.0;
+        data = results;
+        if (chartsInitialized) {
+          if (data[data.length - 1].progress >= 1) {
+            dataStart = data[0].age / 12.0;
+            dataEnd = data[data.length - 1].age / 12.0;
 
-          let baseTable = new google.visualization.DataTable();
-          baseTable.addColumn('number', 'Month');
-          baseTable.addColumn('number', 'FIRE Balance');
-          baseTable.addColumn('number', 'FIRE Target');
-          let bumpTable = new google.visualization.DataTable();
-          bumpTable.addColumn('number', 'Month');
-          bumpTable.addColumn('number', 'FIRE Balance');
-          bumpTable.addColumn('number', 'FIRE Target');
-          let dropTable = new google.visualization.DataTable();
-          dropTable.addColumn('number', 'Month');
-          dropTable.addColumn('number', 'FIRE Balance');
-          dropTable.addColumn('number', 'FIRE Target');
-          let bothTable = new google.visualization.DataTable();
-          bothTable.addColumn('number', 'Month');
-          bothTable.addColumn('number', 'FIRE Balance');
-          bothTable.addColumn('number', 'FIRE Target');
+            let baseTable = new google.visualization.DataTable();
+            baseTable.addColumn('number', 'Month');
+            baseTable.addColumn('number', 'FIRE Balance');
+            baseTable.addColumn('number', 'FIRE Target');
+            let bumpTable = new google.visualization.DataTable();
+            bumpTable.addColumn('number', 'Month');
+            bumpTable.addColumn('number', 'FIRE Balance');
+            bumpTable.addColumn('number', 'FIRE Target');
+            let dropTable = new google.visualization.DataTable();
+            dropTable.addColumn('number', 'Month');
+            dropTable.addColumn('number', 'FIRE Balance');
+            dropTable.addColumn('number', 'FIRE Target');
+            let bothTable = new google.visualization.DataTable();
+            bothTable.addColumn('number', 'Month');
+            bothTable.addColumn('number', 'FIRE Balance');
+            bothTable.addColumn('number', 'FIRE Target');
 
-          let baseOptions = {
-            animation: {
-              duration: 100,
-              startup: true,
-              easing: 'inAndOut'
-            },
-            colors:[ '#569D3A', 'black' ],
-            hAxis: {
-              maxValue: dataEnd,
-              minValue: dataStart
-            },
-            legend: {
-              position: 'bottom'
-            },
-            vAxis: {
-              format: '$#,###k'
+            let baseOptions = {
+              animation: {
+                duration: 100,
+                startup: true,
+                easing: 'inAndOut'
+              },
+              colors:[ '#569D3A', 'black' ],
+              hAxis: {
+                maxValue: dataEnd,
+                minValue: dataStart
+              },
+              legend: {
+                position: 'bottom'
+              },
+              vAxis: {
+                format: '$#,###k'
+              }
+            };
+
+            const dataSpan = (dataEnd - dataStart) * 12.0;
+
+            const chartSample = Math.floor(dataSpan / 40.0);
+
+
+            for (let i = 0; i < data.length; i += chartSample) {
+              baseTable.addRows([[{ v: (data[i].age / 12.0),
+                                    f: toAge(data[i].age) },
+                                  { v: Math.round(data[i].balance) / 1000,
+                                    f: toCurrency(Math.round(data[i].balance / 1000)) + 'k' },
+                                  { v: Math.round(data[i].target) / 1000,
+                                    f: toCurrency(Math.round(data[i].target / 1000)) + 'k' },
+                                ]]);
+              bumpTable.addRows([[{ v: (data[i].age / 12.0),
+                                    f: toAge(data[i].age) },
+                                  { v: Math.round(data[i].bumpBalance) / 1000,
+                                    f: toCurrency(Math.round(data[i].bumpBalance / 1000)) + 'k' },
+                                  { v: Math.round(data[i].target) / 1000,
+                                    f: toCurrency(Math.round(data[i].target / 1000)) + 'k' },
+                                ]]);
+              dropTable.addRows([[{ v: (data[i].age / 12.0),
+                                    f: toAge(data[i].age) },
+                                  { v: Math.round(data[i].balance) / 1000,
+                                    f: toCurrency(Math.round(data[i].balance / 1000)) + 'k' },
+                                  { v: Math.round(data[i].dropTarget) / 1000,
+                                    f: toCurrency(Math.round(data[i].dropTarget / 1000)) + 'k' },
+                                ]]);
+              bothTable.addRows([[{ v: (data[i].age / 12.0),
+                                    f: toAge(data[i].age) },
+                                  { v: Math.round(data[i].bumpBalance) / 1000,
+                                    f: toCurrency(Math.round(data[i].bumpBalance / 1000)) + 'k' },
+                                  { v: Math.round(data[i].dropTarget) / 1000,
+                                    f: toCurrency(Math.round(data[i].dropTarget / 1000)) + 'k' },
+                                ]]);
             }
-          };
 
-          const dataSpan = (dataEnd - dataStart) * 12.0;
-
-          const chartSample = Math.floor(dataSpan / 40.0);
-
-
-          for (let i = 0; i < data.length; i += chartSample) {
-            baseTable.addRows([[{ v: (data[i].age / 12.0),
-                                  f: toAge(data[i].age) },
-                                { v: Math.round(data[i].balance) / 1000,
-                                  f: toCurrency(Math.round(data[i].balance / 1000)) + 'k' },
-                                { v: Math.round(data[i].target) / 1000,
-                                  f: toCurrency(Math.round(data[i].target / 1000)) + 'k' },
+            baseTable.addRows([[{ v: (data[data.length - 1].age / 12.0),
+                                  f: toAge(data[data.length - 1].age) },
+                                { v: Math.round(data[data.length - 1].balance) / 1000,
+                                  f: toCurrency(Math.round(data[data.length - 1].balance / 1000)) + 'k' },
+                                { v: Math.round(data[data.length - 1].target) / 1000,
+                                  f: toCurrency(Math.round(data[data.length - 1].target / 1000)) + 'k' },
                               ]]);
-            bumpTable.addRows([[{ v: (data[i].age / 12.0),
-                                  f: toAge(data[i].age) },
-                                { v: Math.round(data[i].bumpBalance) / 1000,
-                                  f: toCurrency(Math.round(data[i].bumpBalance / 1000)) + 'k' },
-                                { v: Math.round(data[i].target) / 1000,
-                                  f: toCurrency(Math.round(data[i].target / 1000)) + 'k' },
+            bumpTable.addRows([[{ v: (data[data.length - 1].age / 12.0),
+                                  f: toAge(data[data.length - 1].age) },
+                                { v: Math.round(data[data.length - 1].bumpBalance) / 1000,
+                                  f: toCurrency(Math.round(data[data.length - 1].bumpBalance / 1000)) + 'k' },
+                                { v: Math.round(data[data.length - 1].target) / 1000,
+                                  f: toCurrency(Math.round(data[data.length - 1].target / 1000)) + 'k' },
                               ]]);
-            dropTable.addRows([[{ v: (data[i].age / 12.0),
-                                  f: toAge(data[i].age) },
-                                { v: Math.round(data[i].balance) / 1000,
-                                  f: toCurrency(Math.round(data[i].balance / 1000)) + 'k' },
-                                { v: Math.round(data[i].dropTarget) / 1000,
-                                  f: toCurrency(Math.round(data[i].dropTarget / 1000)) + 'k' },
+            dropTable.addRows([[{ v: (data[data.length - 1].age / 12.0),
+                                  f: toAge(data[data.length - 1].age) },
+                                { v: Math.round(data[data.length - 1].balance) / 1000,
+                                  f: toCurrency(Math.round(data[data.length - 1].balance / 1000)) + 'k' },
+                                { v: Math.round(data[data.length - 1].dropTarget) / 1000,
+                                  f: toCurrency(Math.round(data[data.length - 1].dropTarget / 1000)) + 'k' },
                               ]]);
-            bothTable.addRows([[{ v: (data[i].age / 12.0),
-                                  f: toAge(data[i].age) },
-                                { v: Math.round(data[i].bumpBalance) / 1000,
-                                  f: toCurrency(Math.round(data[i].bumpBalance / 1000)) + 'k' },
-                                { v: Math.round(data[i].dropTarget) / 1000,
-                                  f: toCurrency(Math.round(data[i].dropTarget / 1000)) + 'k' },
+            bothTable.addRows([[{ v: (data[data.length - 1].age / 12.0),
+                                  f: toAge(data[data.length - 1].age) },
+                                { v: Math.round(data[data.length - 1].bumpBalance) / 1000,
+                                  f: toCurrency(Math.round(data[data.length - 1].bumpBalance / 1000)) + 'k' },
+                                { v: Math.round(data[data.length - 1].dropTarget) / 1000,
+                                  f: toCurrency(Math.round(data[data.length - 1].dropTarget / 1000)) + 'k' },
                               ]]);
-          }
 
-          baseTable.addRows([[{ v: (data[data.length - 1].age / 12.0),
-                                f: toAge(data[data.length - 1].age) },
-                              { v: Math.round(data[data.length - 1].balance) / 1000,
-                                f: toCurrency(Math.round(data[data.length - 1].balance / 1000)) + 'k' },
-                              { v: Math.round(data[data.length - 1].target) / 1000,
-                                f: toCurrency(Math.round(data[data.length - 1].target / 1000)) + 'k' },
-                            ]]);
-          bumpTable.addRows([[{ v: (data[data.length - 1].age / 12.0),
-                                f: toAge(data[data.length - 1].age) },
-                              { v: Math.round(data[data.length - 1].bumpBalance) / 1000,
-                                f: toCurrency(Math.round(data[data.length - 1].bumpBalance / 1000)) + 'k' },
-                              { v: Math.round(data[data.length - 1].target) / 1000,
-                                f: toCurrency(Math.round(data[data.length - 1].target / 1000)) + 'k' },
-                            ]]);
-          dropTable.addRows([[{ v: (data[data.length - 1].age / 12.0),
-                                f: toAge(data[data.length - 1].age) },
-                              { v: Math.round(data[data.length - 1].balance) / 1000,
-                                f: toCurrency(Math.round(data[data.length - 1].balance / 1000)) + 'k' },
-                              { v: Math.round(data[data.length - 1].dropTarget) / 1000,
-                                f: toCurrency(Math.round(data[data.length - 1].dropTarget / 1000)) + 'k' },
-                            ]]);
-          bothTable.addRows([[{ v: (data[data.length - 1].age / 12.0),
-                                f: toAge(data[data.length - 1].age) },
-                              { v: Math.round(data[data.length - 1].bumpBalance) / 1000,
-                                f: toCurrency(Math.round(data[data.length - 1].bumpBalance / 1000)) + 'k' },
-                              { v: Math.round(data[data.length - 1].dropTarget) / 1000,
-                                f: toCurrency(Math.round(data[data.length - 1].dropTarget / 1000)) + 'k' },
-                            ]]);
-
-          baseChartElement = new google.visualization.LineChart(document.getElementById('base-chart'));
-          baseChartElement.draw(baseTable, baseOptions);
-          bumpChartElement = new google.visualization.LineChart(document.getElementById('bump-chart'));
-          bumpChartElement.draw(bumpTable, baseOptions);
-          dropChartElement = new google.visualization.LineChart(document.getElementById('drop-chart'));
-          dropChartElement.draw(dropTable, baseOptions);
-          bothChartElement = new google.visualization.LineChart(document.getElementById('both-chart'));
-          bothChartElement.draw(bothTable, baseOptions);
+            baseChartElement = new google.visualization.LineChart(document.getElementById('base-chart'));
+            baseChartElement.draw(baseTable, baseOptions);
+            bumpChartElement = new google.visualization.LineChart(document.getElementById('bump-chart'));
+            bumpChartElement.draw(bumpTable, baseOptions);
+            dropChartElement = new google.visualization.LineChart(document.getElementById('drop-chart'));
+            dropChartElement.draw(dropTable, baseOptions);
+            bothChartElement = new google.visualization.LineChart(document.getElementById('both-chart'));
+            bothChartElement.draw(bothTable, baseOptions);
+            }
         }
       }
       function chartReady() {
