@@ -1,0 +1,425 @@
+<html>
+<body>
+<link rel='stylesheet' href='https://www.mamafishsaves.com/wp-content/themes/mamafishsavesnew/style.css' type='text/css' media='all' />
+<link rel='stylesheet' href='https://www.mamafishsaves.com/wp-content/plugins/social-warfare/css/style.min.css' type='text/css' media='all' />
+<link rel='stylesheet' href='https://www.mamafishsaves.com/wp-content/plugins/thrive-visual-editor/editor/css/thrive_flat.css' type='text/css' media='all' />
+<link rel='stylesheet' href='https://www.mamafishsaves.com/wp-content/plugins/thrive-leads/editor-layouts/css/frontend.css' type='text/css' media='all' />
+<link rel='stylesheet' href='https://www.mamafishsaves.com/wp-content/plugins/easy-table-of-contents/vendor/icomoon/style.min.css' type='text/css' media='all' />
+<link rel='stylesheet' href='https://www.mamafishsaves.com/wp-content/plugins/easy-table-of-contents/assets/css/screen.min.css' type='text/css' media='all' />
+<link rel='stylesheet' href='https://www.mamafishsaves.com/wp-includes/css/dashicons.min.css' type='text/css' media='all' />
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%7COswald%3A200%2C300%2C400%2C500%2C600%2C700' type='text/css' media='all' />
+<link rel='stylesheet' href='https://www.mamafishsaves.com/wp-content/plugins/jetpack/css/jetpack.css' type='text/css' media='all' />
+<link rel='stylesheet' href='https://www.mamafishsaves.com/wp-content/plugins/lazy-widget-loader/css/lwl.css' type='text/css' media='all' />
+<style>
+  .mama-fish-saves-calculator {
+    background-color: #FFFFFF;
+    margin: 2rem auto;
+    padding: 2rem 2rem 0;
+    border-radius: 0.2rem;
+    border: 2px solid #34b3b7;
+    max-width: 640px;
+    clear: both;
+  }
+  .mama-fish-saves-calculator .calculator-input-group {
+    padding: 1rem 0;
+  }
+  .mama-fish-saves-calculator h3.calculator-title, .mama-fish-saves-calculator .calculator-result h4 {
+    padding: 1rem 0;
+    //font-size: 2rem;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .mama-fish-saves-calculator h4.calculator-group-title {
+    background-color: #34b3b7;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    color: white;
+    text-align: center;
+  }
+
+  .mama-fish-saves-calculator .calculator-input {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1rem 0 0;
+  }
+  .mama-fish-saves-calculator .calculator-input label {
+    flex: 0 0 100%;
+    padding: 0.25rem 0;
+    color: black;
+  }
+  .mama-fish-saves-calculator .calculator-input .input-prefix {
+    flex: 0 0 auto;
+    padding: 0.5rem;
+    margin: 0 0.25rem;
+    line-height: 2rem;
+  }
+  .mama-fish-saves-calculator .calculator-input input {
+    flex: 1 0 auto;
+    width: auto;
+    max-width: 50%;
+    padding: 0.5rem;
+    margin: 0 0.25rem;
+    //font-size: 1rem;
+    border: 1px solid #ddd;
+  }
+  .mama-fish-saves-calculator .calculator-input input:focus {
+    outline: none;
+    border: 1px solid #414141;
+  }
+  .mama-fish-saves-calculator .calculator-input select.input-suffix {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0.5rem;
+    margin: 0 0.25rem;
+  }
+  .mama-fish-saves-calculator input.slider {
+    margin-top: 1rem;
+    width: 100%;
+    max-width: 100%;
+  }
+  .mama-fish-saves-calculator .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 0.5rem;
+    border-radius: 0.5rem;
+    border-color: #ffffff;
+    color: #ffffff;
+    background: #ffffff;
+    outline: none;
+    opacity: 1;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+    padding: 0 !important;
+  }
+  .mama-fish-saves-calculator .slider:hover {
+    background: #FFFFFF;
+  }
+  .mama-fish-saves-calculator .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: #34b3b7;
+    cursor: pointer;
+  }
+
+  .mama-fish-saves-calculator .slider::-moz-range-thumb {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: #34b3b7;
+    cursor: pointer;
+  }
+  .mama-fish-saves-calculator .calculator-result {
+    //font-size: 0.9rem;
+    margin-top: 2rem;
+    overflow-x: auto;
+  }
+  .mama-fish-saves-calculator .calculator-result .result-value {
+    font-weight: bold;
+  }
+  .mama-fish-saves-calculator .calculator-result .result-error {
+    //font-size: 1.5rem;
+    color: #ac0000;
+  }
+  .mama-fish-saves-calculator .calculator-result .calculator-highlighted-result {
+    text-align: center;
+    background-color: #ac0000;
+    color: white;
+    //font-size: 1.8rem;
+  }
+  .mama-fish-saves-calculator .calculator-result-table {
+    max-width: 100%;
+    overflow-x: scroll;
+    //font-size: 0.8rem;
+  }
+  .mama-fish-saves-calculator .calculator-result-table tr {
+    transition: background-color 50ms, color 50ms;
+  }
+  .mama-fish-saves-calculator .calculator-result-table tr:hover td {
+    background-color: #34b3b7;
+    color: white;
+  }
+  .mama-fish-saves-calculator .calculator-result-table th {
+    text-align: center;
+  }
+  .mama-fish-saves-calculator .calculator-result-table td, .calculator-result-table th {
+    padding: 0 0.5rem;
+  }
+  .mama-fish-saves-calculator .calculator-result-table .currency-column {
+    text-align: center;
+  }
+  .mama-fish-saves-calculator button.calculator-button {
+    width: 100%;
+    background-color: #34b3b7;
+    margin: 0 auto;
+    cursor: pointer;
+    text-align: center;
+  }
+  .mama-fish-saves-calculator .calculator-attribution {
+    text-align: center;
+    font-size: 0.8rem;
+    font-style: italic;
+    margin-top: 2rem;
+    padding: 1rem 0.5rem;
+    border-top: 1px solid #ddd;
+  }
+  .mama-fish-saves-calculator .calculator-attribution a {
+    font-size: 0.8rem;
+    color: #34b3b7;
+    text-decoration: none;
+  }
+  .mama-fish-saves-calculator .calculator-attribution a:hover {
+    color: #414141;
+    text-decoration: underline;
+  }
+</style>
+<div class="mama-fish-saves-calculator" id="coast-calculators">
+  <h3 class="calculator-title">Coast Calculators</h3>
+  <div class="calculator-input-group" id="if-you-coasted-today">
+    <h4 class="calculator-group-title">If You Coasted Today</h4>
+    <div class="calculator-input">
+      <label for="if-you-coasted-today-current-retirement-savings" id="if-you-coasted-today-current-retirement-savings-label">Current Retirement Savings</label><br />
+      <span class="input-prefix">$</span>
+      <input type="text" class="currency" name="if-you-coasted-today-current-retirement-savings" id="if-you-coasted-today-current-retirement-savings" value="150000" min="0" />
+    </div>
+    <div class="calculator-input">
+      <label for="if-you-coasted-today-current-age" id="if-you-coasted-today-current-age-label">Current Age</label><br />
+      <input type="number" class="" name="if-you-coasted-today-current-age" id="if-you-coasted-today-current-age" value="32" min="18" max="75" step="1" />
+    </div>
+    <div class="calculator-input">
+      <label for="if-you-coasted-today-retirement-age" id="if-you-coasted-today-retirement-age-label">Retirement Age</label><br />
+      <input type="number" class="" name="if-you-coasted-today-retirement-age" id="if-you-coasted-today-retirement-age" value="60" min="18" max="75" step="1" />
+    </div>
+    <div class="calculator-input">
+      <label for="if-you-coasted-today-expected-return" id="if-you-coasted-today-expected-return-label">8.0% expected return</label><br />
+      <input type="range" class="slider slider--percent" name="if-you-coasted-today-expected-return" id="if-you-coasted-today-expected-return" value="0.08" min="0.01" max="0.15" step="0.0025" />
+    </div>
+  </div>
+  <div class="calculator-input-group" id="assets-needed-to-coast">
+    <h4 class="calculator-group-title">Assets Needed to Coast</h4>
+    <div class="calculator-input">
+      <label for="assets-needed-to-coast-target-monthly-spending-in-retirement" id="assets-needed-to-coast-target-monthly-spending-in-retirement-label">Target Monthly Spending in Retirement</label><br />
+      <span class="input-prefix">$</span>
+      <input type="text" class="currency" name="assets-needed-to-coast-target-monthly-spending-in-retirement" id="assets-needed-to-coast-target-monthly-spending-in-retirement" value="4000" min="0" />
+    </div>
+    <div class="calculator-input">
+      <label for="assets-needed-to-coast-target-withdrawal-rate" id="assets-needed-to-coast-target-withdrawal-rate-label">3.5000000000000004% target withdrawal rate</label><br />
+      <input type="range" class="slider slider--percent" name="assets-needed-to-coast-target-withdrawal-rate" id="assets-needed-to-coast-target-withdrawal-rate" value="0.035" min="0.01" max="0.1" step="0.0025" />
+    </div>
+    <div class="calculator-input">
+      <label for="assets-needed-to-coast-target-coast-age" id="assets-needed-to-coast-target-coast-age-label">Target Coast Age</label><br />
+      <input type="number" class="" name="assets-needed-to-coast-target-coast-age" id="assets-needed-to-coast-target-coast-age" value="35" min="18" max="75" step="1" />
+    </div>
+    <div class="calculator-input">
+      <label for="assets-needed-to-coast-target-retirement-age" id="assets-needed-to-coast-target-retirement-age-label">Target Retirement Age</label><br />
+      <input type="number" class="" name="assets-needed-to-coast-target-retirement-age" id="assets-needed-to-coast-target-retirement-age" value="50" min="18" max="75" step="1" />
+    </div>
+    <div class="calculator-input">
+      <label for="assets-needed-to-coast-expected-return" id="assets-needed-to-coast-expected-return-label">8.0% expected return</label><br />
+      <input type="range" class="slider slider--percent" name="assets-needed-to-coast-expected-return" id="assets-needed-to-coast-expected-return" value="0.08" min="0.01" max="0.15" step="0.0025" />
+    </div>
+  </div>
+  <div class="calculator-result"></div>
+</div>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("Calculator js running");
+    function tag(type, value = undefined, klass = undefined, id = undefined) {
+      let el = document.createElement(type);
+      if (klass) {
+        el.setAttribute('class', klass);
+      }
+      if (id) {
+        el.setAttribute('id', id);
+      }
+      if (value) {
+        el.innerText = value;
+      }
+      return el;
+    }
+    function toCurrency(value) {
+      if (value == 0) {
+        return '-';
+      } else {
+        return '$' + value.toFixed(0).replace(/B(?=(d{3})+(?!d))/g, ",");
+      }
+    }
+    function parseCurrencyToFloat(value) {
+      result = parseFloat(value.replace(/[($) ._-]+/g, '').replace(/,/g, ''));
+      if (isNaN(result)) {
+        return 0;
+      } else {
+        return result;
+      }
+    }
+
+    function convertToCurrency(value) {
+      return value.toLocaleString();
+    }
+    console.log("Calculator helper functions loaded");
+    const calculator = document.querySelector('#coast-calculators');
+
+    if (calculator) {
+      console.log("Calculator found");
+
+      const inputs = document.querySelectorAll('input');
+      const currencyInputs = calculator.querySelectorAll('input.currency');
+      const ifYouCoastedTodayCurrentRetirementSavingsInput = calculator.querySelector('input#if-you-coasted-today-current-retirement-savings');
+      const ifYouCoastedTodayCurrentRetirementSavingsLabel = calculator.querySelector('#if-you-coasted-today-current-retirement-savings-label');
+      const ifYouCoastedTodayCurrentAgeInput = calculator.querySelector('input#if-you-coasted-today-current-age');
+      const ifYouCoastedTodayCurrentAgeLabel = calculator.querySelector('#if-you-coasted-today-current-age-label');
+      const ifYouCoastedTodayRetirementAgeInput = calculator.querySelector('input#if-you-coasted-today-retirement-age');
+      const ifYouCoastedTodayRetirementAgeLabel = calculator.querySelector('#if-you-coasted-today-retirement-age-label');
+      const ifYouCoastedTodayExpectedReturnInput = calculator.querySelector('input#if-you-coasted-today-expected-return');
+      const ifYouCoastedTodayExpectedReturnLabel = calculator.querySelector('#if-you-coasted-today-expected-return-label');
+      const assetsNeededToCoastTargetMonthlySpendingInRetirementInput = calculator.querySelector('input#assets-needed-to-coast-target-monthly-spending-in-retirement');
+      const assetsNeededToCoastTargetMonthlySpendingInRetirementLabel = calculator.querySelector('#assets-needed-to-coast-target-monthly-spending-in-retirement-label');
+      const assetsNeededToCoastTargetWithdrawalRateInput = calculator.querySelector('input#assets-needed-to-coast-target-withdrawal-rate');
+      const assetsNeededToCoastTargetWithdrawalRateLabel = calculator.querySelector('#assets-needed-to-coast-target-withdrawal-rate-label');
+      const assetsNeededToCoastTargetCoastAgeInput = calculator.querySelector('input#assets-needed-to-coast-target-coast-age');
+      const assetsNeededToCoastTargetCoastAgeLabel = calculator.querySelector('#assets-needed-to-coast-target-coast-age-label');
+      const assetsNeededToCoastTargetRetirementAgeInput = calculator.querySelector('input#assets-needed-to-coast-target-retirement-age');
+      const assetsNeededToCoastTargetRetirementAgeLabel = calculator.querySelector('#assets-needed-to-coast-target-retirement-age-label');
+      const assetsNeededToCoastExpectedReturnInput = calculator.querySelector('input#assets-needed-to-coast-expected-return');
+      const assetsNeededToCoastExpectedReturnLabel = calculator.querySelector('#assets-needed-to-coast-expected-return-label');
+      const outputDiv = calculator.querySelector('#coast-calculators .calculator-result');
+      function updateResults() {
+        const ifYouCoastedTodayCurrentRetirementSavings = parseCurrencyToFloat(ifYouCoastedTodayCurrentRetirementSavingsInput.value) || 0;
+        const ifYouCoastedTodayCurrentAge = parseFloat(ifYouCoastedTodayCurrentAgeInput.value) || 0;
+        const ifYouCoastedTodayRetirementAge = parseFloat(ifYouCoastedTodayRetirementAgeInput.value) || 0;
+        const ifYouCoastedTodayExpectedReturn = parseFloat(ifYouCoastedTodayExpectedReturnInput.value) || 0;
+        const assetsNeededToCoastTargetMonthlySpendingInRetirement = parseCurrencyToFloat(assetsNeededToCoastTargetMonthlySpendingInRetirementInput.value) || 0;
+        const assetsNeededToCoastTargetWithdrawalRate = parseFloat(assetsNeededToCoastTargetWithdrawalRateInput.value) || 0;
+        const assetsNeededToCoastTargetCoastAge = parseFloat(assetsNeededToCoastTargetCoastAgeInput.value) || 0;
+        const assetsNeededToCoastTargetRetirementAge = parseFloat(assetsNeededToCoastTargetRetirementAgeInput.value) || 0;
+        const assetsNeededToCoastExpectedReturn = parseFloat(assetsNeededToCoastExpectedReturnInput.value) || 0;
+        ifYouCoastedTodayExpectedReturnLabel.innerHTML = (ifYouCoastedTodayExpectedReturn * 100).toFixed(0) + '% expected return' ;
+        assetsNeededToCoastTargetWithdrawalRateLabel.innerHTML = (assetsNeededToCoastTargetWithdrawalRate * 100).toFixed(0) + '% target withdrawal rate' ;
+        assetsNeededToCoastExpectedReturnLabel.innerHTML = (assetsNeededToCoastExpectedReturn * 100).toFixed(0) + '% expected return' ;
+        if (outputDiv) {
+          if (ifYouCoastedTodayCurrentRetirementSavings < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set current retirement savings greater than 0', 'result-error'));
+            return;
+          }
+          if (ifYouCoastedTodayCurrentAge < 18) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set current age greater than 18', 'result-error'));
+            return;
+          }
+          if (ifYouCoastedTodayCurrentAge > 75) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set current age less than 75', 'result-error'));
+            return;
+          }
+          if (ifYouCoastedTodayRetirementAge < 18) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set retirement age greater than 18', 'result-error'));
+            return;
+          }
+          if (ifYouCoastedTodayRetirementAge > 75) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set retirement age less than 75', 'result-error'));
+            return;
+          }
+          if (ifYouCoastedTodayExpectedReturn < 0.01) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set expected return greater than 1.0%', 'result-error'));
+            return;
+          }
+          if (ifYouCoastedTodayExpectedReturn > 0.15) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set expected return less than 15.0%', 'result-error'));
+            return;
+          }
+          if (assetsNeededToCoastTargetMonthlySpendingInRetirement < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set target monthly spending in retirement greater than 0', 'result-error'));
+            return;
+          }
+          if (assetsNeededToCoastTargetWithdrawalRate < 0.01) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set target withdrawal rate greater than 1.0%', 'result-error'));
+            return;
+          }
+          if (assetsNeededToCoastTargetWithdrawalRate > 0.1) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set target withdrawal rate less than 10.0%', 'result-error'));
+            return;
+          }
+          if (assetsNeededToCoastTargetCoastAge < 18) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set target coast age greater than 18', 'result-error'));
+            return;
+          }
+          if (assetsNeededToCoastTargetCoastAge > 75) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set target coast age less than 75', 'result-error'));
+            return;
+          }
+          if (assetsNeededToCoastTargetRetirementAge < 18) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set target retirement age greater than 18', 'result-error'));
+            return;
+          }
+          if (assetsNeededToCoastTargetRetirementAge > 75) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set target retirement age less than 75', 'result-error'));
+            return;
+          }
+          if (assetsNeededToCoastExpectedReturn < 0.01) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set expected return greater than 1.0%', 'result-error'));
+            return;
+          }
+          if (assetsNeededToCoastExpectedReturn > 0.15) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set expected return less than 15.0%', 'result-error'));
+            return;
+          }
+
+          function calculateResult() {
+            let result = 1000;
+
+            let outputText = document.createDocumentFragment();
+
+            let baseText = document.createElement('p');
+            baseText.appendChild(document.createTextNode("The result is "));
+            baseText.appendChild(tag('span', toCurrency(result), 'result-value'));
+            outputText.appendChild(baseText);
+
+            return outputText;
+          }
+
+          outputDiv.innerHTML = '';
+
+          let outputHeading = document.createElement('h4');
+          outputHeading.innerText = 'Results';
+          outputDiv.appendChild(outputHeading);
+          outputDiv.appendChild(calculateResult());
+        }
+      }
+
+      /* Set calculator to auto-update on input changes */
+      for (let i = 0; i < inputs.length; i += 1) {
+        inputs[i].addEventListener('input', () => {
+          updateResults();
+        });
+      }
+
+      /* Auto-format with commas */
+      for (let i = 0; i < currencyInputs.length; i += 1) {
+        currencyInputs[i].addEventListener('input', () => {
+          currencyInputs[i].value = convertToCurrency(parseCurrencyToFloat(currencyInputs[i].value));
+        });
+      }
+      updateResults();
+    }
+  });
+</script>
+</body>
+</html>
