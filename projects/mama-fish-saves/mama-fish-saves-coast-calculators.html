@@ -31,10 +31,14 @@ permalink: /mfs-coast.html
     padding: 1rem 0;
   }
   .mama-fish-saves-calculator h3.calculator-title, .mama-fish-saves-calculator .calculator-result h4 {
+    background-color: #34b3b7;
+    color: white;
     padding: 1rem 0;
-    //font-size: 2rem;
     text-align: center;
     text-transform: uppercase;
+  }
+  .mama-fish-saves-calculator .calculator-result h4 {
+    background-color: #e2b627;
   }
   .mama-fish-saves-calculator h4.calculator-group-title {
     background-color: #34b3b7;
@@ -66,7 +70,6 @@ permalink: /mfs-coast.html
     max-width: 50%;
     padding: 0.5rem;
     margin: 0 0.25rem;
-    //font-size: 1rem;
     border: 1px solid #ddd;
   }
   .mama-fish-saves-calculator .calculator-input input:focus {
@@ -121,27 +124,23 @@ permalink: /mfs-coast.html
     cursor: pointer;
   }
   .mama-fish-saves-calculator .calculator-result {
-    //font-size: 0.9rem;
-    margin-top: 2rem;
+    margin: 2rem 1rem;
     overflow-x: auto;
   }
   .mama-fish-saves-calculator .calculator-result .result-value {
     font-weight: bold;
   }
   .mama-fish-saves-calculator .calculator-result .result-error {
-    //font-size: 1.5rem;
-    color: #ac0000;
+      color: #ac0000;
   }
   .mama-fish-saves-calculator .calculator-result .calculator-highlighted-result {
     text-align: center;
     background-color: #ac0000;
     color: white;
-    //font-size: 1.8rem;
   }
   .mama-fish-saves-calculator .calculator-result-table {
     max-width: 100%;
     overflow-x: scroll;
-    //font-size: 0.8rem;
   }
   .mama-fish-saves-calculator .calculator-result-table tr {
     transition: background-color 50ms, color 50ms;
@@ -183,6 +182,14 @@ permalink: /mfs-coast.html
     color: #414141;
     text-decoration: underline;
   }
+  .mama-fish-saves-calculator .calculator-result p {
+    padding: 0;
+    margin: 2rem 0 0 0;
+  }
+  .mama-fish-saves-calculator .calculator-result ol, .mama-fish-saves-calculator .calculator-result ul {
+    padding: 0 2rem 0 0;
+    margin: 0 2rem 2rem;
+  }
 </style>
 
 
@@ -193,18 +200,18 @@ permalink: /mfs-coast.html
     <div class="calculator-input">
       <label for="current-retirement-savings" id="current-retirement-savings-label">Current Retirement Savings</label><br />
       <span class="input-prefix">$</span>
-      <input type="text" class="currency" name="current-retirement-savings" id="current-retirement-savings" value="150000" min="0" />
+      <input type="text" class="currency" name="current-retirement-savings" id="current-retirement-savings" value="150,000" min="0" />
     </div>
     <div class="calculator-input">
       <label for="current-age" id="current-age-label">Current Age</label><br />
-      <input type="number" class="" name="current-age" id="current-age" value="32" min="18" max="75" step="1" />
+      <input type="number" class="" name="current-age" id="current-age" value="32" min="0" max="100" step="1" />
     </div>
     <div class="calculator-input">
       <label for="retirement-age" id="retirement-age-label">Retirement Age</label><br />
-      <input type="number" class="" name="retirement-age" id="retirement-age" value="60" min="18" max="75" step="1" />
+      <input type="number" class="" name="retirement-age" id="retirement-age" value="60" min="0" max="100" step="1" />
     </div>
     <div class="calculator-input">
-      <label for="expected-return" id="expected-return-label">8.0% expected return</label><br />
+      <label for="expected-return" id="expected-return-label">8.00% expected return</label><br />
       <input type="range" class="slider slider--percent" name="expected-return" id="expected-return" value="0.08" min="0.01" max="0.15" step="0.0025" />
     </div>
   </div>
@@ -230,7 +237,7 @@ permalink: /mfs-coast.html
       if (value == 0) {
         return '-';
       } else {
-        return '$' + value.toFixed(0).replace(/B(?=(d{3})+(?!d))/g, ",");
+        return '$' + value.toLocaleString(undefined, {maximumFractionDigits: 0});
       }
     }
     function parseCurrencyToFloat(value) {
@@ -251,7 +258,7 @@ permalink: /mfs-coast.html
     if (calculator) {
       console.log("Calculator found");
 
-      const inputs = document.querySelectorAll('input');
+      const inputs = calculator.querySelectorAll('input');
       const currencyInputs = calculator.querySelectorAll('input.currency');
       const currentRetirementSavingsInput = calculator.querySelector('input#current-retirement-savings');
       const currentRetirementSavingsLabel = calculator.querySelector('#current-retirement-savings-label');
@@ -267,31 +274,36 @@ permalink: /mfs-coast.html
         const currentAge = parseFloat(currentAgeInput.value) || 0;
         const retirementAge = parseFloat(retirementAgeInput.value) || 0;
         const expectedReturn = parseFloat(expectedReturnInput.value) || 0;
-        expectedReturnLabel.innerHTML = (expectedReturn * 100).toFixed(0) + '% expected return' ;
+        expectedReturnLabel.innerHTML = (expectedReturn * 100).toFixed(2) + '% expected return' ;
         if (outputDiv) {
           if (currentRetirementSavings < 0) {
             outputDiv.innerHTML = '';
             outputDiv.appendChild(tag('span', 'Set current retirement savings greater than 0', 'result-error'));
             return;
           }
-          if (currentAge < 18) {
+          if (currentAge < 0) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set current age greater than 18', 'result-error'));
+            outputDiv.appendChild(tag('span', 'Set current age greater than 0', 'result-error'));
             return;
           }
-          if (currentAge > 75) {
+          if (currentAge > 100) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set current age less than 75', 'result-error'));
+            outputDiv.appendChild(tag('span', 'Set current age less than 100', 'result-error'));
             return;
           }
-          if (retirementAge < 18) {
+          if (retirementAge < 0) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set retirement age greater than 18', 'result-error'));
+            outputDiv.appendChild(tag('span', 'Set retirement age greater than 0', 'result-error'));
             return;
           }
-          if (retirementAge > 75) {
+          if (retirementAge > 100) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set retirement age less than 75', 'result-error'));
+            outputDiv.appendChild(tag('span', 'Set retirement age less than 100', 'result-error'));
+            return;
+          }
+          if (currentAge >= retirementAge) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set current age less than retirement age', 'result-error'));
             return;
           }
           if (expectedReturn < 0.01) {
@@ -306,14 +318,38 @@ permalink: /mfs-coast.html
           }
 
           function calculateResult() {
-            let result = 1000;
+            const assetsAtRetirement = currentRetirementSavings * Math.pow(1 + expectedReturn, retirementAge - currentAge);
+
+            const monthly_4_0_spending = assetsAtRetirement * 0.040 / 12;
+            const monthly_3_5_spending = assetsAtRetirement * 0.035 / 12;
+            const monthly_3_0_spending = assetsAtRetirement * 0.030 / 12;
+
+            let result = assetsAtRetirement;
 
             let outputText = document.createDocumentFragment();
 
             let baseText = document.createElement('p');
-            baseText.appendChild(document.createTextNode("The result is "));
+            baseText.appendChild(document.createTextNode("Assets at retirement age if you coasted today: "));
             baseText.appendChild(tag('span', toCurrency(result), 'result-value'));
+
             outputText.appendChild(baseText);
+
+            outputText.appendChild(tag('p', 'This would support spending in retirement:'));
+            let resultList = document.createElement('ul');
+            let result_40 = document.createElement('li');
+            result_40.appendChild(document.createTextNode("4.0% Withdrawal Rate: "));
+            result_40.appendChild(tag('span', toCurrency(monthly_4_0_spending) + ' per month'));
+            let result_35 = document.createElement('li');
+            result_35.appendChild(document.createTextNode("3.5% Withdrawal Rate: "));
+            result_35.appendChild(tag('span', toCurrency(monthly_3_5_spending) + ' per month'));
+            let result_30 = document.createElement('li');
+            result_30.appendChild(document.createTextNode("3.0% Withdrawal Rate: "));
+            result_30.appendChild(tag('span', toCurrency(monthly_3_0_spending) + ' per month'));
+
+            resultList.appendChild(result_40);
+            resultList.appendChild(result_35);
+            resultList.appendChild(result_30);
+            outputText.appendChild(resultList);
 
             return outputText;
           }
@@ -353,22 +389,22 @@ permalink: /mfs-coast.html
     <div class="calculator-input">
       <label for="target-monthly-spending-in-retirement" id="target-monthly-spending-in-retirement-label">Target Monthly Spending in Retirement</label><br />
       <span class="input-prefix">$</span>
-      <input type="text" class="currency" name="target-monthly-spending-in-retirement" id="target-monthly-spending-in-retirement" value="4000" min="0" />
+      <input type="text" class="currency" name="target-monthly-spending-in-retirement" id="target-monthly-spending-in-retirement" value="4,000" min="0" />
     </div>
     <div class="calculator-input">
-      <label for="target-withdrawal-rate" id="target-withdrawal-rate-label">3.5000000000000004% target withdrawal rate</label><br />
+      <label for="target-withdrawal-rate" id="target-withdrawal-rate-label">3.50% target withdrawal rate</label><br />
       <input type="range" class="slider slider--percent" name="target-withdrawal-rate" id="target-withdrawal-rate" value="0.035" min="0.01" max="0.1" step="0.0025" />
     </div>
     <div class="calculator-input">
       <label for="target-coast-age" id="target-coast-age-label">Target Coast Age</label><br />
-      <input type="number" class="" name="target-coast-age" id="target-coast-age" value="35" min="18" max="75" step="1" />
+      <input type="number" class="" name="target-coast-age" id="target-coast-age" value="35" min="0" max="100" step="1" />
     </div>
     <div class="calculator-input">
       <label for="target-retirement-age" id="target-retirement-age-label">Target Retirement Age</label><br />
-      <input type="number" class="" name="target-retirement-age" id="target-retirement-age" value="50" min="18" max="75" step="1" />
+      <input type="number" class="" name="target-retirement-age" id="target-retirement-age" value="50" min="0" max="100" step="1" />
     </div>
     <div class="calculator-input">
-      <label for="expected-return" id="expected-return-label">8.0% expected return</label><br />
+      <label for="expected-return" id="expected-return-label">8.00% expected return</label><br />
       <input type="range" class="slider slider--percent" name="expected-return" id="expected-return" value="0.08" min="0.01" max="0.15" step="0.0025" />
     </div>
   </div>
@@ -394,7 +430,7 @@ permalink: /mfs-coast.html
       if (value == 0) {
         return '-';
       } else {
-        return '$' + value.toFixed(0).replace(/B(?=(d{3})+(?!d))/g, ",");
+        return '$' + value.toLocaleString(undefined, {maximumFractionDigits: 0});
       }
     }
     function parseCurrencyToFloat(value) {
@@ -415,7 +451,7 @@ permalink: /mfs-coast.html
     if (calculator) {
       console.log("Calculator found");
 
-      const inputs = document.querySelectorAll('input');
+      const inputs = calculator.querySelectorAll('input');
       const currencyInputs = calculator.querySelectorAll('input.currency');
       const targetMonthlySpendingInRetirementInput = calculator.querySelector('input#target-monthly-spending-in-retirement');
       const targetMonthlySpendingInRetirementLabel = calculator.querySelector('#target-monthly-spending-in-retirement-label');
@@ -434,8 +470,8 @@ permalink: /mfs-coast.html
         const targetCoastAge = parseFloat(targetCoastAgeInput.value) || 0;
         const targetRetirementAge = parseFloat(targetRetirementAgeInput.value) || 0;
         const expectedReturn = parseFloat(expectedReturnInput.value) || 0;
-        targetWithdrawalRateLabel.innerHTML = (targetWithdrawalRate * 100).toFixed(0) + '% target withdrawal rate' ;
-        expectedReturnLabel.innerHTML = (expectedReturn * 100).toFixed(0) + '% expected return' ;
+        targetWithdrawalRateLabel.innerHTML = (targetWithdrawalRate * 100).toFixed(2) + '% target withdrawal rate' ;
+        expectedReturnLabel.innerHTML = (expectedReturn * 100).toFixed(2) + '% expected return' ;
         if (outputDiv) {
           if (targetMonthlySpendingInRetirement < 0) {
             outputDiv.innerHTML = '';
@@ -452,24 +488,29 @@ permalink: /mfs-coast.html
             outputDiv.appendChild(tag('span', 'Set target withdrawal rate less than 10.0%', 'result-error'));
             return;
           }
-          if (targetCoastAge < 18) {
+          if (targetCoastAge < 0) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set target coast age greater than 18', 'result-error'));
+            outputDiv.appendChild(tag('span', 'Set target coast age greater than 0', 'result-error'));
             return;
           }
-          if (targetCoastAge > 75) {
+          if (targetCoastAge > 100) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set target coast age less than 75', 'result-error'));
+            outputDiv.appendChild(tag('span', 'Set target coast age less than 100', 'result-error'));
             return;
           }
-          if (targetRetirementAge < 18) {
+          if (targetRetirementAge < 0) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set target retirement age greater than 18', 'result-error'));
+            outputDiv.appendChild(tag('span', 'Set target retirement age greater than 0', 'result-error'));
             return;
           }
-          if (targetRetirementAge > 75) {
+          if (targetRetirementAge > 100) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set target retirement age less than 75', 'result-error'));
+            outputDiv.appendChild(tag('span', 'Set target retirement age less than 100', 'result-error'));
+            return;
+          }
+          if (targetCoastAge >= targetRetirementAge) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set target coast age less than target retirement age', 'result-error'));
             return;
           }
           if (expectedReturn < 0.01) {
@@ -484,15 +525,21 @@ permalink: /mfs-coast.html
           }
 
           function calculateResult() {
-            let result = 1000;
+            const retirementAssets = targetMonthlySpendingInRetirement * 12 / targetWithdrawalRate;
+            const assetsNeededToCoast = retirementAssets / Math.pow(1 + expectedReturn, targetRetirementAge - targetCoastAge);
 
             let outputText = document.createDocumentFragment();
 
             let baseText = document.createElement('p');
-            baseText.appendChild(document.createTextNode("The result is "));
-            baseText.appendChild(tag('span', toCurrency(result), 'result-value'));
-            outputText.appendChild(baseText);
+            baseText.appendChild(document.createTextNode("Assets Needed to Coast: "));
+            baseText.appendChild(tag('span', toCurrency(assetsNeededToCoast), 'result-value'));
 
+            let totalText = document.createElement('p');
+            totalText.appendChild(document.createTextNode("Assets at Retirement Age: "));
+            totalText.appendChild(tag('span', toCurrency(retirementAssets)));
+
+            outputText.appendChild(baseText);
+            outputText.appendChild(totalText);
             return outputText;
           }
 
