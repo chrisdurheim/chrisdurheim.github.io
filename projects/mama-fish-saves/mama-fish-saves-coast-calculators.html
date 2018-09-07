@@ -131,7 +131,10 @@ permalink: /mfs-coast.html
     font-weight: bold;
   }
   .mama-fish-saves-calculator .calculator-result .result-error {
-      color: #ac0000;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2rem;
+    color: #ac0000;
   }
   .mama-fish-saves-calculator .calculator-result .calculator-highlighted-result {
     text-align: center;
@@ -183,12 +186,20 @@ permalink: /mfs-coast.html
     text-decoration: underline;
   }
   .mama-fish-saves-calculator .calculator-result p {
+    text-align: center;
     padding: 0;
     margin: 2rem 0 0 0;
+    font-size: 2rem;
+  }
+  .mama-fish-saves-calculator .calculator-result span.result-focus {
+    font-size: 2rem;
   }
   .mama-fish-saves-calculator .calculator-result ol, .mama-fish-saves-calculator .calculator-result ul {
-    padding: 0 2rem 0 0;
+    text-align: center;
+    list-style: none;
+    padding: 0;
     margin: 0 2rem 2rem;
+    font-size: 1.8rem;
   }
 </style>
 
@@ -278,42 +289,42 @@ permalink: /mfs-coast.html
         if (outputDiv) {
           if (currentRetirementSavings < 0) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set current retirement savings greater than 0', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set current retirement savings greater than 0', 'result-error'));
             return;
           }
           if (currentAge < 0) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set current age greater than 0', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set current age greater than 0', 'result-error'));
             return;
           }
           if (currentAge > 100) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set current age less than 100', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set current age less than 100', 'result-error'));
             return;
           }
           if (retirementAge < 0) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set retirement age greater than 0', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set retirement age greater than 0', 'result-error'));
             return;
           }
           if (retirementAge > 100) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set retirement age less than 100', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set retirement age less than 100', 'result-error'));
             return;
           }
           if (currentAge >= retirementAge) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set current age less than retirement age', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set current age less than retirement age', 'result-error'));
             return;
           }
           if (expectedReturn < 0.01) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set expected return greater than 1.0%', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set expected return greater than 1.0%', 'result-error'));
             return;
           }
           if (expectedReturn > 0.15) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set expected return less than 15.0%', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set expected return less than 15.0%', 'result-error'));
             return;
           }
 
@@ -475,52 +486,52 @@ permalink: /mfs-coast.html
         if (outputDiv) {
           if (targetMonthlySpendingInRetirement < 0) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set target monthly spending in retirement greater than 0', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set target monthly spending in retirement greater than 0', 'result-error'));
             return;
           }
           if (targetWithdrawalRate < 0.01) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set target withdrawal rate greater than 1.0%', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set target withdrawal rate greater than 1.0%', 'result-error'));
             return;
           }
           if (targetWithdrawalRate > 0.1) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set target withdrawal rate less than 10.0%', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set target withdrawal rate less than 10.0%', 'result-error'));
             return;
           }
           if (targetCoastAge < 0) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set target coast age greater than 0', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set target coast age greater than 0', 'result-error'));
             return;
           }
           if (targetCoastAge > 100) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set target coast age less than 100', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set target coast age less than 100', 'result-error'));
             return;
           }
           if (targetRetirementAge < 0) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set target retirement age greater than 0', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set target retirement age greater than 0', 'result-error'));
             return;
           }
           if (targetRetirementAge > 100) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set target retirement age less than 100', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set target retirement age less than 100', 'result-error'));
             return;
           }
           if (targetCoastAge >= targetRetirementAge) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set target coast age less than target retirement age', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set target coast age less than target retirement age', 'result-error'));
             return;
           }
           if (expectedReturn < 0.01) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set expected return greater than 1.0%', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set expected return greater than 1.0%', 'result-error'));
             return;
           }
           if (expectedReturn > 0.15) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set expected return less than 15.0%', 'result-error'));
+            outputDiv.appendChild(tag('p', 'Set expected return less than 15.0%', 'result-error'));
             return;
           }
 
