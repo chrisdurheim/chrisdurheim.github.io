@@ -1,0 +1,549 @@
+---
+layout: null
+sitemap: false
+permalink: /playground.html
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/css/ymoyl-style.css">
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700" rel="stylesheet">
+  <title>Life Energy Calculator</title>
+</head>
+<body>
+  <script type="text/javascript" src="script.js"></script>
+
+<form name="calc" method="post" action="#">
+
+<table border='1' width='90%' cellpadding='4' cellspacing='0' bgcolor='#FFFFFF'>
+<tbody>
+<tr bgcolor='#FFFFFF'>
+<td colspan="3" align="center">
+<font face='helvetica neue' size='4' color='#ea5781'><b> Retirement Savings Calculator V3 </b></font>
+</td>
+</tr>
+<tr bgcolor='#FFFFFF'>
+<td colspan='3'>
+<font face='helvetica neue' size='2' color='#ea5781'>
+This calculator will help you to estimate the amount of money you will need to have saved by retirement age in order to meet your desired retirement income goals -- along with estimating how much you need to be setting aside now in order to fully fund your plan. You have the option of factoring in inflation, up to three post-retirement incomes, and a one-time benefit (sale of home, etc.). You can also print out retirement planning reports for any number of what-if scenarios.
+<p>
+Clicking in any field will display help and special instructions in the right-hand column.
+</p>
+</font>
+</td>
+</tr>
+
+
+<tr bgcolor='#FFFFFF'>
+<td align="left">
+<font face='helvetica neue' size='2' color='#ea5781'><b>Retirement Needs</b></font>
+</td>
+<td align="center">
+<font face='helvetica neue' size='2' color='#ea5781'><b>Combined</b></font>
+</td>
+<td align="center">
+<font face='helvetica neue' size='2' color='#ea5781'><b><strong>Explain</b></font>
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Enter age at the end of current year (#):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="now_age_1" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(1,1)" />
+</td>
+<td valign="top" width="125" align="center" bgcolor='#FFFFFF' rowspan="7">
+
+<div id="help_1" width="120" align="left">
+</div>
+
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Enter the age you plan to retire at (#):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="retire_age_1" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(1,2)" />
+</td>
+
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Enter life expectancy (#):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="life_age_1" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(1,3)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Desired annual retirement income ($):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="ann_ret_inc" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(1,4)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Every <input type="text" name="reduce_ret_inc_yrs" value="" size="2" onKeyUp="clear_results(this.form)" onFocus="help(1,5)" />
+years of retirement, reduce our income need by (%):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="reduce_ret_inc_perc" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(1,6)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Desired estate ($):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="estate" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(1,7)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Enter the expected average annual rate of inflation (%):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="inflate" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(1,8)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td align="left">
+<font face='helvetica neue' size='2' color='#ea5781'><b>Retirement Funding</b></font>
+</td>
+<td align="center">
+<font face='helvetica neue' size='2' color='#ea5781'><b>Combined</b></font>
+</td>
+<td align="center">
+<font face='helvetica neue' size='2' color='#ea5781'><b>Explain</b></font>
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Enter the amount of your current retirement savings ($):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="cur_savings_1" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(2,9)" />
+</td>
+<td valign="top" width="125" align="center" bgcolor='#FFFFFF' rowspan="5">
+
+<div id="help_2" width="120" align="left">
+</div>
+
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Enter the amount of your current monthly contributions ($):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="cur_contrib_1" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(2,10)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Age to stop contributions ($):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="stop_contrib_1" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(2,11)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Enter the Annual Interest Rate you expect to earn (%):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="rate" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(2,12)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Enter combined Federal & State Tax Rate during retirement (%):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="tax_rate" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(2,13)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td align="left">
+<font face='helvetica neue' size='2' color='#ea5781'><b>One-Time Benefits</b></font>
+</td>
+<td align="center">
+<font face='helvetica neue' size='2' color='#ea5781'><b>Combined</b></font>
+</td>
+<td align="center">
+<font face='helvetica neue' size='2' color='#ea5781'><b>Explain</b></font>
+</td>
+</tr>
+
+
+
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+<input type="text" name="one_time_amt_name_1" value="One-Time Benefit #1" size="30" onFocus="help(3,14)"> ($):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="one_time_amt_1" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(3,15)" />
+</td>
+<td valign="top" width="125" align="center" bgcolor='#FFFFFF' rowspan="8">
+
+<div id="help_3" width="120" align="left">
+</div>
+
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Age to Apply One-Time Benefit #1 (#):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="one_time_age_1" value="" size="2" onKeyUp="clear_results(this.form)" onFocus="help(3,16)" />
+</td>
+</tr>
+
+
+
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+<input type="text" name="one_time_amt_name_2" value="One-Time Benefit #2" size="30" onFocus="help(3,17)"> ($):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="one_time_amt_2" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(3,18)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Age to Apply One-Time Benefit #2 (#):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="one_time_age_2" value="" size="2" onKeyUp="clear_results(this.form)" onFocus="help(3,19)" />
+</td>
+</tr>
+
+
+
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+<input type="text" name="one_time_amt_name_3" value="One-Time Benefit #3" size="30" onFocus="help(3,20)"> ($):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="one_time_amt_3" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(3,21)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Age to Apply One-Time Benefit #3 (#):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="one_time_age_3" value="" size="2" onKeyUp="clear_results(this.form)" onFocus="help(3,22)" />
+</td>
+</tr>
+
+
+
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+<input type="text" name="one_time_amt_name_4" value="One-Time Benefit #4" size="30" onFocus="help(3,23)"> ($):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="one_time_amt_4" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(3,24)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Age to Apply One-Time Benefit #4 (#):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="one_time_age_4" value="" size="2" onKeyUp="clear_results(this.form)" onFocus="help(3,25)" />
+</td>
+</tr>
+
+
+<tr bgcolor='#FFFFFF'>
+<td align="left">
+<font face='helvetica neue' size='2' color='#ea5781'><b>Post-Retirement Income (Pension, SS, Wages, etc.)</b></font>
+</td>
+<td align="center">
+<font face='helvetica neue' size='2' color='#ea5781'><b>Combined</b></font>
+</td>
+<td align="center">
+<font face='helvetica neue' size='2' color='#ea5781'><b>Explain</b></font>
+</td>
+</tr>
+
+
+
+
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+<input type="text" name="ret_1_name" value="Monthly Retirement income #1" size="30" onFocus="help(4,26)"> ($):<br />
+Annual COL Adjustment <input type="text" name="ret_1_col" value="" size="3" onKeyUp="clear_results(this.form)" onFocus="help(4,27)" />%
+Starting <select name="ret_1_col_start" size="1" onChange="clear_results(this.form)" onFocus="help(4,28)" />
+<option value="0">Now</option>
+<option value="1">Retirement</option>
+</select>
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="ret_inc_1_1" value="" size="10"
+
+onKeyUp="clear_results(this.form)" onFocus="help(4,29)" />
+</td>
+<td valign="top" width="125" align="center" bgcolor='#FFFFFF' rowspan="6">
+
+<div id="help_4" width="120" align="left">
+</div>
+
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Start & Stop Ages for Retirement Income #1 ($):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="ret_1_start_age_1" value="" size="2" onKeyUp="clear_results(this.form)" onFocus="help(4,30)" />
+to
+<input type="text" name="ret_1_stop_age_1" value="" size="2" onKeyUp="clear_results(this.form)" onFocus="help(4,31)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+<input type="text" name="ret_2_name" value="Monthly Retirement income #2" size="30" onFocus="help(4,32)"> ($):<br />
+Annual COL Adjustment <input type="text" name="ret_2_col" value="" size="3" onKeyUp="clear_results(this.form)" onFocus="help(4,33)" />%
+Starting <select name="ret_2_col_start" size="1" onChange="clear_results(this.form)" onFocus="help(4,34)" />
+<option value="0">Now</option>
+<option value="1">Retirement</option>
+</select>
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="ret_inc_2_1" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(4,35)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Start & Stop Ages for Retirement Income #2 ($):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="ret_2_start_age_1" value="" size="2" onKeyUp="clear_results(this.form)" onFocus="help(4,36)" />
+to
+<input type="text" name="ret_2_stop_age_1" value="" size="2" onKeyUp="clear_results(this.form)" onFocus="help(4,37)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+<input type="text" name="ret_3_name" value="Monthly Retirement income #3" size="30" onFocus="help(4,38)"> ($):<br />
+Annual COL Adjustment <input type="text" name="ret_3_col" value="" size="3" onKeyUp="clear_results(this.form)" onFocus="help(4,39)" />%
+Starting <select name="ret_3_col_start" size="1" onChange="clear_results(this.form)" onFocus="help(4,40)" />
+<option value="0">Now</option>
+<option value="1">Retirement</option>
+</select>
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="ret_inc_3_1" value="" size="10" onKeyUp="clear_results(this.form)" onFocus="help(4,41)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Start & Stop Ages for Retirement Income #3 ($):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="ret_3_start_age_1" value="" size="2" onKeyUp="clear_results(this.form)" onFocus="help(4,42)" />
+to
+<input type="text" name="ret_3_stop_age_1" value="" size="2" onKeyUp="clear_results(this.form)" onFocus="help(4,43)" />
+</td>
+</tr>
+
+
+<tr>
+<td bgcolor='#FFFFFF' colspan="3" align="center">
+<input type="button" style='99c613' value="Compute & Create Schedule" onClick="schedule(this.form)" />
+<input type="button" style='99c613' value="Reset" onClick="reset_calc(this.form)" />
+<input type="hidden" name="report_date" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td align="left" colspan="2">
+<font face='helvetica neue' size='2' color='#ea5781'><b>Results</b></font>
+</td>
+<td align="center">
+<font face='helvetica neue' size='2' color='#ea5781'><b>Explain</b></font>
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Savings Needed at Retirement Age:
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="accum_npv" size="10" onFocus="help(5,44)" />
+</td>
+<td valign="top" width="125" align="center" bgcolor='#FFFFFF' rowspan="6">
+
+<div id="help_5" width="120" align="left">
+</div>
+
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Savings at Retirement Based on Present Entries:
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="ret_fund" size="10" onFocus="help(5,45)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Savings Surplus (negative number indicates a ShortFall):
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="save_gap" size="10" onFocus="help(5,46)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Additional Monthly Contribution Needed to Fully Fund Plan:
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="add_contrib" size="10" onFocus="help(5,47)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Present Monthly Contributions:
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="now_contrib" size="10" onFocus="help(5,48)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td bgcolor='#FFFFFF'>
+<font face='helvetica neue' size='2' color='#764008'>
+Total Monthly Contribution Needed to Fully Fund Plan:
+</font>
+</td>
+<td align="center" bgcolor='#FFFFFF'>
+<input type="text" name="tot_contrib" size="10" onFocus="help(5,49)" />
+</td>
+</tr>
+
+<tr>
+<td bgcolor='#FFFFFF' colspan="3" align="center">
+<input type="button" style='99c613' value="Printer Friendly Report" onClick="create_report(this.form)" />
+</td>
+</tr>
+
+<tr bgcolor='#FFFFFF'>
+<td align="center" colspan="3" bgcolor='#FFFFFF'>
+<div id="sched_div">
+</div>
+</td>
+</tr>
+
+
+</tbody>
+</table>
+
+</form>
+</body>
+</html>
