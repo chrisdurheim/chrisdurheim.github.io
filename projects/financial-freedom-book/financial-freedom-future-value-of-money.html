@@ -1,0 +1,405 @@
+---
+layout: null
+sitemap: false
+permalink: /ffb/future-value-of-money.html
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.0.2' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/plugins/instagram-feed/css/sb-instagram.min.css?ver=1.9.1' type='text/css' media='all' />
+<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/plugins/ultimate-social-media-icons/css/sfsi-style.css?ver=4.9.8' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/utility.css?ver=1.3' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/animate.css?ver=1.3' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/bootstrap.min.css?ver=1.3' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/unyson-framework.css?ver=1.3' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/style.css?ver=1.3' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/ie8fix.css?ver=1.3' type='text/css' media='all' />
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,regular,italic,600,600italic,700,700italic,800,800italic' type='text/css' media='all' />
+<style>
+.financial-freedom-calculator {
+  background-color: #f7f7f7;
+  margin: 2rem auto;
+  padding: 2rem 4rem;
+  border-radius: 4rem;
+  border: 2px solid #3498db;
+  max-width: 800px;
+  width: 800px;
+  max-width: 95%;
+  clear: both;
+}
+.financial-freedom-calculator .currency {
+  font-size: initial;
+  vertical-align: initial;
+  position: initial;
+  left: initial;
+  font-weight: initial;
+}
+.financial-freedom-calculator .calculator-input-group {
+  padding: 1rem 0;
+}
+.financial-freedom-calculator h3.calculator-title {
+  padding: 1rem 1rem;
+  border-radius: 0.5rem;
+  background-color: #3498db;
+  color: white;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+.financial-freedom-calculator h4.calculator-group-title {
+  border-radius: 0.5rem;
+  background-color: #3498db;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  color: white;
+  text-align: center;
+}
+.financial-freedom-calculator .calculator-result h4 {
+  width: fit-content;
+  min-width: 80%;
+  margin: 0 auto 2rem;
+  border-radius: 0.5rem;
+  padding: 1.125rem 8rem;
+  background-color: #414141;
+  color: white;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.financial-freedom-calculator .calculator-input {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1rem 0 0;
+}
+.financial-freedom-calculator .calculator-input label {
+  flex: 0 0 100%;
+  padding: 0.25rem 0;
+  font-size: 1.75rem;
+}
+.financial-freedom-calculator .calculator-input .input-prefix {
+  flex: 0 0 auto;
+  padding: 0.5rem;
+  margin: 0 0.25rem;
+  font-size: 2rem;
+}
+.financial-freedom-calculator .calculator-input input {
+  font-size: 2rem;
+  flex: 1 0 auto;
+  width: auto;
+  max-width: 50%;
+  padding: 0.5rem;
+  margin: 0 0.25rem;
+  border: 1px solid #3498db;
+  transition: box-shadow 250ms, color 250ms;
+}
+.financial-freedom-calculator .calculator-input input:focus {
+  outline: none;
+  box-shadow: 0 0 0.5rem 0 #3498db;
+  color: black;
+}
+.financial-freedom-calculator .calculator-input select {
+  background-color: white;
+  flex: 1 0 auto;
+  font-weight: normal;
+
+  font-size: 2rem;
+  width: auto;
+  max-width: 50%;
+  padding: 0.5rem;
+  margin: 0 0.25rem;
+  border: 1px solid #3498db;
+  transition: box-shadow 250ms, color 250ms;
+}
+.financial-freedom-calculator .calculator-input select:focus {
+  outline: none;
+  box-shadow: 0 0 0.5rem 0 #3498db;
+  color: black;
+}
+.financial-freedom-calculator input.slider {
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 100%;
+}
+.financial-freedom-calculator .slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 0.5rem;
+  border-radius: 0.5rem;
+  border-color: #ffffff;
+  color: #ffffff;
+  background: #ffffff;
+  outline: none;
+  opacity: 1;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+  padding: 0 !important;
+  overflow: visible;
+}
+.financial-freedom-calculator .slider:hover {
+  background: #FFFFFF;
+}
+.financial-freedom-calculator .slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.5rem;
+  background: #3498db;
+  cursor: pointer;
+}
+.financial-freedom-calculator .slider::-moz-range-thumb {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.5rem;
+  background: #3498db;
+  cursor: pointer;
+}
+.financial-freedom-calculator .calculator-result {
+  margin-top: 2rem;
+  overflow-x: auto;
+}
+.financial-freedom-calculator p {
+  font-size: 1.75rem;
+}
+.financial-freedom-calculator .calculator-result .result-value {
+  font-weight: bold;
+}
+.financial-freedom-calculator .calculator-result .result-error {
+  color: #ac0000;
+}
+.financial-freedom-calculator .calculator-result .calculator-highlighted-result {
+  text-align: center;
+  background-color: #414141;
+  color: white;
+  font-size: 2rem;
+  padding: 0.5rem 2rem;
+  border-radius: 0.5rem;
+}
+.financial-freedom-calculator .calculator-result-table {
+  max-width: 100%;
+  overflow-x: scroll;
+  text-align: center;
+  font-size: 1.75rem;
+}
+.financial-freedom-calculator .calculator-result-table table {
+  border: 1px solid #414141;
+  border-radius: 0.5rem;
+}
+.financial-freedom-calculator .calculator-result-table tr {
+  transition: background-color 50ms, color 50ms;
+}
+.financial-freedom-calculator .calculator-result-table tr:hover td {
+  background-color: #3498db;
+  color: white;
+}
+.financial-freedom-calculator .calculator-result-table tr.active td {
+  background-color: #3498db;
+  color: white;
+}
+.financial-freedom-calculator .calculator-result-table th {
+  text-align: center;
+  background-color: #414141;
+  color: white;
+}
+.financial-freedom-calculator .calculator-result-table td, .calculator-result-table th {
+  padding: 0 0.5rem;
+}
+.financial-freedom-calculator .calculator-result-table .currency-column {
+  text-align: center;
+}
+.financial-freedom-calculator button.calculator-button {
+  width: 100%;
+  background-color: #3498db;
+  margin: 0 auto;
+  cursor: pointer;
+  text-align: center;
+}
+.financial-freedom-calculator .calculator-attribution {
+  text-align: center;
+  font-size: 0.8rem;
+  font-style: italic;
+  margin-top: 2rem;
+  padding: 1rem 0.5rem;
+  border-top: 1px solid #3498db;
+}
+.financial-freedom-calculator .calculator-attribution a {
+  font-size: 0.8rem;
+  color: #3498db;
+  text-decoration: none;
+}
+.financial-freedom-calculator .calculator-attribution a:hover {
+  color: #414141;
+  text-decoration: underline;
+}
+</style>
+<div class="financial-freedom-calculator" id="future-value-of-money">
+  <h3 class="calculator-title">Future Value of Money</h3>
+  <div class="calculator-input-group" id="">
+    <div class="calculator-input">
+      <label for="amount" id="amount-label">Amount</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" class="currency" name="amount" id="amount" value="10" min="0" />
+    </div>
+    <div class="calculator-input">
+      <label for="frequency" id="frequency-label">Contributed</label>
+      <select name="frequency" id="frequency">
+        <option selected="selected" value="0">Today</option>
+        <option value="1">Yearly</option>
+        <option value="12">Monthly</option>
+        <option value="52.1775">Weekly</option>
+        <option value="365.2425">Daily</option>
+      </select>
+    </div>
+    <div class="calculator-input">
+      <label for="expected-investment-annual-return" id="expected-investment-annual-return-label">7.000000000000001% expected investment annual return</label><br />
+      <input type="range" class="slider slider--percent" name="expected-investment-annual-return" id="expected-investment-annual-return" value="0.07" min="0.01" max="0.15" step="0.005" />
+    </div>
+    <div class="calculator-input">
+      <label for="years-of-growth" id="years-of-growth-label">12 years of growth</label><br />
+      <input type="range" class="slider" name="years-of-growth" id="years-of-growth" value="12" min="1" max="100" step="1" />
+    </div>
+  </div>
+  <div class="calculator-result"></div>
+</div>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("Calculator js running");
+    function tag(type, value = undefined, klass = undefined, id = undefined) {
+      let el = document.createElement(type);
+      if (klass) {
+        el.setAttribute('class', klass);
+      }
+      if (id) {
+        el.setAttribute('id', id);
+      }
+      if (value) {
+        el.innerText = value;
+      }
+      return el;
+    }
+    function toCurrency(value) {
+      if (value == 0) {
+        return '-';
+      } else {
+        return '$' + value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2})
+      }
+    }
+    console.log("Calculator helper functions loaded");
+    const calculator = document.querySelector('#future-value-of-money');
+
+    if (calculator) {
+      console.log("Calculator found");
+
+      const inputs = document.querySelectorAll('input');
+      const currencyInputs = calculator.querySelectorAll('input.currency');
+      const amountInput = calculator.querySelector('input#amount');
+      const amountLabel = calculator.querySelector('#amount-label');
+      const frequencyInput = calculator.querySelector('select#frequency');
+      const frequencyLabel = calculator.querySelector('#frequency-label');
+      const expectedInvestmentAnnualReturnInput = calculator.querySelector('input#expected-investment-annual-return');
+      const expectedInvestmentAnnualReturnLabel = calculator.querySelector('#expected-investment-annual-return-label');
+      const yearsOfGrowthInput = calculator.querySelector('input#years-of-growth');
+      const yearsOfGrowthLabel = calculator.querySelector('#years-of-growth-label');
+      const outputDiv = calculator.querySelector('#future-value-of-money .calculator-result');
+      function updateResults() {
+        const amount = parseFloat(amountInput.value) || 0;
+        const frequency = parseFloat(frequencyInput.value) || 0;
+        const expectedInvestmentAnnualReturn = parseFloat(expectedInvestmentAnnualReturnInput.value) || 0;
+        const yearsOfGrowth = parseFloat(yearsOfGrowthInput.value) || 0;
+        expectedInvestmentAnnualReturnLabel.innerHTML = (expectedInvestmentAnnualReturn * 100).toFixed(1) + '% expected investment annual return' ;
+        yearsOfGrowthLabel.innerHTML = yearsOfGrowth + ' years of growth' ;
+        if (outputDiv) {
+          if (amount < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set amount greater than 0', 'result-error'));
+            return;
+          }
+          if (expectedInvestmentAnnualReturn < 0.01) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set expected investment annual return greater than 1.0%', 'result-error'));
+            return;
+          }
+          if (expectedInvestmentAnnualReturn > 0.15) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set expected investment annual return less than 15.0%', 'result-error'));
+            return;
+          }
+          if (yearsOfGrowth < 1) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set years of growth greater than 1', 'result-error'));
+            return;
+          }
+          if (yearsOfGrowth > 100) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set years of growth less than 100', 'result-error'));
+            return;
+          }
+
+          function futureValue(payment, annualRate, years, compoundFrequency) {
+            /*
+              FUTURE VALUE CALCULATION
+
+              Let:
+                k = periods per year
+                n = number of years
+                r = investment annual growth rate
+                V = present value
+                P = periodic payment
+
+                Future Value = FV of PV + FV of Annuity of Periodic Payments (compounded at each period)
+                Future Value = V * (1 + r)^n + P * ((1 + r)^n - 1)/((1 + r)^(1/k) - 1)
+            */
+            if (compoundFrequency == 0) {
+              return payment * Math.pow(1 + annualRate, years);
+            } else {
+              const numerator = Math.pow(1 + annualRate, years) - 1;
+              const denomenator = Math.pow(1 + annualRate, 1 / compoundFrequency) - 1;
+              return payment * numerator / denomenator;
+            }
+          }
+
+          function calculateResult() {
+            let result = futureValue(amount, expectedInvestmentAnnualReturn, yearsOfGrowth, frequency);
+
+            let outputText = document.createDocumentFragment();
+
+            let baseText = tag('p', null, 'calculator-highlighted-result');
+            baseText.appendChild(document.createTextNode("Future Value: "));
+            baseText.appendChild(tag('span', toCurrency(result), 'result-value'));
+            outputText.appendChild(baseText);
+
+            return outputText;
+          }
+
+          outputDiv.innerHTML = '';
+          outputDiv.appendChild(calculateResult());
+        }
+      }
+
+      /* Set calculator to auto-update on input changes */
+      for (let i = 0; i < inputs.length; i += 1) {
+        inputs[i].addEventListener('input', () => {
+          updateResults();
+        });
+      }
+
+      frequencyInput.addEventListener('input', () => {
+        updateResults();
+      });
+
+      updateResults();
+    }
+  });
+</script>
+</body>
+</html>
