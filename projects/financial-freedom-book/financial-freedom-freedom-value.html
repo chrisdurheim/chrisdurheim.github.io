@@ -244,31 +244,26 @@ permalink: /ffb/future-value-of-money.html
   text-decoration: underline;
 }
 </style>
-<div class="financial-freedom-calculator" id="future-value-of-money">
-  <h3 class="calculator-title">Future Value of Money</h3>
+<div class="financial-freedom-calculator" id="freedom-value">
+  <h3 class="calculator-title">Freedom Value</h3>
   <div class="calculator-input-group" id="">
     <div class="calculator-input">
-      <label for="amount" id="amount-label">Amount</label><br />
+      <label for="current-retirement-account-balance" id="current-retirement-account-balance-label">Current Retirement Account Balance</label><br />
       <span class="input-prefix">$</span>
-      <input type="number" class="currency" name="amount" id="amount" value="10" min="0" />
+      <input type="number" class="currency" name="current-retirement-account-balance" id="current-retirement-account-balance" value="50000" min="0" />
     </div>
     <div class="calculator-input">
-      <label for="frequency" id="frequency-label">Contributed</label>
-      <select name="frequency" id="frequency">
-        <option selected="selected" value="0">Today</option>
-        <option value="1">Yearly</option>
-        <option value="12">Monthly</option>
-        <option value="52.1775">Weekly</option>
-        <option value="365.2425">Daily</option>
-      </select>
+      <label for="expected-investment-annual-return" id="expected-investment-annual-return-label">7.0% expected investment annual return</label><br />
+      <input type="range" class="slider slider--percent" name="expected-investment-annual-return" id="expected-investment-annual-return" value="0.07" min="0.0" max="0.15" step="0.005" />
     </div>
     <div class="calculator-input">
-      <label for="expected-investment-annual-return" id="expected-investment-annual-return-label">7.000000000000001% expected investment annual return</label><br />
-      <input type="range" class="slider slider--percent" name="expected-investment-annual-return" id="expected-investment-annual-return" value="0.07" min="0.01" max="0.15" step="0.005" />
+      <label for="expected-inflation-annual-rate" id="expected-inflation-annual-rate-label">2.5% expected inflation annual rate</label><br />
+      <input type="range" class="slider slider--percent" name="expected-inflation-annual-rate" id="expected-inflation-annual-rate" value="0.025" min="0.0" max="0.15" step="0.005" />
     </div>
     <div class="calculator-input">
-      <label for="years-of-growth" id="years-of-growth-label">12 years of growth</label><br />
-      <input type="range" class="slider" name="years-of-growth" id="years-of-growth" value="12" min="1" max="100" step="1" />
+      <label for="proposed-amount-saved" id="proposed-amount-saved-label">Proposed Amount Saved</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" class="currency" name="proposed-amount-saved" id="proposed-amount-saved" value="10" min="0" />
     </div>
   </div>
   <div class="calculator-result"></div>
@@ -296,37 +291,40 @@ permalink: /ffb/future-value-of-money.html
         return '$' + value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2})
       }
     }
+    function logbase(val, base) {
+      return Math.log(val) / Math.log(base);
+    }
     console.log("Calculator helper functions loaded");
-    const calculator = document.querySelector('#future-value-of-money');
+    const calculator = document.querySelector('#freedom-value');
 
     if (calculator) {
       console.log("Calculator found");
 
       const inputs = document.querySelectorAll('input');
       const currencyInputs = calculator.querySelectorAll('input.currency');
-      const amountInput = calculator.querySelector('input#amount');
-      const amountLabel = calculator.querySelector('#amount-label');
-      const frequencyInput = calculator.querySelector('select#frequency');
-      const frequencyLabel = calculator.querySelector('#frequency-label');
+      const currentRetirementAccountBalanceInput = calculator.querySelector('input#current-retirement-account-balance');
+      const currentRetirementAccountBalanceLabel = calculator.querySelector('#current-retirement-account-balance-label');
       const expectedInvestmentAnnualReturnInput = calculator.querySelector('input#expected-investment-annual-return');
       const expectedInvestmentAnnualReturnLabel = calculator.querySelector('#expected-investment-annual-return-label');
-      const yearsOfGrowthInput = calculator.querySelector('input#years-of-growth');
-      const yearsOfGrowthLabel = calculator.querySelector('#years-of-growth-label');
-      const outputDiv = calculator.querySelector('#future-value-of-money .calculator-result');
+      const expectedInflationAnnualRateInput = calculator.querySelector('input#expected-inflation-annual-rate');
+      const expectedInflationAnnualRateLabel = calculator.querySelector('#expected-inflation-annual-rate-label');
+      const proposedAmountSavedInput = calculator.querySelector('input#proposed-amount-saved');
+      const proposedAmountSavedLabel = calculator.querySelector('#proposed-amount-saved-label');
+      const outputDiv = calculator.querySelector('#freedom-value .calculator-result');
       function updateResults() {
-        const amount = parseFloat(amountInput.value) || 0;
-        const frequency = parseFloat(frequencyInput.value) || 0;
+        const currentRetirementAccountBalance = parseFloat(currentRetirementAccountBalanceInput.value) || 0;
         const expectedInvestmentAnnualReturn = parseFloat(expectedInvestmentAnnualReturnInput.value) || 0;
-        const yearsOfGrowth = parseFloat(yearsOfGrowthInput.value) || 0;
+        const expectedInflationAnnualRate = parseFloat(expectedInflationAnnualRateInput.value) || 0;
+        const proposedAmountSaved = parseFloat(proposedAmountSavedInput.value) || 0;
         expectedInvestmentAnnualReturnLabel.innerHTML = (expectedInvestmentAnnualReturn * 100).toFixed(1) + '% expected investment annual return' ;
-        yearsOfGrowthLabel.innerHTML = yearsOfGrowth + ' years of growth' ;
+        expectedInflationAnnualRateLabel.innerHTML = (expectedInflationAnnualRate * 100).toFixed(1) + '% expected inflation annual rate' ;
         if (outputDiv) {
-          if (amount < 0) {
+          if (currentRetirementAccountBalance < 0) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set amount greater than 0', 'result-error'));
+            outputDiv.appendChild(tag('span', 'Set current retirement account balance greater than 0', 'result-error'));
             return;
           }
-          if (expectedInvestmentAnnualReturn < 0.01) {
+          if (expectedInvestmentAnnualReturn < 0.0) {
             outputDiv.innerHTML = '';
             outputDiv.appendChild(tag('span', 'Set expected investment annual return greater than 1.0%', 'result-error'));
             return;
@@ -336,49 +334,50 @@ permalink: /ffb/future-value-of-money.html
             outputDiv.appendChild(tag('span', 'Set expected investment annual return less than 15.0%', 'result-error'));
             return;
           }
-          if (yearsOfGrowth < 1) {
+          if (expectedInflationAnnualRate < 0.0) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set years of growth greater than 1', 'result-error'));
+            outputDiv.appendChild(tag('span', 'Set expected inflation annual rate greater than 0.0%', 'result-error'));
             return;
           }
-          if (yearsOfGrowth > 100) {
+          if (expectedInflationAnnualRate > 0.15) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set years of growth less than 100', 'result-error'));
+            outputDiv.appendChild(tag('span', 'Set expected inflation annual rate less than 15.0%', 'result-error'));
             return;
           }
-
-          function futureValue(payment, annualRate, years, compoundFrequency) {
-            /*
-              FUTURE VALUE CALCULATION
-
-              Let:
-                k = periods per year
-                n = number of years
-                r = investment annual growth rate
-                V = present value
-                P = periodic payment
-
-                Future Value = FV of PV + FV of Annuity of Periodic Payments (compounded at each period)
-                Future Value = V * (1 + r)^n + P * ((1 + r)^n - 1)/((1 + r)^(1/k) - 1)
-            */
-            if (compoundFrequency == 0) {
-              return payment * Math.pow(1 + annualRate, years);
-            } else {
-              const numerator = Math.pow(1 + annualRate, years) - 1;
-              const denomenator = Math.pow(1 + annualRate, 1 / compoundFrequency) - 1;
-              return payment * numerator / denomenator;
-            }
+          if (proposedAmountSaved < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set proposed amount saved greater than 0', 'result-error'));
+            return;
+          }
+          if (expectedInflationAnnualRate >= expectedInvestmentAnnualReturn) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set expected inflation annual rate less than expected investment annual return', 'result-error'));
+            return;
           }
 
           function calculateResult() {
-            let result = futureValue(amount, expectedInvestmentAnnualReturn, yearsOfGrowth, frequency);
+            const daysBought = logbase(1 + proposedAmountSaved / currentRetirementAccountBalance, (1 + expectedInvestmentAnnualReturn) / (1 + expectedInflationAnnualRate))*365.2425;
 
             let outputText = document.createDocumentFragment();
 
             let baseText = tag('p', null, 'calculator-highlighted-result');
-            baseText.appendChild(document.createTextNode("Future Value: "));
-            baseText.appendChild(tag('span', toCurrency(result), 'result-value'));
+            baseText.appendChild(document.createTextNode(toCurrency(proposedAmountSaved) + " would buy "));
+            baseText.appendChild(tag('span', daysBought.toFixed(1) + ' days', 'result-value'));
+            baseText.appendChild(document.createTextNode(" of freedom"));
             outputText.appendChild(baseText);
+
+            const dayPrice = (Math.pow( (1 + expectedInvestmentAnnualReturn) / (1 + expectedInflationAnnualRate) , (1 / 365.2425 )) - 1) * currentRetirementAccountBalance;
+            let dayText = tag('p', null, 'calculator-highlighted-result');
+            dayText.appendChild(document.createTextNode('Price for an extra day: '));
+            dayText.appendChild(tag('span', toCurrency(dayPrice), 'result-value'));
+
+            const yearPrice = (((1 + expectedInvestmentAnnualReturn) / (1 + expectedInflationAnnualRate)) - 1) * currentRetirementAccountBalance;
+            let yearText = tag('p', null, 'calculator-highlighted-result');
+            yearText.appendChild(document.createTextNode('Price for an extra year: '));
+            yearText.appendChild(tag('span', toCurrency(yearPrice), 'result-value'));
+
+            outputText.appendChild(dayText);
+            outputText.appendChild(yearText);
 
             return outputText;
           }
@@ -394,10 +393,6 @@ permalink: /ffb/future-value-of-money.html
           updateResults();
         });
       }
-
-      frequencyInput.addEventListener('input', () => {
-        updateResults();
-      });
 
       updateResults();
     }
