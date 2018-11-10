@@ -1,7 +1,7 @@
 ---
 layout: null
 sitemap: false
-permalink: /ffb/savings-to-reach-fi.html
+permalink: /ffb/savings-to-fi.html
 ---
 
 
@@ -24,230 +24,9 @@ permalink: /ffb/savings-to-reach-fi.html
 <link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/style.css?ver=1.3' type='text/css' media='all' />
 <link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/ie8fix.css?ver=1.3' type='text/css' media='all' />
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,regular,italic,600,600italic,700,700italic,800,800italic' type='text/css' media='all' />
-<style>
-.financial-freedom-calculator {
-  background-color: #f7f7f7;
-  margin: 2rem auto;
-  padding: 2rem 4rem;
-  border-radius: 4rem;
-  border: 2px solid #3498db;
-  max-width: 800px;
-  width: 800px;
-  max-width: 95%;
-  clear: both;
-}
-.financial-freedom-calculator .currency {
-  font-size: initial;
-  vertical-align: initial;
-  position: initial;
-  left: initial;
-  font-weight: initial;
-}
-.financial-freedom-calculator .calculator-input-group {
-  padding: 1rem 0;
-}
-.financial-freedom-calculator h3.calculator-title {
-  padding: 1rem 1rem;
-  border-radius: 0.5rem;
-  background-color: #3498db;
-  color: white;
-  text-align: center;
-  text-transform: uppercase;
-  font-weight: 400;
-}
-.financial-freedom-calculator h4.calculator-group-title {
-  border-radius: 0.5rem;
-  background-color: #3498db;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  color: white;
-  text-align: center;
-}
-.financial-freedom-calculator .calculator-result h4 {
-  width: fit-content;
-  min-width: 80%;
-  margin: 0 auto 2rem;
-  border-radius: 0.5rem;
-  padding: 1.125rem 8rem;
-  background-color: #414141;
-  color: white;
-  text-align: center;
-  text-transform: uppercase;
-  font-weight: 400;
-}
-
-.financial-freedom-calculator .calculator-input {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 1rem 0 0;
-}
-.financial-freedom-calculator .calculator-input label {
-  flex: 0 0 100%;
-  padding: 0.25rem 0;
-  font-size: 1.75rem;
-}
-.financial-freedom-calculator .calculator-input .input-prefix {
-  flex: 0 0 auto;
-  padding: 0.5rem;
-  margin: 0 0.25rem;
-  font-size: 2rem;
-}
-.financial-freedom-calculator .calculator-input input {
-  font-size: 2rem;
-  flex: 1 0 auto;
-  width: auto;
-  max-width: 50%;
-  padding: 0.5rem;
-  margin: 0 0.25rem;
-  border: 1px solid #3498db;
-  transition: box-shadow 250ms, color 250ms;
-}
-.financial-freedom-calculator .calculator-input input:focus {
-  outline: none;
-  box-shadow: 0 0 0.5rem 0 #3498db;
-  color: black;
-}
-.financial-freedom-calculator .calculator-input select {
-  background-color: white;
-  flex: 1 0 auto;
-  font-weight: normal;
-
-  font-size: 2rem;
-  width: auto;
-  max-width: 50%;
-  padding: 0.5rem;
-  margin: 0 0.25rem;
-  border: 1px solid #3498db;
-  transition: box-shadow 250ms, color 250ms;
-}
-.financial-freedom-calculator .calculator-input select:focus {
-  outline: none;
-  box-shadow: 0 0 0.5rem 0 #3498db;
-  color: black;
-}
-.financial-freedom-calculator input.slider {
-  margin-top: 1rem;
-  width: 100%;
-  max-width: 100%;
-}
-.financial-freedom-calculator .slider {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 0.5rem;
-  border-radius: 0.5rem;
-  border-color: #ffffff;
-  color: #ffffff;
-  background: #ffffff;
-  outline: none;
-  opacity: 1;
-  -webkit-transition: .2s;
-  transition: opacity .2s;
-  margin-top: 1rem !important;
-  margin-bottom: 1rem !important;
-  padding: 0 !important;
-  overflow: visible;
-}
-.financial-freedom-calculator .slider:hover {
-  background: #FFFFFF;
-}
-.financial-freedom-calculator .slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 0.5rem;
-  background: #3498db;
-  cursor: pointer;
-}
-.financial-freedom-calculator .slider::-moz-range-thumb {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 0.5rem;
-  background: #3498db;
-  cursor: pointer;
-}
-.financial-freedom-calculator .calculator-result {
-  margin-top: 2rem;
-  overflow-x: auto;
-}
-.financial-freedom-calculator p {
-  font-size: 1.75rem;
-}
-.financial-freedom-calculator .calculator-result .result-value {
-  font-weight: bold;
-}
-.financial-freedom-calculator .calculator-result .result-error {
-  color: #ac0000;
-  font-size: 2rem;
-  font-weight: bold;
-}
-.financial-freedom-calculator .calculator-result .calculator-highlighted-result {
-  text-align: center;
-  background-color: #414141;
-  color: white;
-  font-size: 2rem;
-  padding: 0.5rem 2rem;
-  border-radius: 0.5rem;
-}
-.financial-freedom-calculator .calculator-result-table {
-  max-width: 100%;
-  overflow-x: scroll;
-  text-align: center;
-  font-size: 1.75rem;
-}
-.financial-freedom-calculator .calculator-result-table table {
-  border: 1px solid #414141;
-  border-radius: 0.5rem;
-}
-.financial-freedom-calculator .calculator-result-table tr {
-  transition: background-color 50ms, color 50ms;
-}
-.financial-freedom-calculator .calculator-result-table tr:hover td {
-  background-color: #3498db;
-  color: white;
-}
-.financial-freedom-calculator .calculator-result-table tr.active td {
-  background-color: #3498db;
-  color: white;
-}
-.financial-freedom-calculator .calculator-result-table th {
-  text-align: center;
-  background-color: #414141;
-  color: white;
-}
-.financial-freedom-calculator .calculator-result-table td, .calculator-result-table th {
-  padding: 0 0.5rem;
-}
-.financial-freedom-calculator .calculator-result-table .currency-column {
-  text-align: center;
-}
-.financial-freedom-calculator button.calculator-button {
-  width: 100%;
-  background-color: #3498db;
-  margin: 0 auto;
-  cursor: pointer;
-  text-align: center;
-}
-.financial-freedom-calculator .calculator-attribution {
-  text-align: center;
-  font-size: 0.8rem;
-  font-style: italic;
-  margin-top: 2rem;
-  padding: 1rem 0.5rem;
-  border-top: 1px solid #3498db;
-}
-.financial-freedom-calculator .calculator-attribution a {
-  font-size: 0.8rem;
-  color: #3498db;
-  text-decoration: none;
-}
-.financial-freedom-calculator .calculator-attribution a:hover {
-  color: #414141;
-  text-decoration: underline;
-}
-</style>
+{% include ff-book-css.html %}
 <div class="financial-freedom-calculator" id="savings-to-reach-financial-freedom">
-  <h3 class="calculator-title">Savings to Reach Financial Freedom</h3>
+  <h3 class="calculator-title">Savings to Financial Freedom</h3>
   <div class="calculator-input-group" id="">
     <div class="calculator-input">
       <label for="financial-freedom-target" id="financial-freedom-target-label">Financial Freedom Target</label><br />
@@ -264,7 +43,7 @@ permalink: /ffb/savings-to-reach-fi.html
       <input type="range" class="slider slider--percent" name="expected-investment-annual-return" id="expected-investment-annual-return" value="0.07" min="0.01" max="0.15" step="0.005" />
     </div>
     <div class="calculator-input">
-      <label for="years-to-reach-financial-freedom" id="years-to-reach-financial-freedom-label">15 years to reach financial freedom</label><br />
+      <label for="years-to-reach-financial-freedom" id="years-to-reach-financial-freedom-label">15 years to financial freedom</label><br />
       <input type="range" class="slider" name="years-to-reach-financial-freedom" id="years-to-reach-financial-freedom" value="15" min="1" max="50" step="1" />
     </div>
   </div>
@@ -286,11 +65,11 @@ permalink: /ffb/savings-to-reach-fi.html
       }
       return el;
     }
-    function toCurrency(value) {
+    function toCurrency(value, digits = 2) {
       if (value == 0) {
         return '-';
       } else {
-        return '$' + value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2})
+        return '$' + value.toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits})
       }
     }
     console.log("Calculator helper functions loaded");
@@ -316,7 +95,7 @@ permalink: /ffb/savings-to-reach-fi.html
         const expectedInvestmentAnnualReturn = parseFloat(expectedInvestmentAnnualReturnInput.value) || 0;
         const yearsToReachFinancialFreedom = parseFloat(yearsToReachFinancialFreedomInput.value) || 0;
         expectedInvestmentAnnualReturnLabel.innerHTML = (expectedInvestmentAnnualReturn * 100).toFixed(1) + '% expected investment annual return' ;
-        yearsToReachFinancialFreedomLabel.innerHTML = yearsToReachFinancialFreedom + ' years to reach financial freedom' ;
+        yearsToReachFinancialFreedomLabel.innerHTML = yearsToReachFinancialFreedom + ' years to financial freedom' ;
         if (outputDiv) {
           if (financialFreedomTarget < 0) {
             outputDiv.innerHTML = '';
@@ -389,7 +168,6 @@ permalink: /ffb/savings-to-reach-fi.html
             thead.appendChild(theadRow);
             table.appendChild(thead);
             let tbody = document.createElement('tbody');
-            console.log(data);
             data.forEach( (row) => {
               let rowClass = '';
               if (row["year"] == yearsToReachFinancialFreedom) {
@@ -397,10 +175,10 @@ permalink: /ffb/savings-to-reach-fi.html
               }
               let tbodyRow = tag('tr', null, rowClass);
               tbodyRow.appendChild(tag('td', row["year"]));
-              tbodyRow.appendChild(tag('td', toCurrency(row["yearly"])));
-              tbodyRow.appendChild(tag('td', toCurrency(row["monthly"])));
-              tbodyRow.appendChild(tag('td', toCurrency(row["weekly"])));
-              tbodyRow.appendChild(tag('td', toCurrency(row["daily"])));
+              tbodyRow.appendChild(tag('td', toCurrency(row["yearly"], 0)));
+              tbodyRow.appendChild(tag('td', toCurrency(row["monthly"], 0)));
+              tbodyRow.appendChild(tag('td', toCurrency(row["weekly"], 0)));
+              tbodyRow.appendChild(tag('td', toCurrency(row["daily"], 0)));
               tbody.appendChild(tbodyRow);
             });
             table.appendChild(tbody);
@@ -414,10 +192,11 @@ permalink: /ffb/savings-to-reach-fi.html
             // expectedInvestmentAnnualReturn;
             // yearsToReachFinancialFreedom;
 
-            yearsMin = Math.max(1, yearsToReachFinancialFreedom - 2);
-            yearsMax = yearsToReachFinancialFreedom + 2;
-
-            let values = []
+            //yearsMin = Math.max(1, yearsToReachFinancialFreedom - 2);
+            //yearsMax = yearsToReachFinancialFreedom + 2;
+            yearsMin = 1;
+            yearsMax = 50;
+            let values = [];
 
             for (let i = yearsMin; i <= yearsMax; i += 1) {
               values.push(calculateSavingsRow(financialFreedomTarget, currentFreedomSavings, expectedInvestmentAnnualReturn, i))
