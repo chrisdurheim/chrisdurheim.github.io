@@ -15,8 +15,20 @@
 }
 .financial-freedom-calculator .calculator-input-group {
   padding: 1rem 0;
+  margin: 0 auto;
+}
+.financial-freedom-calculator.two-column {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+.financial-freedom-calculator.two-column .calculator-input-group {
+  flex: 1 0 310px;
+  max-width: 600px;
+  margin: 0 2rem;
 }
 .financial-freedom-calculator h3.calculator-title {
+  flex: 0 0 100%;
   margin-top: 0;
   padding: 1rem 1rem;
   border-radius: 0.5rem;
@@ -155,7 +167,12 @@
   background: -o-linear-gradient(top, #0b5d8d, #063652);
   cursor: pointer;
 }
+.financial-freedom-calculator p {
+  font-size: 1.75rem;
+  text-align: center;
+}
 .financial-freedom-calculator .calculator-result {
+  flex: 0 0 100%;
   margin-top: 2rem;
   overflow-x: auto;
 }
@@ -209,10 +226,16 @@
   background-color: #0b5e8d;
   color: white;
 }
+.financial-freedom-calculator .calculator-result-table tr.total td {
+  background-color: #414141;
+  color: white;
+  font-weight: bold;
+}
 .financial-freedom-calculator .calculator-result-table th {
   text-align: center;
   background-color: #414141;
   color: white;
+  font-weight: bold;
 }
 .financial-freedom-calculator .calculator-result-table td, .calculator-result-table th {
   padding: 0 0.5rem;
