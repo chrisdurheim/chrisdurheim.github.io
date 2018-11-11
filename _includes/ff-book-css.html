@@ -17,6 +17,25 @@
   padding: 1rem 0;
   margin: 0 auto;
 }
+.financial-freedom-calculator.two-column {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+.financial-freedom-calculator.two-column .calculator-column {
+  flex: 1 0 310px;
+  max-width: 600px;
+  padding: 0 1rem;
+}
+.financial-freedom-calculator.two-column .calculator-column .calculator-input {
+  justify-content: center;
+}
+.financial-freedom-calculator.two-column .calculator-column .calculator-input input.currency {
+  max-width: 30%;
+}
+.financial-freedom-calculator.two-column .calculator-column .calculator-input input.currency-label {
+  max-width: 50%;
+}
 .financial-freedom-calculator.flex-column {
   display: flex;
   flex-wrap: wrap;
@@ -66,11 +85,16 @@
   text-transform: uppercase;
   font-weight: bold;
 }
-
+.financial-freedom-calculator .calculator-button {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1rem auto 0;
+  justify-content: center;
+}
 .financial-freedom-calculator .calculator-input {
   display: flex;
   flex-wrap: wrap;
-  margin: 1rem 0 0;
+  margin: 1rem auto 0;
 }
 .financial-freedom-calculator .calculator-input label {
   flex: 0 0 100%;
@@ -253,14 +277,15 @@
 .financial-freedom-calculator .calculator-result-table .currency-column {
   text-align: center;
 }
-.financial-freedom-calculator button.calculator-button {
-  width: 100%;
-  background: #0b5d8d;
-  background: -webkit-gradient(linear, left top, left bottom, from(#0b5d8d), to(#063652));
-  background: -webkit-linear-gradient(top, #0b5d8d, #063652);
-  background: -moz-linear-gradient(top, #0b5d8d, #063652);
-  background: -ms-linear-gradient(top, #0b5d8d, #063652);
-  background: -o-linear-gradient(top, #0b5d8d, #063652);
+.financial-freedom-calculator .calculator-button button {
+  color: white;
+  font-weight: normal;
+  background: #118C4F;
+  background: -webkit-gradient(linear, left top, left bottom, from(#118C4F), to(#0C6338));
+  background: -webkit-linear-gradient(top, #118C4F, #0C6338);
+  background: -moz-linear-gradient(top, #118C4F, #0C6338);
+  background: -ms-linear-gradient(top, #118C4F, #0C6338);
+  background: -o-linear-gradient(top, #118C4F, #0C6338);
   margin: 0 auto;
   cursor: pointer;
   text-align: center;
