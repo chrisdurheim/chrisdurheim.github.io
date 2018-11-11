@@ -158,6 +158,9 @@ permalink: /ffb/savings-rate.html
           }
 
           outputDiv.innerHTML = '';
+          let outputHeading = document.createElement('h4');
+          outputHeading.innerText = 'Results';
+          outputDiv.appendChild(outputHeading);
           outputDiv.appendChild(calculateResult());
         }
       }
