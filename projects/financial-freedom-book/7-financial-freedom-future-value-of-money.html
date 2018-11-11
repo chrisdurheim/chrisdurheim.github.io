@@ -23,32 +23,36 @@ permalink: /ffb/future-value-of-money.html
 <link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/ie8fix.css?ver=1.3' type='text/css' media='all' />
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,regular,italic,600,600italic,700,700italic,800,800italic' type='text/css' media='all' />
 {% include ff-book-css.html %}
-<div class="financial-freedom-calculator" id="future-value-of-money">
+<div class="financial-freedom-calculator two-column" id="future-value-of-money">
   <h3 class="calculator-title">Future Value of Money</h3>
-  <div class="calculator-input">
-    <label for="amount" id="amount-label">Amount</label><br />
-    <span class="input-prefix">$</span>
-    <input type="number" class="currency" name="amount" id="amount" value="10" min="0" />
+  <div class="calculator-column">
+    <div class="calculator-input">
+      <label for="amount" id="amount-label">Amount</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" class="currency" name="amount" id="amount" value="10" min="0" />
+    </div>
+    <div class="calculator-input">
+      <label for="frequency" id="frequency-label">Contributed</label>
+      <select name="frequency" id="frequency">
+        <option selected="selected" value="0">Today</option>
+        <option value="1">Yearly</option>
+        <option value="12">Monthly</option>
+        <option value="52.1775">Weekly</option>
+        <option value="365.2425">Daily</option>
+      </select>
+    </div>
+    <div class="calculator-input">
+      <label for="expected-investment-annual-return" id="expected-investment-annual-return-label">7.0% expected investment annual return</label><br />
+      <input type="range" class="slider slider--percent" name="expected-investment-annual-return" id="expected-investment-annual-return" value="0.07" min="0.01" max="0.15" step="0.005" />
+    </div>
+    <div class="calculator-input">
+      <label for="years-of-growth" id="years-of-growth-label">12 years of growth</label><br />
+      <input type="range" class="slider" name="years-of-growth" id="years-of-growth" value="12" min="1" max="100" step="1" />
+    </div>
   </div>
-  <div class="calculator-input">
-    <label for="frequency" id="frequency-label">Contributed</label>
-    <select name="frequency" id="frequency">
-      <option selected="selected" value="0">Today</option>
-      <option value="1">Yearly</option>
-      <option value="12">Monthly</option>
-      <option value="52.1775">Weekly</option>
-      <option value="365.2425">Daily</option>
-    </select>
+  <div class="calculator-column">
+    <div class="calculator-result"></div>
   </div>
-  <div class="calculator-input">
-    <label for="expected-investment-annual-return" id="expected-investment-annual-return-label">7.0% expected investment annual return</label><br />
-    <input type="range" class="slider slider--percent" name="expected-investment-annual-return" id="expected-investment-annual-return" value="0.07" min="0.01" max="0.15" step="0.005" />
-  </div>
-  <div class="calculator-input">
-    <label for="years-of-growth" id="years-of-growth-label">12 years of growth</label><br />
-    <input type="range" class="slider" name="years-of-growth" id="years-of-growth" value="12" min="1" max="100" step="1" />
-  </div>
-  <div class="calculator-result"></div>
 </div>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {

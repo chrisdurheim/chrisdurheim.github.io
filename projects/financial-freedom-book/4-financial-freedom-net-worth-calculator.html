@@ -1,5 +1,5 @@
 ---
-layout: null 
+layout: null
 sitemap: false
 permalink: /ffb/net-worth.html
 ---
@@ -26,37 +26,6 @@ permalink: /ffb/net-worth.html
 {% include ff-book-css.html %}
 <div class="financial-freedom-calculator two-column" id="net-worth-calculator">
   <h3 class="calculator-title">Net Worth Calculator</h3>
-  <div class="calculator-column">
-    <div class="calculator-input-group" id="liabilities">
-      <h4 class="calculator-group-title">
-        <p>Liabilities</p>
-        <p><span class="result-value">$0</span></p>
-      </h4>
-      <div class="calculator-input">
-        <input type="text" class="currency-label" name="liabilities-liability-1-name" id="liabilities-liability-1-name" value="Mortgage" />
-        <span class="input-prefix">$</span>
-        <input type="number" class="currency" name="liabilities-liability-1-value" id="liabilities-liability-1-value" value="200000" min="0" />
-      </div>
-      <div class="calculator-input">
-        <input type="text" class="currency-label" name="liabilities-liability-2-name" id="liabilities-liability-2-name" value="Auto Loan" />
-        <span class="input-prefix">$</span>
-        <input type="number" class="currency" name="liabilities-liability-2-value" id="liabilities-liability-2-value" value="8000" min="0" />
-      </div>
-      <div class="calculator-input">
-        <input type="text" class="currency-label" name="liabilities-liability-3-name" id="liabilities-liability-3-name" value="Student Loan" />
-        <span class="input-prefix">$</span>
-        <input type="number" class="currency" name="liabilities-liability-3-value" id="liabilities-liability-3-value" value="13000" min="0" />
-      </div>
-      <div class="calculator-input">
-        <input type="text" class="currency-label" name="liabilities-liability-4-name" id="liabilities-liability-4-name" value="Credit Cards" />
-        <span class="input-prefix">$</span>
-        <input type="number" class="currency" name="liabilities-liability-4-value" id="liabilities-liability-4-value" value="5000" min="0" />
-      </div>
-      <div class="calculator-button">
-        <button>+ Add</button>
-      </div>
-    </div>
-  </div>
   <div class="calculator-column">
     <div class="calculator-input-group" id="income-generating-assets">
       <h4 class="calculator-group-title">
@@ -107,7 +76,39 @@ permalink: /ffb/net-worth.html
       </div>
     </div>
   </div>
-  <div class="calculator-result"></div>
+  <div class="calculator-column">
+    <div class="calculator-input-group" id="liabilities">
+      <h4 class="calculator-group-title">
+        <p>Liabilities</p>
+        <p><span class="result-value">$0</span></p>
+      </h4>
+      <div class="calculator-input">
+        <input type="text" class="currency-label" name="liabilities-liability-1-name" id="liabilities-liability-1-name" value="Mortgage" />
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="liabilities-liability-1-value" id="liabilities-liability-1-value" value="200000" min="0" />
+      </div>
+      <div class="calculator-input">
+        <input type="text" class="currency-label" name="liabilities-liability-2-name" id="liabilities-liability-2-name" value="Auto Loan" />
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="liabilities-liability-2-value" id="liabilities-liability-2-value" value="8000" min="0" />
+      </div>
+      <div class="calculator-input">
+        <input type="text" class="currency-label" name="liabilities-liability-3-name" id="liabilities-liability-3-name" value="Student Loan" />
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="liabilities-liability-3-value" id="liabilities-liability-3-value" value="13000" min="0" />
+      </div>
+      <div class="calculator-input">
+        <input type="text" class="currency-label" name="liabilities-liability-4-name" id="liabilities-liability-4-name" value="Credit Cards" />
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="liabilities-liability-4-value" id="liabilities-liability-4-value" value="5000" min="0" />
+      </div>
+      <div class="calculator-button">
+        <button>+ Add</button>
+      </div>
+    </div>
+    <div class="calculator-result"></div>
+  </div>
+
 </div>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {

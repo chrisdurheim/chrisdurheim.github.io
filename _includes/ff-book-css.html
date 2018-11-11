@@ -30,10 +30,10 @@
 .financial-freedom-calculator.two-column .calculator-column .calculator-input {
   justify-content: center;
 }
-.financial-freedom-calculator.two-column .calculator-column .calculator-input input.currency {
+.financial-freedom-calculator.two-column .calculator-column .calculator-input input:not(.slider):last-of-type {
   max-width: 30%;
 }
-.financial-freedom-calculator.two-column .calculator-column .calculator-input input.currency-label {
+.financial-freedom-calculator.two-column .calculator-column .calculator-input input:not(.slider):first-of-type {
   max-width: 50%;
 }
 .financial-freedom-calculator.flex-column {
@@ -153,8 +153,8 @@
 }
 .financial-freedom-calculator input.slider {
   margin-top: 1rem;
-  width: 100%;
-  max-width: 100%;
+  width: 80%;
+  max-width: 80%;
 }
 .financial-freedom-calculator .slider {
   -webkit-appearance: none;

@@ -1,7 +1,7 @@
 ---
 layout: null
 sitemap: false
-permalink: /ffb/financial-independence-number.html 
+permalink: /ffb/financial-independence-number.html
 ---
 
 <!DOCTYPE html>
@@ -24,62 +24,66 @@ permalink: /ffb/financial-independence-number.html
 <link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/ie8fix.css?ver=1.3' type='text/css' media='all' />
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,regular,italic,600,600italic,700,700italic,800,800italic' type='text/css' media='all' />
 {% include ff-book-css.html %}
-<div class="financial-freedom-calculator" id="financial-independence-number">
+<div class="financial-freedom-calculator two-column" id="financial-independence-number">
   <h3 class="calculator-title">Financial Independence Number</h3>
-  <div class="calculator-input-group" id="base-assumptions">
-    <h4 class="calculator-group-title">Base Assumptions</h4>
-    <div class="calculator-input">
-      <label for="base-assumptions-current-expenses" id="base-assumptions-current-expenses-label">Current Annual Expenses</label><br />
-      <span class="input-prefix">$</span>
-      <input type="number" class="currency" name="base-assumptions-current-expenses" id="base-assumptions-current-expenses" value="30000" min="0" />
-    </div>
-    <div class="calculator-input">
-      <label for="base-assumptions-target-withdrawal-rate" id="base-assumptions-target-withdrawal-rate-label">4.0% target withdrawal rate</label><br />
-      <input type="range" class="slider slider--percent" name="base-assumptions-target-withdrawal-rate" id="base-assumptions-target-withdrawal-rate" value="0.04" min="0.01" max="0.07" step="0.0025" />
-    </div>
-    <div class="calculator-input">
-      <label for="base-assumptions-expected-investment-annual-return" id="base-assumptions-expected-investment-annual-return-label">7.01% expected investment annual return</label><br />
-      <input type="range" class="slider slider--percent" name="base-assumptions-expected-investment-annual-return" id="base-assumptions-expected-investment-annual-return" value="0.07" min="0.01" max="0.15" step="0.005" />
-    </div>
-    <div class="calculator-input">
-      <label for="base-assumptions-monthly-recurring-income" id="base-assumptions-monthly-recurring-income-label">Monthly Recurring Income</label><br />
-      <span class="input-prefix">$</span>
-      <input type="number" class="currency" name="base-assumptions-monthly-recurring-income" id="base-assumptions-monthly-recurring-income" value="0" min="0" />
+  <div class="calculator-column">
+    <div class="calculator-input-group" id="base-assumptions">
+      <h4 class="calculator-group-title">Base Assumptions</h4>
+      <div class="calculator-input">
+        <label for="base-assumptions-current-expenses" id="base-assumptions-current-expenses-label">Current Annual Expenses</label><br />
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="base-assumptions-current-expenses" id="base-assumptions-current-expenses" value="30000" min="0" />
+      </div>
+      <div class="calculator-input">
+        <label for="base-assumptions-target-withdrawal-rate" id="base-assumptions-target-withdrawal-rate-label">4.0% target withdrawal rate</label><br />
+        <input type="range" class="slider slider--percent" name="base-assumptions-target-withdrawal-rate" id="base-assumptions-target-withdrawal-rate" value="0.04" min="0.01" max="0.07" step="0.0025" />
+      </div>
+      <div class="calculator-input">
+        <label for="base-assumptions-expected-investment-annual-return" id="base-assumptions-expected-investment-annual-return-label">7.01% expected investment annual return</label><br />
+        <input type="range" class="slider slider--percent" name="base-assumptions-expected-investment-annual-return" id="base-assumptions-expected-investment-annual-return" value="0.07" min="0.01" max="0.15" step="0.005" />
+      </div>
+      <div class="calculator-input">
+        <label for="base-assumptions-monthly-recurring-income" id="base-assumptions-monthly-recurring-income-label">Monthly Recurring Income</label><br />
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="base-assumptions-monthly-recurring-income" id="base-assumptions-monthly-recurring-income" value="0" min="0" />
+      </div>
     </div>
   </div>
-  <div class="calculator-input-group" id="one-time-future-expenses">
-    <h4 class="calculator-group-title">One-Time Future Expenses</h4>
-    <div class="calculator-input">
-      <label for="one-time-future-expenses-expense-1" id="one-time-future-expenses-expense-1-label">Expense 1</label><br />
-      <span class="input-prefix">$</span>
-      <input type="number" class="currency" name="one-time-future-expenses-expense-1" id="one-time-future-expenses-expense-1" value="0" min="0" />
-      <span class="input-text">in</span>
-      <input type="number" class="years" name="one-time-future-expenses-years-away-1" id="one-time-future-expenses-years-away-1" value="0" min="0" />
-      <span class="input-text">years</span>
-    </div>
-    <div class="calculator-input">
-      <label for="one-time-future-expenses-expense-2" id="one-time-future-expenses-expense-2-label">Expense 2</label><br />
-      <span class="input-prefix">$</span>
-      <input type="number" class="currency" name="one-time-future-expenses-expense-2" id="one-time-future-expenses-expense-2" value="0" min="0" />
-      <span class="input-text">in</span>
-      <input type="number" class="years" name="one-time-future-expenses-years-away-2" id="one-time-future-expenses-years-away-2" value="0" min="0" />
-      <span class="input-text">years</span>
-    </div>
-    <div class="calculator-input">
-      <label for="one-time-future-expenses-expense-3" id="one-time-future-expenses-expense-3-label">Expense 3</label><br />
-      <span class="input-prefix">$</span>
-      <input type="number" class="currency" name="one-time-future-expenses-expense-3" id="one-time-future-expenses-expense-3" value="0" min="0" />
-      <span class="input-text">in</span>
-      <input type="number" class="years" name="one-time-future-expenses-years-away-3" id="one-time-future-expenses-years-away-3" value="0" min="0" />
-      <span class="input-text">years</span>
-    </div>
-    <div class="calculator-input">
-      <label for="one-time-future-expenses-expense-4" id="one-time-future-expenses-expense-4-label">Expense 4</label><br />
-      <span class="input-prefix">$</span>
-      <input type="number" class="currency" name="one-time-future-expenses-expense-4" id="one-time-future-expenses-expense-4" value="0" min="0" />
-      <span class="input-text">in</span>
-      <input type="number" class="years" name="one-time-future-expenses-years-away-4" id="one-time-future-expenses-years-away-4" value="0" min="0" />
-      <span class="input-text">years</span>
+  <div class="calculator-column">
+    <div class="calculator-input-group" id="one-time-future-expenses">
+      <h4 class="calculator-group-title">One-Time Future Expenses</h4>
+      <div class="calculator-input">
+        <label for="one-time-future-expenses-expense-1" id="one-time-future-expenses-expense-1-label">Expense 1</label><br />
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="one-time-future-expenses-expense-1" id="one-time-future-expenses-expense-1" value="0" min="0" />
+        <span class="input-text">in</span>
+        <input type="number" class="years" name="one-time-future-expenses-years-away-1" id="one-time-future-expenses-years-away-1" value="0" min="0" />
+        <span class="input-text">years</span>
+      </div>
+      <div class="calculator-input">
+        <label for="one-time-future-expenses-expense-2" id="one-time-future-expenses-expense-2-label">Expense 2</label><br />
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="one-time-future-expenses-expense-2" id="one-time-future-expenses-expense-2" value="0" min="0" />
+        <span class="input-text">in</span>
+        <input type="number" class="years" name="one-time-future-expenses-years-away-2" id="one-time-future-expenses-years-away-2" value="0" min="0" />
+        <span class="input-text">years</span>
+      </div>
+      <div class="calculator-input">
+        <label for="one-time-future-expenses-expense-3" id="one-time-future-expenses-expense-3-label">Expense 3</label><br />
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="one-time-future-expenses-expense-3" id="one-time-future-expenses-expense-3" value="0" min="0" />
+        <span class="input-text">in</span>
+        <input type="number" class="years" name="one-time-future-expenses-years-away-3" id="one-time-future-expenses-years-away-3" value="0" min="0" />
+        <span class="input-text">years</span>
+      </div>
+      <div class="calculator-input">
+        <label for="one-time-future-expenses-expense-4" id="one-time-future-expenses-expense-4-label">Expense 4</label><br />
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="one-time-future-expenses-expense-4" id="one-time-future-expenses-expense-4" value="0" min="0" />
+        <span class="input-text">in</span>
+        <input type="number" class="years" name="one-time-future-expenses-years-away-4" id="one-time-future-expenses-years-away-4" value="0" min="0" />
+        <span class="input-text">years</span>
+      </div>
     </div>
   </div>
   <div class="calculator-result"></div>
