@@ -1,0 +1,272 @@
+---
+layout: null
+sitemap: false
+permalink: /ffb/real-hourly-rate.html
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.0.2' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/plugins/instagram-feed/css/sb-instagram.min.css?ver=1.9.1' type='text/css' media='all' />
+<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/plugins/ultimate-social-media-icons/css/sfsi-style.css?ver=4.9.8' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/utility.css?ver=1.3' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/animate.css?ver=1.3' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/bootstrap.min.css?ver=1.3' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/unyson-framework.css?ver=1.3' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/style.css?ver=1.3' type='text/css' media='all' />
+<link rel='stylesheet' href='https://financialfreedombook.com/wp-content/themes/book/assets/css/ie8fix.css?ver=1.3' type='text/css' media='all' />
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,regular,italic,600,600italic,700,700italic,800,800italic' type='text/css' media='all' />
+{% include ff-book-css.html %}
+<div class="financial-freedom-calculator two-column" id="real-hourly-rate">
+  <h3 class="calculator-title">Real Hourly Rate</h3>
+  <div class="calculator-column">
+    <div class="calculator-input-group" id="weekly-hours-invested">
+      <h4 class="calculator-group-title">Weekly Hours Invested</h4>
+      <div class="calculator-input">
+        <label for="weekly-hours-invested-working" id="weekly-hours-invested-working-label">Working</label><br />
+        <input type="number" class="" name="weekly-hours-invested-working" id="weekly-hours-invested-working" value="50" min="0" />
+        <span class="input-text">hours per week</span>
+      </div>
+      <div class="calculator-input">
+        <label for="weekly-hours-invested-getting-ready" id="weekly-hours-invested-getting-ready-label">Getting Ready</label><br />
+        <input type="number" class="" name="weekly-hours-invested-getting-ready" id="weekly-hours-invested-getting-ready" value="1" min="0" />
+        <span class="input-text">hours per week</span>
+      </div>
+      <div class="calculator-input">
+        <label for="weekly-hours-invested-commuting" id="weekly-hours-invested-commuting-label">Commuting</label><br />
+        <input type="number" class="" name="weekly-hours-invested-commuting" id="weekly-hours-invested-commuting" value="7.5" min="0" />
+        <span class="input-text">hours per week</span>
+      </div>
+      <div class="calculator-input">
+        <label for="weekly-hours-invested-traveling-to-clients-etc" id="weekly-hours-invested-traveling-to-clients-etc-label">Traveling (to clients, etc.)</label><br />
+        <input type="number" class="" name="weekly-hours-invested-traveling-to-clients-etc" id="weekly-hours-invested-traveling-to-clients-etc" value="3" min="0" />
+        <span class="input-text">hours per week</span>
+      </div>
+      <div class="calculator-input">
+        <label for="weekly-hours-invested-shopping" id="weekly-hours-invested-shopping-label">Shopping</label><br />
+        <input type="number" class="" name="weekly-hours-invested-shopping" id="weekly-hours-invested-shopping" value="1" min="0" />
+        <span class="input-text">hours per week</span>
+      </div>
+      <div class="calculator-input">
+        <label for="weekly-hours-invested-relaxingdetoxing" id="weekly-hours-invested-relaxingdetoxing-label">Relaxing/Detoxing</label><br />
+        <input type="number" class="" name="weekly-hours-invested-relaxingdetoxing" id="weekly-hours-invested-relaxingdetoxing" value="8" min="0" />
+        <span class="input-text">hours per week</span>
+      </div>
+      <div class="calculator-input">
+        <label for="weekly-hours-invested-other" id="weekly-hours-invested-other-label">Other</label><br />
+        <input type="number" class="" name="weekly-hours-invested-other" id="weekly-hours-invested-other" value="0" min="0" />
+        <span class="input-text">hours per week</span>
+      </div>
+    </div>
+  </div>
+  <div class="calculator-column">
+    <div class="calculator-input-group" id="work-numbers">
+      <h4 class="calculator-group-title">Work Numbers</h4>
+      <div class="calculator-input">
+        <label for="work-numbers-salary" id="work-numbers-salary-label">Salary</label><br />
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="work-numbers-salary" id="work-numbers-salary" value="50000" min="0" />
+      </div>
+      <div class="calculator-input">
+        <label for="work-numbers-weeks-worked-per-year" id="work-numbers-weeks-worked-per-year-label">Weeks Worked Per Year</label><br />
+        <input type="number" class="" name="work-numbers-weeks-worked-per-year" id="work-numbers-weeks-worked-per-year" value="50" min="1" max="52" />
+      </div>
+    </div>
+    <div class="calculator-input-group" id="taxes">
+      <h4 class="calculator-group-title">Taxes</h4>
+      <div class="calculator-input">
+        <label for="taxes-annual-tax-rate-federal-state" id="taxes-annual-tax-rate-federal-state-label">25% annual tax rate (federal + state)</label><br />
+        <input type="range" class="slider slider--percent" name="taxes-annual-tax-rate-federal-state" id="taxes-annual-tax-rate-federal-state" value="0.25" min="0.00" max="0.99" step="0.01" />
+      </div>
+    </div>
+    <div class="calculator-result"></div>
+  </div>
+</div>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("Calculator js running");
+    function tag(type, value = undefined, klass = undefined, id = undefined) {
+      let el = document.createElement(type);
+      if (klass) {
+        el.setAttribute('class', klass);
+      }
+      if (id) {
+        el.setAttribute('id', id);
+      }
+      if (value) {
+        el.innerText = value;
+      }
+      return el;
+    }
+    function toCurrency(value, digits = 2) {
+      if (value == 0) {
+        return '-';
+      } else {
+        return '$' + value.toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits})
+      }
+    }
+    console.log("Calculator helper functions loaded");
+    const calculator = document.querySelector('#real-hourly-rate');
+
+    if (calculator) {
+      console.log("Calculator found");
+
+      const inputs = calculator.querySelectorAll('input');
+      const selects = calculator.querySelectorAll('select');
+      const currencyInputs = calculator.querySelectorAll('input.currency');
+      const weeklyHoursInvestedWorkingInput = calculator.querySelector('input#weekly-hours-invested-working');
+      const weeklyHoursInvestedWorkingLabel = calculator.querySelector('#weekly-hours-invested-working-label');
+      const weeklyHoursInvestedGettingReadyInput = calculator.querySelector('input#weekly-hours-invested-getting-ready');
+      const weeklyHoursInvestedGettingReadyLabel = calculator.querySelector('#weekly-hours-invested-getting-ready-label');
+      const weeklyHoursInvestedCommutingInput = calculator.querySelector('input#weekly-hours-invested-commuting');
+      const weeklyHoursInvestedCommutingLabel = calculator.querySelector('#weekly-hours-invested-commuting-label');
+      const weeklyHoursInvestedTravelingtoClientsEtcInput = calculator.querySelector('input#weekly-hours-invested-traveling-to-clients-etc');
+      const weeklyHoursInvestedTravelingtoClientsEtcLabel = calculator.querySelector('#weekly-hours-invested-traveling-to-clients-etc-label');
+      const weeklyHoursInvestedShoppingInput = calculator.querySelector('input#weekly-hours-invested-shopping');
+      const weeklyHoursInvestedShoppingLabel = calculator.querySelector('#weekly-hours-invested-shopping-label');
+      const weeklyHoursInvestedRelaxingdetoxingInput = calculator.querySelector('input#weekly-hours-invested-relaxingdetoxing');
+      const weeklyHoursInvestedRelaxingdetoxingLabel = calculator.querySelector('#weekly-hours-invested-relaxingdetoxing-label');
+      const weeklyHoursInvestedOtherInput = calculator.querySelector('input#weekly-hours-invested-other');
+      const weeklyHoursInvestedOtherLabel = calculator.querySelector('#weekly-hours-invested-other-label');
+      const workNumbersSalaryInput = calculator.querySelector('input#work-numbers-salary');
+      const workNumbersSalaryLabel = calculator.querySelector('#work-numbers-salary-label');
+      const workNumbersWeeksWorkedPerYearInput = calculator.querySelector('input#work-numbers-weeks-worked-per-year');
+      const workNumbersWeeksWorkedPerYearLabel = calculator.querySelector('#work-numbers-weeks-worked-per-year-label');
+      const taxesAnnualTaxRatefederalStateInput = calculator.querySelector('input#taxes-annual-tax-rate-federal-state');
+      const taxesAnnualTaxRatefederalStateLabel = calculator.querySelector('#taxes-annual-tax-rate-federal-state-label');
+      const outputDiv = calculator.querySelector('#real-hourly-rate .calculator-result');
+      function updateResults() {
+        const weeklyHoursInvestedWorking = parseFloat(weeklyHoursInvestedWorkingInput.value) || 0;
+        const weeklyHoursInvestedGettingReady = parseFloat(weeklyHoursInvestedGettingReadyInput.value) || 0;
+        const weeklyHoursInvestedCommuting = parseFloat(weeklyHoursInvestedCommutingInput.value) || 0;
+        const weeklyHoursInvestedTravelingtoClientsEtc = parseFloat(weeklyHoursInvestedTravelingtoClientsEtcInput.value) || 0;
+        const weeklyHoursInvestedShopping = parseFloat(weeklyHoursInvestedShoppingInput.value) || 0;
+        const weeklyHoursInvestedRelaxingdetoxing = parseFloat(weeklyHoursInvestedRelaxingdetoxingInput.value) || 0;
+        const weeklyHoursInvestedOther = parseFloat(weeklyHoursInvestedOtherInput.value) || 0;
+        const workNumbersSalary = parseFloat(workNumbersSalaryInput.value) || 0;
+        const workNumbersWeeksWorkedPerYear = parseFloat(workNumbersWeeksWorkedPerYearInput.value) || 0;
+        const taxesAnnualTaxRatefederalState = parseFloat(taxesAnnualTaxRatefederalStateInput.value) || 0;
+        taxesAnnualTaxRatefederalStateLabel.innerHTML = (taxesAnnualTaxRatefederalState * 100).toFixed(0) + '% annual tax rate (federal + state)' ;
+        if (outputDiv) {
+          if (weeklyHoursInvestedWorking < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set working greater than 0', 'result-error'));
+            return;
+          }
+          if (weeklyHoursInvestedGettingReady < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set getting ready greater than 0', 'result-error'));
+            return;
+          }
+          if (weeklyHoursInvestedCommuting < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set commuting greater than 0', 'result-error'));
+            return;
+          }
+          if (weeklyHoursInvestedTravelingtoClientsEtc < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set traveling (to clients, etc.) greater than 0', 'result-error'));
+            return;
+          }
+          if (weeklyHoursInvestedShopping < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set shopping greater than 0', 'result-error'));
+            return;
+          }
+          if (weeklyHoursInvestedRelaxingdetoxing < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set relaxing/detoxing greater than 0', 'result-error'));
+            return;
+          }
+          if (weeklyHoursInvestedOther < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set other greater than 0', 'result-error'));
+            return;
+          }
+          if (workNumbersSalary < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set salary greater than 0', 'result-error'));
+            return;
+          }
+          if (workNumbersWeeksWorkedPerYear < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set weeks worked per year greater than 0', 'result-error'));
+            return;
+          }
+          if (workNumbersWeeksWorkedPerYear > 52) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set weeks worked per year less than 53', 'result-error'));
+            return;
+          }
+          if (taxesAnnualTaxRatefederalState < 0.0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set annual tax rate (federal + state) greater than 0.0%', 'result-error'));
+            return;
+          }
+          if (taxesAnnualTaxRatefederalState > 0.99) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set annual tax rate (federal + state) less than 100%', 'result-error'));
+            return;
+          }
+
+          function calculateResult() {
+            const weeklyHoursInputs = calculator.querySelectorAll('#weekly-hours-invested input');
+            let totalHours = 0.0;
+            weeklyHoursInputs.forEach( (input) => {
+              value = parseFloat(input.value) || 0;
+              totalHours += value;
+            });
+
+            console.log(totalHours);
+            totalHours = totalHours * workNumbersWeeksWorkedPerYear;
+            console.log(totalHours);
+            console.log(workNumbersSalary);
+            console.log(taxesAnnualTaxRatefederalState);
+
+            let result = workNumbersSalary * (1 - taxesAnnualTaxRatefederalState) / totalHours;
+
+            let outputText = document.createDocumentFragment();
+
+            let baseText = tag('p', null, 'calculator-highlighted-result');
+            baseText.appendChild(document.createTextNode("Your Real Hourly Rate: "));
+            baseText.appendChild(tag('span', toCurrency(result) + "/hour", 'result-value'));
+            outputText.appendChild(baseText);
+
+            return outputText;
+          }
+
+          outputDiv.innerHTML = '';
+
+          let outputHeading = document.createElement('h4');
+          outputHeading.innerText = 'Results';
+          outputDiv.appendChild(outputHeading);
+          outputDiv.appendChild(calculateResult());
+        }
+      }
+
+      /* Set calculator to auto-update on input changes */
+      for (let i = 0; i < inputs.length; i += 1) {
+        inputs[i].addEventListener('input', () => {
+          updateResults();
+        });
+      }
+
+      for (let i = 0; i < selects.length; i += 1) {
+        selects[i].addEventListener('input', () => {
+          updateResults();
+        });
+      }
+
+      updateResults();
+    }
+  });
+</script>
+</body>
+</html>
