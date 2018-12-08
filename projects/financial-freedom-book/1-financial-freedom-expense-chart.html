@@ -25,8 +25,11 @@ permalink: /ffb/expense-chart.html
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,regular,italic,600,600italic,700,700italic,800,800italic' type='text/css' media='all' />
 {% include ff-book-css.html %}
 <div class="financial-freedom-calculator flex-column" id="expense-chart">
-  <h3 class="calculator-title">Expense Chart</h3>
-  <div class="calculator-input-group" id="housing">
+  <h3 class="calculator-title">
+    Expenses: How much do you spend?<br />
+    <span class="calculator-subtitle">(Current or Future Projections)</span>
+  </h3>
+  <div class="calculator-input-group calculator-input-group--summable" id="housing">
     <h4 class="calculator-group-title">
       <p>Housing</p>
       <p><span class="result-value">$0</span></p>
@@ -35,7 +38,7 @@ permalink: /ffb/expense-chart.html
       <label for="housing-mortgagerent" id="housing-mortgagerent-label">Mortgage/Rent</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="housing-mortgagerent" id="housing-mortgagerent" value="0" />
-      <select class="" name="housing-mortgagerent-select" id="housing-mortgagerent-select" />
+      <select class="" name="housing-mortgagerent-select" id="housing-mortgagerent-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -44,7 +47,7 @@ permalink: /ffb/expense-chart.html
       <label for="housing-property-taxes" id="housing-property-taxes-label">Property Taxes</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="housing-property-taxes" id="housing-property-taxes" value="0" />
-      <select class="" name="housing-property-taxes-select" id="housing-property-taxes-select" />
+      <select class="" name="housing-property-taxes-select" id="housing-property-taxes-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -53,7 +56,7 @@ permalink: /ffb/expense-chart.html
       <label for="housing-maintenance-cleaning" id="housing-maintenance-cleaning-label">Maintenance & Cleaning</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="housing-maintenance-cleaning" id="housing-maintenance-cleaning" value="0" />
-      <select class="" name="housing-maintenance-cleaning-select" id="housing-maintenance-cleaning-select" />
+      <select class="" name="housing-maintenance-cleaning-select" id="housing-maintenance-cleaning-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -62,7 +65,7 @@ permalink: /ffb/expense-chart.html
       <label for="housing-homerenters-insurance" id="housing-homerenters-insurance-label">Home/Renter's Insurance</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="housing-homerenters-insurance" id="housing-homerenters-insurance" value="0" />
-      <select class="" name="housing-homerenters-insurance-select" id="housing-homerenters-insurance-select" />
+      <select class="" name="housing-homerenters-insurance-select" id="housing-homerenters-insurance-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -71,7 +74,7 @@ permalink: /ffb/expense-chart.html
       <label for="housing-electricity" id="housing-electricity-label">Electricity</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="housing-electricity" id="housing-electricity" value="0" />
-      <select class="" name="housing-electricity-select" id="housing-electricity-select" />
+      <select class="" name="housing-electricity-select" id="housing-electricity-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -80,7 +83,7 @@ permalink: /ffb/expense-chart.html
       <label for="housing-oilgas" id="housing-oilgas-label">Oil/Gas</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="housing-oilgas" id="housing-oilgas" value="0" />
-      <select class="" name="housing-oilgas-select" id="housing-oilgas-select" />
+      <select class="" name="housing-oilgas-select" id="housing-oilgas-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -89,7 +92,7 @@ permalink: /ffb/expense-chart.html
       <label for="housing-watergarbagesewer" id="housing-watergarbagesewer-label">Water/Garbage/Sewer</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="housing-watergarbagesewer" id="housing-watergarbagesewer" value="0" />
-      <select class="" name="housing-watergarbagesewer-select" id="housing-watergarbagesewer-select" />
+      <select class="" name="housing-watergarbagesewer-select" id="housing-watergarbagesewer-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -98,7 +101,7 @@ permalink: /ffb/expense-chart.html
       <label for="housing-phone" id="housing-phone-label">Phone</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="housing-phone" id="housing-phone" value="0" />
-      <select class="" name="housing-phone-select" id="housing-phone-select" />
+      <select class="" name="housing-phone-select" id="housing-phone-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -107,7 +110,7 @@ permalink: /ffb/expense-chart.html
       <label for="housing-cableinternet" id="housing-cableinternet-label">Cable/Internet</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="housing-cableinternet" id="housing-cableinternet" value="0" />
-      <select class="" name="housing-cableinternet-select" id="housing-cableinternet-select" />
+      <select class="" name="housing-cableinternet-select" id="housing-cableinternet-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -116,13 +119,13 @@ permalink: /ffb/expense-chart.html
       <label for="housing-other-including-vacation-and-hotels" id="housing-other-including-vacation-and-hotels-label">Other (including vacation and hotels)</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="housing-other-including-vacation-and-hotels" id="housing-other-including-vacation-and-hotels" value="0" />
-      <select class="" name="housing-other-including-vacation-and-hotels-select" id="housing-other-including-vacation-and-hotels-select" />
+      <select class="" name="housing-other-including-vacation-and-hotels-select" id="housing-other-including-vacation-and-hotels-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
     </div>
   </div>
-  <div class="calculator-input-group" id="transportation">
+  <div class="calculator-input-group calculator-input-group--summable" id="transportation">
     <h4 class="calculator-group-title">
       <p>Transportation</p>
       <p><span class="result-value">$0</span></p>
@@ -131,7 +134,7 @@ permalink: /ffb/expense-chart.html
       <label for="transportation-car-payment" id="transportation-car-payment-label">Car Payment</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="transportation-car-payment" id="transportation-car-payment" value="0" />
-      <select class="" name="transportation-car-payment-select" id="transportation-car-payment-select" />
+      <select class="" name="transportation-car-payment-select" id="transportation-car-payment-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -140,7 +143,7 @@ permalink: /ffb/expense-chart.html
       <label for="transportation-maintenancerepairs" id="transportation-maintenancerepairs-label">Maintenance/Repairs</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="transportation-maintenancerepairs" id="transportation-maintenancerepairs" value="0" />
-      <select class="" name="transportation-maintenancerepairs-select" id="transportation-maintenancerepairs-select" />
+      <select class="" name="transportation-maintenancerepairs-select" id="transportation-maintenancerepairs-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -149,7 +152,7 @@ permalink: /ffb/expense-chart.html
       <label for="transportation-gasoil" id="transportation-gasoil-label">Gas/Oil</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="transportation-gasoil" id="transportation-gasoil" value="0" />
-      <select class="" name="transportation-gasoil-select" id="transportation-gasoil-select" />
+      <select class="" name="transportation-gasoil-select" id="transportation-gasoil-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -158,7 +161,7 @@ permalink: /ffb/expense-chart.html
       <label for="transportation-licenseregistration" id="transportation-licenseregistration-label">License/Registration</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="transportation-licenseregistration" id="transportation-licenseregistration" value="0" />
-      <select class="" name="transportation-licenseregistration-select" id="transportation-licenseregistration-select" />
+      <select class="" name="transportation-licenseregistration-select" id="transportation-licenseregistration-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -167,7 +170,7 @@ permalink: /ffb/expense-chart.html
       <label for="transportation-insurance" id="transportation-insurance-label">Insurance</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="transportation-insurance" id="transportation-insurance" value="0" />
-      <select class="" name="transportation-insurance-select" id="transportation-insurance-select" />
+      <select class="" name="transportation-insurance-select" id="transportation-insurance-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -176,7 +179,7 @@ permalink: /ffb/expense-chart.html
       <label for="transportation-bustrain-fare" id="transportation-bustrain-fare-label">Bus/Train Fare</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="transportation-bustrain-fare" id="transportation-bustrain-fare" value="0" />
-      <select class="" name="transportation-bustrain-fare-select" id="transportation-bustrain-fare-select" />
+      <select class="" name="transportation-bustrain-fare-select" id="transportation-bustrain-fare-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -185,7 +188,7 @@ permalink: /ffb/expense-chart.html
       <label for="transportation-flights-including-vacation" id="transportation-flights-including-vacation-label">Flights (including vacation)</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="transportation-flights-including-vacation" id="transportation-flights-including-vacation" value="0" />
-      <select class="" name="transportation-flights-including-vacation-select" id="transportation-flights-including-vacation-select" />
+      <select class="" name="transportation-flights-including-vacation-select" id="transportation-flights-including-vacation-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -194,13 +197,13 @@ permalink: /ffb/expense-chart.html
       <label for="transportation-taxisridesharing" id="transportation-taxisridesharing-label">Taxis/Ridesharing</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="transportation-taxisridesharing" id="transportation-taxisridesharing" value="0" />
-      <select class="" name="transportation-taxisridesharing-select" id="transportation-taxisridesharing-select" />
+      <select class="" name="transportation-taxisridesharing-select" id="transportation-taxisridesharing-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
     </div>
   </div>
-  <div class="calculator-input-group" id="food">
+  <div class="calculator-input-group calculator-input-group--summable" id="food">
     <h4 class="calculator-group-title">
       <p>Food</p>
       <p><span class="result-value">$0</span></p>
@@ -209,7 +212,7 @@ permalink: /ffb/expense-chart.html
       <label for="food-grocerieseat-at-home" id="food-grocerieseat-at-home-label">Groceries/Eat at home</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="food-grocerieseat-at-home" id="food-grocerieseat-at-home" value="0" />
-      <select class="" name="food-grocerieseat-at-home-select" id="food-grocerieseat-at-home-select" />
+      <select class="" name="food-grocerieseat-at-home-select" id="food-grocerieseat-at-home-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -218,13 +221,13 @@ permalink: /ffb/expense-chart.html
       <label for="food-eating-out" id="food-eating-out-label">Eating Out</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="food-eating-out" id="food-eating-out" value="0" />
-      <select class="" name="food-eating-out-select" id="food-eating-out-select" />
+      <select class="" name="food-eating-out-select" id="food-eating-out-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
     </div>
   </div>
-  <div class="calculator-input-group" id="apparel-services">
+  <div class="calculator-input-group calculator-input-group--summable" id="apparel-services">
     <h4 class="calculator-group-title">
       <p>Apparel & Services</p>
       <p><span class="result-value">$0</span></p></h4>
@@ -232,7 +235,7 @@ permalink: /ffb/expense-chart.html
       <label for="apparel-services-clothing-shoes" id="apparel-services-clothing-shoes-label">Clothing & Shoes</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="apparel-services-clothing-shoes" id="apparel-services-clothing-shoes" value="0" />
-      <select class="" name="apparel-services-clothing-shoes-select" id="apparel-services-clothing-shoes-select" />
+      <select class="" name="apparel-services-clothing-shoes-select" id="apparel-services-clothing-shoes-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -241,7 +244,7 @@ permalink: /ffb/expense-chart.html
       <label for="apparel-services-jewelry" id="apparel-services-jewelry-label">Jewelry</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="apparel-services-jewelry" id="apparel-services-jewelry" value="0" />
-      <select class="" name="apparel-services-jewelry-select" id="apparel-services-jewelry-select" />
+      <select class="" name="apparel-services-jewelry-select" id="apparel-services-jewelry-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -250,13 +253,13 @@ permalink: /ffb/expense-chart.html
       <label for="apparel-services-dry-cleaninglaundry" id="apparel-services-dry-cleaninglaundry-label">Dry Cleaning/Laundry</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="apparel-services-dry-cleaninglaundry" id="apparel-services-dry-cleaninglaundry" value="0" />
-      <select class="" name="apparel-services-dry-cleaninglaundry-select" id="apparel-services-dry-cleaninglaundry-select" />
+      <select class="" name="apparel-services-dry-cleaninglaundry-select" id="apparel-services-dry-cleaninglaundry-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
     </div>
   </div>
-  <div class="calculator-input-group" id="cash-contributions">
+  <div class="calculator-input-group calculator-input-group--summable" id="cash-contributions">
     <h4 class="calculator-group-title">
       <p>Cash Contributions</p>
       <p><span class="result-value">$0</span></p>
@@ -265,7 +268,7 @@ permalink: /ffb/expense-chart.html
       <label for="cash-contributions-donations" id="cash-contributions-donations-label">Donations</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="cash-contributions-donations" id="cash-contributions-donations" value="0" />
-      <select class="" name="cash-contributions-donations-select" id="cash-contributions-donations-select" />
+      <select class="" name="cash-contributions-donations-select" id="cash-contributions-donations-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -274,13 +277,13 @@ permalink: /ffb/expense-chart.html
       <label for="cash-contributions-other" id="cash-contributions-other-label">Other</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="cash-contributions-other" id="cash-contributions-other" value="0" />
-      <select class="" name="cash-contributions-other-select" id="cash-contributions-other-select" />
+      <select class="" name="cash-contributions-other-select" id="cash-contributions-other-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
     </div>
   </div>
-  <div class="calculator-input-group" id="healthcare">
+  <div class="calculator-input-group calculator-input-group--summable" id="healthcare">
     <h4 class="calculator-group-title">
       <p>Healthcare</p>
       <p><span class="result-value">$0</span></p>
@@ -289,7 +292,7 @@ permalink: /ffb/expense-chart.html
       <label for="healthcare-health-insurance" id="healthcare-health-insurance-label">Health Insurance</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="healthcare-health-insurance" id="healthcare-health-insurance" value="0" />
-      <select class="" name="healthcare-health-insurance-select" id="healthcare-health-insurance-select" />
+      <select class="" name="healthcare-health-insurance-select" id="healthcare-health-insurance-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -298,7 +301,7 @@ permalink: /ffb/expense-chart.html
       <label for="healthcare-long-term-care-insurance" id="healthcare-long-term-care-insurance-label">Long-Term Care Insurance</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="healthcare-long-term-care-insurance" id="healthcare-long-term-care-insurance" value="0" />
-      <select class="" name="healthcare-long-term-care-insurance-select" id="healthcare-long-term-care-insurance-select" />
+      <select class="" name="healthcare-long-term-care-insurance-select" id="healthcare-long-term-care-insurance-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -307,7 +310,7 @@ permalink: /ffb/expense-chart.html
       <label for="healthcare-disability-insurance" id="healthcare-disability-insurance-label">Disability Insurance</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="healthcare-disability-insurance" id="healthcare-disability-insurance" value="0" />
-      <select class="" name="healthcare-disability-insurance-select" id="healthcare-disability-insurance-select" />
+      <select class="" name="healthcare-disability-insurance-select" id="healthcare-disability-insurance-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -316,7 +319,7 @@ permalink: /ffb/expense-chart.html
       <label for="healthcare-medical-expenses" id="healthcare-medical-expenses-label">Medical Expenses</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="healthcare-medical-expenses" id="healthcare-medical-expenses" value="0" />
-      <select class="" name="healthcare-medical-expenses-select" id="healthcare-medical-expenses-select" />
+      <select class="" name="healthcare-medical-expenses-select" id="healthcare-medical-expenses-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -325,7 +328,7 @@ permalink: /ffb/expense-chart.html
       <label for="healthcare-dental-expenses" id="healthcare-dental-expenses-label">Dental Expenses</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="healthcare-dental-expenses" id="healthcare-dental-expenses" value="0" />
-      <select class="" name="healthcare-dental-expenses-select" id="healthcare-dental-expenses-select" />
+      <select class="" name="healthcare-dental-expenses-select" id="healthcare-dental-expenses-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -334,13 +337,13 @@ permalink: /ffb/expense-chart.html
       <label for="healthcare-other" id="healthcare-other-label">Other</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="healthcare-other" id="healthcare-other" value="0" />
-      <select class="" name="healthcare-other-select" id="healthcare-other-select" />
+      <select class="" name="healthcare-other-select" id="healthcare-other-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
     </div>
   </div>
-  <div class="calculator-input-group" id="insurance-pensions">
+  <div class="calculator-input-group calculator-input-group--summable" id="insurance-pensions">
     <h4 class="calculator-group-title">
       <p>Insurance & Pensions</p>
       <p><span class="result-value">$0</span></p>
@@ -349,7 +352,7 @@ permalink: /ffb/expense-chart.html
       <label for="insurance-pensions-life-and-personal-insurance" id="insurance-pensions-life-and-personal-insurance-label">Life and Personal Insurance</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="insurance-pensions-life-and-personal-insurance" id="insurance-pensions-life-and-personal-insurance" value="0" />
-      <select class="" name="insurance-pensions-life-and-personal-insurance-select" id="insurance-pensions-life-and-personal-insurance-select" />
+      <select class="" name="insurance-pensions-life-and-personal-insurance-select" id="insurance-pensions-life-and-personal-insurance-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -358,13 +361,13 @@ permalink: /ffb/expense-chart.html
       <label for="insurance-pensions-pension-social-security" id="insurance-pensions-pension-social-security-label">Pension & Social Security</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="insurance-pensions-pension-social-security" id="insurance-pensions-pension-social-security" value="0" />
-      <select class="" name="insurance-pensions-pension-social-security-select" id="insurance-pensions-pension-social-security-select" />
+      <select class="" name="insurance-pensions-pension-social-security-select" id="insurance-pensions-pension-social-security-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
     </div>
   </div>
-  <div class="calculator-input-group" id="entertainment">
+  <div class="calculator-input-group calculator-input-group--summable" id="entertainment">
     <h4 class="calculator-group-title">
       <p>Entertainment</p>
       <p><span class="result-value">$0</span></p>
@@ -373,7 +376,7 @@ permalink: /ffb/expense-chart.html
       <label for="entertainment-events" id="entertainment-events-label">Events</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="entertainment-events" id="entertainment-events" value="0" />
-      <select class="" name="entertainment-events-select" id="entertainment-events-select" />
+      <select class="" name="entertainment-events-select" id="entertainment-events-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -382,7 +385,7 @@ permalink: /ffb/expense-chart.html
       <label for="entertainment-memberships" id="entertainment-memberships-label">Memberships</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="entertainment-memberships" id="entertainment-memberships" value="0" />
-      <select class="" name="entertainment-memberships-select" id="entertainment-memberships-select" />
+      <select class="" name="entertainment-memberships-select" id="entertainment-memberships-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -391,7 +394,7 @@ permalink: /ffb/expense-chart.html
       <label for="entertainment-lessonshobbies" id="entertainment-lessonshobbies-label">Lessons/Hobbies</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="entertainment-lessonshobbies" id="entertainment-lessonshobbies" value="0" />
-      <select class="" name="entertainment-lessonshobbies-select" id="entertainment-lessonshobbies-select" />
+      <select class="" name="entertainment-lessonshobbies-select" id="entertainment-lessonshobbies-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -400,13 +403,13 @@ permalink: /ffb/expense-chart.html
       <label for="entertainment-pets" id="entertainment-pets-label">Pets</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="entertainment-pets" id="entertainment-pets" value="0" />
-      <select class="" name="entertainment-pets-select" id="entertainment-pets-select" />
+      <select class="" name="entertainment-pets-select" id="entertainment-pets-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
     </div>
   </div>
-  <div class="calculator-input-group" id="all-other-expenditures">
+  <div class="calculator-input-group calculator-input-group--summable" id="all-other-expenditures">
     <h4 class="calculator-group-title">
       <p>All Other Expenditures</p>
       <p><span class="result-value">$0</span></p>
@@ -415,7 +418,7 @@ permalink: /ffb/expense-chart.html
       <label for="all-other-expenditures-tuition" id="all-other-expenditures-tuition-label">Tuition</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="all-other-expenditures-tuition" id="all-other-expenditures-tuition" value="0" />
-      <select class="" name="all-other-expenditures-tuition-select" id="all-other-expenditures-tuition-select" />
+      <select class="" name="all-other-expenditures-tuition-select" id="all-other-expenditures-tuition-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -424,7 +427,7 @@ permalink: /ffb/expense-chart.html
       <label for="all-other-expenditures-booksnewspapers" id="all-other-expenditures-booksnewspapers-label">Books/Newspapers</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="all-other-expenditures-booksnewspapers" id="all-other-expenditures-booksnewspapers" value="0" />
-      <select class="" name="all-other-expenditures-booksnewspapers-select" id="all-other-expenditures-booksnewspapers-select" />
+      <select class="" name="all-other-expenditures-booksnewspapers-select" id="all-other-expenditures-booksnewspapers-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -433,7 +436,7 @@ permalink: /ffb/expense-chart.html
       <label for="all-other-expenditures-personal-care" id="all-other-expenditures-personal-care-label">Personal Care</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="all-other-expenditures-personal-care" id="all-other-expenditures-personal-care" value="0" />
-      <select class="" name="all-other-expenditures-personal-care-select" id="all-other-expenditures-personal-care-select" />
+      <select class="" name="all-other-expenditures-personal-care-select" id="all-other-expenditures-personal-care-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -442,13 +445,13 @@ permalink: /ffb/expense-chart.html
       <label for="all-other-expenditures-legalaccounting-fees" id="all-other-expenditures-legalaccounting-fees-label">Legal/Accounting Fees</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="all-other-expenditures-legalaccounting-fees" id="all-other-expenditures-legalaccounting-fees" value="0" />
-      <select class="" name="all-other-expenditures-legalaccounting-fees-select" id="all-other-expenditures-legalaccounting-fees-select" />
+      <select class="" name="all-other-expenditures-legalaccounting-fees-select" id="all-other-expenditures-legalaccounting-fees-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
     </div>
   </div>
-  <div class="calculator-input-group" id="taxes">
+  <div class="calculator-input-group calculator-input-group--summable" id="taxes">
     <h4 class="calculator-group-title">
       <p>Taxes</p>
       <p><span class="result-value">$0</span></p>
@@ -457,7 +460,7 @@ permalink: /ffb/expense-chart.html
       <label for="taxes-federal" id="taxes-federal-label">Federal</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="taxes-federal" id="taxes-federal" value="0" />
-      <select class="" name="taxes-federal-select" id="taxes-federal-select" />
+      <select class="" name="taxes-federal-select" id="taxes-federal-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -466,7 +469,7 @@ permalink: /ffb/expense-chart.html
       <label for="taxes-state" id="taxes-state-label">State</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="taxes-state" id="taxes-state" value="0" />
-      <select class="" name="taxes-state-select" id="taxes-state-select" />
+      <select class="" name="taxes-state-select" id="taxes-state-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
@@ -475,13 +478,23 @@ permalink: /ffb/expense-chart.html
       <label for="taxes-local" id="taxes-local-label">Local</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="taxes-local" id="taxes-local" value="0" />
-      <select class="" name="taxes-local-select" id="taxes-local-select" />
+      <select class="" name="taxes-local-select" id="taxes-local-select">
         <option value="1">Yearly</option>
         <option value="12">Monthly</option>
       </select>
     </div>
   </div>
-  <div class="calculator-result"></div>
+  <div class="calculator-result" id="calculator-result-table"></div>
+  <div class="calculator-input-group" id="fi-number">
+    <h4 class="calculator-group-title">
+      <p>What's Your FI Number?</p>
+    </h4>
+    <div class="calculator-input">
+      <label for="fi-number-expense-multiplier" id="fi-number-expense-multiplier-label">25x expenses</label><br />
+      <input type="range" class="slider" name="fi-number-expense-multiplier" id="fi-number-expense-multiplier" value="25" min="1" max="40" step="1" />
+    </div>
+  </div>
+  <div class="calculator-result" id="calculator-result-fi-number"></div>
 </div>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {
@@ -500,7 +513,6 @@ permalink: /ffb/expense-chart.html
       return el;
     }
     function parseCurrencyToFloat(value) {
-      console.log(value[1])
       let negative = false;
       if (value[1] == '-') {
         negative = true;
@@ -528,7 +540,8 @@ permalink: /ffb/expense-chart.html
       const inputs = calculator.querySelectorAll('input');
       const selects = calculator.querySelectorAll('select');
       const currencyInputs = calculator.querySelectorAll('input.currency');
-      const outputDiv = calculator.querySelector('#expense-chart .calculator-result');
+      const resultDivTable = calculator.querySelector('#expense-chart #calculator-result-table');
+      const resultFiNumber = calculator.querySelector('#expense-chart #calculator-result-fi-number');
 
       function updateGroupTotal(inputGroup) {
         const groupInputs = inputGroup.querySelectorAll('.calculator-input');
@@ -593,24 +606,46 @@ permalink: /ffb/expense-chart.html
       }
 
       function updateResults() {
-        if (outputDiv) {
-          function calculateResult() {
-            let grandTotal = 0.0
-            const inputGroups = calculator.querySelectorAll('.calculator-input-group');
+        let grandTotal = 0.0
 
-            inputGroups.forEach( (inputGroup) => {
-              grandTotal += updateGroupTotal(inputGroup);
-            });
+        if (resultDivTable) {
+          resultDivTable.innerHTML = '';
 
-            return comparisonTable(grandTotal);
-          }
-
-          outputDiv.innerHTML = '';
+          const inputGroups = calculator.querySelectorAll('.calculator-input-group--summable');
+          inputGroups.forEach( (inputGroup) => {
+            grandTotal += updateGroupTotal(inputGroup);
+          });
 
           let outputHeading = document.createElement('h4');
-          outputHeading.innerText = 'Results';
-          outputDiv.appendChild(outputHeading);
-          outputDiv.appendChild(calculateResult());
+          outputHeading.innerText = 'Annual Expenses';
+
+          resultDivTable.appendChild(outputHeading);
+          resultDivTable.appendChild(comparisonTable(grandTotal));
+        }
+
+        if (resultFiNumber) {
+          const fiNumberExpenseMultiplierInput = calculator.querySelector('input#fi-number-expense-multiplier');
+          const fiNumberExpenseMultiplierLabel = calculator.querySelector('#fi-number-expense-multiplier-label');
+          const fiNumberExpenseMultiplier = parseFloat(fiNumberExpenseMultiplierInput.value) || 0;
+          fiNumberExpenseMultiplierLabel.innerHTML = fiNumberExpenseMultiplier.toFixed(0) + 'x expenses' ;
+          if (fiNumberExpenseMultiplier < 1) {
+            resultFiNumber.innerHTML = '';
+            resultFiNumber.appendChild(tag('span', 'Set expense multiplier greater than 1', 'result-error'));
+            return;
+          }
+          if (fiNumberExpenseMultiplier > 40) {
+            resultFiNumber.innerHTML = '';
+            resultFiNumber.appendChild(tag('span', 'Set expense multiplier less than 40', 'result-error'));
+            return;
+          }
+
+          const fiTarget = grandTotal * fiNumberExpenseMultiplier;
+
+          resultFiNumber.innerHTML = '';
+          let baseText = tag('p', null, 'calculator-highlighted-result');
+          baseText.appendChild(document.createTextNode("Your Financial Independence Number: "));
+          baseText.appendChild(tag('span', toCurrency(fiTarget, 0), 'result-value'));
+          resultFiNumber.appendChild(baseText);
         }
       }
 
