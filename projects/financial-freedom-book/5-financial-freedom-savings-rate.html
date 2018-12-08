@@ -79,7 +79,21 @@ permalink: /ffb/savings-rate.html
         <input type="number" class="currency" name="annual-income" id="annual-income" value="100000" min="0" />
       </div>
     </div>
-    <div class="calculator-result"></div>
+    <div class="calculator-result" id="savings-rate-result"></div>
+
+    <div class="calculator-input-group" id="years-to-fi">
+      <h4 class="calculator-group-title">Years to Financial Independence</h4>
+      <div class="calculator-input">
+        <label for="years-to-fi-walk-away-number" id="years-to-fi-walk-away-number-label">Walk Away Number</label><br />
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="years-to-fi-walk-away-number" id="years-to-fi-walk-away-number" value="1250000" min="0" />
+      </div>
+      <div class="calculator-input">
+        <label for="years-to-fi-expected-investment-annual-return" id="years-to-fi-expected-investment-annual-return-label">7.0% expected investment annual return</label><br />
+        <input type="range" class="slider slider--percent" name="years-to-fi-expected-investment-annual-return" id="years-to-fi-expected-investment-annual-return" value="0.07" min="0.01" max="0.15" step="0.005" />
+      </div>
+    </div>
+    <div class="calculator-result" id="years-to-fi-result"></div>
   </div>
 </div>
 <script type="text/javascript">
@@ -105,24 +119,78 @@ permalink: /ffb/savings-rate.html
         return '$' + value.toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits})
       }
     }
+    function baseLog(x, y) {
+      return Math.log(x) / Math.log(y);
+    }
+    function yearsToWalkAway(target, current, growthRate, income, savingsRate) {
+      /*
+        YEARS TO WALK AWAY CALCULATION
+
+        Let:
+          W = walk-away target
+          C = current savings
+          r = investment annual growth rate
+          s = savings rate
+          I = annual income
+          n = years to walk-away
+
+          W = s * I * ((1 + r)^n -1)/r + C * (1 + r)^n
+          solve for n to get:
+          n = Log base 1 + r of (r * W + s * I) / (r * C + s * I)
+      */
+
+      const base = 1 + growthRate;
+
+      const numerator = growthRate * target + savingsRate * income;
+      const denomenator = growthRate * current + savingsRate * income;
+
+      return baseLog(numerator / denomenator, base);
+    }
     console.log("Calculator helper functions loaded");
     const calculator = document.querySelector('#savings-rate-calculator');
 
     if (calculator) {
       console.log("Calculator found");
-
       const inputs = calculator.querySelectorAll('input');
       const selects = calculator.querySelectorAll('select');
       const currencyInputs = calculator.querySelectorAll('input.currency');
-      const outputDiv = calculator.querySelector('#savings-rate-calculator .calculator-result');
+
+      const walkAwayNumberInput = calculator.querySelector('input#years-to-fi-walk-away-number');
+      const walkAwayNumberLabel = calculator.querySelector('#years-to-fi-walk-away-number-label');
+      const expectedInvestmentAnnualReturnInput = calculator.querySelector('input#years-to-fi-expected-investment-annual-return');
+      const expectedInvestmentAnnualReturnLabel = calculator.querySelector('#years-to-fi-expected-investment-annual-return-label');
+
+      const savingsRateResultDiv = calculator.querySelector('#savings-rate-calculator #savings-rate-result');
+      const yearsToFiResultDiv = calculator.querySelector('#savings-rate-calculator #years-to-fi-result');
+
       function updateResults() {
-        if (outputDiv) {
+        const walkAwayNumber = parseFloat(walkAwayNumberInput.value) || 0;
+        const expectedInvestmentAnnualReturn = parseFloat(expectedInvestmentAnnualReturnInput.value) || 0;
+        expectedInvestmentAnnualReturnLabel.innerHTML = (expectedInvestmentAnnualReturn * 100).toFixed(1) + '% expected investment annual return' ;
+
+        if (savingsRateResultDiv) {
           const income = calculator.querySelector('#annual-income').value || 0;
           if (income <= 0) {
-            outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', 'Set income to a value greater than zero', 'result-error'));
+            savingsRateResultDiv.innerHTML = '';
+            savingsRateResultDiv.appendChild(tag('span', 'Set income to a value greater than zero', 'result-error'));
             return;
           }
+          if (walkAwayNumber < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set walk away number greater than 0', 'result-error'));
+            return;
+          }
+          if (expectedInvestmentAnnualReturn < 0.01) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set expected investment annual return greater than 1.0%', 'result-error'));
+            return;
+          }
+          if (expectedInvestmentAnnualReturn > 0.15) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', 'Set expected investment annual return less than 15.0%', 'result-error'));
+            return;
+          }
+
           function updateSubtotal(inputGroupID) {
             const inputGroup = calculator.querySelector('#' + inputGroupID);
             const groupInputs = inputGroup.querySelectorAll('.calculator-input input.currency');
@@ -139,29 +207,42 @@ permalink: /ffb/savings-rate.html
             return groupTotal;
           }
 
-          function calculateResult() {
+          const annualSavings = updateSubtotal('annual-savings');
+          const preTaxInvestments = updateSubtotal('pre-tax-investments');
+          const afterTaxInvestments = updateSubtotal('after-tax-investments');
 
-            const annualSavings = updateSubtotal('annual-savings');
-            const preTaxInvestments = updateSubtotal('pre-tax-investments');
-            const afterTaxInvestments = updateSubtotal('after-tax-investments');
+          let savingsRate = (annualSavings + preTaxInvestments + afterTaxInvestments) / income;
 
-            let result = (annualSavings + preTaxInvestments + afterTaxInvestments) / income;
-
+          function savingsRateResultText(rate) {
             let outputText = document.createDocumentFragment();
 
             let baseText = tag('p', null, 'calculator-highlighted-result');
             baseText.appendChild(document.createTextNode("Your Savings Rate: "));
-            baseText.appendChild(tag('span', (result * 100).toFixed(0) + '%', 'result-value'));
+            baseText.appendChild(tag('span', (rate * 100).toFixed(0) + '%', 'result-value'));
             outputText.appendChild(baseText);
 
             return outputText;
           }
 
-          outputDiv.innerHTML = '';
+          savingsRateResultDiv.innerHTML = '';
+          yearsToFiResultDiv.innerHTML = '';
+
           let outputHeading = document.createElement('h4');
           outputHeading.innerText = 'Results';
-          outputDiv.appendChild(outputHeading);
-          outputDiv.appendChild(calculateResult());
+          savingsRateResultDiv.appendChild(outputHeading);
+          savingsRateResultDiv.appendChild(savingsRateResultText(savingsRate));
+
+          function yearsToFiResultText(years) {
+            let baseText = tag('p', null, 'calculator-highlighted-result');
+            baseText.appendChild(document.createTextNode("Time to Financial Independence: "));
+            baseText.appendChild(tag('br'));
+            baseText.appendChild(tag('span', years.toFixed(2) + ' years', 'result-value'));
+            return baseText;
+          }
+
+          years = yearsToWalkAway(walkAwayNumber, 0, expectedInvestmentAnnualReturn, income, savingsRate);
+
+          yearsToFiResultDiv.appendChild(yearsToFiResultText(years));
         }
       }
 
@@ -189,8 +270,8 @@ permalink: /ffb/savings-rate.html
       });
 
       /* Set calculator to auto-update on input changes */
-      for (let i = 0; i < currencyInputs.length; i += 1) {
-        currencyInputs[i].addEventListener('input', () => {
+      for (let i = 0; i < inputs.length; i += 1) {
+        inputs[i].addEventListener('input', () => {
           updateResults();
         });
       }

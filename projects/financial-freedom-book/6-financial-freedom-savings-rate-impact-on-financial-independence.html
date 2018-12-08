@@ -138,12 +138,12 @@ permalink: /ffb/savings-rate-impact.html
             outputDiv.appendChild(tag('span', 'Set expected investment annual return less than 15.0%', 'result-error'));
             return;
           }
-          if (expectedInvestmentAnnualReturn < 0.05) {
+          if (targetSavingsRate < 0.05) {
             outputDiv.innerHTML = '';
             outputDiv.appendChild(tag('span', 'Set target savings rate greater than 5%', 'result-error'));
             return;
           }
-          if (expectedInvestmentAnnualReturn > 1.00) {
+          if (targetSavingsRate > 1.00) {
             outputDiv.innerHTML = '';
             outputDiv.appendChild(tag('span', 'Set target savings rate less than 100%', 'result-error'));
             return;
