@@ -38,6 +38,7 @@ permalink: /smm-refi-raw.html
     }
     .smart-money-mamas-calculator .calculator-result h4 {
       background-color: #34b3b7;
+      margin: 0;
     }
     .smart-money-mamas-calculator h4.calculator-group-title {
       background-color: #e2b627;
@@ -203,10 +204,13 @@ permalink: /smm-refi-raw.html
       color: #414141;
       text-decoration: underline;
     }
+    .smart-money-mamas-calculator .calculator-result {
+      border: 1px solid #34b3b7;
+    }
     .smart-money-mamas-calculator .calculator-result p {
       text-align: center;
-      padding: 0;
-      margin: 2rem 0;
+      padding: 1rem;
+      margin: 0;
       font-size: 1.3rem;
       line-height: 1.25;
     }
@@ -226,6 +230,7 @@ permalink: /smm-refi-raw.html
     }
     .smart-money-mamas-calculator .calculator-result .closing-link {
       text-align: center;
+      padding: 0 1rem;
     }
     .smart-money-mamas-calculator .calculator-result span.result-focus {
       font-size: 2rem;
@@ -487,7 +492,7 @@ permalink: /smm-refi-raw.html
             const totalPaymentChange = currentTotalPayment - newTotalPayment;
             const interestChange = currentTotalInterest - newTotalInterest;
 
-            let outputBody = tag('div');
+            let outputBody = tag('div', undefined, 'results-box');
 
             outputBody.appendChild(resultStatement('monthly payment', currentPayment, newPayment));
 
