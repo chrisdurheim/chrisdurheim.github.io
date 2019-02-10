@@ -178,7 +178,7 @@ permalink: /smm-refi-raw.html
     .smart-money-mamas-calculator .calculator-result-table tr:hover td {
       background-color: #34b3b7;
       color: white;
-    } 
+    }
     .smart-money-mamas-calculator button.calculator-button {
       width: 100%;
       background-color: #34b3b7;
@@ -206,8 +206,23 @@ permalink: /smm-refi-raw.html
     .smart-money-mamas-calculator .calculator-result p {
       text-align: center;
       padding: 0;
-      margin: 2rem 0 0 0;
-      font-size: 2rem;
+      margin: 2rem 0;
+      font-size: 1.3rem;
+      line-height: 1.25;
+    }
+    .smart-money-mamas-calculator .calculator-result span.neutral,
+    .smart-money-mamas-calculator .calculator-result span.positive,
+    .smart-money-mamas-calculator .calculator-result span.negative {
+      font-weight: bold;
+    }
+    .smart-money-mamas-calculator .calculator-result span.positive {
+      color: green;
+    }
+    .smart-money-mamas-calculator .calculator-result span.negative {
+      color: red;
+    }
+    .smart-money-mamas-calculator .calculator-result span.subresult {
+      font-size: 1rem;
     }
     .smart-money-mamas-calculator .calculator-result .closing-link {
       text-align: center;
@@ -334,6 +349,47 @@ permalink: /smm-refi-raw.html
 
       return row;
     }
+    function resultStatement(item, currentValue, newValue) {
+      let change = newValue - currentValue;
+
+      let result = tag('p');
+      result.appendChild(document.createTextNode('Your '));
+      result.appendChild(tag('span', item, 'neutral'));
+      result.appendChild(document.createTextNode(' would '));
+
+      let adjustmentText = 'stay the same!';
+      let adjustmentClass = 'neutral';
+
+      if (change > 0) {
+        adjustmentText = 'increase';
+        adjustmentClass = 'negative';
+      } else if (change < 0) {
+        adjustmentText = 'decrease';
+        adjustmentClass = 'positive';
+        change = -change;
+      } else {
+        result.appendChild(document.createTextNode('stay the same!'));
+        return result;
+      }
+
+      result.appendChild(tag('span', adjustmentText, adjustmentClass));
+      result.appendChild(document.createTextNode(' by '));
+      result.appendChild(tag('span', toCurrency(change), adjustmentClass));
+      result.appendChild(tag('br'));
+      let subresult = tag('span', undefined, 'subresult')
+      subresult.appendChild(document.createTextNode(' (from '));
+      subresult.appendChild(tag('span', toCurrency(currentValue)));
+      subresult.appendChild(document.createTextNode(' to '));
+      subresult.appendChild(tag('span', toCurrency(newValue)));
+      subresult.appendChild(document.createTextNode(')'));
+
+      result.appendChild(subresult);
+
+      return result;
+    }
+    function interestStatement(currentInterest, newInterest) {
+      return tag('p', 'interest');
+    }
     console.log("Calculator helper functions loaded");
     const calculator = document.querySelector('#student-loan-refinancing-calculator');
 
@@ -431,41 +487,53 @@ permalink: /smm-refi-raw.html
             const totalPaymentChange = currentTotalPayment - newTotalPayment;
             const interestChange = currentTotalInterest - newTotalInterest;
 
-            let resultTableHeaderRow = document.createElement('tr');
+            let outputBody = tag('div');
 
-            resultTableHeaderRow.appendChild(tag('th','Detail'));
-            resultTableHeaderRow.appendChild(tag('th','Current'));
-            resultTableHeaderRow.appendChild(tag('th','Refinance'));
-            resultTableHeaderRow.appendChild(tag('th','Difference'));
+            outputBody.appendChild(resultStatement('monthly payment', currentPayment, newPayment));
 
-            let resultTableHeader = document.createElement('thead');
-            resultTableHeader.appendChild(resultTableHeaderRow);
+            outputBody.appendChild(resultStatement('total interest paid', currentTotalInterest, newTotalInterest));
 
-            let resultTableBody = document.createElement('tbody');
 
-            let resultTableBalanceRow = tableRow(toCurrency, 'currency-column', 'Balance', balance, balance, 0)
-            resultTableBody.appendChild(resultTableBalanceRow);
 
-            let resultTableRateRow = tableRow(toPercent, 'data-column', 'Rate', currentRate, newRate, rateChange)
-            resultTableBody.appendChild(resultTableRateRow);
+            return outputBody;
 
-            let resultTableTermRow = tableRow(friendlyMonthsText, 'data-column', 'Term', currentTerm, newTerm, termChange)
-            resultTableBody.appendChild(resultTableTermRow);
-
-            let resultTablePaymentRow = tableRow(toCurrency, 'currency-column', 'Monthly Payment', currentPayment, newPayment, paymentChange)
-            resultTableBody.appendChild(resultTablePaymentRow);
-
-            let resultTableTotalPaymentRow = tableRow(toCurrency, 'currency-column', 'Total Payment', currentTotalPayment, newTotalPayment, totalPaymentChange)
-            resultTableBody.appendChild(resultTableTotalPaymentRow);
-
-            let resultTableInterestRow = tableRow(toCurrency, 'currency-column', 'Total Interest Cost', currentTotalInterest, newTotalInterest, interestChange)
-            resultTableBody.appendChild(resultTableInterestRow);
-
-            let resultTable = tag('table', undefined, 'calculator-result-table');
-            resultTable.appendChild(resultTableHeader);
-            resultTable.appendChild(resultTableBody);
-
-            return resultTable;
+            //
+            //
+            // let resultTableHeaderRow = document.createElement('tr');
+            //
+            // resultTableHeaderRow.appendChild(tag('th','Detail'));
+            // resultTableHeaderRow.appendChild(tag('th','Current'));
+            // resultTableHeaderRow.appendChild(tag('th','Refinance'));
+            // resultTableHeaderRow.appendChild(tag('th','Difference'));
+            //
+            // let resultTableHeader = document.createElement('thead');
+            // resultTableHeader.appendChild(resultTableHeaderRow);
+            //
+            // let resultTableBody = document.createElement('tbody');
+            //
+            // let resultTableBalanceRow = tableRow(toCurrency, 'currency-column', 'Balance', balance, balance, 0)
+            // resultTableBody.appendChild(resultTableBalanceRow);
+            //
+            // let resultTableRateRow = tableRow(toPercent, 'data-column', 'Rate', currentRate, newRate, rateChange)
+            // resultTableBody.appendChild(resultTableRateRow);
+            //
+            // let resultTableTermRow = tableRow(friendlyMonthsText, 'data-column', 'Term', currentTerm, newTerm, termChange)
+            // resultTableBody.appendChild(resultTableTermRow);
+            //
+            // let resultTablePaymentRow = tableRow(toCurrency, 'currency-column', 'Monthly Payment', currentPayment, newPayment, paymentChange)
+            // resultTableBody.appendChild(resultTablePaymentRow);
+            //
+            // let resultTableTotalPaymentRow = tableRow(toCurrency, 'currency-column', 'Total Payment', currentTotalPayment, newTotalPayment, totalPaymentChange)
+            // resultTableBody.appendChild(resultTableTotalPaymentRow);
+            //
+            // let resultTableInterestRow = tableRow(toCurrency, 'currency-column', 'Total Interest Cost', currentTotalInterest, newTotalInterest, interestChange)
+            // resultTableBody.appendChild(resultTableInterestRow);
+            //
+            // let resultTable = tag('table', undefined, 'calculator-result-table');
+            // resultTable.appendChild(resultTableHeader);
+            // resultTable.appendChild(resultTableBody);
+            //
+            // return resultTable;
           }
 
           outputDiv.innerHTML = '';
@@ -473,7 +541,6 @@ permalink: /smm-refi-raw.html
           let outputHeading = document.createElement('h4');
           outputHeading.innerText = 'Results';
           outputDiv.appendChild(outputHeading);
-          outputDiv.appendChild(tag('h5', "Here's how your current situation compares to refinancing:"));
           outputDiv.appendChild(calculateResult());
 
           let closingLink = tag('h5', "Thinking about refinancing your student loans? ", 'closing-link');
