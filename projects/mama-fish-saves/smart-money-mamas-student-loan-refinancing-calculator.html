@@ -339,21 +339,6 @@ permalink: /smm-refi-raw.html
     function totalInterest(balance, rate, term) {
       return term * payment(balance, rate, term) - balance;
     }
-    function tableRow(convertFunction, dataClass, title, current, proposed, change) {
-      let rowClass = undefined;
-      if (change != 0) {
-        rowClass = (change > 0) ? 'positive' : 'negative';
-      }
-
-      let row = tag('tr', undefined, rowClass);
-
-      row.appendChild(tag('td', title, 'title-column'));
-      row.appendChild(tag('td', convertFunction(current), dataClass));
-      row.appendChild(tag('td', convertFunction(proposed), dataClass));
-      row.appendChild(tag('td', convertFunction(change), dataClass));
-
-      return row;
-    }
     function resultStatement(item, currentValue, newValue) {
       let change = newValue - currentValue;
 
@@ -381,7 +366,7 @@ permalink: /smm-refi-raw.html
       result.appendChild(document.createTextNode(' by '));
       result.appendChild(tag('span', toCurrency(change), adjustmentClass));
       result.appendChild(tag('br'));
-      let subresult = tag('span', undefined, 'subresult')
+      let subresult = tag('span', undefined, 'subresult');
       subresult.appendChild(document.createTextNode(' (from '));
       subresult.appendChild(tag('span', toCurrency(currentValue)));
       subresult.appendChild(document.createTextNode(' to '));
@@ -391,9 +376,6 @@ permalink: /smm-refi-raw.html
       result.appendChild(subresult);
 
       return result;
-    }
-    function interestStatement(currentInterest, newInterest) {
-      return tag('p', 'interest');
     }
     console.log("Calculator helper functions loaded");
     const calculator = document.querySelector('#student-loan-refinancing-calculator');
@@ -498,47 +480,7 @@ permalink: /smm-refi-raw.html
 
             outputBody.appendChild(resultStatement('total interest paid', currentTotalInterest, newTotalInterest));
 
-
-
             return outputBody;
-
-            //
-            //
-            // let resultTableHeaderRow = document.createElement('tr');
-            //
-            // resultTableHeaderRow.appendChild(tag('th','Detail'));
-            // resultTableHeaderRow.appendChild(tag('th','Current'));
-            // resultTableHeaderRow.appendChild(tag('th','Refinance'));
-            // resultTableHeaderRow.appendChild(tag('th','Difference'));
-            //
-            // let resultTableHeader = document.createElement('thead');
-            // resultTableHeader.appendChild(resultTableHeaderRow);
-            //
-            // let resultTableBody = document.createElement('tbody');
-            //
-            // let resultTableBalanceRow = tableRow(toCurrency, 'currency-column', 'Balance', balance, balance, 0)
-            // resultTableBody.appendChild(resultTableBalanceRow);
-            //
-            // let resultTableRateRow = tableRow(toPercent, 'data-column', 'Rate', currentRate, newRate, rateChange)
-            // resultTableBody.appendChild(resultTableRateRow);
-            //
-            // let resultTableTermRow = tableRow(friendlyMonthsText, 'data-column', 'Term', currentTerm, newTerm, termChange)
-            // resultTableBody.appendChild(resultTableTermRow);
-            //
-            // let resultTablePaymentRow = tableRow(toCurrency, 'currency-column', 'Monthly Payment', currentPayment, newPayment, paymentChange)
-            // resultTableBody.appendChild(resultTablePaymentRow);
-            //
-            // let resultTableTotalPaymentRow = tableRow(toCurrency, 'currency-column', 'Total Payment', currentTotalPayment, newTotalPayment, totalPaymentChange)
-            // resultTableBody.appendChild(resultTableTotalPaymentRow);
-            //
-            // let resultTableInterestRow = tableRow(toCurrency, 'currency-column', 'Total Interest Cost', currentTotalInterest, newTotalInterest, interestChange)
-            // resultTableBody.appendChild(resultTableInterestRow);
-            //
-            // let resultTable = tag('table', undefined, 'calculator-result-table');
-            // resultTable.appendChild(resultTableHeader);
-            // resultTable.appendChild(resultTableBody);
-            //
-            // return resultTable;
           }
 
           outputDiv.innerHTML = '';
