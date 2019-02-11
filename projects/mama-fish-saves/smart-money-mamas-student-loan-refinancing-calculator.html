@@ -228,10 +228,6 @@ permalink: /smm-refi-raw.html
     .smart-money-mamas-calculator .calculator-result span.subresult {
       font-size: 1rem;
     }
-    .smart-money-mamas-calculator .calculator-result .closing-link {
-      text-align: center;
-      padding: 0 1rem;
-    }
     .smart-money-mamas-calculator .calculator-result span.result-focus {
       font-size: 2rem;
     }
@@ -241,6 +237,15 @@ permalink: /smm-refi-raw.html
       padding: 0;
       margin: 0 2rem 2rem;
       font-size: 1.8rem;
+    }
+    .smart-money-mamas-calculator .calculator-cta {
+      margin: 2rem 1rem;
+      text-align: center;
+      padding: 1rem;
+    }
+    .smart-money-mamas-calculator .calculator-cta h5 {
+      font-family: 'Open Sans',sans-serif;
+      font-weight: 700;
     }
   </style>
 <div class="smart-money-mamas-calculator" id="student-loan-refinancing-calculator">
@@ -273,6 +278,10 @@ permalink: /smm-refi-raw.html
     </div>
   </div>
   <div class="calculator-result"></div>
+  <div class="calculator-cta">
+    <h5>Thinking about refinancing your student loans?</h5>
+    <h5><a href="https://smartmoneymamas.com/SoFi" target="_blank" rel="nofollow">SoFi can help!</a></h5>
+  </div>
 </div>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {
@@ -489,11 +498,6 @@ permalink: /smm-refi-raw.html
           outputHeading.innerText = 'Results';
           outputDiv.appendChild(outputHeading);
           outputDiv.appendChild(calculateResult());
-
-          let closingLink = tag('h5', "Thinking about refinancing your student loans? ", 'closing-link');
-          closingLink.appendChild(tag('br'));
-          closingLink.appendChild(tag('a', 'SoFi can help', undefined, undefined, 'https://smartmoneymamas.com/SoFi'));
-          outputDiv.appendChild(closingLink);
         }
       }
 
