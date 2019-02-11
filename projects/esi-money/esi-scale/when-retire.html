@@ -1,7 +1,8 @@
 ---
 layout: null
+published: false
 sitemap: false
-permalink: /esi/career-calc.min.html
+permalink: /esi/when-retire-auto.html
 pulled-from: https://esimoney.com/difference-high-starting-salary-can-make/
 ---
 <!DOCTYPE html>
@@ -19,7 +20,320 @@ pulled-from: https://esimoney.com/difference-high-starting-salary-can-make/
 
     <h4><span style="text-decoration: underline;"><strong>Post section title</strong></span></h4><p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
 
-    {% include esi-money/min/career-calc.txt %}
+    <style>
+      #when-can-i-retire-calculator {
+        margin: 2rem auto;
+        padding: 2rem;
+        border: 1px solid black;
+        max-width: 600px;
+        clear: both;
+      }
+      #when-can-i-retire-calculator .calculator__section {
+        padding: 1rem 0;
+      }
+      #when-can-i-retire-calculator .calculator__section h5 {
+        margin-top: 2rem;
+      }
+      #when-can-i-retire-calculator h3.calculator__title, #when-can-i-retire-calculator h3.calculator__result__title {
+        padding: 1rem 0;
+        text-align: center;
+        text-decoration: underline;
+        font-size: 2rem;
+        text-transform: uppercase;
+      }
+      #when-can-i-retire-calculator h4.calculator__section__title, #when-can-i-retire-calculator h4.calculator__result__title {
+        margin-bottom: 1rem;
+        background-color: #0000B3;
+        color: white;
+        padding: 0.5rem;
+        text-align: center;
+      }
+
+      #when-can-i-retire-calculator .calculator__input {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 1rem 0 0;
+      }
+      #when-can-i-retire-calculator label.calculator__input__label {
+        flex: 0 0 100%;
+        color: black;
+      }
+      #when-can-i-retire-calculator .calculator__input__prefix {
+        flex: 0 0 auto;
+        padding: 0.5rem;
+        margin: 0 0.25rem;
+        line-height: 2rem;
+      }
+      #when-can-i-retire-calculator .calculator__input input {
+        flex: 1 0 auto;
+        width: auto;
+        max-width: 50%;
+        padding: 0.5rem;
+        margin: 0 0.25rem;
+        font-size: 1rem;
+        border: 1px solid #d6d6d6;
+      }
+      #when-can-i-retire-calculator .calculator__input input:focus {
+        outline: none;
+        border: 1px solid #aaaaaa;
+      }
+      #when-can-i-retire-calculator input.calculator__slider {
+        width: 100%;
+        max-width: 100%;
+        -webkit-appearance: none;
+        appearance: none;
+        height: 0.5rem;
+        border-radius: 0.5rem;
+        border-color: #ddd;
+        color: #ddd;
+        background: #ddd;
+        outline: none;
+        opacity: 1;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+        padding: 0 !important;
+      }
+      #when-can-i-retire-calculator input.calculator__slider:hover {
+        background: #f5f5f5;
+      }
+      #when-can-i-retire-calculator input.calculator__slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        background: #0000B3;
+        cursor: pointer;
+      }
+
+      #when-can-i-retire-calculator input.calculator__slider::-moz-range-thumb {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        background: #0000B3;
+        cursor: pointer;
+      }
+      #when-can-i-retire-calculator .calculator__result {
+        font-size: 0.9rem;
+        margin-top: 2rem;
+        overflow-x: auto;
+      }
+      #when-can-i-retire-calculator .calculator__result__value {
+        font-weight: bold;
+      }
+      #when-can-i-retire-calculator .calculator__result__error {
+        font-size: 1.5rem;
+        color: #ac0000;
+      }
+      #when-can-i-retire-calculator .calculator__result__highlighted {
+        text-align: center;
+        background-color: #ac0000;
+        color: white;
+        font-size: 1.8rem;
+      }
+      #when-can-i-retire-calculator .calculator__result__table {
+        max-width: 100%;
+        overflow-x: scroll;
+        font-size: 0.8rem;
+      }
+      #when-can-i-retire-calculator .calculator__result__table tr {
+        transition: background-color 50ms, color 50ms;
+      }
+      #when-can-i-retire-calculator .calculator__result__table tr:hover td {
+        background-color: #0000B3;
+        color: white;
+      }
+      #when-can-i-retire-calculator .calculator__result__table th {
+        text-align: center;
+      }
+      #when-can-i-retire-calculator .calculator__result__table td, #when-can-i-retire-calculator .calculator__result__table th {
+        padding: 0 0.5rem;
+      }
+      #when-can-i-retire-calculator .calculator__result__table .currency-column {
+        text-align: center;
+      }
+    </style>
+    <form class="calculator" id="when-can-i-retire-calculator" action="#" accept-charset="UTF-8" method="post">
+      <h3 class="calculator__title">When Can I Retire?</h3>
+      <div class="calculator__section">
+        <h4>Retirement Spending</h4>
+        <div class="calculator__input">
+          <label class="calculator__input__label" id="retirement-spending-needs-label" for="retirement-spending-needs">Retirement Spending Needs</label><br />
+          <span class="calculator__input__prefix">$</span>
+          <input class="calculator__input__field calculator__input__field--currency" id="retirement-spending-needs" type="text" name="retirement-spending-needs" value="60,000" min="0" />
+        </div>
+        <div class="calculator__input">
+          <label class="calculator__input__label" id="annual-spending-inflation-label" for="annual-spending-inflation">2.5% annual spending inflation</label><br />
+          <input class="calculator__slider" value="2.5" min="0" max="20" step="0.5" type="range" name="annual-spending-inflation[]" id="annual-spending-inflation" />
+        </div>
+        <div class="calculator__input">
+          <label class="calculator__input__label" id="assumed-annual-withdrawal-rate-or-earnings-on-assets-label" for="assumed-annual-withdrawal-rate-or-earnings-on-assets">4.00% assumed annual withdrawal rate or earnings on assets</label><br />
+          <input class="calculator__slider" value="4" min="0.25" max="20" step="0.25" type="range" name="assumed-annual-withdrawal-rate-or-earnings-on-assets[]" id="assumed-annual-withdrawal-rate-or-earnings-on-assets" />
+        </div>
+        <div class="calculator__input">
+          <label class="calculator__input__label" id="annual-side-hustle-income-at-retirement-label" for="side-hustle-income">Annual Side Hustle Income At Retirement</label><br />
+          <span class="calculator__input__prefix">$</span>
+          <input class="calculator__input__field calculator__input__field--currency" type="text" name="annual-side-hustle-income-at-retirement" id="annual-side-hustle-income-at-retirement" value="10,000" min="0" />
+        </div>
+      </div>
+      <div class="calculator__section">
+        <h4>Savings for Retirement</h4>
+        <div class="calculator__input">
+          <label class="calculator__input__label" id="current-assets-to-be-used-for-retirement-drawdown-or-earnings-label" for="current-assets-to-be-used-for-retirement-drawdown-or-earnings">Current Assets to be Used for Retirement Drawdown or Earnings</label><br />
+          <span class="calculator__input__prefix">$</span>
+          <input class="calculator__input__field calculator__input__field--currency" type="text" name="current-assets-to-be-used-for-retirement-drawdown-or-earnings" id="current-assets-to-be-used-for-retirement-drawdown-or-earnings" value="100,000" min="0" />
+        </div>
+        <div class="calculator__input">
+          <label class="calculator__input__label" id="annual-return-on-investments-label" for="annual-return-on-investments">8% annual return on investments</label><br />
+          <input class="calculator__slider" value="8" min="1" max="20" step="0.5" type="range" name="annual-return-on-investments[]" id="annual-return-on-investments" />
+        </div>
+        <div class="calculator__input">
+          <label class="calculator__input__label" id="annual-contributions-to-assets-label" for="annual-contributions-to-assets">Annual Contributions to Assets</label><br />
+          <span class="calculator__input__prefix">$</span>
+          <input class="calculator__input__field calculator__input__field--currency" type="text" name="annual-contributions-to-assets" id="annual-contributions-to-assets" value="5,000" min="0" />
+        </div>
+        <div class="calculator__input">
+          <label class="calculator__input__label" id="annual-increase-in-contributions-label" for="annual-increase-in-contributions">0% annual increase in contributions</label><br />
+          <input class="calculator__slider" value="0" min="0" max="20" step="0.5" type="range" name="annual-increase-in-contributions[]" id="annual-increase-in-contributions" />
+        </div>
+      </div>
+      <div class="calculator-result" id="when-can-i-retire-result">
+      </div>
+    </form>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', () => {
+        function tag(type, options = {}) {
+          let el = document.createElement(type);
+          if (options.klass) {
+            el.setAttribute('class', options.klass);
+          }
+          if (options.id) {
+            el.setAttribute('id', options.id);
+          }
+          if (options.value) {
+            el.innerText = options.value;
+          }
+          return el;
+        }
+        function toCurrency(value) {
+          if (value == 0) {
+            return '-';
+          } else {
+            return '$' + value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          }
+        }
+        function parseCurrencyToFloat(value) {
+          result = parseFloat(value.replace(/[($)\s\._\-]+/g, '').replace(/,/g, ''));
+          if (isNaN(result)) {
+            return 0;
+          } else {
+            return result;
+          }
+        }
+
+        function convertToCurrency(value) {
+          return value.toLocaleString()
+        }
+
+        const calculator = document.querySelector('#when-can-i-retire-calculator');
+
+        if (calculator) {
+          const inputs = calculator.querySelectorAll('input');
+          const currencyInputs = calculator.querySelectorAll('input.calculator__input__field--currency');
+
+          const retirementSpendingNeedsInput = calculator.querySelector('input#retirement-spending-needs');
+          const retirementSpendingNeedsLabel = calculator.querySelector('label#retirement-spending-needs-label');
+          const annualSpendingInflationInput = calculator.querySelector('input#annual-spending-inflation');
+          const annualSpendingInflationLabel = calculator.querySelector('label#annual-spending-inflation-label');
+          const assumedAnnualWithdrawalRateOrEarningsOnAssetsInput = calculator.querySelector('input#assumed-annual-withdrawal-rate-or-earnings-on-assets');
+          const assumedAnnualWithdrawalRateOrEarningsOnAssetsLabel = calculator.querySelector('label#assumed-annual-withdrawal-rate-or-earnings-on-assets-label');
+          const annualSideHustleIncomeAtRetirementInput = calculator.querySelector('input#annual-side-hustle-income-at-retirement');
+          const annualSideHustleIncomeAtRetirementLabel = calculator.querySelector('label#annual-side-hustle-income-at-retirement-label');
+
+          const currentAssetsToBeUsedForRetirementDrawdownOrEarningsInput = calculator.querySelector('input#current-assets-to-be-used-for-retirement-drawdown-or-earnings');
+          const currentAssetsToBeUsedForRetirementDrawdownOrEarningsLabel = calculator.querySelector('label#current-assets-to-be-used-for-retirement-drawdown-or-earnings-label');
+          const annualReturnOnInvestmentsInput = calculator.querySelector('input#annual-return-on-investments');
+          const annualReturnOnInvestmentsLabel = calculator.querySelector('label#annual-return-on-investments-label');
+          const annualContributionsToAssetsInput = calculator.querySelector('input#annual-contributions-to-assets');
+          const annualContributionsToAssetsLabel = calculator.querySelector('label#annual-contributions-to-assets-label');
+          const annualIncreaseInContributionsInput = calculator.querySelector('input#annual-increase-in-contributions');
+          const annualIncreaseInContributionsLabel = calculator.querySelector('label#annual-increase-in-contributions-label');
+
+          const outputDiv = calculator.querySelector('#when-can-i-retire-result');
+
+          function updateResults() {
+            const retirementSpendingNeeds = parseCurrencyToFloat(retirementSpendingNeedsInput.value) || 0;
+            const annualSpendingInflation = parseFloat(annualSpendingInflationInput.value) / 100.0 || 0;
+            const assumedAnnualWithdrawalRateOrEarningsOnAssets = parseFloat(assumedAnnualWithdrawalRateOrEarningsOnAssetsInput.value) / 100.0 || 1.00;
+            const annualSideHustleIncomeAtRetirement = parseCurrencyToFloat(annualSideHustleIncomeAtRetirementInput.value) || 0;
+
+            const currentAssetsToBeUsedForRetirementDrawdownOrEarnings = parseCurrencyToFloat(currentAssetsToBeUsedForRetirementDrawdownOrEarningsInput.value) || 0;
+            const annualReturnOnInvestments = parseFloat(annualReturnOnInvestmentsInput.value) / 100.0 || 0;
+            const annualContributionsToAssets = parseCurrencyToFloat(annualContributionsToAssetsInput.value) || 0;
+            const annualIncreaseInContributions = parseFloat(annualIncreaseInContributionsInput.value) / 100.0 || 0;
+
+            /* Update slider labels */
+            let annualSpendingInflationText = (annualSpendingInflation * 100).toFixed(1);
+            annualSpendingInflationText +=  '% annual spending inflation';
+            annualSpendingInflationLabel.innerHTML = annualSpendingInflationText;
+
+            let assumedAnnualWithdrawalRateOrEarningsOnAssetsText = (assumedAnnualWithdrawalRateOrEarningsOnAssets * 100).toFixed(2);
+            assumedAnnualWithdrawalRateOrEarningsOnAssetsText +=  '% assumed annual withdrawal rate or earnings on assets';
+            assumedAnnualWithdrawalRateOrEarningsOnAssetsLabel.innerHTML = assumedAnnualWithdrawalRateOrEarningsOnAssetsText;
+
+            let annualReturnOnInvestmentsText = (annualReturnOnInvestments * 100).toFixed(1);
+            annualReturnOnInvestmentsText +=  '% annual return on investments';
+            annualReturnOnInvestmentsLabel.innerHTML = annualReturnOnInvestmentsText;
+
+            let annualIncreaseInContributionsText = (annualIncreaseInContributions * 100).toFixed(1);
+            annualIncreaseInContributionsText +=  '% annual increase in contributions';
+            annualIncreaseInContributionsLabel.innerHTML = annualIncreaseInContributionsText;
+
+            /* Update output */
+            if (outputDiv) {
+              /* Validate Inputs */
+              if (retirementSpendingNeeds <= 0.0) {
+                outputDiv.innerHTML = '';
+                outputDiv.appendChild(tag('span', { value: 'Set Retirement Spending Needs to a value greater than zero', class: 'result-error' }));
+                return;
+              }
+              if (annualContributionsToAssets <= 0.0) {
+                outputDiv.innerHTML = '';
+                outputDiv.appendChild(tag('span', { value: 'Set Annual Contributions to Assets to a value greater than zero', class: 'result-error' }));
+                return;
+              }
+              /* TODO: Add custom or multi-input validations */
+
+              /* Update output */
+              let out = document.createDocumentFragment();
+              /* TODO: Add output calculations and display here */
+              outputDiv.innerHTML = '';
+              outputDiv.appendChild(out);
+            }
+          }
+
+          /* Set calculator to auto-update on input changes */
+          for (let i = 0; i < inputs.length; i += 1) {
+            inputs[i].addEventListener('input', () => {
+              updateResults();
+            });
+          }
+
+          /* Auto-format with commas */
+          for (let i = 0; i < currencyInputs.length; i += 1) {
+            currencyInputs[i].addEventListener('input', () => {
+              currencyInputs[i].value = convertToCurrency(parseCurrencyToFloat(currencyInputs[i].value));
+            });
+          }
+
+          /* Update on load */
+          updateResults();
+        }
+      });
+    </script>
+
 
     <h4><span style="text-decoration: underline;"><strong>Post section title</strong></span></h4><p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
 

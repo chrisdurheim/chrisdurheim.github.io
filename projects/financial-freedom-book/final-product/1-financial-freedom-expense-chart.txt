@@ -1,3 +1,6 @@
+---
+published: false
+---
 <div class="financial-freedom-calculator flex-column" id="expense-chart">
   <h3 class="calculator-title">
     Expenses: How much do you spend?<br />
