@@ -123,6 +123,72 @@ permalink: /smm/trs/
     background: #34b3b7;
     cursor: pointer;
   }
+
+  .smart-money-mamas-calculator .switch-label--off {
+    margin-right: 0.5rem;
+  }
+
+  .smart-money-mamas-calculator .switch-label--on {
+    margin-left: 0.5rem;
+  }
+
+    /* The switch - the box around the slider */
+  .smart-money-mamas-calculator .switch {
+    position: relative;
+    display: inline-block;
+    width: 4rem;
+    height: 2rem;
+  }
+
+  /* Hide default HTML checkbox */
+  .smart-money-mamas-calculator .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  /* The slider */
+  .smart-money-mamas-calculator .switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e2b627;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border: 1px solid transparent;
+    border-radius: 2rem;
+  }
+
+  .smart-money-mamas-calculator .switch-slider:before {
+    position: absolute;
+    content: "";
+    height: calc(2rem - 8px);
+    width: calc(2rem - 8px);
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+  }
+
+  .smart-money-mamas-calculator input:checked + .switch-slider {
+    background-color: #34b3b7;
+  }
+
+  .smart-money-mamas-calculator input:focus + .switch-slider {
+    border-color: #414141;
+  }
+
+  .smart-money-mamas-calculator input:checked + .switch-slider:before {
+    -webkit-transform: translateX(32px);
+    -ms-transform: translateX(32px);
+    transform: translateX(32px);
+  }
+
   .smart-money-mamas-calculator p.description {
     color: rgba(0, 0, 0, 0.7);
     font-size: 0.9rem;
@@ -323,10 +389,20 @@ permalink: /smm/trs/
       </span>
     </p>
     <div class="calculator-input">
+      <div class="switch-container">
+        <span class="switch-label switch-label--off">Single</span>
+        <label class="switch">
+          <input type="checkbox" checked=true id="married-checkbox">
+          <span class="switch-slider"></span>
+        </label>
+        <span class="switch-label switch-label--on">Married</span>
+      </div>
+    </div>
+    <div class="calculator-input">
       <label for="step-1-enter-your-familys-current-age-and-income-your-current-age" id="step-1-enter-your-familys-current-age-and-income-your-current-age-label">33 your current age</label><br />
       <input type="range" class="slider" name="step-1-enter-your-familys-current-age-and-income-your-current-age" id="step-1-enter-your-familys-current-age-and-income-your-current-age" value="33" min="18" max="65" step="1" />
     </div>
-    <div class="calculator-input">
+    <div class="calculator-input for-spouse">
       <label for="step-1-enter-your-familys-current-age-and-income-your-spouses-current-age" id="step-1-enter-your-familys-current-age-and-income-your-spouses-current-age-label">32 your spouse's current age</label><br />
       <input type="range" class="slider" name="step-1-enter-your-familys-current-age-and-income-your-spouses-current-age" id="step-1-enter-your-familys-current-age-and-income-your-spouses-current-age" value="32" min="18" max="65" step="1" />
     </div>
@@ -335,7 +411,7 @@ permalink: /smm/trs/
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="step-1-enter-your-familys-current-age-and-income-your-current-income-pre-tax" id="step-1-enter-your-familys-current-age-and-income-your-current-income-pre-tax" value="60000" min="0" />
     </div>
-    <div class="calculator-input">
+    <div class="calculator-input for-spouse">
       <label for="step-1-enter-your-familys-current-age-and-income-your-spouses-current-income-pre-tax" id="step-1-enter-your-familys-current-age-and-income-your-spouses-current-income-pre-tax-label">Your Spouse's Current Income (pre-tax)</label><br />
       <span class="input-prefix">$</span>
       <input type="number" class="currency" name="step-1-enter-your-familys-current-age-and-income-your-spouses-current-income-pre-tax" id="step-1-enter-your-familys-current-age-and-income-your-spouses-current-income-pre-tax" value="45000" min="0" />
@@ -344,7 +420,7 @@ permalink: /smm/trs/
       <label for="step-1-enter-your-familys-current-age-and-income-your-estimated-annual-raise" id="step-1-enter-your-familys-current-age-and-income-your-estimated-annual-raise-label">2.0% your estimated annual raise</label><br />
       <input type="range" class="slider slider--percent" name="step-1-enter-your-familys-current-age-and-income-your-estimated-annual-raise" id="step-1-enter-your-familys-current-age-and-income-your-estimated-annual-raise" value="0.02" min="0.0" max="0.1" step="0.005" />
     </div>
-    <div class="calculator-input">
+    <div class="calculator-input for-spouse">
       <label for="step-1-enter-your-familys-current-age-and-income-your-spouses-estimated-annual-raise" id="step-1-enter-your-familys-current-age-and-income-your-spouses-estimated-annual-raise-label">2.0% your spouse's estimated annual raise</label><br />
       <input type="range" class="slider slider--percent" name="step-1-enter-your-familys-current-age-and-income-your-spouses-estimated-annual-raise" id="step-1-enter-your-familys-current-age-and-income-your-spouses-estimated-annual-raise" value="0.02" min="0.0" max="0.1" step="0.005" />
     </div>
@@ -367,7 +443,7 @@ permalink: /smm/trs/
       <label for="step-2-enter-your-familys-retirement-goals-your-target-retirement-age" id="step-2-enter-your-familys-retirement-goals-your-target-retirement-age-label">65 your target retirement age</label><br />
       <input type="range" class="slider" name="step-2-enter-your-familys-retirement-goals-your-target-retirement-age" id="step-2-enter-your-familys-retirement-goals-your-target-retirement-age" value="65" min="25" max="85" step="1" />
     </div>
-    <div class="calculator-input">
+    <div class="calculator-input for-spouse">
       <label for="step-2-enter-your-familys-retirement-goals-your-spouses-target-retirement-age" id="step-2-enter-your-familys-retirement-goals-your-spouses-target-retirement-age-label">365 your spouse's target retirement age</label><br />
       <input type="range" class="slider" name="step-2-enter-your-familys-retirement-goals-your-spouses-target-retirement-age" id="step-2-enter-your-familys-retirement-goals-your-spouses-target-retirement-age" value="65" min="25" max="85" step="1" />
     </div>
@@ -394,12 +470,12 @@ permalink: /smm/trs/
       </span>
     </p>
     <div class="calculator-result-field calculator-interim-result">Your Monthly Social Security (estimate): <span id="your-social-security-estimate"></span></div>
-    <div class="calculator-result-field calculator-interim-result">Your Spouse's Monthly Social Security (estimate): <span id="spouse-social-security-estimate"></span></div>
+    <div class="calculator-result-field calculator-interim-result for-spouse">Your Spouse's Monthly Social Security (estimate): <span id="spouse-social-security-estimate"></span></div>
     <div class="calculator-input">
       <label for="step-2-enter-your-familys-retirement-goals-haircut-to-2017-social-security-benefit-estimate" id="step-2-enter-your-familys-retirement-goals-haircut-to-2017-social-security-benefit-estimate-label">30.0% haircut to 2017 social security benefit estimate</label><br />
       <input type="range" class="slider slider--percent" name="step-2-enter-your-familys-retirement-goals-haircut-to-2017-social-security-benefit-estimate" id="step-2-enter-your-familys-retirement-goals-haircut-to-2017-social-security-benefit-estimate" value="0.3" min="0.0" max="1.0" step="0.05" />
     </div>
-    <div class="calculator-input">
+    <div class="calculator-input for-spouse">
       <label for="step-2-enter-your-familys-retirement-goals-haircut-to-spouses-2017-social-security-benefit-estimate" id="step-2-enter-your-familys-retirement-goals-haircut-to-spouses-2017-social-security-benefit-estimate-label">40.0% haircut to spouse's 2017 social security benefit estimate</label><br />
       <input type="range" class="slider slider--percent" name="step-2-enter-your-familys-retirement-goals-haircut-to-spouses-2017-social-security-benefit-estimate" id="step-2-enter-your-familys-retirement-goals-haircut-to-spouses-2017-social-security-benefit-estimate" value="0.4" min="0.0" max="1.0" step="0.05" />
     </div>
@@ -582,16 +658,6 @@ permalink: /smm/trs/
     }
 
     function simulateYear(year, currentRetirementSavings, you, spouse, assumptions) {
-      // console.log("year: " + year);
-      // console.log("currentRetirementSavings: " + currentRetirementSavings);
-      //
-      // console.log("assumptions.startingMonthlyExpenses: " + assumptions.startingMonthlyExpenses);
-      // console.log("assumptions.inflation: " + assumptions.inflation);
-      // console.log("assumptions.safeWithdrawalRate: " + assumptions.safeWithdrawalRate);
-      // console.log("assumptions.assetGrowthRateWorking: " + assumptions.assetGrowthRateWorking);
-      // console.log("assumptions.assetGrowthRateRetirement: " + assumptions.assetGrowthRateRetirement);
-      // console.log("assumptions.savingsRate: " + assumptions.savingsRate);
-
       let yourYear = simulateYearForPerson(year, you, assumptions.inflation);
       let spousesYear = simulateYearForPerson(year, spouse, assumptions.inflation);
       let expenses = expensesForYear(year, assumptions);
@@ -617,6 +683,7 @@ permalink: /smm/trs/
       console.log("Calculator found");
 
       const inputs = calculator.querySelectorAll('input');
+      const spouseFields = calculator.querySelectorAll('.for-spouse');
       const selects = calculator.querySelectorAll('select');
       const detailedDescriptions = calculator.querySelectorAll('p.detailed-description');
       const currencyInputs = calculator.querySelectorAll('input.currency');
@@ -921,6 +988,30 @@ permalink: /smm/trs/
 
         /* retirementSavingsValues */
       }
+
+      const marriedCheckbox = document.querySelector('#married-checkbox');
+
+      marriedCheckbox.addEventListener('input', () => {
+        married = marriedCheckbox.checked;
+        if (married) {
+          console.log('married');
+          yourSpousesCurrentIncomepretaxInput.value = 0;
+          haircutToSpouses2017SocialSecurityBenefitEstimateInput.value = 0.40;
+          for (let i = 0; i < spouseFields.length; i += 1) {
+            spouseFields[i].style.display = 'initial';
+          }
+        } else {
+          console.log('not married');
+          yourSpousesCurrentIncomepretaxInput.value = 0;
+          haircutToSpouses2017SocialSecurityBenefitEstimateInput.value = 1.0;
+          for (let i = 0; i < spouseFields.length; i += 1) {
+            spouseFields[i].style.display = 'none';
+          }
+        }
+        showDetails = false;
+        detailButton.innerHTML = 'Click to Show Asset Chart ↓';
+        updateResults();
+      });
 
       const detailButton = document.querySelector('#calculator-details-button');
 
