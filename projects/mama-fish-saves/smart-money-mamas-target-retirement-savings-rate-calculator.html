@@ -1,8 +1,8 @@
 ---
 layout: null
 sitemap: false
-published: true
-permalink: /smm/trs/
+published: false
+permalink: /smm/trs-full/
 ---
 
 <!DOCTYPE html>
@@ -205,7 +205,11 @@ permalink: /smm/trs/
     background-color: #e2b627;
     border-radius: 50%;
     width: 1.25rem;
+    height: 1.25rem;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .smart-money-mamas-calculator p.description .detail-icon .detail {
@@ -900,7 +904,7 @@ permalink: /smm/trs/
           startingIncome: yourCurrentIncomepretax,
           raiseRate: yourEstimatedAnnualRaise,
           ssHaircut: haircutTo2017SocialSecurityBenefitEstimate
-        }
+        };
 
         const spouse = {
           startingAge: yourSpousesCurrentAge,
@@ -908,7 +912,7 @@ permalink: /smm/trs/
           startingIncome: yourSpousesCurrentIncomepretax,
           raiseRate: yourSpousesEstimatedAnnualRaise,
           ssHaircut: haircutToSpouses2017SocialSecurityBenefitEstimate
-        }
+        };
 
         let assumptions = {
           startingMonthlyExpenses: familyExpectedMonthlyRetirementExpenses,
@@ -916,16 +920,16 @@ permalink: /smm/trs/
           safeWithdrawalRate: withdrawalRate,
           assetGrowthRateWorking: expectedAnnualInvestmentReturn,
           assetGrowthRateRetirement: expectedInvestmentReturnPostretirement
-        }
+        };
 
         /* Update retirement savings goal target */
 
         const yearsToRetirement = yourTargetRetirementAge - yourCurrentAge;
 
-        const retirementYearExpenses = expensesForYear(yearsToRetirement, assumptions)
-        const yourRetirementYear = simulateYearForPerson(yearsToRetirement, you, assumptions.inflation)
-        const spousesRetirementYear = simulateYearForPerson(yearsToRetirement, spouse, assumptions.inflation)
-        const retirementSavingsTarget = retirementSavingsNeeded(yearsToRetirement, retirementYearExpenses, yourRetirementYear, spousesRetirementYear, assumptions)
+        const retirementYearExpenses = expensesForYear(yearsToRetirement, assumptions);
+        const yourRetirementYear = simulateYearForPerson(yearsToRetirement, you, assumptions.inflation);
+        const spousesRetirementYear = simulateYearForPerson(yearsToRetirement, spouse, assumptions.inflation);
+        const retirementSavingsTarget = retirementSavingsNeeded(yearsToRetirement, retirementYearExpenses, yourRetirementYear, spousesRetirementYear, assumptions);
 
         const retirementSavingsTargetResult = calculator.querySelector('#retirement-savings-target');
         const retirementSavingsTarget2Result = calculator.querySelector('#retirement-savings-target-2');
@@ -965,11 +969,11 @@ permalink: /smm/trs/
         if (showDetails) {
           /* Simulate years */
           let simulatedYears = new Array;
-          let simulatedRetirementSavings = currentRetirementSavings
+          let simulatedRetirementSavings = currentRetirementSavings;
 
           const maxAge = 120;
           const minBalance = 0.0;
-          const maxDataPoints = 120
+          const maxDataPoints = 120;
 
           for (let i = 0; i < maxDataPoints; i += 1) {
             simulatedYear = simulateYear(i, simulatedRetirementSavings, you, spouse, assumptions);
@@ -1049,6 +1053,7 @@ permalink: /smm/trs/
           chartInitialized = true;
           updateResults();
       }
+
       function drawChart(data) {
         if (chartInitialized) {
           let balanceTable = new google.visualization.DataTable();
