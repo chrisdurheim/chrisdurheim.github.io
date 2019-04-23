@@ -1,0 +1,336 @@
+---
+layout: null
+sitemap: false
+published: true
+permalink: /ks/paypal/
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+<style>
+  .kayla-sloan-calculator {
+    background-color: #F5F5F6;
+    margin: 2rem auto;
+    padding: 2rem 2rem 0;
+    border-radius: 0.2rem;
+    border: 2px solid #2e7d32;
+    max-width: 90%;
+    clear: both;
+  }
+  .kayla-sloan-calculator .calculator-input-group {
+    padding: 1rem 0;
+  }
+  .kayla-sloan-calculator h3.calculator-title, .kayla-sloan-calculator .calculator-result h4 {
+    padding: 1rem 0;
+    //font-size: 2rem;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .kayla-sloan-calculator h4.calculator-group-title {
+    background-color: #2e7d32;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    color: white;
+    text-align: center;
+  }
+
+  .kayla-sloan-calculator .calculator-input {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1rem 0 0;
+  }
+  .kayla-sloan-calculator .calculator-input label {
+    flex: 0 0 100%;
+    padding: 0.25rem 0;
+    color: black;
+  }
+  .kayla-sloan-calculator .calculator-input .input-prefix {
+    flex: 0 0 auto;
+    padding: 0.5rem;
+    margin: 0 0.25rem;
+    line-height: 2rem;
+  }
+  .kayla-sloan-calculator .calculator-input input {
+    flex: 1 0 auto;
+    width: auto;
+    max-width: 50%;
+    padding: 0.5rem;
+    margin: 0 0.25rem;
+    //font-size: 1rem;
+    border: 1px solid #2e7d32;
+  }
+  .kayla-sloan-calculator .calculator-input input:focus {
+    outline: none;
+    border: 1px solid #00bcd4;
+  }
+  .kayla-sloan-calculator .calculator-input select.input-suffix {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0.5rem;
+    margin: 0 0.25rem;
+  }
+  .kayla-sloan-calculator input.slider {
+    margin-top: 1rem;
+    width: 100%;
+    max-width: 100%;
+  }
+  .kayla-sloan-calculator .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 0.5rem;
+    border-radius: 0.5rem;
+    border-color: #ffffff;
+    color: #ffffff;
+    background: #ffffff;
+    outline: none;
+    opacity: 1;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+    padding: 0 !important;
+  }
+  .kayla-sloan-calculator .slider:hover {
+    background: #eeeeee;
+  }
+  .kayla-sloan-calculator .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: #2e7d32;
+    cursor: pointer;
+  }
+
+  .kayla-sloan-calculator .slider::-moz-range-thumb {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: #2e7d32;
+    cursor: pointer;
+  }
+  .kayla-sloan-calculator .calculator-result {
+    //font-size: 0.9rem;
+    margin-top: 2rem;
+    overflow-x: auto;
+  }
+  .kayla-sloan-calculator .calculator-result .result-value {
+    font-weight: bold;
+  }
+  .kayla-sloan-calculator .calculator-result .result-error {
+    //font-size: 1.5rem;
+    color: #b71c1c;
+  }
+  .kayla-sloan-calculator .calculator-result .calculator-highlighted-result {
+    text-align: center;
+    background-color: #b71c1c;
+    color: white;
+    //font-size: 1.8rem;
+  }
+  .kayla-sloan-calculator .calculator-result-table {
+    max-width: 100%;
+    overflow-x: scroll;
+    //font-size: 0.8rem;
+  }
+  .kayla-sloan-calculator .calculator-result-table tr {
+    transition: background-color 50ms, color 50ms;
+  }
+  .kayla-sloan-calculator .calculator-result-table tr:hover td {
+    background-color: #2e7d32;
+    color: white;
+  }
+  .kayla-sloan-calculator .calculator-result-table th {
+    text-align: center;
+  }
+  .kayla-sloan-calculator .calculator-result-table td, .calculator-result-table th {
+    padding: 0 0.5rem;
+  }
+  .kayla-sloan-calculator .calculator-result-table .currency-column {
+    text-align: center;
+  }
+  .kayla-sloan-calculator button.calculator-button {
+    width: 100%;
+    background-color: #2e7d32;
+    margin: 0 auto;
+    cursor: pointer;
+    text-align: center;
+  }
+  .kayla-sloan-calculator .calculator-attribution {
+    text-align: center;
+    font-size: 0.8rem;
+    font-style: italic;
+    margin-top: 2rem;
+    padding: 1rem 0.5rem;
+    border-top: 1px solid #2e7d32;
+  }
+  .kayla-sloan-calculator .calculator-attribution a {
+    font-size: 0.8rem;
+    color: #2e7d32;
+    text-decoration: none;
+  }
+  .kayla-sloan-calculator .calculator-attribution a:hover {
+    color: #00bcd4;
+    text-decoration: underline;
+  }
+  .kayla-sloan-calculator {
+    font-size: 16px;
+    font-family: sans-serif;
+    border-radius: 1rem;
+    border: 1px solid #2e7d32;
+    max-width: 600px;
+  }
+  .kayla-sloan-calculator h3, .kayla-sloan-calculator h4, .kayla-sloan-calculator h5, .kayla-sloan-calculator h6 {
+    border-radius: 0.5rem;
+    text-transform: uppercase;
+    margin: 0 auto;
+  }
+  .kayla-sloan-calculator h3 {
+    font-size: 1.75rem;
+  }
+  .kayla-sloan-calculator h4 {
+    font-size: 1.5rem;
+  }
+  .kayla-sloan-calculator h5 {
+    font-size: 1.25rem;
+  }
+  .kayla-sloan-calculator h6 {
+    font-size: 1.125rem;
+  }
+  .kayla-sloan-calculator input, .kayla-sloan-calculator p, .kayla-sloan-calculator li {
+    font-size: 1.0rem;
+  }
+  .kayla-sloan-calculator .calculator-input label {
+    color: #555555;
+  }
+  .kayla-sloan-calculator .calculator-result h4 {
+    text-decoration: underline;
+  }
+</style>
+<div class="kayla-sloan-calculator" id="paypal-fees-calculator">
+  <h3 class="calculator-title">PayPal Fees Calculator</h3>
+  <div class="calculator-input-group" id="">
+    <div class="calculator-input">
+      <label for="amount" id="amount-label">Amount</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" class="currency" name="amount" id="amount" value="250.00" min="0" />
+    </div>
+    <div class="calculator-input">
+      <label for="fee-schedule" id="fee-schedule-label">Fee Schedule</label><br />
+      <select class="" name="fee-schedule" id="fee-schedule" value="0.0029">
+        <option value="0.029">US Domestic Online - 2.9% + $0.30</option>
+        <option value="0.044">US International Online - 4.4% + $0.30</option>
+      </select>
+    </div>
+  </div>
+  <div class="calculator-result"></div>
+  <div class="calculator-input-group" id="">
+    <div class="disclaimer">PayPal fees current as of April 22, 2019</div>
+  </div>
+</div>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("Calculator js running");
+    function tag(type, value = undefined, klass = undefined, id = undefined) {
+      let el = document.createElement(type);
+      if (klass) {
+        el.setAttribute('class', klass);
+      }
+      if (id) {
+        el.setAttribute('id', id);
+      }
+      if (value) {
+        el.innerText = value;
+      }
+      return el;
+    }
+    function toCurrency(value, digits = 2) {
+      if (value == 0) {
+        return '-';
+      } else {
+        return '$' + value.toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits})
+      }
+    }
+    console.log("Calculator helper functions loaded");
+    const calculator = document.querySelector('#paypal-fees-calculator');
+
+    if (calculator) {
+      console.log("Calculator found");
+
+      const inputs = calculator.querySelectorAll('input');
+      const selects = calculator.querySelectorAll('select');
+      const currencyInputs = calculator.querySelectorAll('input.currency');
+      const amountInput = calculator.querySelector('input#amount');
+      const amountLabel = calculator.querySelector('#amount-label');
+      const feeScheduleInput = calculator.querySelector('select#fee-schedule');
+      const feeScheduleLabel = calculator.querySelector('#fee-schedule-label');
+      const outputDiv = calculator.querySelector('#paypal-fees-calculator .calculator-result');
+      function updateResults() {
+        const amount = parseFloat(amountInput.value) || 0;
+        const feeSchedule = parseFloat(feeScheduleInput.value) || 0;
+        if (outputDiv) {
+          if (amount < 0.32) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', "Set amount greater than $0.32", 'result-error'));
+            return;
+          }
+
+          function calculateResult() {
+            const baseFees = amount * feeSchedule + 0.30;
+            const baseNet = amount - baseFees;
+
+            const flipAmount = (amount + 0.30) / (1.0 - feeSchedule);
+            const flipFees = flipAmount - amount;
+
+            let outputText = document.createDocumentFragment();
+
+            let baseText = document.createElement('p');
+            baseText.appendChild(document.createTextNode("If you invoice "));
+            baseText.appendChild(tag('span', toCurrency(amount), 'result-value'));
+            baseText.appendChild(document.createTextNode(", PayPal will take "));
+            baseText.appendChild(tag('span', toCurrency(baseFees), 'result-value'));
+            baseText.appendChild(document.createTextNode(" in fees, leaving you with "));
+            baseText.appendChild(tag('span', toCurrency(baseNet), 'result-value'));
+            outputText.appendChild(baseText);
+
+            let flipText = document.createElement('p');
+            flipText.appendChild(document.createTextNode("If you invoice "));
+            flipText.appendChild(tag('span', toCurrency(flipAmount), 'result-value'));
+            flipText.appendChild(document.createTextNode(", PayPal will take "));
+            flipText.appendChild(tag('span', toCurrency(flipFees), 'result-value'));
+            flipText.appendChild(document.createTextNode(" in fees, leaving you with "));
+            flipText.appendChild(tag('span', toCurrency(amount), 'result-value'));
+            outputText.appendChild(flipText);
+
+            return outputText;
+          }
+
+          outputDiv.innerHTML = '';
+          outputDiv.appendChild(calculateResult());
+        }
+      }
+
+      /* Set calculator to auto-update on input changes */
+      for (let i = 0; i < inputs.length; i += 1) {
+        inputs[i].addEventListener('input', () => {
+          updateResults();
+        });
+      }
+
+      for (let i = 0; i < selects.length; i += 1) {
+        selects[i].addEventListener('input', () => {
+          updateResults();
+        });
+      }
+
+      updateResults();
+    }
+  });
+</script>
+</body>
+</html>

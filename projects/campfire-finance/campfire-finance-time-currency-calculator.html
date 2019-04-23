@@ -68,6 +68,12 @@ permalink: /cff/time-currency/
   padding: 1rem 0;
   text-align: center;
   text-transform: uppercase;
+  margin: 0.5rem 0;
+}
+.campfire-finance-calculator h4.calculator-subtitle {
+  margin: 0.5rem 0;
+  text-align: center;
+  color: #ac0000;
 }
 .campfire-finance-calculator h4.calculator-group-title {
   background-color: #569D3A;
@@ -245,6 +251,14 @@ permalink: /cff/time-currency/
 </style>
 <div class="campfire-finance-calculator" id="time-currency-calculator">
   <h3 class="calculator-title">Time Currency Calculator</h3>
+  <h4 class="calculator-subtitle">How much will that purchase *really* cost you?</h4>
+  <div class="calculator-input-group" id="">
+    <div class="calculator-input">
+      <label for="cost-of-item" id="cost-of-item-label">Cost of Item</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" class="currency" name="cost-of-item" id="cost-of-item" value="260.00" min="0" step="0.01" />
+    </div>
+  </div>
   <div class="calculator-input-group" id="">
     <p class="description">Input either your hourly wage or your annual salary</p>
     <div class="calculator-input">
@@ -262,13 +276,6 @@ permalink: /cff/time-currency/
     <div class="calculator-input">
       <label for="withholdings" id="withholdings-label">20% withholdings</label><br />
       <input type="range" class="slider slider--percent" name="withholdings" id="withholdings" value="0.20" min="0.00" max="0.99" step="0.01" />
-    </div>
-  </div>
-  <div class="calculator-input-group" id="">
-    <div class="calculator-input">
-      <label for="cost-of-item" id="cost-of-item-label">Cost of Item</label><br />
-      <span class="input-prefix">$</span>
-      <input type="number" class="currency" name="cost-of-item" id="cost-of-item" value="260.00" min="0" step="0.01" />
     </div>
   </div>
   <div class="calculator-result"></div>

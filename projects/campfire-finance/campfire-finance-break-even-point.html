@@ -246,6 +246,13 @@ permalink: /cff/break-even/
 <div class="campfire-finance-calculator" id="break-even-point">
   <h3 class="calculator-title">Break Even Point</h3>
   <div class="calculator-input-group" id="">
+    <div class="calculator-input">
+      <label for="monthly-expenses" id="monthly-expenses-label">Monthly Expenses</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" class="currency" name="monthly-expenses" id="monthly-expenses" value="3000.00" min="0" step="0.01" />
+    </div>
+  </div>
+  <div class="calculator-input-group" id="">
     <p class="description">Input either your hourly wage or your annual salary</p>
     <div class="calculator-input">
       <label for="your-hourly-wage" id="your-hourly-wage-label">Your Hourly Wage</label><br />
@@ -262,13 +269,6 @@ permalink: /cff/break-even/
     <div class="calculator-input">
       <label for="withholdings" id="withholdings-label">20% withholdings</label><br />
       <input type="range" class="slider slider--percent" name="withholdings" id="withholdings" value="0.20" min="0.00" max="0.99" step="0.01" />
-    </div>
-  </div>
-  <div class="calculator-input-group" id="">
-    <div class="calculator-input">
-      <label for="monthly-expenses" id="monthly-expenses-label">Monthly Expenses</label><br />
-      <span class="input-prefix">$</span>
-      <input type="number" class="currency" name="monthly-expenses" id="monthly-expenses" value="3000.00" min="0" step="0.01" />
     </div>
   </div>
   <div class="calculator-result"></div>
