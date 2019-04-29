@@ -1,7 +1,7 @@
 ---
 layout: null
 sitemap: false
-published: false
+published: true
 permalink: /smm/trs-full/
 ---
 
@@ -989,8 +989,6 @@ permalink: /smm/trs-full/
           }
           drawChart(simulatedYears);
         }
-
-        /* retirementSavingsValues */
       }
 
       const marriedCheckbox = document.querySelector('#married-checkbox');
@@ -998,14 +996,12 @@ permalink: /smm/trs-full/
       marriedCheckbox.addEventListener('input', () => {
         married = marriedCheckbox.checked;
         if (married) {
-          console.log('married');
           yourSpousesCurrentIncomepretaxInput.value = 0;
           haircutToSpouses2017SocialSecurityBenefitEstimateInput.value = 0.40;
           for (let i = 0; i < spouseFields.length; i += 1) {
-            spouseFields[i].style.display = 'initial';
+            spouseFields[i].style.display = 'flex';
           }
         } else {
-          console.log('not married');
           yourSpousesCurrentIncomepretaxInput.value = 0;
           haircutToSpouses2017SocialSecurityBenefitEstimateInput.value = 1.0;
           for (let i = 0; i < spouseFields.length; i += 1) {
