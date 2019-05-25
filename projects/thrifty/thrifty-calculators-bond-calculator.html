@@ -1,0 +1,388 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+<style>
+  .thrifty-calculators-calculator {
+    background-color: #F5F5F6;
+    margin: 2rem auto;
+    padding: 2rem 2rem 0;
+    border-radius: 0.2rem;
+    border: 2px solid #2e7d32;
+    max-width: 90%;
+    clear: both;
+  }
+  .thrifty-calculators-calculator .calculator-input-group {
+    padding: 1rem 0;
+  }
+  .thrifty-calculators-calculator h3.calculator-title, .thrifty-calculators-calculator .calculator-result h4 {
+    padding: 1rem 0;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .thrifty-calculators-calculator h4.calculator-group-title {
+    background-color: #2e7d32;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    color: white;
+    text-align: center;
+  }
+
+  .thrifty-calculators-calculator .calculator-input {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1rem 0 0;
+  }
+  .thrifty-calculators-calculator .calculator-input label {
+    flex: 0 0 100%;
+    padding: 0.25rem 0;
+    color: black;
+  }
+  .thrifty-calculators-calculator .calculator-input .input-prefix {
+    flex: 0 0 auto;
+    padding: 0.5rem;
+    margin: 0 0.25rem;
+    line-height: 2rem;
+  }
+  .thrifty-calculators-calculator .calculator-input input {
+    flex: 1 0 auto;
+    width: auto;
+    max-width: 50%;
+    padding: 0.5rem;
+    margin: 0 0.25rem;
+    border: 1px solid #2e7d32;
+  }
+  .thrifty-calculators-calculator .calculator-input input:focus {
+    outline: none;
+    border: 1px solid #00bcd4;
+  }
+  .thrifty-calculators-calculator .calculator-input select.input-suffix {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0.5rem;
+    margin: 0 0.25rem;
+  }
+  .thrifty-calculators-calculator input.slider {
+    margin-top: 1rem;
+    width: 100%;
+    max-width: 100%;
+  }
+  .thrifty-calculators-calculator .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 0.5rem;
+    border-radius: 0.5rem;
+    border-color: #ffffff;
+    color: #ffffff;
+    background: #ffffff;
+    outline: none;
+    opacity: 1;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+    padding: 0 !important;
+  }
+  .thrifty-calculators-calculator .slider:hover {
+    background: #eeeeee;
+  }
+  .thrifty-calculators-calculator .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: #2e7d32;
+    cursor: pointer;
+  }
+
+  .thrifty-calculators-calculator .slider::-moz-range-thumb {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: #2e7d32;
+    cursor: pointer;
+  }
+  .thrifty-calculators-calculator .calculator-result {
+    margin-top: 2rem;
+    overflow-x: auto;
+  }
+  .thrifty-calculators-calculator .calculator-result .result-value {
+    font-weight: bold;
+  }
+  .thrifty-calculators-calculator .calculator-result .result-error {
+    color: #b71c1c;
+  }
+  .thrifty-calculators-calculator .calculator-result .calculator-highlighted-result {
+    text-align: center;
+    background-color: #b71c1c;
+    color: white;
+  }
+  .thrifty-calculators-calculator .calculator-result-table {
+    max-width: 100%;
+    overflow-x: scroll;
+  }
+  .thrifty-calculators-calculator .calculator-result-table tr {
+    transition: background-color 50ms, color 50ms;
+  }
+  .thrifty-calculators-calculator .calculator-result-table tr:hover td {
+    background-color: #2e7d32;
+    color: white;
+  }
+  .thrifty-calculators-calculator .calculator-result-table th {
+    text-align: center;
+  }
+  .thrifty-calculators-calculator .calculator-result-table td, .calculator-result-table th {
+    padding: 0 0.5rem;
+  }
+  .thrifty-calculators-calculator .calculator-result-table .currency-column {
+    text-align: center;
+  }
+  .thrifty-calculators-calculator button.calculator-button {
+    width: 100%;
+    background-color: #2e7d32;
+    margin: 0 auto;
+    cursor: pointer;
+    text-align: center;
+  }
+  .thrifty-calculators-calculator .calculator-attribution {
+    text-align: center;
+    font-size: 0.8rem;
+    font-style: italic;
+    margin-top: 2rem;
+    padding: 1rem 0.5rem;
+    border-top: 1px solid #2e7d32;
+  }
+  .thrifty-calculators-calculator .calculator-attribution a {
+    font-size: 0.8rem;
+    color: #2e7d32;
+    text-decoration: none;
+  }
+  .thrifty-calculators-calculator .calculator-attribution a:hover {
+    color: #00bcd4;
+    text-decoration: underline;
+  }
+  .thrifty-calculators-calculator {
+    font-size: 16px;
+    font-family: sans-serif;
+    border-radius: 1rem;
+    border: 1px solid #2e7d32;
+    max-width: 600px;
+  }
+  .thrifty-calculators-calculator h3, .thrifty-calculators-calculator h4, .thrifty-calculators-calculator h5, .thrifty-calculators-calculator h6 {
+    border-radius: 0.5rem;
+    text-transform: uppercase;
+    margin: 0 auto;
+  }
+  .thrifty-calculators-calculator h3 {
+    font-size: 1.75rem;
+  }
+  .thrifty-calculators-calculator h4 {
+    font-size: 1.5rem;
+  }
+  .thrifty-calculators-calculator h5 {
+    font-size: 1.25rem;
+  }
+  .thrifty-calculators-calculator h6 {
+    font-size: 1.125rem;
+  }
+  .thrifty-calculators-calculator input, .thrifty-calculators-calculator p, .thrifty-calculators-calculator li {
+    font-size: 1.0rem;
+  }
+  .thrifty-calculators-calculator .calculator-input label {
+    color: #555555;
+  }
+  .thrifty-calculators-calculator .calculator-result h4 {
+    text-decoration: underline;
+  }
+</style>
+<div class="thrifty-calculators-calculator" id="bond-calculator">
+  <h3 class="calculator-title">Bond Calculator</h3>
+  <div class="calculator-input-group" id="solve-for">
+    <div class="calculator-input">
+      <label for="i-want-to-solve-for" id="i-want-to-solve-for-label">I want to solve for</label><br />
+      <input type="number" class="" name="i-want-to-solve-for" id="i-want-to-solve-for" value="1" />
+    </div>
+  </div>
+  <div class="calculator-input-group" id="price">
+    <div class="calculator-input">
+      <label for="price" id="price-label">Price</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" class="currency" name="price" id="price" value="1000.00" min="0" />
+    </div>
+  </div>
+  <div class="calculator-input-group" id="coupon">
+    <div class="calculator-input">
+      <label for="coupon" id="coupon-label">Coupon</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" class="currency" name="coupon" id="coupon" value="55.00" min="0" />
+    </div>
+  </div>
+  <div class="calculator-input-group" id="face-value">
+    <div class="calculator-input">
+      <label for="face-value" id="face-value-label">Face Value</label><br />
+      <span class="input-prefix">$</span>
+      <input type="number" class="currency" name="face-value" id="face-value" value="1000.00" min="0" />
+    </div>
+  </div>
+  <div class="calculator-input-group" id="yield">
+    <div class="calculator-input">
+      <label for="yield" id="yield-label">5.5% yield</label><br />
+      <input type="range" class="slider slider--percent" name="yield" id="yield" value="0.055" min="0.00125" max="0.12" step="0.00125" />
+    </div>
+  </div>
+  <div class="calculator-input-group" id="years-to-maturity">
+    <div class="calculator-input">
+      <label for="years-to-maturity" id="years-to-maturity-label">5 years to maturity</label><br />
+      <input type="range" class="slider" name="years-to-maturity" id="years-to-maturity" value="5" min="1" max="40" step="1" />
+    </div>
+  </div>
+  <div class="calculator-input-group" id="compounding-frequency">
+    <div class="calculator-input">
+      <label for="compounding-frequency" id="compounding-frequency-label">Compounding Frequency</label><br />
+      <input type="number" class="" name="compounding-frequency" id="compounding-frequency" value="1" />
+    </div>
+  </div>
+  <div class="calculator-result"></div>
+</div>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("Calculator js running");
+    function tag(type, value = undefined, klass = undefined, id = undefined) {
+      let el = document.createElement(type);
+      if (klass) {
+        el.setAttribute('class', klass);
+      }
+      if (id) {
+        el.setAttribute('id', id);
+      }
+      if (value) {
+        el.innerText = value;
+      }
+      return el;
+    }
+    function toCurrency(value, digits = 2) {
+      if (value == 0) {
+        return '-';
+      } else {
+        return '$' + value.toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits})
+      }
+    }
+    console.log("Calculator helper functions loaded");
+    const calculator = document.querySelector('#bond-calculator');
+
+    if (calculator) {
+      console.log("Calculator found");
+
+      const inputs = calculator.querySelectorAll('input');
+      const selects = calculator.querySelectorAll('select');
+      const currencyInputs = calculator.querySelectorAll('input.currency');
+      const iWantToSolveForInput = calculator.querySelector('input#i-want-to-solve-for');
+      const iWantToSolveForLabel = calculator.querySelector('#i-want-to-solve-for-label');
+      const priceInput = calculator.querySelector('input#price');
+      const priceLabel = calculator.querySelector('#price-label');
+      const couponInput = calculator.querySelector('input#coupon');
+      const couponLabel = calculator.querySelector('#coupon-label');
+      const faceValueInput = calculator.querySelector('input#face-value');
+      const faceValueLabel = calculator.querySelector('#face-value-label');
+      const yieldInput = calculator.querySelector('input#yield');
+      const yieldLabel = calculator.querySelector('#yield-label');
+      const yearsToMaturityInput = calculator.querySelector('input#years-to-maturity');
+      const yearsToMaturityLabel = calculator.querySelector('#years-to-maturity-label');
+      const compoundingFrequencyInput = calculator.querySelector('input#compounding-frequency');
+      const compoundingFrequencyLabel = calculator.querySelector('#compounding-frequency-label');
+      const outputDiv = calculator.querySelector('#bond-calculator .calculator-result');
+      function updateResults() {
+        const iWantToSolveFor = parseFloat(iWantToSolveForInput.value) || 0;
+        const price = parseFloat(priceInput.value) || 0;
+        const coupon = parseFloat(couponInput.value) || 0;
+        const faceValue = parseFloat(faceValueInput.value) || 0;
+        const yield = parseFloat(yieldInput.value) || 0;
+        const yearsToMaturity = parseFloat(yearsToMaturityInput.value) || 0;
+        const compoundingFrequency = parseFloat(compoundingFrequencyInput.value) || 0;
+        yieldLabel.innerHTML = (yield * 100).toFixed(0) + "% yield" ;
+        yearsToMaturityLabel.innerHTML = yearsToMaturity + " years to maturity" ;
+        if (outputDiv) {
+          if (price < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', "Set price greater than 0", 'result-error'));
+            return;
+          }
+          if (coupon < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', "Set coupon greater than 0", 'result-error'));
+            return;
+          }
+          if (faceValue < 0) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', "Set face value greater than 0", 'result-error'));
+            return;
+          }
+          if (yield < 0.00125) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', "Set yield greater than 0.125%", 'result-error'));
+            return;
+          }
+          if (yield > 0.12) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', "Set yield less than 12.0%", 'result-error'));
+            return;
+          }
+          if (yearsToMaturity < 1) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', "Set years to maturity greater than 1", 'result-error'));
+            return;
+          }
+          if (yearsToMaturity > 40) {
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(tag('span', "Set years to maturity less than 40", 'result-error'));
+            return;
+          }
+
+          function calculateResult() {
+            let result = 1000;
+
+            let outputText = document.createDocumentFragment();
+
+            let baseText = document.createElement('p');
+            baseText.appendChild(document.createTextNode("The result is "));
+            baseText.appendChild(tag('span', toCurrency(result), 'result-value'));
+            outputText.appendChild(baseText);
+
+            return outputText;
+          }
+
+          outputDiv.innerHTML = '';
+
+          let outputHeading = document.createElement('h4');
+          outputHeading.innerText = 'Results';
+          outputDiv.appendChild(outputHeading);
+          outputDiv.appendChild(calculateResult());
+        }
+      }
+
+      /* Set calculator to auto-update on input changes */
+      for (let i = 0; i < inputs.length; i += 1) {
+        inputs[i].addEventListener('input', () => {
+          updateResults();
+        });
+      }
+
+      for (let i = 0; i < selects.length; i += 1) {
+        selects[i].addEventListener('input', () => {
+          updateResults();
+        });
+      }
+
+      updateResults();
+    }
+  });
+</script>
+</body>
+</html>
