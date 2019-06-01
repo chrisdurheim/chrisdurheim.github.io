@@ -22,7 +22,7 @@ permalink: /thrifty/bond
         <option value="price-group">Price</option>
         <option value="coupon-group">Coupon</option>
         <option value="face-value-group">Face Value</option>
-        <option value="yield-group">Yield</option>
+        <option value="yield-group">Yield to Maturity</option>
         <option value="years-to-maturity-group">Years to Maturity</option>
       </select>
     </div>
@@ -51,7 +51,7 @@ permalink: /thrifty/bond
   </div>
   <div class="calculator-input-group" id="yield-group">
     <div class="calculator-input">
-      <label for="yield" id="yield-label">3.750% expected yield</label>
+      <label for="yield" id="yield-label">3.750% yield to maturity</label>
       <input type="range" class="slider slider--percent" name="yield" id="yield" value="0.0375" min="0.00125" max="0.12" step="0.00125" />
     </div>
   </div>
@@ -106,9 +106,9 @@ permalink: /thrifty/bond
       }
     }
     function computePrice(coupon, faceValue, yieldValue, yearsToMaturity, compoundingFrequency) {
-      const periods = yearsToMaturity * compoundingFrequency
+      const periods = yearsToMaturity * compoundingFrequency;
       const periodRate = yieldValue / compoundingFrequency;
-      const periodCoupon = coupon / compoundingFrequency
+      const periodCoupon = coupon / compoundingFrequency;
 
       const cashFlowPV = periodCoupon * (1 - Math.pow(1 + periodRate, -periods)) / periodRate;
       const faceValuePV = faceValue / Math.pow(1 + periodRate, periods);
@@ -116,7 +116,7 @@ permalink: /thrifty/bond
       return cashFlowPV + faceValuePV;
     }
     function computeCoupon(price, faceValue, yieldValue, yearsToMaturity, compoundingFrequency) {
-      const periods = yearsToMaturity * compoundingFrequency
+      const periods = yearsToMaturity * compoundingFrequency;
       const periodRate = yieldValue / compoundingFrequency;
 
       const periodCoupon = ( price - faceValue / Math.pow(1 + periodRate, periods)) * periodRate / (1 - Math.pow(1 + periodRate, -periods));
@@ -124,16 +124,16 @@ permalink: /thrifty/bond
       return periodCoupon * compoundingFrequency;
     }
     function computeFaceValue(price, coupon, yieldValue, yearsToMaturity, compoundingFrequency) {
-      const periods = yearsToMaturity * compoundingFrequency
+      const periods = yearsToMaturity * compoundingFrequency;
       const periodRate = yieldValue / compoundingFrequency;
-      const periodCoupon = coupon / compoundingFrequency
+      const periodCoupon = coupon / compoundingFrequency;
       const faceValue = price * Math.pow(1 + periodRate, periods) - periodCoupon / periodRate * (Math.pow(1 + periodRate, periods) - 1);
 
       return faceValue;
     }
     function computeYieldValue(price, coupon, faceValue, yearsToMaturity, compoundingFrequency) {
-      const periods = yearsToMaturity * compoundingFrequency
-      const periodCoupon = coupon / compoundingFrequency
+      const periods = yearsToMaturity * compoundingFrequency;
+      const periodCoupon = coupon / compoundingFrequency;
 
       attempts = 0;
 
@@ -163,12 +163,12 @@ permalink: /thrifty/bond
     }
     function computeYearsToMaturity(price, coupon, faceValue, yieldValue, compoundingFrequency) {
       const periodRate = yieldValue / compoundingFrequency;
-      const periodCoupon = coupon / compoundingFrequency
+      const periodCoupon = coupon / compoundingFrequency;
 
       const numerator = faceValue - periodCoupon / periodRate;
       const denomenator = price - periodCoupon / periodRate;
 
-      const periods = baseLog(numerator / denomenator, 1 + periodRate)
+      const periods = baseLog(numerator / denomenator, 1 + periodRate);
 
       return periods / compoundingFrequency;
     }
@@ -217,7 +217,7 @@ permalink: /thrifty/bond
         const yield = parseFloat(yieldInput.value) || 0;
         const yearsToMaturity = parseFloat(yearsToMaturityInput.value) || 0;
         const compoundingFrequency = parseFloat(compoundingFrequencyInput.value) || 0;
-        yieldLabel.innerHTML = (yield * 100).toFixed(3) + "% expected yield" ;
+        yieldLabel.innerHTML = (yield * 100).toFixed(3) + "% yield to maturity" ;
         yearsToMaturityLabel.innerHTML = yearsToMaturity + " years to maturity" ;
         if (outputDiv) {
           if (coupon < 0) {
@@ -232,12 +232,12 @@ permalink: /thrifty/bond
           }
           if (yield < 0.00125) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', "Set yield greater than 0.125%", 'result-error'));
+            outputDiv.appendChild(tag('span', "Set yield to maturity greater than 0.125%", 'result-error'));
             return;
           }
           if (yield > 0.12) {
             outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', "Set yield less than 12.0%", 'result-error'));
+            outputDiv.appendChild(tag('span', "Set yield to maturity less than 12.0%", 'result-error'));
             return;
           }
           if (yearsToMaturity < 1) {
@@ -291,10 +291,10 @@ permalink: /thrifty/bond
               case 'yield-group':
                 result = computeYieldValue(price, coupon, faceValue, yearsToMaturity, compoundingFrequency);
                 if (isNaN(result) || result == Infinity || result == -Infinity) {
-                  outputDiv.appendChild(tag('span', "Error: Yield could not be calculated", 'result-error'));
+                  outputDiv.appendChild(tag('span', "Error: Yield to maturity could not be calculated", 'result-error'));
                   return;
                 } else {
-                  baseText.appendChild(document.createTextNode("The expected yield is "));
+                  baseText.appendChild(document.createTextNode("The yield to maturity is "));
                   baseText.appendChild(tag('span', toPercent(result, 3), 'result-value'));
                 }
                 break;
@@ -327,7 +327,11 @@ permalink: /thrifty/bond
           }
 
           outputDiv.innerHTML = '';
-          outputDiv.appendChild(calculateResult());
+          result = calculateResult();
+
+          if (result != undefined) {
+            outputDiv.appendChild(result);
+          }
         }
       }
 
