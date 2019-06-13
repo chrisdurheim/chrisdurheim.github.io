@@ -1,3 +1,5 @@
+console.log("Map script loading");
+
 // This will let you use the .remove() function later on
 if (!('remove' in Element.prototype)) {
   Element.prototype.remove = function() {
@@ -21,9 +23,12 @@ var map = new mapboxgl.Map({
   zoom: 14
 });
 
+console.log("Map object created");
+
 var stores = {};
 
 function loadStores() {
+  console.log("Loading stores");
   // Add the data to your map as a layer
   map.addLayer({
     id: 'locations',
@@ -38,12 +43,15 @@ function loadStores() {
       'icon-allow-overlap': true,
     }
   });
+  console.log("Stores loaded to map");
   buildLocationList(stores);
+  console.log("Stores loaded to list");
 }
 
 map.on('load', function(e) {
   const Url='https://chrisdurheim.com/assets/geojson/stores.geojson'
 
+  console.log("Map loaded - fetching store data");
   fetch(Url)
   .then(data=>{return data.json()})
   .then(res=>{
@@ -131,6 +139,7 @@ function buildLocationList(data) {
     });
   }
 }
+
 function flyToStore(currentFeature) {
   map.flyTo({
     center: currentFeature.geometry.coordinates,
