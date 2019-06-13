@@ -13,7 +13,7 @@ body {
 }
 
 .directory-container {
-  width: 90vw;
+  min-width: 280px;
   height: 90vh;
   position: relative;
   border: 1px solid rgba(0, 0, 0, 0.25);
