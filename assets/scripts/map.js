@@ -303,15 +303,10 @@ map.on('load', function(e) {
 
   fetch(Url)
   .then(data=>{return data.json()})
-  .then(res=>{console.log(res)})
-
-  // const Url = 'https://chrisdurheim.com/assets/geojson/stores.geojson';
-  // fetch(Url)
-  // .then(data=>{return data.json()})
-  // .then(res=>{
-  //   stores = res;
-  //   loadStores();
-  // });
+  .then(res=>{
+    stores = res;
+    loadStores();
+  });
 });
 
 // Add an event listener for when a user clicks on the map
