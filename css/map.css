@@ -39,12 +39,16 @@ body {
   height: 100%;
 }
 
-h1 {
+h1.sidebar-title {
   font-size: 22px;
   margin: 0;
   font-weight: 400;
   line-height: 20px;
   padding: 20px 2px;
+}
+
+h1.sidebar-title::before {
+  content: '';
 }
 
 a {
