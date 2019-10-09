@@ -1,0 +1,212 @@
+---
+layout: none
+permalink: /thrifty/mortgage
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+<style>
+  {% include thrifty/base.css %}
+</style>
+<div class="thrifty-calculators-calculator" id="mortgage-calculator">
+  <div class="calculator-title">Mortgage Calculator</div>
+  <div class="calculator-group">
+    <div class="calculator-field">
+      <label for="home-value">Home Value</label>
+      <div class="calculator-value">
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="home-value" value="300000" min="0"  step="0.01" />
+      </div>
+    </div>
+    <div class="calculator-field">
+      <label for="down-payment">Down Payment</label>
+      <div class="calculator-value">
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="down-payment" value="60000" min="0"  step="0.01" />
+      </div>
+    </div>
+    <div class="calculator-field">
+      <label for="mortgage-amount">Mortgage Amount</label>
+      <div class="calculator-value">
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="mortgage-amount" value="240000" readonly/>
+      </div>
+    </div>
+  </div>
+  <div class="calculator-group">
+    <div class="calculator-field">
+      <label for="rate">Interest Rate</label>
+      <div class="calculator-value">
+        <input type="number" class="percent" name="rate" value="3.250" min="0.0" max="15.0" step="0.125"/>
+        <span class="input-suffix">%</span>
+      </div>
+    </div>
+  </div>
+  <div class="calculator-group" id="term-group">
+    <div class="calculator-field">
+      <label for="term">Term</label>
+      <div class="calculator-value">
+        <select name="term">
+          <option value="480">40 years (480 months)</option>
+          <option value="360" selected="selected">30 years (360 months)</option>
+          <option value="240">20 years (240 months)</option>
+          <option value="180">15 years (180 months)</option>
+          <option value="120">10 years (120 months)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="calculator-result">
+    <div class="calculator-field-group">
+      <div class="calculator-group-title">Monthly Payment</div>
+      <div class="calculator-field">
+        <label for="monthly-payment">Monthly Payment</label>
+        <div class="calculator-value">
+          <span class="input-prefix">$</span>
+          <input type="number" class="currency" name="monthly-payment" value="1044" readonly/>
+        </div>
+      </div>
+    </div>
+    <div class="calculator-field-group">
+      <div class="calculator-group-title">Totals</div>
+      <div class="calculator-field">
+        <label for="total-principal">Principal</label>
+        <div class="calculator-value">
+          <span class="input-prefix">$</span>
+          <input type="number" class="currency" name="total-principal" value="240000" readonly/>
+        </div>
+      </div>
+      <div class="calculator-field">
+        <label for="total-interest">Interest</label>
+        <div class="calculator-value">
+          <span class="input-prefix">$</span>
+          <input type="number" class="currency" name="total-interest" value="136018" readonly/>
+        </div>
+      </div>
+      <div class="calculator-field">
+        <label for="total-cost">Total Cost</label>
+        <div class="calculator-value">
+          <span class="input-prefix">$</span>
+          <input type="number" class="currency" name="total-cost" value="376018" readonly/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("Calculator js running");
+    function mortgagePayment(pv, nper, rate) {
+      return (rate * pv) / (1.0 - Math.pow(1 + rate, -nper));
+    }
+    function principalRemaining(period, nper, rate, pmt) {
+      const periodsRemaining = nper - period;
+      return pmt * (1 - Math.pow(1 + rate, -periodsRemaining)) / rate;
+    }
+    console.log("Calculator helper functions loaded");
+    const calculator = document.querySelector('#mortgage-calculator');
+
+    if (calculator) {
+      console.log("Calculator found");
+
+      const inputs = calculator.querySelectorAll('input');
+      const selects = calculator.querySelectorAll('select');
+      const currencyInputs = calculator.querySelectorAll('input.currency');
+      const homeValueInput = calculator.querySelector('input[name=home-value]');
+      const downPaymentInput = calculator.querySelector('input[name=down-payment]');
+      const rateInput = calculator.querySelector('input[name=rate]');
+      const termInput = calculator.querySelector('select[name=term]');
+
+      const mortgageAmountOutput = calculator.querySelector('input[name=mortgage-amount]');
+      const monthlyPaymentOutput = calculator.querySelector('input[name=monthly-payment]');
+      const principalOutput = calculator.querySelector('input[name=total-principal]');
+      const interestOutput = calculator.querySelector('input[name=total-interest]');
+      const totalCostOutput = calculator.querySelector('input[name=total-cost]');
+
+      const homeValueField = homeValueInput.parentNode.parentNode;
+      const downPaymentField = downPaymentInput.parentNode.parentNode;
+      const rateField = rateInput.parentNode.parentNode;
+
+      function updateResults() {
+        /* Get values */
+        const homeValue = parseFloat(homeValueInput.value) || 0;
+        const downPayment = parseFloat(downPaymentInput.value) || 0;
+        const rate = parseFloat(rateInput.value) / 100.0 || 0;
+        const term = parseInt(termInput.value);
+
+        delete homeValueField.dataset.error;
+        delete downPaymentField.dataset.error;
+        delete rateField.dataset.error;
+
+        let breakingError = false;
+
+        if (homeValue <= 0) {
+          breakingError = true;
+          homeValueField.dataset.error = "Set home value greater than zero";
+        }
+
+        if (downPayment < 0) {
+          breakingError = true;
+          downPaymentField.dataset.error = "Set down payment to at least zero";
+        }
+
+        if (downPayment >= homeValue) {
+          breakingError = true;
+          homeValueField.dataset.error = "Set home value greater than down payment";
+          downPaymentField.dataset.error = "Set down payment less than home value";
+        }
+
+        let mortgageAmount = 0;
+
+        if (!breakingError) {
+          mortgageAmount = homeValue - downPayment;
+        }
+
+        mortgageAmountOutput.value = mortgageAmount.toFixed(2);
+
+        if (rate <= 0.0) {
+          breakingError = true;
+          rateField.dataset.error = "Set interest rate to at least zero";
+        }
+        if (rate > 15.0) {
+          breakingError = true;
+          rateField.dataset.error = "Set interest rate less than 15%";
+        }
+
+        if (breakingError) {
+          monthlyPaymentOutput.value = 0.00;
+          principalOutput.value = 0;
+          interestOutput.value = 0;
+          totalCostOutput.value = 0;
+          return;
+        }
+
+        const partialRate = rate / 12.0;
+
+        const monthlyPayment = mortgagePayment(mortgageAmount, term, partialRate);
+        monthlyPaymentOutput.value = monthlyPayment.toFixed(2);
+        principalOutput.value = mortgageAmount.toFixed(2);
+        const totalCost = monthlyPayment * term;
+        interestOutput.value = (totalCost - mortgageAmount).toFixed(2);
+        totalCostOutput.value = totalCost.toFixed(2);
+      }
+
+      /* Set calculator to auto-update on input changes */
+      for (let i = 0; i < inputs.length; i += 1) {
+        inputs[i].addEventListener('input', updateResults);
+      }
+      for (let i = 0; i < selects.length; i += 1) {
+        selects[i].addEventListener('input', updateResults);
+      }
+
+      updateResults();
+    }
+  });
+</script>
+</body>
+</html>

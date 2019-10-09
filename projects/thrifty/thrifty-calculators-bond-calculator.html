@@ -15,59 +15,73 @@ permalink: /thrifty/bond
 </style>
 <div class="thrifty-calculators-calculator" id="bond-calculator">
   <div class="calculator-title">Bond Calculator</div>
-  <div class="calculator-input-group" id="solve-for-group">
-    <div class="calculator-input">
+  <div class="calculator-group" id="solve-for-group">
+    <div class="calculator-field">
       <label for="i-want-to-solve-for" id="i-want-to-solve-for-label">I want to solve for</label>
-      <select class="" name="i-want-to-solve-for" id="i-want-to-solve-for">
-        <option value="price-group">Price</option>
-        <option value="coupon-group">Coupon</option>
-        <option value="face-value-group">Face Value</option>
-        <option value="yield-group">Yield to Maturity</option>
-        <option value="years-to-maturity-group">Years to Maturity</option>
-      </select>
+      <div class="calculator-value">
+        <select class="" name="i-want-to-solve-for" id="i-want-to-solve-for">
+          <option value="price-group">Price</option>
+          <option value="coupon-group">Coupon</option>
+          <option value="face-value-group">Face Value</option>
+          <option value="yield-group">Yield to Maturity</option>
+          <option value="years-to-maturity-group">Years to Maturity</option>
+        </select>
+      </div>
     </div>
   </div>
   <hr />
-  <div class="calculator-input-group" id="price-group">
-    <div class="calculator-input">
+  <div class="calculator-group" id="price-group">
+    <div class="calculator-field">
       <label for="price" id="price-label">Price</label>
-      <span class="input-prefix">$</span>
-      <input type="number" class="currency" name="price" id="price" value="1000.00" min="0" />
+      <div class="calculator-value">
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="price" id="price" value="1000.00" min="0" />
+      </div>
     </div>
   </div>
-  <div class="calculator-input-group" id="coupon-group">
-    <div class="calculator-input">
+  <div class="calculator-group" id="coupon-group">
+    <div class="calculator-field">
       <label for="coupon" id="coupon-label">Coupon</label>
-      <span class="input-prefix">$</span>
-      <input type="number" class="currency" name="coupon" id="coupon" value="40.00" min="0" />
+      <div class="calculator-value">
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="coupon" id="coupon" value="40.00" min="0" />
+      </div>
     </div>
   </div>
-  <div class="calculator-input-group" id="face-value-group">
-    <div class="calculator-input">
+  <div class="calculator-group" id="face-value-group">
+    <div class="calculator-field">
       <label for="face-value" id="face-value-label">Face Value</label>
-      <span class="input-prefix">$</span>
-      <input type="number" class="currency" name="face-value" id="face-value" value="970.00" min="0" />
+      <div class="calculator-value">
+        <span class="input-prefix">$</span>
+        <input type="number" class="currency" name="face-value" id="face-value" value="970.00" min="0" />
+      </div>
     </div>
   </div>
-  <div class="calculator-input-group" id="yield-group">
-    <div class="calculator-input">
+  <div class="calculator-group" id="yield-group">
+    <div class="calculator-field">
       <label for="yield" id="yield-label">3.750% yield to maturity</label>
-      <input type="range" class="slider slider--percent" name="yield" id="yield" value="0.0375" min="0.00125" max="0.12" step="0.00125" />
+      <div class="calculator-value">
+        <input type="range" class="slider slider--percent" name="yield" id="yield" value="0.0375" min="0.00125" max="0.12" step="0.00125" />
+      </div>
     </div>
   </div>
-  <div class="calculator-input-group" id="years-to-maturity-group">
-    <div class="calculator-input">
+  <div class="calculator-group" id="years-to-maturity-group">
+    <div class="calculator-field">
       <label for="years-to-maturity" id="years-to-maturity-label">10 years to maturity</label>
-      <input type="range" class="slider" name="years-to-maturity" id="years-to-maturity" value="10" min="1" max="40" step="1" />
+      <div class="calculator-value">
+        <input type="range" class="slider" name="years-to-maturity" id="years-to-maturity" value="10" min="1" max="40" step="1" />
+      </div>
     </div>
   </div>
-  <div class="calculator-input-group" id="compounding-frequency-group">
-    <div class="calculator-input">
+  <div class="calculator-group" id="compounding-frequency-group">
+    <div class="calculator-field">
       <label for="compounding-frequency" id="compounding-frequency-label">Compounding Frequency</label>
-      <select name="compounding-frequency" id="compounding-frequency" value="1">
-        <option value="1">Annual</option>
-        <option value="2" selected="selected">Semi-annual</option>
-      </select>
+      <div class="calculator-value">
+        <select name="compounding-frequency" id="compounding-frequency" value="1">
+          <option value="1">Annual</option>
+          <option value="2" selected="selected">Semi-annual</option>
+        </select>
+      </div>
     </div>
   </div>
   <div class="calculator-result"></div>
