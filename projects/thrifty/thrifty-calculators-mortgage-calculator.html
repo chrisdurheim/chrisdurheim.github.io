@@ -20,21 +20,33 @@ permalink: /thrifty/mortgage
       <label for="home-value">Home Value</label>
       <div class="calculator-value">
         <span class="input-prefix">$</span>
-        <input type="number" class="currency" name="home-value" value="300000" min="0"  step="0.01" />
+        <input type="number" class="currency" name="home-value" id="home-value" value="300000" min="0" step="1000" />
       </div>
     </div>
     <div class="calculator-field">
-      <label for="down-payment">Down Payment</label>
+      <label for="down-payment">Down Payment (<span id="down-payment-percent">20.0%</span>)</label>
       <div class="calculator-value">
         <span class="input-prefix">$</span>
-        <input type="number" class="currency" name="down-payment" value="60000" min="0"  step="0.01" />
+        <input type="number" class="currency" name="down-payment" id="down-payment" value="60000" min="0" step="1000" />
+      </div>
+    </div>
+    <div class="calculator-field">
+      <label></label>
+      <div class="calculator-button-set" id="down-payment-percent-button-set">
+        <button>0%</button>
+        <button>1%</button>
+        <button>3%</button>
+        <button>3.5%</button>
+        <button>5%</button>
+        <button>10%</button>
+        <button>20%</button>
       </div>
     </div>
     <div class="calculator-field">
       <label for="mortgage-amount">Mortgage Amount</label>
       <div class="calculator-value">
         <span class="input-prefix">$</span>
-        <input type="number" class="currency" name="mortgage-amount" value="240000" readonly/>
+        <input type="number" class="currency" name="mortgage-amount" id="mortgage-amount" value="240000" readonly/>
       </div>
     </div>
   </div>
@@ -42,7 +54,7 @@ permalink: /thrifty/mortgage
     <div class="calculator-field">
       <label for="rate">Interest Rate</label>
       <div class="calculator-value">
-        <input type="number" class="percent" name="rate" value="3.250" min="0.0" max="15.0" step="0.125"/>
+        <input type="number" class="percent" name="rate" id="rate" value="3.750" min="0.0" max="15.0" step="0.125"/>
         <span class="input-suffix">%</span>
       </div>
     </div>
@@ -65,34 +77,62 @@ permalink: /thrifty/mortgage
     <div class="calculator-field-group">
       <div class="calculator-group-title">Monthly Payment</div>
       <div class="calculator-field">
-        <label for="monthly-payment">Monthly Payment</label>
+        <label for="monthly-payment">Principal & Interest</label>
         <div class="calculator-value">
           <span class="input-prefix">$</span>
-          <input type="number" class="currency" name="monthly-payment" value="1044" readonly/>
+          <input type="number" class="currency" name="monthly-payment" id="monthly-payment" value="1044" readonly/>
+        </div>
+      </div>
+      <div class="calculator-field">
+        <label for="property-tax">Property Taxes</label>
+        <div class="calculator-value">
+          <span class="input-prefix">$</span>
+          <input type="number" class="currency" name="property-tax" id="property-tax" value="0" />
+        </div>
+      </div>
+      <div class="calculator-field">
+        <label for="insurance">Homeowner's Insurance</label>
+        <div class="calculator-value">
+          <span class="input-prefix">$</span>
+          <input type="number" class="currency" name="insurance" id="insurance" value="0" />
+        </div>
+      </div>
+      <div class="calculator-field">
+        <label for="hoa-fees">Homeowner's Association Fees</label>
+        <div class="calculator-value">
+          <span class="input-prefix">$</span>
+          <input type="number" class="currency" name="hoa-fees" id="hoa-fees" value="0" />
+        </div>
+      </div>
+      <div class="calculator-field">
+        <label for="total-monthly-payment"><strong>Total Monthly Payment</strong></label>
+        <div class="calculator-value">
+          <span class="input-prefix">$</span>
+          <input type="number" class="currency" name="total-monthly-payment" id="total-monthly-payment" value="1044" readonly/>
         </div>
       </div>
     </div>
     <div class="calculator-field-group">
-      <div class="calculator-group-title">Totals</div>
+      <div class="calculator-group-title">Totals (Over Full Term)</div>
       <div class="calculator-field">
         <label for="total-principal">Principal</label>
         <div class="calculator-value">
           <span class="input-prefix">$</span>
-          <input type="number" class="currency" name="total-principal" value="240000" readonly/>
+          <input type="number" class="currency" name="total-principal" id="total-principal" value="240000" readonly/>
         </div>
       </div>
       <div class="calculator-field">
         <label for="total-interest">Interest</label>
         <div class="calculator-value">
           <span class="input-prefix">$</span>
-          <input type="number" class="currency" name="total-interest" value="136018" readonly/>
+          <input type="number" class="currency" name="total-interest" id="total-interest" value="136018" readonly/>
         </div>
       </div>
       <div class="calculator-field">
-        <label for="total-cost">Total Cost</label>
+        <label for="total-cost">Total Principal & Interest</label>
         <div class="calculator-value">
           <span class="input-prefix">$</span>
-          <input type="number" class="currency" name="total-cost" value="376018" readonly/>
+          <input type="number" class="currency" name="total-cost" id="total-cost" value="376018" readonly/>
         </div>
       </div>
     </div>
@@ -101,6 +141,13 @@ permalink: /thrifty/mortgage
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {
     console.log("Calculator js running");
+    function toPercent(value, digits = 2) {
+      if (value == 0) {
+        return '-%';
+      } else {
+        return (value * 100).toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits}) + '%'
+      }
+    }
     function mortgagePayment(pv, nper, rate) {
       return (rate * pv) / (1.0 - Math.pow(1 + rate, -nper));
     }
@@ -116,14 +163,20 @@ permalink: /thrifty/mortgage
 
       const inputs = calculator.querySelectorAll('input');
       const selects = calculator.querySelectorAll('select');
+      const downPaymentButtons = calculator.querySelectorAll('#down-payment-percent-button-set');
       const currencyInputs = calculator.querySelectorAll('input.currency');
       const homeValueInput = calculator.querySelector('input[name=home-value]');
       const downPaymentInput = calculator.querySelector('input[name=down-payment]');
       const rateInput = calculator.querySelector('input[name=rate]');
       const termInput = calculator.querySelector('select[name=term]');
+      const propertyTaxInput = calculator.querySelector('input[name=property-tax]');
+      const insuranceInput = calculator.querySelector('input[name=insurance]');
+      const hoaFeesInput = calculator.querySelector('input[name=hoa-fees]');
 
       const mortgageAmountOutput = calculator.querySelector('input[name=mortgage-amount]');
+      const downPaymentPercentageOutput = calculator.querySelector('span#down-payment-percent');
       const monthlyPaymentOutput = calculator.querySelector('input[name=monthly-payment]');
+      const totalMonthlyPaymentOutput = calculator.querySelector('input[name=total-monthly-payment]');
       const principalOutput = calculator.querySelector('input[name=total-principal]');
       const interestOutput = calculator.querySelector('input[name=total-interest]');
       const totalCostOutput = calculator.querySelector('input[name=total-cost]');
@@ -138,6 +191,10 @@ permalink: /thrifty/mortgage
         const downPayment = parseFloat(downPaymentInput.value) || 0;
         const rate = parseFloat(rateInput.value) / 100.0 || 0;
         const term = parseInt(termInput.value);
+
+        const propertyTaxValue = parseFloat(propertyTaxInput.value) || 0;
+        const insuranceValue = parseFloat(insuranceInput.value) || 0;
+        const hoaFeesValue = parseFloat(hoaFeesInput.value) || 0;
 
         delete homeValueField.dataset.error;
         delete downPaymentField.dataset.error;
@@ -162,12 +219,15 @@ permalink: /thrifty/mortgage
         }
 
         let mortgageAmount = 0;
+        let downPaymentPercentage = 0.0;
 
         if (!breakingError) {
           mortgageAmount = homeValue - downPayment;
+          downPaymentPercentage = downPayment / homeValue;
         }
 
         mortgageAmountOutput.value = mortgageAmount.toFixed(2);
+        downPaymentPercentageOutput.innerHTML = toPercent(downPaymentPercentage);
 
         if (rate <= 0.0) {
           breakingError = true;
@@ -190,6 +250,11 @@ permalink: /thrifty/mortgage
 
         const monthlyPayment = mortgagePayment(mortgageAmount, term, partialRate);
         monthlyPaymentOutput.value = monthlyPayment.toFixed(2);
+
+
+        const totalMonthlyPayment = monthlyPayment + propertyTaxValue + insuranceValue + hoaFeesValue;
+        totalMonthlyPaymentOutput.value = totalMonthlyPayment.toFixed(2);
+
         principalOutput.value = mortgageAmount.toFixed(2);
         const totalCost = monthlyPayment * term;
         interestOutput.value = (totalCost - mortgageAmount).toFixed(2);
@@ -202,6 +267,16 @@ permalink: /thrifty/mortgage
       }
       for (let i = 0; i < selects.length; i += 1) {
         selects[i].addEventListener('input', updateResults);
+      }
+      for (let i = 0; i < downPaymentButtons.length; i += 1) {
+        downPaymentButtons[i].addEventListener('click', (event) => {
+          let button = event.target;
+          let buttonValue = parseFloat(button.innerHTML) || 0.0;
+          let homeValue = parseFloat(homeValueInput.value) || 0.0;
+          let downPaymentAmount = (buttonValue / 100.0) * homeValue;
+          downPaymentInput.value = downPaymentAmount.toFixed(2);
+          updateResults();
+        });
       }
 
       updateResults();
