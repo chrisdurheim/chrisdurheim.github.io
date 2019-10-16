@@ -19,13 +19,26 @@ permalink: /themilitarywallet/mortgage
     --thrifty-calculator-error-color: #ac162c;
     --thrifty-calculator-line-color: lightgray;
     --thrifty-calculator-font: 'Arial', sans-serif;
+    --thrifty-calculator-chart-color-1: #091D40;
+    --thrifty-calculator-chart-color-2: #323E94;
+    --thrifty-calculator-chart-color-3: #A8B1C2;
+    --thrifty-calculator-chart-color-4: var(--thrifty-calculator-line-color);
   }
   .thrifty-calculators-calculator {
     font-size: 16px;
     font-family: var(--thrifty-calculator-font);
     width: 80vw;
-    max-width: 480px;
     margin: 2rem auto;
+  }
+  .thrifty-calculators-calculator .calculator-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .thrifty-calculators-calculator .calculator-inputs,
+  .thrifty-calculators-calculator .calculator-result {
+    flex: 0 0 100%;
   }
   .thrifty-calculators-calculator div.calculator-title {
     font-size: 1.125rem;
@@ -37,19 +50,48 @@ permalink: /themilitarywallet/mortgage
   .thrifty-calculators-calculator div.calculator-group-title {
     padding: 0.5rem 0;
     border-bottom: 1px solid var(--thrifty-calculator-line-color);
-    margin: 3rem 0 1rem;
   }
   .thrifty-calculators-calculator .calculator-field {
-    margin: 0 0 1rem;
+    margin: 1rem 0;
+  }
+  .thrifty-calculators-calculator .calculator-field--inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
   .thrifty-calculators-calculator .calculator-field label {
+    flex: 2 0 50%;
+    min-width: 50%;
+    display: flex;
     font-size: 0.9rem;
   }
+  .thrifty-calculators-calculator .calculator-field label.chart-legend-item:before {
+    content: '';
+    display: inline-block;
+    width: 0.8rem;
+    height: 0.8rem;
+    margin-right: 0.25rem;
+    border: 1px solid var(--thrifty-calculator-line-color);
+  }
+  .thrifty-calculators-calculator .calculator-field label.chart-legend-item.color1:before {
+    background-color: var(--thrifty-calculator-chart-color-1)
+  }
+  .thrifty-calculators-calculator .calculator-field label.chart-legend-item.color2:before {
+    background-color: var(--thrifty-calculator-chart-color-2)
+  }
+  .thrifty-calculators-calculator .calculator-field label.chart-legend-item.color3:before {
+    background-color: var(--thrifty-calculator-chart-color-3)
+  }
+  .thrifty-calculators-calculator .calculator-field label.chart-legend-item.color4:before {
+    background-color: var(--thrifty-calculator-chart-color-4)
+  }
+
   .thrifty-calculators-calculator .calculator-field .calculator-value {
+    flex: 1 0 auto;
     border: 1px solid var(--thrifty-calculator-line-color);
     margin: 0.25rem 0;
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     justify-content: flex-start;
   }
@@ -148,125 +190,136 @@ permalink: /themilitarywallet/mortgage
   .thrifty-calculators-calculator .calculator-field .calculator-button-set button:active {
     background-color: var(--thrifty-calculator-primary-accent-color);
   }
+  @media screen and (min-width: 768px) {
+    .thrifty-calculators-calculator .calculator-container {
+      border: 1px solid var(--thrifty-calculator-line-color);
+      padding: 2rem;
+    }
+
+    .thrifty-calculators-calculator div.calculator-title {
+      font-size: 1.5rem;
+      border-color: transparent;
+    }
+    .thrifty-calculators-calculator .calculator-inputs {
+      flex-basis: calc(50% - 2rem - 1px);
+      padding: 0 0 0 0;
+    }
+    .thrifty-calculators-calculator .calculator-result {
+      flex-basis: calc(50% - 2rem - 1px);
+      border-left: 1px solid var(--thrifty-calculator-line-color);
+      padding: 0 0 0 2rem;
+    }
+  }
+  @media screen and (min-width: 1024px) {
+    .thrifty-calculators-calculator .calculator-inputs {
+      flex-basis: calc(40% - 2rem - 1px);
+      padding: 0 0 0 0;
+    }
+    .thrifty-calculators-calculator .calculator-result {
+      flex-basis: calc(60% - 2rem - 1px);
+      border-left: 1px solid var(--thrifty-calculator-line-color);
+      padding: 0 0 0 2rem;
+    }
+  }
 </style>
 <div class="thrifty-calculators-calculator" id="mortgage-calculator">
   <div class="calculator-title">Mortgage Calculator</div>
-  <div class="calculator-group">
-    <div class="calculator-field">
-      <label for="home-value">Home Value</label>
-      <div class="calculator-value">
-        <span class="input-prefix">$</span>
-        <input type="number" class="currency" name="home-value" id="home-value" value="300000" min="0" step="1000" />
-      </div>
-    </div>
-    <div class="calculator-field">
-      <label for="down-payment">Down Payment (<span id="down-payment-percent">20.0%</span>)</label>
-      <div class="calculator-value">
-        <span class="input-prefix">$</span>
-        <input type="number" class="currency" name="down-payment" id="down-payment" value="60000" min="0" step="1000" />
-      </div>
-      <label></label>
-      <div class="calculator-button-set" id="down-payment-percent-button-set">
-        <span>Set to:</span>
-        <button>0%</button>
-        <button>3%</button>
-        <button>3.5%</button>
-        <button>5%</button>
-        <button>20%</button>
-      </div>
-    </div>
-    <div class="calculator-field">
-      <label for="mortgage-amount">Mortgage Amount</label>
-      <div class="calculator-value calculator-value--output">
-        <span class="input-prefix">$</span>
-        <input type="number" class="currency" name="mortgage-amount" id="mortgage-amount" value="240000" readonly/>
-      </div>
-    </div>
-  </div>
-  <div class="calculator-group">
-    <div class="calculator-field">
-      <label for="rate">Interest Rate</label>
-      <div class="calculator-value">
-        <input type="number" class="percent" name="rate" id="rate" value="3.750" min="0.0" max="15.0" step="0.125"/>
-        <span class="input-suffix">%</span>
-      </div>
-    </div>
-  </div>
-  <div class="calculator-group" id="term-group">
-    <div class="calculator-field">
-      <label for="term">Term</label>
-      <div class="calculator-value">
-        <select name="term">
-          <option value="480">40 years (480 months)</option>
-          <option value="360" selected="selected">30 years (360 months)</option>
-          <option value="240">20 years (240 months)</option>
-          <option value="180">15 years (180 months)</option>
-          <option value="120">10 years (120 months)</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="calculator-result">
-    <div class="calculator-field-group">
-      <div class="calculator-group-title">Monthly Payment</div>
-      <div class="calculator-chart" id="monthly-payment-chart"></div>
-      <div class="calculator-field">
-        <label for="monthly-payment">Principal & Interest</label>
-        <div class="calculator-value calculator-value--output">
-          <span class="input-prefix">$</span>
-          <input type="number" class="currency" name="monthly-payment" id="monthly-payment" value="1044" readonly/>
+  <div class="calculator-container">
+    <div class="calculator-inputs">
+      <div class="calculator-group">
+        <div class="calculator-field">
+          <label for="home-value">Home Value</label>
+          <div class="calculator-value">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="home-value" id="home-value" value="300000" min="0" step="1000" />
+          </div>
+        </div>
+        <div class="calculator-field">
+          <label for="down-payment">Down Payment (<span id="down-payment-percent">20.0%</span>)</label>
+          <div class="calculator-value">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="down-payment" id="down-payment" value="60000" min="0" step="1000" />
+          </div>
+          <label></label>
+          <div class="calculator-button-set" id="down-payment-percent-button-set">
+            <span>Set to:</span>
+            <button>0%</button>
+            <button>3%</button>
+            <button>3.5%</button>
+            <button>5%</button>
+            <button>20%</button>
+          </div>
+        </div>
+        <div class="calculator-field">
+          <label for="mortgage-amount">Mortgage Amount</label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="mortgage-amount" id="mortgage-amount" value="240000" readonly/>
+          </div>
         </div>
       </div>
-      <div class="calculator-field">
-        <label for="property-tax">Property Taxes</label>
-        <div class="calculator-value">
-          <span class="input-prefix">$</span>
-          <input type="number" class="currency" name="property-tax" id="property-tax" value="0" />
+      <div class="calculator-group">
+        <div class="calculator-field">
+          <label for="rate">Interest Rate</label>
+          <div class="calculator-value">
+            <input type="number" class="percent" name="rate" id="rate" value="3.750" min="0.0" max="15.0" step="0.125"/>
+            <span class="input-suffix">%</span>
+          </div>
         </div>
       </div>
-      <div class="calculator-field">
-        <label for="insurance">Homeowner's Insurance</label>
-        <div class="calculator-value">
-          <span class="input-prefix">$</span>
-          <input type="number" class="currency" name="insurance" id="insurance" value="0" />
-        </div>
-      </div>
-      <div class="calculator-field">
-        <label for="hoa-fees">Homeowner's Association Fees</label>
-        <div class="calculator-value">
-          <span class="input-prefix">$</span>
-          <input type="number" class="currency" name="hoa-fees" id="hoa-fees" value="0" />
-        </div>
-      </div>
-      <div class="calculator-field">
-        <label for="total-monthly-payment"><strong>Total Monthly Payment</strong></label>
-        <div class="calculator-value calculator-value--output">
-          <span class="input-prefix">$</span>
-          <input type="number" class="currency" name="total-monthly-payment" id="total-monthly-payment" value="1044" readonly/>
+      <div class="calculator-group" id="term-group">
+        <div class="calculator-field">
+          <label for="term">Term</label>
+          <div class="calculator-value">
+            <select name="term">
+              <option value="480">40 years (480 months)</option>
+              <option value="360" selected="selected">30 years (360 months)</option>
+              <option value="240">20 years (240 months)</option>
+              <option value="180">15 years (180 months)</option>
+              <option value="120">10 years (120 months)</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
-    <div class="calculator-field-group">
-      <div class="calculator-group-title">Totals (Over Full Term)</div>
-      <div class="calculator-field">
-        <label for="total-principal">Principal</label>
-        <div class="calculator-value calculator-value--output">
-          <span class="input-prefix">$</span>
-          <input type="number" class="currency" name="total-principal" id="total-principal" value="240000" readonly/>
+    <div class="calculator-result">
+      <div class="calculator-field-group">
+        <div class="calculator-group-title">Monthly Payment</div>
+        <div class="calculator-chart" id="monthly-payment-chart"></div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="monthly-payment" class="chart-legend-item color1">Principal & Interest</label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="monthly-payment" id="monthly-payment" value="1044" readonly/>
+          </div>
         </div>
-      </div>
-      <div class="calculator-field">
-        <label for="total-interest">Interest</label>
-        <div class="calculator-value calculator-value--output">
-          <span class="input-prefix">$</span>
-          <input type="number" class="currency" name="total-interest" id="total-interest" value="136018" readonly/>
+        <div class="calculator-field calculator-field--inline">
+          <label for="property-tax" class="chart-legend-item color2">Property Taxes</label>
+          <div class="calculator-value">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="property-tax" id="property-tax" value="0" />
+          </div>
         </div>
-      </div>
-      <div class="calculator-field">
-        <label for="total-cost">Total Principal & Interest</label>
-        <div class="calculator-value calculator-value--output">
-          <span class="input-prefix">$</span>
-          <input type="number" class="currency" name="total-cost" id="total-cost" value="376018" readonly/>
+        <div class="calculator-field calculator-field--inline">
+          <label for="insurance" class="chart-legend-item color3">Homeowner's Insurance</label>
+          <div class="calculator-value">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="insurance" id="insurance" value="0" />
+          </div>
+        </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="hoa-fees" class="chart-legend-item color4">HOA Fees</label>
+          <div class="calculator-value">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="hoa-fees" id="hoa-fees" value="0" />
+          </div>
+        </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="total-monthly-payment"><strong>Total Monthly Payment</strong></label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="total-monthly-payment" id="total-monthly-payment" value="1044" readonly/>
+          </div>
         </div>
       </div>
     </div>
@@ -314,9 +367,6 @@ permalink: /themilitarywallet/mortgage
       const downPaymentPercentageOutput = calculator.querySelector('span#down-payment-percent');
       const monthlyPaymentOutput = calculator.querySelector('input[name=monthly-payment]');
       const totalMonthlyPaymentOutput = calculator.querySelector('input[name=total-monthly-payment]');
-      const principalOutput = calculator.querySelector('input[name=total-principal]');
-      const interestOutput = calculator.querySelector('input[name=total-interest]');
-      const totalCostOutput = calculator.querySelector('input[name=total-cost]');
 
       const homeValueField = homeValueInput.parentNode.parentNode;
       const downPaymentField = downPaymentInput.parentNode.parentNode;
@@ -374,15 +424,10 @@ permalink: /themilitarywallet/mortgage
           breakingError = true;
           rateField.dataset.error = "Set interest rate less than 15%";
         }
-        console.log(breakingError);
 
         if (breakingError) {
-          console.log('breaking error');
           monthlyPaymentOutput.value = 0.00;
           totalMonthlyPaymentOutput.value = 0.00;
-          principalOutput.value = 0;
-          interestOutput.value = 0;
-          totalCostOutput.value = 0;
           monthlyDonutChart.innerHTML = '';
           return;
         }
@@ -395,11 +440,6 @@ permalink: /themilitarywallet/mortgage
 
         const totalMonthlyPayment = monthlyPayment + propertyTaxValue + insuranceValue + hoaFeesValue;
         totalMonthlyPaymentOutput.value = totalMonthlyPayment.toFixed(2);
-
-        principalOutput.value = mortgageAmount.toFixed(2);
-        const totalCost = monthlyPayment * term;
-        interestOutput.value = (totalCost - mortgageAmount).toFixed(2);
-        totalCostOutput.value = totalCost.toFixed(2);
 
         if (chartInitialized) {
           drawMonthlyDonutChart(monthlyPayment, propertyTaxValue, insuranceValue, hoaFeesValue);
@@ -430,12 +470,13 @@ permalink: /themilitarywallet/mortgage
           ['Principal & Interest', principalAndInterest],
           ['Property Taxes',      propertyTax],
           ["Homeowner's Insurance",  insurance],
-          ["Homeowner's Association Fees", hoaFees]
+          ["HOA Fees", hoaFees]
         ]);
 
         let options = {
-          pieHole: 0.6,
+          colors: ['#091D40', '#323E94', '#A8B1C2', 'lightgray'],
           legend: {position: 'labeled'},
+          pieHole: 0.6,
           pieSliceText: 'none',
           tooltip: { trigger: 'none' }
         };
