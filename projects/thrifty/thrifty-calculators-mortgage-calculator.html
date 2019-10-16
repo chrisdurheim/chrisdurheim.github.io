@@ -76,6 +76,7 @@ permalink: /thrifty/mortgage
   <div class="calculator-result">
     <div class="calculator-field-group">
       <div class="calculator-group-title">Monthly Payment</div>
+      <div class="calculator-chart" id="monthly-payment-chart"></div>
       <div class="calculator-field">
         <label for="monthly-payment">Principal & Interest</label>
         <div class="calculator-value">
@@ -138,6 +139,7 @@ permalink: /thrifty/mortgage
     </div>
   </div>
 </div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {
     console.log("Calculator js running");
@@ -161,6 +163,8 @@ permalink: /thrifty/mortgage
     if (calculator) {
       console.log("Calculator found");
 
+      let chartInitialized = false;
+      const monthlyDonutChart = calculator.querySelector('#monthly-payment-chart');
       const inputs = calculator.querySelectorAll('input');
       const selects = calculator.querySelectorAll('select');
       const downPaymentButtons = calculator.querySelectorAll('#down-payment-percent-button-set');
@@ -237,20 +241,24 @@ permalink: /thrifty/mortgage
           breakingError = true;
           rateField.dataset.error = "Set interest rate less than 15%";
         }
+        console.log(breakingError);
 
         if (breakingError) {
+          console.log('breaking error');
           monthlyPaymentOutput.value = 0.00;
+          totalMonthlyPaymentOutput.value = 0.00;
           principalOutput.value = 0;
           interestOutput.value = 0;
           totalCostOutput.value = 0;
+          monthlyDonutChart.innerHTML = '';
           return;
         }
 
         const partialRate = rate / 12.0;
 
-        const monthlyPayment = mortgagePayment(mortgageAmount, term, partialRate);
+        let monthlyPayment = mortgagePayment(mortgageAmount, term, partialRate);
+        monthlyPayment = Math.round(monthlyPayment * 100) / 100
         monthlyPaymentOutput.value = monthlyPayment.toFixed(2);
-
 
         const totalMonthlyPayment = monthlyPayment + propertyTaxValue + insuranceValue + hoaFeesValue;
         totalMonthlyPaymentOutput.value = totalMonthlyPayment.toFixed(2);
@@ -259,6 +267,10 @@ permalink: /thrifty/mortgage
         const totalCost = monthlyPayment * term;
         interestOutput.value = (totalCost - mortgageAmount).toFixed(2);
         totalCostOutput.value = totalCost.toFixed(2);
+
+        if (chartInitialized) {
+          drawMonthlyDonutChart(monthlyPayment, propertyTaxValue, insuranceValue, hoaFeesValue);
+        }
       }
 
       /* Set calculator to auto-update on input changes */
@@ -278,6 +290,34 @@ permalink: /thrifty/mortgage
           updateResults();
         });
       }
+
+      function drawMonthlyDonutChart(principalAndInterest, propertyTax, insurance, hoaFees) {
+        let data = google.visualization.arrayToDataTable([
+          ['Payment', 'Amount'],
+          ['Principal & Interest', principalAndInterest],
+          ['Property Taxes',      propertyTax],
+          ["Homeowner's Insurance",  insurance],
+          ["Homeowner's Association Fees", hoaFees]
+        ]);
+
+        let options = {
+          pieHole: 0.6,
+          legend: {position: 'labeled'},
+          pieSliceText: 'none',
+          tooltip: { trigger: 'none' }
+        };
+
+        let chart = new google.visualization.PieChart(monthlyDonutChart);
+        chart.draw(data, options);
+      }
+
+      function chartReady() {
+        chartInitialized = true;
+        updateResults();
+      }
+
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(chartReady);
 
       updateResults();
     }
