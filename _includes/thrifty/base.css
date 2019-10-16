@@ -103,7 +103,7 @@
   border-radius: 0.5em;
   transition: background-color 150ms, border-color 150ms;
   width: auto;
-  max-width: 90%;
+  max-width: 75%;
 }
 .thrifty-calculators-calculator .calculator-field input.right-align {
   text-align: right;
@@ -147,7 +147,7 @@ input[type=number]:read-only {
 	background-size: .65em auto, 100%;
   cursor: pointer;
   width: auto;
-  max-width: 90%;
+  max-width: 75%;
 }
 .thrifty-calculators-calculator .calculator-field .calculator-value select:focus,
 .thrifty-calculators-calculator .calculator-field .calculator-value select:hover {
