@@ -1,6 +1,6 @@
 ---
 layout: none
-permalink: /themilitarywallet/mortgage
+permalink: /themilitarywallet/va-loan
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -120,7 +120,10 @@ permalink: /themilitarywallet/mortgage
   .thrifty-calculators-calculator .calculator-field .calculator-value:focus-within {
     border-color: var(--thrifty-calculator-primary-color);
   }
-  .thrifty-calculators-calculator .calculator-field .calculator-value--output {
+  .thrifty-calculators-calculator .calculator-field .calculator-value--output,
+  .thrifty-calculators-calculator .calculator-field .calculator-value--output:focus-within,
+  .thrifty-calculators-calculator .calculator-field .calculator-value--radio,
+  .thrifty-calculators-calculator .calculator-field .calculator-value--radio:focus-within {
     border-color: transparent;
   }
 
@@ -233,11 +236,33 @@ permalink: /themilitarywallet/mortgage
     }
   }
 </style>
-<div class="thrifty-calculators-calculator" id="mortgage-calculator">
-  <div class="calculator-title">Mortgage Calculator</div>
+<div class="thrifty-calculators-calculator" id="va-mortgage-calculator">
+  <div class="calculator-title">VA Loan Calculator</div>
   <div class="calculator-container">
     <div class="calculator-inputs">
       <div class="calculator-group">
+        <div class="calculator-field">
+          <label for="loan-type">VA Loan Type</label>
+          <div class="calculator-value">
+            <select name="loan-type" id="loan-type">
+              <option value="home-purchase" selected="selected">Home Purchase</option>
+              <option value="rate-reduction">Interest Rate Reduction Refinance</option>
+              <option value="cash-out">Cash-Out Refinance</option>
+              <option value="manufactured">Manufactured Home Loan</option>
+              <option value="assumption">Loan Assumption</option>
+            </select>
+          </div>
+        </div>
+        <div class="calculator-field">
+          <label for="service-type">Type of Service</label>
+          <div class="calculator-value">
+            <select name="service-type" id="service-type">
+              <option value="regular-military" selected="selected">Regular Military</option>
+              <option value="reserves-national-guard">Reserves/National Guard</option>
+              <option value="surviving-spouse">Surviving Spouse</option>
+            </select>
+          </div>
+        </div>
         <div class="calculator-field">
           <label for="home-value">Home Value</label>
           <div class="calculator-value">
@@ -255,14 +280,38 @@ permalink: /themilitarywallet/mortgage
           <div class="calculator-button-set" id="down-payment-percent-button-set">
             <span>Set to:</span>
             <button>0%</button>
-            <button>3%</button>
-            <button>3.5%</button>
             <button>5%</button>
+            <button>10%</button>
             <button>20%</button>
           </div>
         </div>
         <div class="calculator-field">
-          <label for="mortgage-amount">Mortgage Amount</label>
+          <label for="va-disabled">Are you VA Disabled?<br>(10% Disability rating or higher)</label>
+          <div class="calculator-value calculator-value--radio">
+            <input name="va-disabled" type="radio" id="va-disabled-yes" value=true>
+            <label for="va-disabled-yes">Yes</label>
+            <input name="va-disabled" type="radio" id="va-disabled-no" value=false checked>
+            <label for="va-disabled-no">No</label>
+          </div>
+        </div>
+        <div class="calculator-field">
+          <label for="prev-va-loan">Have you used a VA Loan before?</label>
+          <div class="calculator-value calculator-value--radio">
+            <input name="prev-va-loan" type="radio" id="prev-va-loan-yes" value=true>
+            <label for="prev-va-loan-yes">Yes</label>
+            <input name="prev-va-loan" type="radio" id="prev-va-loan-no" value=false checked>
+            <label for="prev-va-loan-no">No</label>
+          </div>
+        </div>
+        <div class="calculator-field">
+          <label for="va-loan-fees">VA Loan Fees</label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="va-loan-fees" id="va-loan-fees" value="0.00" readonly/>
+          </div>
+        </div>
+        <div class="calculator-field">
+          <label for="mortgage-amount">Total Amount Financed</label>
           <div class="calculator-value calculator-value--output">
             <span class="input-prefix">$</span>
             <input type="number" class="currency" name="mortgage-amount" id="mortgage-amount" value="240000" readonly/>
@@ -282,7 +331,7 @@ permalink: /themilitarywallet/mortgage
         <div class="calculator-field">
           <label for="term">Term</label>
           <div class="calculator-value">
-            <select name="term" id="term">
+            <select name="term">
               <option value="480">40 years (480 months)</option>
               <option value="360" selected="selected">30 years (360 months)</option>
               <option value="240">20 years (240 months)</option>
@@ -342,13 +391,64 @@ permalink: /themilitarywallet/mortgage
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {
-    console.log("Calculator js running");
+    ("Calculator js running");
+    function getRadioVal(calculator, name) {
+      let value = false;
+      const radios = calculator.querySelectorAll(`input[type=radio][name=${name}]`)
+
+      for (let i = 0; i < radios.length; i += 1) {
+        if ( radios[i].checked ) {
+          value = radios[i].value;
+          break;
+        }
+      }
+      return value;
+    }
     function toPercent(value, digits = 2) {
       if (value == 0) {
         return '-%';
       } else {
         return (value * 100).toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits}) + '%'
       }
+    }
+    function loanFeePercentage(loanType, serviceType, downPaymentPct, disabled10, firstTimeLoan) {
+      if (serviceType === 'surviving-spouse') { return 0.0 }
+      if (disabled10) { return 0.0 }
+
+      if (loanType === 'rate-reduction') { return 0.005 }
+      if (loanType === 'manufactured') { return 0.010 }
+      if (loanType === 'assumption') { return 0.005 }
+
+      if (loanType === 'cash-out') {
+        if (!firstTimeLoan) { return 0.033 }
+        if (serviceType == 'regular-military') { return 0.0215 }
+        if (serviceType == 'reserves-national-guard') { return 0.024 }
+        return 'error';
+      } else if (loanType === 'home-purchase') {
+        if (serviceType == 'regular-military') {
+          if (downPaymentPct < 0.05) {
+            if (!firstTimeLoan) { return 0.033 }
+            else { return 0.0215 }
+          } else if (downPaymentPct < 0.10) {
+            return 0.015;
+          } else {
+            return 0.0125;
+          }
+        } else if (serviceType === 'reserves-national-guard') {
+          if (downPaymentPct < 0.05) {
+            if (!firstTimeLoan) { return 0.033 }
+            else { return 0.024 }
+          } else if (downPaymentPct < 0.10) {
+            return 0.0175;
+          } else {
+            return 0.015;
+          }
+        }
+      } else {
+        return 'error'
+      }
+
+      return 10.0;
     }
     function mortgagePayment(pv, nper, rate) {
       return (rate * pv) / (1.0 - Math.pow(1 + rate, -nper));
@@ -358,7 +458,7 @@ permalink: /themilitarywallet/mortgage
       return pmt * (1 - Math.pow(1 + rate, -periodsRemaining)) / rate;
     }
     console.log("Calculator helper functions loaded");
-    const calculator = document.querySelector('#mortgage-calculator');
+    const calculator = document.querySelector('#va-mortgage-calculator');
 
     if (calculator) {
       console.log("Calculator found");
@@ -370,14 +470,20 @@ permalink: /themilitarywallet/mortgage
       const selects = calculator.querySelectorAll('select');
       const downPaymentButtons = calculator.querySelectorAll('#down-payment-percent-button-set');
       const currencyInputs = calculator.querySelectorAll('input.currency');
+
+      const loanTypeInput = calculator.querySelector('select[name=loan-type]');
+      const serviceTypeInput = calculator.querySelector('select[name=service-type]');
       const homeValueInput = calculator.querySelector('input[name=home-value]');
       const downPaymentInput = calculator.querySelector('input[name=down-payment]');
+      const disabled10Input = calculator.querySelector('input[name=va-disabled]:checked');
+      const prevVaLoanInput = calculator.querySelector('input[name=prev-va-loan]:checked');
       const rateInput = calculator.querySelector('input[name=rate]');
       const termInput = calculator.querySelector('select[name=term]');
       const propertyTaxInput = calculator.querySelector('input[name=property-tax]');
       const insuranceInput = calculator.querySelector('input[name=insurance]');
       const hoaFeesInput = calculator.querySelector('input[name=hoa-fees]');
 
+      const vaLoanFeeOutput = calculator.querySelector('input[name=va-loan-fees]');
       const mortgageAmountOutput = calculator.querySelector('input[name=mortgage-amount]');
       const downPaymentPercentageOutput = calculator.querySelector('span#down-payment-percent');
       const monthlyPaymentOutput = calculator.querySelector('input[name=monthly-payment]');
@@ -389,8 +495,12 @@ permalink: /themilitarywallet/mortgage
 
       function updateResults() {
         /* Get values */
+        const loanType = loanTypeInput.value;
+        const serviceType = serviceTypeInput.value;
         const homeValue = parseFloat(homeValueInput.value) || 0;
         const downPayment = parseFloat(downPaymentInput.value) || 0;
+        const disabled10 = getRadioVal(calculator, 'va-disabled') === 'true';
+        const firstTimeLoan = getRadioVal(calculator, 'prev-va-loan') === 'false';
         const rate = parseFloat(rateInput.value) / 100.0 || 0;
         const term = parseInt(termInput.value);
 
@@ -428,7 +538,14 @@ permalink: /themilitarywallet/mortgage
           downPaymentPercentage = downPayment / homeValue;
         }
 
+        const vaFeePct = loanFeePercentage(loanType, serviceType, downPaymentPercentage, disabled10, firstTimeLoan);
+
+        const vaFees = mortgageAmount * vaFeePct;
+
+        mortgageAmount += vaFees;
+
         mortgageAmountOutput.value = mortgageAmount.toFixed(2);
+        vaLoanFeeOutput.value = vaFees.toFixed(2);
         downPaymentPercentageOutput.innerHTML = toPercent(downPaymentPercentage);
 
         if (rate <= 0.0) {
