@@ -9,8 +9,6 @@ if (!('remove' in Element.prototype)) {
   };
 }
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiZmluZHlvdXJtZWVwbGUiLCJhIjoiY2pyNWs2N2NpMDRxZDRhdGt4bjVpbnd6bSJ9.qDgykm2I7H8GvZeLS8NwgA';
-
 // This adds the map to your page
 var map = new mapboxgl.Map({
   // container id specified in the HTML

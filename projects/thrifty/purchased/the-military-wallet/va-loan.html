@@ -258,16 +258,6 @@ permalink: /themilitarywallet/va-loan
           </div>
         </div>
         <div class="calculator-field">
-          <label for="service-type">Type of Service</label>
-          <div class="calculator-value">
-            <select name="service-type" id="service-type">
-              <option value="regular-military" selected="selected">Regular Military</option>
-              <option value="reserves-national-guard">Reserves/National Guard</option>
-              <option value="surviving-spouse">Surviving Spouse</option>
-            </select>
-          </div>
-        </div>
-        <div class="calculator-field">
           <label for="home-value">Home Value</label>
           <div class="calculator-value">
             <span class="input-prefix">$</span>
@@ -296,6 +286,24 @@ permalink: /themilitarywallet/va-loan
             <label for="va-disabled-yes">Yes</label>
             <input name="va-disabled" type="radio" id="va-disabled-no" value=false checked>
             <label for="va-disabled-no">No</label>
+          </div>
+        </div>
+        <div class="calculator-field">
+          <label for="va-purple-heart">Are you an active service member with a Purple Heart?</label>
+          <div class="calculator-value calculator-value--radio">
+            <input name="va-purple-heart" type="radio" id="va-purple-heart-yes" value=true>
+            <label for="va-purple-heart-yes">Yes</label>
+            <input name="va-purple-heart" type="radio" id="va-purple-heart-no" value=false checked>
+            <label for="va-purple-heart-no">No</label>
+          </div>
+        </div>
+        <div class="calculator-field">
+          <label for="va-surviving-spouse">Are you a surviving spouse (of a veteran who died in service or from a service-connected disability?</label>
+          <div class="calculator-value calculator-value--radio">
+            <input name="va-surviving-spouse" type="radio" id="va-surviving-spouse-yes" value=true>
+            <label for="va-surviving-spouse-yes">Yes</label>
+            <input name="va-surviving-spouse" type="radio" id="va-surviving-spouse-no" value=false checked>
+            <label for="va-surviving-spouse-no">No</label>
           </div>
         </div>
         <div class="calculator-field">
@@ -415,44 +423,31 @@ permalink: /themilitarywallet/va-loan
         return (value * 100).toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits}) + '%'
       }
     }
-    function loanFeePercentage(loanType, serviceType, downPaymentPct, disabled10, firstTimeLoan) {
-      if (serviceType === 'surviving-spouse') { return 0.0 }
-      if (disabled10) { return 0.0 }
+    function loanFeePercentage(loanType, downPaymentPct, disabled10, purpleHeart, survivingSpouse, firstTimeLoan) {
+      if (disabled10 || purpleHeart || survivingSpouse) { return 0.0 }
 
       if (loanType === 'rate-reduction') { return 0.005 }
       if (loanType === 'manufactured') { return 0.010 }
       if (loanType === 'assumption') { return 0.005 }
+      if (loanType === 'nadl') { return 0.0125 }
+      if (loanType === 'nadl-refinance') { return 0.005 }
+      if (loanType === 'vendee') { return 0.0225 }
 
       if (loanType === 'cash-out') {
-        if (!firstTimeLoan) { return 0.033 }
-        if (serviceType == 'regular-military') { return 0.0215 }
-        if (serviceType == 'reserves-national-guard') { return 0.024 }
-        return 'error';
-      } else if (loanType === 'home-purchase') {
-        if (serviceType == 'regular-military') {
-          if (downPaymentPct < 0.05) {
-            if (!firstTimeLoan) { return 0.033 }
-            else { return 0.0215 }
-          } else if (downPaymentPct < 0.10) {
-            return 0.015;
-          } else {
-            return 0.0125;
-          }
-        } else if (serviceType === 'reserves-national-guard') {
-          if (downPaymentPct < 0.05) {
-            if (!firstTimeLoan) { return 0.033 }
-            else { return 0.024 }
-          } else if (downPaymentPct < 0.10) {
-            return 0.0175;
-          } else {
-            return 0.015;
-          }
-        }
-      } else {
-        return 'error'
+        if (firstTimeLoan) { return 0.023 }
+        else { return 0.036 }
       }
 
-      return 10.0;
+      if (loanType === 'home-purchase') {
+        if (downPaymentPct < 0.05) {
+          if (firstTimeLoan) { return 0.023 }
+          else { return 0.036 }
+        } else if (downPaymentPct < 0.10) {
+          return 0.0165;
+        } else {
+          return 0.014;
+        }
+      } else { return 'error' }
     }
     function mortgagePayment(pv, nper, rate) {
       return (rate * pv) / (1.0 - Math.pow(1 + rate, -nper));
@@ -472,14 +467,15 @@ permalink: /themilitarywallet/va-loan
       const monthlyDonutChart = calculator.querySelector('#monthly-payment-chart');
       const inputs = calculator.querySelectorAll('input');
       const selects = calculator.querySelectorAll('select');
-      const downPaymentButtons = calculator.querySelectorAll('#down-payment-percent-button-set');
+      const downPaymentButtons = calculator.querySelectorAll('#down-payment-percent-button-set button');
       const currencyInputs = calculator.querySelectorAll('input.currency');
 
       const loanTypeInput = calculator.querySelector('select[name=loan-type]');
-      const serviceTypeInput = calculator.querySelector('select[name=service-type]');
       const homeValueInput = calculator.querySelector('input[name=home-value]');
       const downPaymentInput = calculator.querySelector('input[name=down-payment]');
       const disabled10Input = calculator.querySelector('input[name=va-disabled]:checked');
+      const purpleHeartInput = calculator.querySelector('input[name=va-purple-heart]:checked');
+      const survivingSpouseInput = calculator.querySelector('input[name=va-surviving-spouse]:checked');
       const prevVaLoanInput = calculator.querySelector('input[name=prev-va-loan]:checked');
       const rateInput = calculator.querySelector('input[name=rate]');
       const termInput = calculator.querySelector('select[name=term]');
@@ -500,10 +496,11 @@ permalink: /themilitarywallet/va-loan
       function updateResults() {
         /* Get values */
         const loanType = loanTypeInput.value;
-        const serviceType = serviceTypeInput.value;
         const homeValue = parseFloat(homeValueInput.value) || 0;
         const downPayment = parseFloat(downPaymentInput.value) || 0;
         const disabled10 = getRadioVal(calculator, 'va-disabled') === 'true';
+        const purpleHeart = getRadioVal(calculator, 'va-purple-heart') === 'true';
+        const survivingSpouse = getRadioVal(calculator, 'va-surviving-spouse') === 'true';
         const firstTimeLoan = getRadioVal(calculator, 'prev-va-loan') === 'false';
         const rate = parseFloat(rateInput.value) / 100.0 || 0;
         const term = parseInt(termInput.value);
@@ -542,7 +539,7 @@ permalink: /themilitarywallet/va-loan
           downPaymentPercentage = downPayment / homeValue;
         }
 
-        const vaFeePct = loanFeePercentage(loanType, serviceType, downPaymentPercentage, disabled10, firstTimeLoan);
+        const vaFeePct = loanFeePercentage(loanType, downPaymentPercentage, disabled10, purpleHeart, survivingSpouse, firstTimeLoan);
 
         const vaFees = mortgageAmount * vaFeePct;
 
@@ -595,7 +592,7 @@ permalink: /themilitarywallet/va-loan
           let buttonValue = parseFloat(button.innerHTML) || 0.0;
           let homeValue = parseFloat(homeValueInput.value) || 0.0;
           let downPaymentAmount = (buttonValue / 100.0) * homeValue;
-          downPaymentInput.value = downPaymentAmount.toFixed(2);
+          downPaymentInput.value = (Math.ceil(downPaymentAmount * 100.0) / 100.0).toFixed(2);
           updateResults();
         });
       }
