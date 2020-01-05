@@ -76,6 +76,7 @@ published: true
   .thrifty-calculators-calculator div.calculator-group-title {
     padding: 0.5rem 0;
     border-bottom: 1px solid var(--thrifty-calculator-line-color);
+    font-weight: bold;
   }
   .thrifty-calculators-calculator .calculator-field {
     margin: 1rem 0;
@@ -202,27 +203,6 @@ published: true
     align-items: center;
   }
 
-  .thrifty-calculators-calculator .calculator-field .calculator-button-set span,
-  .thrifty-calculators-calculator .calculator-field .calculator-button-set button {
-    font-size: 0.7rem;
-  }
-  .thrifty-calculators-calculator .calculator-field .calculator-button-set button {
-    border: 1px solid var(--thrifty-calculator-line-color);
-    background-color: white;
-    padding: 0.5rem;
-    transition: border-color 150ms ease-in-out;
-  }
-
-  .thrifty-calculators-calculator .calculator-field .calculator-button-set button:hover,
-  .thrifty-calculators-calculator .calculator-field .calculator-button-set button:focus {
-    border-color: var(--thrifty-calculator-primary-color);
-    outline: none;
-  }
-
-  .thrifty-calculators-calculator .calculator-field .calculator-button-set button:active {
-    background-color: var(--thrifty-calculator-primary-accent-color);
-  }
-
   .thrifty-calculators-calculator .calculator-container {
     border: 1px solid var(--thrifty-calculator-line-color);
     padding: 2rem;
@@ -328,7 +308,7 @@ published: true
           </div>
         </div>
         <div class="calculator-field calculator-field--inline">
-          <label for="total-future-value"><strong>Total Future Value</strong></label>
+          <label for="total-future-value">Total</label>
           <div class="calculator-value calculator-value--output">
             <span class="input-prefix">$</span>
             <input type="number" class="currency" name="total-future-value" id="total-future-value" value="16667.32" readonly/>
@@ -519,7 +499,7 @@ published: true
       function drawYearlyGrowthChart(startingAmount, yearsToSave, rateOfReturn, compoundingFrequency, contributionAmount, contributionFrequency) {
         let yearlyGrowthTable = new google.visualization.DataTable();
         yearlyGrowthTable.addColumn('number', 'Year');
-        yearlyGrowthTable.addColumn('number', 'Starting Amount');
+        yearlyGrowthTable.addColumn('number', 'Starting');
         yearlyGrowthTable.addColumn('number', 'Contributions');
         yearlyGrowthTable.addColumn('number', 'Interest');
 
@@ -543,9 +523,9 @@ published: true
             easing: 'inAndOut'
           },
           colors:[ color1, color2, color3, color4 ],
-          legend: {position: 'none'},
+          legend: {position: 'top', maxLines: 3},
           isStacked: true,
-          height: 300
+          height: 300,
         };
         const yearlyGrowthChartElement = new google.visualization.ColumnChart(yearlyGrowthChart);
         yearlyGrowthChartElement.draw(yearlyGrowthTable, baseOptions);
