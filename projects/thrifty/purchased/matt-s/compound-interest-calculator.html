@@ -507,7 +507,7 @@ published: true
           let fv = futureValue(startingAmount, i, rateOfReturn, compoundingFrequency, contributionAmount, contributionFrequency);
 
           yearlyGrowthTable.addRow([{ v: i,
-                                   f: 'Year ' + i },
+                                   f: 'Year ' + i + ': ' + toCurrency(fv.totalValue) },
                                  { v: fv.startingAmount,
                                    f: toCurrency(fv.startingAmount) },
                                  { v: fv.contributions,
