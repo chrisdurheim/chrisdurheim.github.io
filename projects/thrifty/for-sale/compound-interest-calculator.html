@@ -1,7 +1,7 @@
 ---
 layout: none
-permalink: /matt-s/compound-interest
-published: true
+permalink: /for-sale/compound-interest
+published: false
 sitemap: false
 ---
 <!DOCTYPE html>
@@ -256,7 +256,6 @@ sitemap: false
   .thrifty-calculator-tooltip-content li span.label.color3:before {
     background-color: var(--thrifty-calculator-chart-color-3)
   }
-
 </style>
 <div class="thrifty-calculators-calculator" id="compound-interest-calculator">
   <div class="calculator-title">Compound Interest Calculator</div>
@@ -281,7 +280,7 @@ sitemap: false
         <div class="calculator-field calculator-field--inline">
           <label for="rate-of-return">Rate of Return</label>
           <div class="calculator-value">
-            <input type="number" class="percent" name="rate-of-return" id="rate-of-return" value="6.00" min="0.0" max="100.0" step="0.125"/>
+            <input type="number" class="percent" name="rate-of-return" id="rate-of-return" value="5.50" min="0.0" max="100.0" step="0.125"/>
             <span class="input-suffix">%</span>
           </div>
         </div>
@@ -289,16 +288,16 @@ sitemap: false
           <label for="compounding-frequency">Compounding Frequency</label>
           <div class="calculator-value">
             <select name="compounding-frequency" id="compounding-frequency">
-              <option value="365.2425">Daily</option>
+              <option value="365.2425" selected="selected">Daily</option>
               <option value="12">Monthly</option>
               <option value="4">Quarterly</option>
-              <option value="1" selected="selected">Yearly</option>
+              <option value="1">Yearly</option>
             </select>
           </div>
         </div>
       </div>
       <div class="calculator-group">
-        <div class="calculator-group-title">Additional Contributions (aka "Club Awesome")</div>
+        <div class="calculator-group-title">Additional Contributions (optional)</div>
         <div class="calculator-field calculator-field--inline">
           <label for="contribution-amount">Amount</label>
           <div class="calculator-value">
@@ -311,9 +310,9 @@ sitemap: false
           <div class="calculator-value">
             <select name="contribution-frequency" id="contribution-frequency">
               <option value="365.2425">Daily</option>
-              <option value="52.1775">Weekly</option>
+              <option value="52.1775" selected="selected">Weekly</option>
               <option value="26.08875">Bi-Weekly</option>
-              <option value="12" selected="selected">Monthly</option>
+              <option value="12">Monthly</option>
               <option value="4">Quarterly</option>
               <option value="1">Yearly</option>
             </select>
@@ -324,13 +323,8 @@ sitemap: false
     <div class="calculator-result">
       <div class="calculator-field-group">
         <div class="calculator-group-title">Results</div>
-        <div id="total-value">After 5 years, you'd have $17,117.45</div>
-      </div>
-      <div class="calculator-field-group">
-        <div class="calculator-chart" id="yearly-growth-chart"></div>
-        <div class="calculator-group-title">Final Amount Breakdown</div>
-      </div>
-      <div class="calculator-field-group">
+        <div id="total-value">After 5 years, you'd have $16,667.32</div>
+        <div class="calculator-chart" id="total-pie-chart"></div>
         <div class="calculator-field calculator-field--inline">
           <label for="startingAmountResult" class="chart-legend-item color1">Starting Amount</label>
           <div class="calculator-value calculator-value--output">
@@ -349,16 +343,20 @@ sitemap: false
           <label for="interest" class="chart-legend-item color3">Interest</label>
           <div class="calculator-value calculator-value--output">
             <span class="input-prefix">$</span>
-            <input type="number" class="currency" name="interest" id="interest" value="6117.45" readonly/>
+            <input type="number" class="currency" name="interest" id="interest" value="5667.32" readonly/>
           </div>
         </div>
         <div class="calculator-field calculator-field--inline">
           <label for="total-future-value">Total</label>
           <div class="calculator-value calculator-value--output">
             <span class="input-prefix">$</span>
-            <input type="number" class="currency" name="total-future-value" id="total-future-value" value="17117.45" readonly/>
+            <input type="number" class="currency" name="total-future-value" id="total-future-value" value="16667.32" readonly/>
           </div>
         </div>
+      </div>
+      <div class="calculator-field-group">
+        <div class="calculator-group-title">Balance by Year</div>
+        <div class="calculator-chart" id="yearly-growth-chart"></div>
       </div>
     </div>
   </div>
@@ -401,6 +399,7 @@ sitemap: false
 
       let chartsInitialized = false;
       let resizing = false;
+      const totalPieChart = calculator.querySelector('#total-pie-chart');
       const yearlyGrowthChart = calculator.querySelector('#yearly-growth-chart');
 
       const inputs = calculator.querySelectorAll('input');
@@ -492,6 +491,7 @@ sitemap: false
         totalValueOutput.value = fv.totalValue.toFixed(2);
 
         if (chartsInitialized) {
+          drawTotalPieChart(fv.startingAmount, fv.contributions, fv.interest)
           drawYearlyGrowthChart(startingAmount, yearsToSave, rateOfReturn, compoundingFrequency, contributionAmount, contributionFrequency);
         }
       }
@@ -514,6 +514,26 @@ sitemap: false
           resizing = false;
         }
       });
+
+      function drawTotalPieChart(startingAmount, contributions, interest) {
+        let data = google.visualization.arrayToDataTable([
+          ['Source', 'Amount'],
+          ['Starting Amount', startingAmount],
+          ['Contributions', contributions],
+          ["Interest",  interest]
+        ]);
+
+        let options = {
+          colors:[ color1, color2, color3, color4 ],
+          legend: {position: 'labeled'},
+          pieHole: 0.6,
+          pieSliceText: 'none',
+          tooltip: { trigger: 'none' }
+        };
+
+        let chart = new google.visualization.PieChart(totalPieChart);
+        chart.draw(data, options);
+      }
 
       function yearlyGrowthChartTooltip(year, fv) {
         return `<div class="thrifty-calculator-tooltip-content">
