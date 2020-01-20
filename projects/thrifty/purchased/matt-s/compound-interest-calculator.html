@@ -285,20 +285,9 @@ sitemap: false
             <span class="input-suffix">%</span>
           </div>
         </div>
-        <div class="calculator-field calculator-field--inline">
-          <label for="compounding-frequency">Compounding Frequency</label>
-          <div class="calculator-value">
-            <select name="compounding-frequency" id="compounding-frequency">
-              <option value="365.2425">Daily</option>
-              <option value="12">Monthly</option>
-              <option value="4">Quarterly</option>
-              <option value="1" selected="selected">Yearly</option>
-            </select>
-          </div>
-        </div>
       </div>
       <div class="calculator-group">
-        <div class="calculator-group-title">Additional Contributions (aka "Club Awesome")</div>
+        <div class="calculator-group-title">Additional Contributions</div>
         <div class="calculator-field calculator-field--inline">
           <label for="contribution-amount">Amount</label>
           <div class="calculator-value">
@@ -409,7 +398,6 @@ sitemap: false
       const startingAmountInput = calculator.querySelector('input[name=starting-amount]');
       const yearsToSaveInput = calculator.querySelector('input[name=years-to-save]');
       const rateOfReturnInput = calculator.querySelector('input[name=rate-of-return]');
-      const compoundingFrequencyInput = calculator.querySelector('select[name=compounding-frequency]');
 
       const contributionAmountInput = calculator.querySelector('input[name=contribution-amount]');
       const contributionFrequencyInput = calculator.querySelector('select[name=contribution-frequency]');
@@ -430,7 +418,6 @@ sitemap: false
         const startingAmount = parseFloat(startingAmountInput.value) || 0;
         const yearsToSave = parseFloat(yearsToSaveInput.value) || 0;
         const rateOfReturn = parseFloat(rateOfReturnInput.value) / 100.0 || 0;
-        const compoundingFrequency = parseFloat(compoundingFrequencyInput.value);
 
         const contributionAmount = parseFloat(contributionAmountInput.value) || 0;
         const contributionFrequency = parseFloat(contributionFrequencyInput.value);
@@ -482,7 +469,7 @@ sitemap: false
           return;
         }
 
-        const fv = futureValue(startingAmount, yearsToSave, rateOfReturn, compoundingFrequency, contributionAmount, contributionFrequency);
+        const fv = futureValue(startingAmount, yearsToSave, rateOfReturn, 1, contributionAmount, contributionFrequency);
 
         resultLine.innerHTML = "After " + yearsToSave + " years, you'd have " + toCurrency(fv.totalValue);
 
@@ -492,7 +479,7 @@ sitemap: false
         totalValueOutput.value = fv.totalValue.toFixed(2);
 
         if (chartsInitialized) {
-          drawYearlyGrowthChart(startingAmount, yearsToSave, rateOfReturn, compoundingFrequency, contributionAmount, contributionFrequency);
+          drawYearlyGrowthChart(startingAmount, yearsToSave, rateOfReturn, 1, contributionAmount, contributionFrequency);
         }
       }
 
@@ -535,7 +522,7 @@ sitemap: false
         yearlyGrowthTable.addColumn('number', 'Interest');
 
         for (let i = 1; i <= yearsToSave; i += 1) {
-          let fv = futureValue(startingAmount, i, rateOfReturn, compoundingFrequency, contributionAmount, contributionFrequency);
+          let fv = futureValue(startingAmount, i, rateOfReturn, 1, contributionAmount, contributionFrequency);
 
           yearlyGrowthTable.addRow([{ v: i,
                                       f: 'Year ' + i + ': ' + toCurrency(fv.totalValue) },
