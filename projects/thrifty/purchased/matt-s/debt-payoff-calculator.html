@@ -74,6 +74,10 @@ sitemap: false
     border-bottom: 1px solid var(--thrifty-calculator-line-color);
     margin: 1rem 0;
   }
+  .thrifty-calculators-calculator div.calculator-description {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+  }
   .thrifty-calculators-calculator div.calculator-group-title {
     padding: 0.5rem 0;
     border-bottom: 1px solid var(--thrifty-calculator-line-color);
@@ -264,6 +268,7 @@ sitemap: false
 <div class="thrifty-calculators-calculator" id="debt-payoff-calculator">
   <div class="calculator-title">Debt Payoff Calculator</div>
   <div class="calculator-container">
+    <div class="calculator-description">Use this calculator to find out how much time and money you could save by paying extra towards your debt each month.  Hint: most student loan terms are 120 months (10 years) and most car loan terms are 60-72 months (5-6 years)</div>
     <div class="calculator-inputs">
       <div class="calculator-group">
         <div class="calculator-field calculator-field--inline">
@@ -306,7 +311,45 @@ sitemap: false
     <div class="calculator-result">
       <div class="calculator-field-group">
         <div class="calculator-group-title">Results</div>
-        <p id="net-result">With prepayment, you'll pay off your debt X months faster and save $Y in interest</p>
+        <p id="net-result">With your extra payments each month, you'll pay off your debt X months faster and save $Y in interest</p>
+      </div>
+      <div class="calculator-field-group">
+        <div class="calculator-group-title">Summary</div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="monthly-payment">Monthly Payment Amount</label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="monthly-payment" id="monthly-payment" value="1000.00" readonly/>
+          </div>
+        </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="monthly-prepayment">Monthly Payment Amount (with Prepayment)</label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="monthly-prepayment" id="monthly-prepayment" value="1000.00" readonly/>
+          </div>
+        </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="original-interest">Total Original Interest Remaining</label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="original-interest" id="original-interest" value="10000.00" readonly/>
+          </div>
+        </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="prepay-interest">Total Interest Remaining with Prepayments</label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="prepay-interest" id="prepay-interest" value="9000.00" readonly/>
+          </div>
+        </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="prepay-months">Months Until Payoff with Prepayments</label>
+          <div class="calculator-value calculator-value--output">
+            <input type="number" name="prepay-months" id="prepay-months" value="42" readonly/>
+            <span class="input-suffix">months</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -365,6 +408,12 @@ sitemap: false
         const interestRate = parseFloat(interestRateInput.value) / 100.0 || 0;
         const extraMonthlyPrincipal = parseFloat(extraMonthlyPrincipalInput.value) || 0;
 
+        const monthlyPaymentOutput = calculator.querySelector('#monthly-payment');
+        const monthlyPrepaymentOutput = calculator.querySelector('#monthly-prepayment');
+        const originalInterestOutput = calculator.querySelector('#original-interest');
+        const prepayInterestOutput = calculator.querySelector('#prepay-interest');
+        const prepayMonthsOutput = calculator.querySelector('#prepay-months');
+
         delete startingAmountField.dataset.error;
         delete initialTermMonthsField.dataset.error;
         delete termRemainingMonthsField.dataset.error;
@@ -410,6 +459,11 @@ sitemap: false
         }
 
         if (breakingError) {
+          monthlyPaymentOutput.value = 0;
+          monthlyPrepaymentOutput.value = 0;
+          originalInterestOutput.value = 0;
+          prepayInterestOutput.value = 0;
+          prepayMonthsOutput.value = 0;
           resultLine.innerHTML = 'Error in inputs. Please correct as instructed above';
           return;
         }
@@ -423,7 +477,13 @@ sitemap: false
         const timeSavings = termRemainingMonths - prepayRemainingMonths;
         const interestSavings = payment * termRemainingMonths - prepayPayment * prepayRemainingMonths
 
-        resultLine.innerHTML = "With prepayment, you'll pay off your debt " + timeSavings.toFixed(1) + " months faster and save " + toCurrency(interestSavings) + " in interest";
+        resultLine.innerHTML = "With your extra payments each month, you'll pay off your debt " + timeSavings.toFixed(1) + " months faster and save " + toCurrency(interestSavings) + " in interest";
+
+        monthlyPaymentOutput.value = payment.toFixed(2);
+        monthlyPrepaymentOutput.value = (payment + extraMonthlyPrincipal).toFixed(2);
+        originalInterestOutput.value = (payment * termRemainingMonths - amountRemaining).toFixed(2);
+        prepayInterestOutput.value = (prepayPayment * prepayRemainingMonths - amountRemaining).toFixed(2);
+        prepayMonthsOutput.value = prepayRemainingMonths.toFixed(1);
       }
 
       /* Set calculator to auto-update on input changes */
