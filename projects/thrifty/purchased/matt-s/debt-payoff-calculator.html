@@ -45,7 +45,7 @@ sitemap: false
     flex: 0 0 100%;
   }
   .thrifty-calculators-calculator .calculator-result {
-    margin: 4rem 0 0;
+    margin: 1rem 0 0;
   }
   .thrifty-calculators-calculator .calculator-cta {
     margin: 4rem 0 2rem;
@@ -323,7 +323,7 @@ sitemap: false
           </div>
         </div>
         <div class="calculator-field calculator-field--inline">
-          <label for="monthly-prepayment">Monthly Payment Amount (with Prepayment)</label>
+          <label for="monthly-prepayment">Monthly Payment Amount (with Extra Payment)</label>
           <div class="calculator-value calculator-value--output">
             <span class="input-prefix">$</span>
             <input type="number" class="currency" name="monthly-prepayment" id="monthly-prepayment" value="1000.00" readonly/>
@@ -337,16 +337,16 @@ sitemap: false
           </div>
         </div>
         <div class="calculator-field calculator-field--inline">
-          <label for="prepay-interest">Total Interest Remaining with Prepayments</label>
+          <label for="prepay-interest">Total Interest Remaining with Extra Payments</label>
           <div class="calculator-value calculator-value--output">
             <span class="input-prefix">$</span>
             <input type="number" class="currency" name="prepay-interest" id="prepay-interest" value="9000.00" readonly/>
           </div>
         </div>
         <div class="calculator-field calculator-field--inline">
-          <label for="prepay-months">Months Until Payoff with Prepayments</label>
+          <label for="prepay-months">Months Until Payoff with Extra Payments</label>
           <div class="calculator-value calculator-value--output">
-            <input type="number" name="prepay-months" id="prepay-months" value="42" readonly/>
+            <input type="number" name="prepay-months" id="prepay-months" value="42" increment="0.1" readonly/>
             <span class="input-suffix">months</span>
           </div>
         </div>

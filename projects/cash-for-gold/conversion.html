@@ -1,0 +1,37 @@
+---
+layout: null
+published: true
+sitemap: false
+permalink: /cash-for-gold/
+---
+
+<head>
+  <link rel="import" href="https://cashforgoldusa.com/calc/index.php">
+</head>
+
+<div id='cash-for-gold-calculator'>
+
+</div>
+
+<script async type="text/javascript">
+  console.log('script loaded');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Content Loaded');
+
+    const calculatorDiv = document.querySelector('#cash-for-gold-calculator');
+
+    document.querySelector("iframe").addEventListener("load", (e) => {
+      let frame = e.target;
+
+      const embeds = frame.querySelectorAll('div');
+      console.log(embeds);
+      for(let i = 0; i < embeds.length; i += 1) {
+        console.log("embed hidden");
+        embeds[i].style.display = 'none';
+      }
+    });
+
+    console.log('iframe added');
+  })
+</script>
