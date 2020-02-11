@@ -10,17 +10,18 @@ sitemap: false
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="//db.onlinewebfonts.com/c/2babf48e823293b40756125c70649b4f?family=AuxinMedium" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <style>
   :root{
-    --thrifty-calculator-primary-color: #558b2f;
-    --thrifty-calculator-primary-accent-color: #a3b1c8;
+    --thrifty-calculator-primary-color: #66BB46;
+    --thrifty-calculator-primary-accent-color: #005B93;
     --thrifty-calculator-secondary-color: #333;
     --thrifty-calculator-background-color: white;
     --thrifty-calculator-error-color: #ac162c;
     --thrifty-calculator-line-color: darkgray;
-    --thrifty-calculator-font: 'Arial', sans-serif;
+    --thrifty-calculator-font: 'AuxinMedium', 'Arial', sans-serif;
     --thrifty-calculator-chart-color-1: var(--thrifty-calculator-secondary-color);
     --thrifty-calculator-chart-color-2: var(--thrifty-calculator-primary-accent-color);
     --thrifty-calculator-chart-color-3: var(--thrifty-calculator-primary-color);
@@ -77,6 +78,10 @@ sitemap: false
   .thrifty-calculators-calculator div.calculator-description {
     font-size: 1rem;
     margin: 0.5rem 0;
+  }
+  .thrifty-calculators-calculator div.calculator-description--disclaimer {
+    font-size: 0.8rem;
+    font-weight: 300;
   }
   .thrifty-calculators-calculator div.calculator-group-title {
     padding: 0.5rem 0;
@@ -268,7 +273,9 @@ sitemap: false
 <div class="thrifty-calculators-calculator" id="debt-payoff-calculator">
   <div class="calculator-title">Debt Payoff Calculator</div>
   <div class="calculator-container">
-    <div class="calculator-description">Use this calculator to find out how much time and money you could save by paying extra towards your debt each month.  Hint: most student loan terms are 120 months (10 years) and most car loan terms are 60-72 months (5-6 years)</div>
+    <div class="calculator-description">Use this calculator to find out how much time and money you could save by paying extra towards your debt each month.</div>
+    <div class="calculator-description">Hint: most student loan terms are 120 months (10 years) and most car loan terms are 60-72 months (5-6 years)</div>
+    <div class="calculator-description calculator-description--disclaimer">*Not for credit cards or mortgages.</div>
     <div class="calculator-inputs">
       <div class="calculator-group">
         <div class="calculator-field calculator-field--inline">
