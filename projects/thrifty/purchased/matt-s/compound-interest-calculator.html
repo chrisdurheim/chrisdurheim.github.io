@@ -1,7 +1,7 @@
 ---
 layout: none
 permalink: /matt-s/compound-interest
-published: true
+published: false
 sitemap: false
 ---
 <!DOCTYPE html>
@@ -366,7 +366,7 @@ sitemap: false
     }
     function futureValue(startingAmount, yearsToSave, rateOfReturn, compoundingFrequency, contributionAmount, contributionFrequency) {
       const equivalentAnnualRate = Math.pow(1 + rateOfReturn / compoundingFrequency, compoundingFrequency) - 1;
-      const annualContributionRate = (Math.pow(1 + equivalentAnnualRate, 1 / contributionFrequency) - 1)
+      const annualContributionRate = (Math.pow(1 + equivalentAnnualRate, 1 / contributionFrequency) - 1);
       const equivalentPeriodRate = contributionFrequency * annualContributionRate;
 
       const startingFutureValue = startingAmount * Math.pow(1 + equivalentAnnualRate, yearsToSave);
@@ -376,7 +376,7 @@ sitemap: false
       const contributions = contributionAmount * contributionFrequency * yearsToSave;
       const interest = totalValue - startingAmount - contributions;
 
-      return { startingAmount, contributions, interest, totalValue }
+      return { startingAmount, contributions, interest, totalValue };
     }
     console.log("Calculator helper functions loaded");
     const calculator = document.querySelector('#compound-interest-calculator');
