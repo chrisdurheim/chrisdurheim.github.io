@@ -12,6 +12,7 @@ sitemap: false
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
+<div id="thrifty-calculator-utm-holder" data-utm-content='calculatorlink' data-utm-medium='cpc' data-utm-source='wealthy-single-mommy'></div>
 <style>
   :root{
     --thrifty-calculator-primary-color: #268b92;
@@ -64,23 +65,24 @@ sitemap: false
     flex: 0 0 100%;
   }
   .thrifty-calculators-calculator .calculator-cta {
-    margin: 4rem 0 2rem;
+    margin: 2rem 0;
     text-align: center;
   }
   .thrifty-calculators-calculator .calculator-cta a {
     padding: 1rem;
-    background-color: var(--thrifty-calculator-chart-color-1);
-    border: 1px solid var(--thrifty-calculator-line-color);
-    color: white;
+    border: 1px solid var(--thrifty-calculator-primary-accent-color);
+    color: var(--thrifty-calculator-primary-accent-color);
     text-decoration: none;
     text-transform: uppercase;
-    transition: background-color 150ms ease-in-out,
+    transition: color 150ms ease-in-out,
+                background-color 150ms ease-in-out,
                 border-color 150ms ease-in-out;
   }
   .thrifty-calculators-calculator .calculator-cta a:hover,
   .thrifty-calculators-calculator .calculator-cta a:focus {
     border-color: var(--thrifty-calculator-primary-color);
-    background-color: var(--thrifty-calculator-chart-color-2);
+    background-color: var(--thrifty-calculator-primary-accent-color);
+    color: white;
     outline: none;
   }
   .thrifty-calculators-calculator div.calculator-title {
@@ -117,12 +119,12 @@ sitemap: false
     margin: 0.25rem 0;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: flex-end;
     transition: border-color 150ms ease-in-out;
   }
   @media screen and (min-width: 425px) {
     .thrifty-calculators-calculator .calculator-field .calculator-value {
-      flex: 1 0 10rem;
+      flex: 0 0 auto;
     }
   }
   .thrifty-calculators-calculator .calculator-field .calculator-value:focus-within {
@@ -147,6 +149,9 @@ sitemap: false
     border: none;
     padding: 0.5rem 0;
   }
+  .thrifty-calculators-calculator .calculator-field .calculator-value input {
+    text-align: right;
+  }
   .thrifty-calculators-calculator .calculator-field .calculator-value select:hover,
   .thrifty-calculators-calculator .calculator-field .calculator-value select:focus,
   .thrifty-calculators-calculator .calculator-field .calculator-value input:hover,
@@ -166,8 +171,9 @@ sitemap: false
   }
 
   .thrifty-calculators-calculator .calculator-field .calculator-value select {
-    flex: 1 0 100%;
+    flex: 0 0 auto;
     font-size: 0.8rem;
+    line-height: 1.45;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -212,17 +218,13 @@ sitemap: false
       <div class="calculator-field calculator-field--inline">
         <label for="weight">Weight</label>
         <div class="calculator-value">
-          &nbsp;
           <input type="number" name="weight" id="weight" value="0" min="0" />
         </div>
-      </div>
-      <div class="calculator-field calculator-field--inline">
-        <label for="weight-unit">Weight Unit</label>
         <div class="calculator-value">
           <select name="weight-unit" id="weight-unit">
-            <option value="0.03527396" selected="selected">g</option>
-            <option value="1">oz</option>
-            <option value="0.054857">dwt</option>
+            <option value="0.03527396" selected="selected">grams</option>
+            <option value="1">ounces</option>
+            <option value="0.054857">pennyweight</option>
           </select>
         </div>
       </div>
@@ -248,6 +250,9 @@ sitemap: false
         <div class="calculator-meta-value" id="total-value">Loading</div>
         <div class="calculator-meta-label">estimated value</div>
       </div>
+      <div class="calculator-cta">
+        <a href="#" id="calculator-cta" data-base-uri="https://cashforgoldusa.com/">Learn More</a>
+      </div>
     </div>
   </div>
 </div>
@@ -262,6 +267,20 @@ sitemap: false
     const calculator = document.querySelector('#gold-value-calculator');
     if (calculator) {
       console.log("Calculator found");
+
+      /* Attach UTM parameters */
+
+      const utmHolder = document.querySelector('#thrifty-calculator-utm-holder');
+      const ctaLink = calculator.querySelector('#calculator-cta');
+
+      const params = utmHolder.dataset;
+
+      const queryString = Object.keys(params).map((key) => {
+        return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
+      }).join('&');
+
+      ctaLink.href = ctaLink.dataset.baseUri + '?' + queryString;
+
       const request = new Request("https://www.quandl.com/api/v3/datasets/LBMA/GOLD.json?api_key=TXJ7UvEoGxoLmrrV3kuV&order=desc&limit=1");
 
       fetch(request).then(response => { return response.json() }).then( json => {
