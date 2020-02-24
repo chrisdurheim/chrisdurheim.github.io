@@ -45,6 +45,7 @@ sitemap: false
   .thrifty-calculators-calculator .calculator-meta {
     text-align: center;
     margin: 1.5rem 0;
+    line-height: 1.25;
   }
   .thrifty-calculators-calculator .calculator-meta .calculator-meta-title {
     font-size: 1.0rem;
@@ -144,13 +145,14 @@ sitemap: false
 
   .thrifty-calculators-calculator .calculator-field .calculator-value select,
   .thrifty-calculators-calculator .calculator-field .calculator-value input {
-    flex: 1 0 auto;
+    flex: 0 0 auto;
     font-size: 0.8rem;
     border: none;
     padding: 0.5rem 0;
   }
   .thrifty-calculators-calculator .calculator-field .calculator-value input {
     text-align: right;
+    max-width: 3rem;
   }
   .thrifty-calculators-calculator .calculator-field .calculator-value select:hover,
   .thrifty-calculators-calculator .calculator-field .calculator-value select:focus,
@@ -207,7 +209,7 @@ sitemap: false
   }
 </style>
 <div class="thrifty-calculators-calculator" id="gold-value-calculator">
-  <div class="calculator-title">Gold Calculator</div>
+  <div class="calculator-title">How Much is Your Gold Worth?</div>
   <div class="calculator-inputs">
     <div class="calculator-group">
       <div class="calculator-meta">
@@ -247,8 +249,9 @@ sitemap: false
   <div class="calculator-result">
     <div class="calculator-field-group">
       <div class="calculator-meta">
+        <div class="calculator-meta-title">Your Value</div>
         <div class="calculator-meta-value" id="total-value">Loading</div>
-        <div class="calculator-meta-label">estimated value</div>
+        <div class="calculator-meta-label">estimated</div>
       </div>
       <div class="calculator-cta">
         <a href="#" id="calculator-cta" data-base-uri="https://cashforgoldusa.com/">Learn More</a>
