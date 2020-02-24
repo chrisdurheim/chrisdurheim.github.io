@@ -115,18 +115,13 @@ sitemap: false
   }
 
   .thrifty-calculators-calculator .calculator-field .calculator-value {
-    flex: 0 0 100%;
-    border: 1px solid var(--thrifty-calculator-line-color);border-color:
-    margin: 0.25rem 0;
+    flex: 0 0 auto;
+    border: 1px solid var(--thrifty-calculator-line-color);
+    
     display: flex;
     align-items: center;
     justify-content: flex-end;
     transition: border-color 150ms ease-in-out;
-  }
-  @media screen and (min-width: 425px) {
-    .thrifty-calculators-calculator .calculator-field .calculator-value {
-      flex: 0 0 auto;
-    }
   }
   .thrifty-calculators-calculator .calculator-field .calculator-value:focus-within {
     border-color: var(--thrifty-calculator-primary-color);
@@ -153,12 +148,19 @@ sitemap: false
   .thrifty-calculators-calculator .calculator-field .calculator-value input {
     text-align: right;
     max-width: 3rem;
+    padding: 0.5rem 0.5rem;
   }
   .thrifty-calculators-calculator .calculator-field .calculator-value select:hover,
   .thrifty-calculators-calculator .calculator-field .calculator-value select:focus,
   .thrifty-calculators-calculator .calculator-field .calculator-value input:hover,
   .thrifty-calculators-calculator .calculator-field .calculator-value input:focus {
     outline: none;
+  }
+  .thrifty-calculators-calculator .calculator-field .calculator-value select option {
+    text-align-last: right;
+  }
+  .thrifty-calculators-calculator .calculator-field .calculator-value select option {
+    direction: rtl;
   }
   .thrifty-calculators-calculator .calculator-field input.percent {
     text-align: right;
