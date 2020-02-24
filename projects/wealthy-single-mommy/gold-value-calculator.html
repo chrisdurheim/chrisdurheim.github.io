@@ -1,0 +1,322 @@
+---
+layout: none
+permalink: /wealthy-single-mommy/gold-value
+published: true
+sitemap: false
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+<style>
+  :root{
+    --thrifty-calculator-primary-color: #268b92;
+    --thrifty-calculator-primary-accent-color: #d92176;
+    --thrifty-calculator-secondary-color: #333;
+    --thrifty-calculator-background-color: white;
+    --thrifty-calculator-error-color: #ac162c;
+    --thrifty-calculator-line-color: darkgray;
+    --thrifty-calculator-font: Helvetica, sans-serif;
+    --thrifty-calculator-chart-color-1: var(--thrifty-calculator-secondary-color);
+    --thrifty-calculator-chart-color-2: var(--thrifty-calculator-primary-accent-color);
+    --thrifty-calculator-chart-color-3: var(--thrifty-calculator-primary-color);
+    --thrifty-calculator-chart-color-4: var(--thrifty-calculator-line-color);
+  }
+  .thrifty-calculators-calculator {
+    font-size: 16px;
+    font-family: var(--thrifty-calculator-font);
+    width: calc(100% - 2rem);
+    max-width: 20rem;
+    margin: 2rem auto;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+
+    border: 2px solid var(--thrifty-calculator-primary-color);
+    padding: 2rem;
+  }
+  .thrifty-calculators-calculator .calculator-meta {
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+  .thrifty-calculators-calculator .calculator-meta .calculator-meta-title {
+    font-size: 1.0rem;
+    color: var(--thrifty-calculator-secondary-color);
+  }
+  .thrifty-calculators-calculator .calculator-meta .calculator-meta-value {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: bold;
+  }
+  .thrifty-calculators-calculator .calculator-meta .calculator-meta-label {
+    font-size: 0.8rem;
+    color: var(--thrifty-calculator-secondary-color);
+  }
+  .thrifty-calculators-calculator .calculator-inputs,
+  .thrifty-calculators-calculator .calculator-result,
+  .thrifty-calculators-calculator .calculator-cta {
+    flex: 0 0 100%;
+  }
+  .thrifty-calculators-calculator .calculator-cta {
+    margin: 4rem 0 2rem;
+    text-align: center;
+  }
+  .thrifty-calculators-calculator .calculator-cta a {
+    padding: 1rem;
+    background-color: var(--thrifty-calculator-chart-color-1);
+    border: 1px solid var(--thrifty-calculator-line-color);
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background-color 150ms ease-in-out,
+                border-color 150ms ease-in-out;
+  }
+  .thrifty-calculators-calculator .calculator-cta a:hover,
+  .thrifty-calculators-calculator .calculator-cta a:focus {
+    border-color: var(--thrifty-calculator-primary-color);
+    background-color: var(--thrifty-calculator-chart-color-2);
+    outline: none;
+  }
+  .thrifty-calculators-calculator div.calculator-title {
+    flex: 0 0 100%;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--thrifty-calculator-primary-color);
+  }
+  .thrifty-calculators-calculator div.calculator-group-title {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--thrifty-calculator-line-color);
+    font-weight: bold;
+  }
+  .thrifty-calculators-calculator .calculator-field {
+    margin: 1rem 0;
+  }
+  .thrifty-calculators-calculator .calculator-field--inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .thrifty-calculators-calculator .calculator-field label {
+    flex: 2 0 25%;
+    min-width: 25%;
+    display: flex;
+    font-size: 0.9rem;
+  }
+
+  .thrifty-calculators-calculator .calculator-field .calculator-value {
+    flex: 0 0 100%;
+    border: 1px solid var(--thrifty-calculator-line-color);border-color:
+    margin: 0.25rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    transition: border-color 150ms ease-in-out;
+  }
+  @media screen and (min-width: 425px) {
+    .thrifty-calculators-calculator .calculator-field .calculator-value {
+      flex: 1 0 10rem;
+    }
+  }
+  .thrifty-calculators-calculator .calculator-field .calculator-value:focus-within {
+    border-color: var(--thrifty-calculator-primary-color);
+  }
+  .thrifty-calculators-calculator .calculator-field .calculator-value--output {
+    border-color: transparent;
+  }
+
+  .thrifty-calculators-calculator .calculator-field .calculator-value .input-prefix,
+  .thrifty-calculators-calculator .calculator-field .calculator-value .input-suffix {
+    flex: 0 0 auto;
+    color: var(--thrifty-calculator-line-color);
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+
+  .thrifty-calculators-calculator .calculator-field .calculator-value select,
+  .thrifty-calculators-calculator .calculator-field .calculator-value input {
+    flex: 1 0 auto;
+    font-size: 0.8rem;
+    border: none;
+    padding: 0.5rem 0;
+  }
+  .thrifty-calculators-calculator .calculator-field .calculator-value select:hover,
+  .thrifty-calculators-calculator .calculator-field .calculator-value select:focus,
+  .thrifty-calculators-calculator .calculator-field .calculator-value input:hover,
+  .thrifty-calculators-calculator .calculator-field .calculator-value input:focus {
+    outline: none;
+  }
+  .thrifty-calculators-calculator .calculator-field input.percent {
+    text-align: right;
+  }
+  input[type=number]:read-only::-webkit-inner-spin-button,
+  input[type=number]:read-only::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+
+  input[type=number]:read-only {
+    -moz-appearance: textfield;
+  }
+
+  .thrifty-calculators-calculator .calculator-field .calculator-value select {
+    flex: 1 0 100%;
+    font-size: 0.8rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 0.5em 2em 0.5em 0.5em;
+    color: black;
+    border: none;
+    background-color: var(--thrifty-calculator-background-color);
+    transition: background-color 150ms, border-color 150ms;
+    /* Arrow */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  	background-repeat: no-repeat, repeat;
+  	background-position: right .7em top 50%, 0 0;
+  	background-size: .65em auto, 100%;
+    cursor: pointer;
+    width: auto;
+  }
+  .thrifty-calculators-calculator .calculator-field[data-error]:after {
+    flex: 0 0 100%;
+    font-size: 0.8rem;
+    content: attr(data-error);
+    color: var(--thrifty-calculator-error-color);
+    margin-bottom: 1em;
+  }
+  .thrifty-calculators-calculator .calculator-field[data-error] .calculator-value {
+    border-color: var(--thrifty-calculator-error-color);
+  }
+  .thrifty-calculators-calculator .calculator-field .calculator-button-set {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+</style>
+<div class="thrifty-calculators-calculator" id="gold-value-calculator">
+  <div class="calculator-title">Gold Calculator</div>
+  <div class="calculator-inputs">
+    <div class="calculator-group">
+      <div class="calculator-meta">
+        <div class="calculator-meta-title">Latest Gold Price</div>
+        <div class="calculator-meta-value" id="latest-price">Loading</div>
+        <div class="calculator-meta-label" id="latest-date">Loading</div>
+      </div>
+      <div class="calculator-field calculator-field--inline">
+        <label for="weight">Weight</label>
+        <div class="calculator-value">
+          &nbsp;
+          <input type="number" name="weight" id="weight" value="0" min="0" />
+        </div>
+      </div>
+      <div class="calculator-field calculator-field--inline">
+        <label for="weight-unit">Weight Unit</label>
+        <div class="calculator-value">
+          <select name="weight-unit" id="weight-unit">
+            <option value="0.03527396" selected="selected">g</option>
+            <option value="1">oz</option>
+            <option value="0.054857">dwt</option>
+          </select>
+        </div>
+      </div>
+      <div class="calculator-field calculator-field--inline">
+        <label for="karat-rating">Rating</label>
+        <div class="calculator-value">
+          <select name="karat-rating" id="karat-rating">
+            <option value="0.999" selected="selected">24K</option>
+            <option value="0.916">22K</option>
+            <option value="0.833">20K</option>
+            <option value="0.750">18K</option>
+            <option value="0.625">15K</option>
+            <option value="0.585">14K</option>
+            <option value="0.417">10K</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="calculator-result">
+    <div class="calculator-field-group">
+      <div class="calculator-meta">
+        <div class="calculator-meta-value" id="total-value">Loading</div>
+        <div class="calculator-meta-label">estimated value</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("Calculator js running");
+    function toCurrency(value, digits = 2, symbol = '$') {
+      return symbol + value.toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits});
+    }
+    console.log("Calculator helper functions loaded");
+    const calculator = document.querySelector('#gold-value-calculator');
+    if (calculator) {
+      console.log("Calculator found");
+      const request = new Request("https://www.quandl.com/api/v3/datasets/LBMA/GOLD.json?api_key=TXJ7UvEoGxoLmrrV3kuV&order=desc&limit=1");
+
+      fetch(request).then(response => { return response.json() }).then( json => {
+        const latestDate = new Date(json.dataset.data[0][0]);
+        const amValue = json.dataset.data[0][1];
+        const pmValue = json.dataset.data[0][2];
+        const latestPrice = pmValue || amValue;
+
+        const latestDateResult = calculator.querySelector('#latest-date');
+        latestDateResult.innerHTML = 'as of ' + latestDate.toLocaleDateString('en-US');
+
+        const latestPriceResult = calculator.querySelector('#latest-price');
+        latestPriceResult.innerHTML = toCurrency(latestPrice) + '/oz';
+
+        const inputs = calculator.querySelectorAll('input');
+        const selects = calculator.querySelectorAll('select');
+
+        const weightInput = calculator.querySelector('input[name=weight]');
+        const weightUnitInput = calculator.querySelector('select[name=weight-unit]');
+        const karatRatingInput = calculator.querySelector('select[name=karat-rating]');
+
+        const weightField = weightInput.parentNode.parentNode;
+
+        const resultLine = calculator.querySelector('#total-value');
+
+        function updateResults() {
+          /* Get values */
+          const weight = parseFloat(weightInput.value) || 0;
+          const weightUnit = parseFloat(weightUnitInput.value) || 0;
+          const karatRating = parseFloat(karatRatingInput.value) || 0;
+
+          delete weightField.dataset.error;
+
+          if (weight < 0) {
+            weightField.dataset.error = "Set weight greater than zero";
+            resultLine.innerHTML = 'Error in inputs. Please correct as instructed above';
+          }
+
+          const value = weight * weightUnit * karatRating * latestPrice;
+
+          resultLine.innerHTML = toCurrency(value);
+        }
+
+        /* Set calculator to auto-update on input changes */
+        for (let i = 0; i < inputs.length; i += 1) {
+          inputs[i].addEventListener('input', updateResults);
+        }
+        for (let i = 0; i < selects.length; i += 1) {
+          selects[i].addEventListener('input', updateResults);
+        }
+
+        updateResults();
+      })
+    }
+  });
+</script>
+</body>
+</html>
