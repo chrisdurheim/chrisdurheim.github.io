@@ -12,7 +12,7 @@ sitemap: false
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
-<div id="thrifty-calculator-utm-holder" data-utm-content='calculatorlink' data-utm-medium='cpc' data-utm-source='wealthy-single-mommy'></div>
+<div id="thrifty-calculator-utm-holder" data-cid="470" data-aid="makemoney" style="display:none;"></div>
 <style>
   :root{
     --thrifty-calculator-primary-color: #268b92;
@@ -22,16 +22,12 @@ sitemap: false
     --thrifty-calculator-error-color: #ac162c;
     --thrifty-calculator-line-color: darkgray;
     --thrifty-calculator-font: Helvetica, sans-serif;
-    --thrifty-calculator-chart-color-1: var(--thrifty-calculator-secondary-color);
-    --thrifty-calculator-chart-color-2: var(--thrifty-calculator-primary-accent-color);
-    --thrifty-calculator-chart-color-3: var(--thrifty-calculator-primary-color);
-    --thrifty-calculator-chart-color-4: var(--thrifty-calculator-line-color);
   }
   .thrifty-calculators-calculator {
     font-size: 16px;
     font-family: var(--thrifty-calculator-font);
     width: calc(100% - 2rem);
-    max-width: 20rem;
+    max-width: 15rem;
     margin: 2rem auto;
 
     display: flex;
@@ -44,7 +40,6 @@ sitemap: false
   }
   .thrifty-calculators-calculator .calculator-meta {
     text-align: center;
-    margin: 1.5rem 0;
     line-height: 1.25;
   }
   .thrifty-calculators-calculator .calculator-meta .calculator-meta-title {
@@ -60,19 +55,24 @@ sitemap: false
     font-size: 0.8rem;
     color: var(--thrifty-calculator-secondary-color);
   }
+  .thrifty-calculators-calculator .calculator-meta.calculator-meta--emphasis .calculator-meta-value {
+    font-size: 2.5rem;
+  }
   .thrifty-calculators-calculator .calculator-inputs,
   .thrifty-calculators-calculator .calculator-result,
   .thrifty-calculators-calculator .calculator-cta {
     flex: 0 0 100%;
   }
   .thrifty-calculators-calculator .calculator-cta {
-    margin: 2rem 0;
+    margin: 2rem 0 0;
     text-align: center;
   }
   .thrifty-calculators-calculator .calculator-cta a {
+    display: block;
     padding: 1rem;
-    border: 1px solid var(--thrifty-calculator-primary-accent-color);
-    color: var(--thrifty-calculator-primary-accent-color);
+    border: 1px solid var(--thrifty-calculator-primary-color);
+    color: white;
+    background-color: var(--thrifty-calculator-primary-accent-color);
     text-decoration: none;
     text-transform: uppercase;
     transition: color 150ms ease-in-out,
@@ -81,9 +81,9 @@ sitemap: false
   }
   .thrifty-calculators-calculator .calculator-cta a:hover,
   .thrifty-calculators-calculator .calculator-cta a:focus {
-    border-color: var(--thrifty-calculator-primary-color);
-    background-color: var(--thrifty-calculator-primary-accent-color);
-    color: white;
+    border-color: var(--thrifty-calculator-primary-accent-color);
+    background-color: white;
+    color: var(--thrifty-calculator-primary-accent-color);
     outline: none;
   }
   .thrifty-calculators-calculator div.calculator-title {
@@ -92,6 +92,7 @@ sitemap: false
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--thrifty-calculator-primary-color);
+    margin-bottom: 1.5rem;
   }
   .thrifty-calculators-calculator div.calculator-group-title {
     padding: 0.5rem 0;
@@ -117,7 +118,7 @@ sitemap: false
   .thrifty-calculators-calculator .calculator-field .calculator-value {
     flex: 0 0 auto;
     border: 1px solid var(--thrifty-calculator-line-color);
-    
+
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -211,13 +212,12 @@ sitemap: false
   }
 </style>
 <div class="thrifty-calculators-calculator" id="gold-value-calculator">
-  <div class="calculator-title">How Much is Your Gold Worth?</div>
+  <div class="calculator-title">Gold Calculator</div>
   <div class="calculator-inputs">
     <div class="calculator-group">
       <div class="calculator-meta">
-        <div class="calculator-meta-title">Latest Gold Price</div>
+        <div class="calculator-meta-title" id="latest-date">Latest Gold Price</div>
         <div class="calculator-meta-value" id="latest-price">Loading</div>
-        <div class="calculator-meta-label" id="latest-date">Loading</div>
       </div>
       <div class="calculator-field calculator-field--inline">
         <label for="weight">Weight</label>
@@ -233,16 +233,16 @@ sitemap: false
         </div>
       </div>
       <div class="calculator-field calculator-field--inline">
-        <label for="karat-rating">Rating</label>
+        <label for="karat-purity">Purity</label>
         <div class="calculator-value">
-          <select name="karat-rating" id="karat-rating">
+          <select name="karat-purity" id="karat-purity">
             <option value="0.999" selected="selected">24K</option>
             <option value="0.916">22K</option>
-            <option value="0.833">20K</option>
             <option value="0.750">18K</option>
-            <option value="0.625">15K</option>
             <option value="0.585">14K</option>
+            <option value="0.500">12K</option>
             <option value="0.417">10K</option>
+            <option value="0.333">8K</option>
           </select>
         </div>
       </div>
@@ -250,18 +250,17 @@ sitemap: false
   </div>
   <div class="calculator-result">
     <div class="calculator-field-group">
-      <div class="calculator-meta">
+      <div class="calculator-meta calculator-meta--emphasis">
         <div class="calculator-meta-title">Your Value</div>
         <div class="calculator-meta-value" id="total-value">Loading</div>
-        <div class="calculator-meta-label">estimated</div>
+        <div class="calculator-meta-label">Estimated</div>
       </div>
       <div class="calculator-cta">
-        <a href="#" id="calculator-cta" data-base-uri="https://cashforgoldusa.com/">Learn More</a>
+        <a href="#" id="calculator-cta" data-base-uri="https://cashforgoldusa.com/">Sell Now?<br />Get a $50 bonus!</a>
       </div>
     </div>
   </div>
 </div>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {
     console.log("Calculator js running");
@@ -295,7 +294,7 @@ sitemap: false
         const latestPrice = pmValue || amValue;
 
         const latestDateResult = calculator.querySelector('#latest-date');
-        latestDateResult.innerHTML = 'as of ' + latestDate.toLocaleDateString('en-US');
+        latestDateResult.innerHTML = latestDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' Gold Price';
 
         const latestPriceResult = calculator.querySelector('#latest-price');
         latestPriceResult.innerHTML = toCurrency(latestPrice) + '/oz';
@@ -305,7 +304,7 @@ sitemap: false
 
         const weightInput = calculator.querySelector('input[name=weight]');
         const weightUnitInput = calculator.querySelector('select[name=weight-unit]');
-        const karatRatingInput = calculator.querySelector('select[name=karat-rating]');
+        const karatRatingInput = calculator.querySelector('select[name=karat-purity]');
 
         const weightField = weightInput.parentNode.parentNode;
 
