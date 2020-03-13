@@ -94,6 +94,7 @@ sitemap: false
     display: flex;
   }
   .gold-value-calculator .calculator-inputs #calculator-weight-input {
+    position: relative;
     flex: 2 0 90px;
     border: 1px solid #DDDDDD;
     border-top-left-radius: 0.5rem;
@@ -103,6 +104,7 @@ sitemap: false
   .gold-value-calculator .calculator-inputs #calculator-weight-input:focus-within,
   .gold-value-calculator .calculator-inputs #calculator-purity-input:focus-within {
     border-color: #3B83FB;
+    z-index: 10;
   }
   .gold-value-calculator .calculator-inputs #calculator-weight-input input,
   .gold-value-calculator .calculator-inputs #calculator-weight-input select {
@@ -145,6 +147,7 @@ sitemap: false
   }
 
   .gold-value-calculator .calculator-inputs #calculator-purity-input {
+    position: relative;
     flex: 1 0 60px;
     margin-left: -1px;
     border: 1px solid #DDDDDD;
