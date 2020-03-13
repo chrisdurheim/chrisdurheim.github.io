@@ -11,7 +11,7 @@ sitemap: false
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
-<body>
+<body style="background-color: #F2F2F2">
 <div id="thrifty-calculator-utm-holder" data-cid="470" data-aid="makemoney" style="display:none;"></div>
 <style>
   :root{
@@ -19,259 +19,255 @@ sitemap: false
     --thrifty-calculator-primary-accent-color: #d92176;
     --thrifty-calculator-secondary-color: #333;
     --thrifty-calculator-background-color: white;
-    --thrifty-calculator-error-color: #ac162c;
     --thrifty-calculator-line-color: darkgray;
     --thrifty-calculator-font: Helvetica, sans-serif;
   }
   .gold-value-calculator {
     font-size: 16px;
     font-family: var(--thrifty-calculator-font);
-    width: calc(100% - 2rem);
-    max-width: 15rem;
+    width: calc(100% - 1rem);
+    max-width: 300px;
     margin: 2rem auto;
 
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-
-    border: 2px solid var(--thrifty-calculator-primary-color);
-    padding: 2rem;
+    border-radius: 0.5rem;
+    background-color: white;
+    overflow: hidden;
   }
-  .gold-value-calculator .calculator-meta {
+  .gold-value-calculator .calculator-header {
+    padding: 2.5rem 1rem 1.5rem;
+    background-color: #454952;
     text-align: center;
-    line-height: 1.25;
   }
-  .gold-value-calculator .calculator-meta .calculator-meta-title {
-    font-size: 1.0rem;
-    color: var(--thrifty-calculator-secondary-color);
-  }
-  .gold-value-calculator .calculator-meta .calculator-meta-value {
-    text-align: center;
-    font-size: 1.6rem;
+  .gold-value-calculator .calculator-header .calculator-title {
+    margin: 0.5rem 0 1rem;
+    color: #96A7CC;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.2rem;
     font-weight: bold;
   }
-  .gold-value-calculator .calculator-meta .calculator-meta-label {
+  .gold-value-calculator .calculator-price {
+    color: white;
+    font-size: 1.75rem;
+    line-height: 1;
+    font-weight: bold;
+  }
+  .gold-value-calculator .calculator-price .prefix {
+    font-size: 0.5em;
+    padding-right: 0.25rem;
+    vertical-align: 40%;
+    font-weight: 300;
+  }
+  .gold-value-calculator .calculator-price .suffix {
+    font-size: 0.5em;
+    padding-left: 0.25rem;
+    vertical-align: bottom;
+    font-weight: 300;
+  }
+  .gold-value-calculator .calculator-header #latest-date {
+    margin: 0.5rem 0;
+    color: #96A7CC;
     font-size: 0.8rem;
-    color: var(--thrifty-calculator-secondary-color);
+    font-weight: 300;
   }
-  .gold-value-calculator .calculator-meta.calculator-meta--emphasis .calculator-meta-value {
-    font-size: 2.5rem;
+  .gold-value-calculator .calculator-body {
+    padding: 1rem 2rem;
   }
-  .gold-value-calculator .calculator-meta #latest-price {
-    font-family: Monospace;
+  .gold-value-calculator .calculator-body .calculator-question {
+    margin: 0.75rem 0 1rem;;
+    color: #564D2F;
+    text-align: center;
   }
-  .gold-value-calculator .calculator-inputs,
-  .gold-value-calculator .calculator-result,
+  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #B2AEA0;
+    opacity: 1; /* Firefox */
+  }
+
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #B2AEA0;
+  }
+
+  ::-ms-input-placeholder { /* Microsoft Edge */
+    color: #B2AEA0;
+  }
+  .gold-value-calculator .calculator-inputs {
+    display: flex;
+  }
+  .gold-value-calculator .calculator-inputs #calculator-weight-input {
+    flex: 2 0 90px;
+    border: 1px solid #DDDDDD;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+  }
+  .gold-value-calculator .calculator-inputs #calculator-weight-input:focus-within,
+  .gold-value-calculator .calculator-inputs #calculator-purity-input:focus-within {
+    border-color: #3B83FB;
+  }
+  .gold-value-calculator .calculator-inputs #calculator-weight-input input,
+  .gold-value-calculator .calculator-inputs #calculator-weight-input select {
+    display: block;
+    padding-left: 0.25rem;
+    background-color: white;
+    color: #C8C8C8;
+    border: none;
+    width: 100%;
+  }
+  .gold-value-calculator .calculator-inputs #calculator-weight-input input:focus,
+  .gold-value-calculator .calculator-inputs #calculator-weight-input select:focus,
+  .gold-value-calculator .calculator-inputs #calculator-purity-input select:focus {
+    outline: none;
+    color: #3E3412;
+  }
+  .gold-value-calculator .calculator-inputs #calculator-weight-input input {
+    font-size: 1.25rem;
+    color: #3E3412;
+  }
+  .gold-value-calculator .calculator-inputs #calculator-weight-input select {
+    font-size: 0.8rem;
+    padding: 0 2em 0 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Arrow */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  	background-repeat: no-repeat, repeat;
+  	background-position: right .6rem top 50%, 0 0;
+  	background-size: .5rem auto, 100%;
+    cursor: pointer;
+    width: auto;
+  }
+  .gold-value-calculator .calculator-inputs select option {
+    text-align-last: right;
+  }
+  .gold-value-calculator .calculator-inputs select option {
+    direction: rtl;
+  }
+
+  .gold-value-calculator .calculator-inputs #calculator-purity-input {
+    flex: 1 0 60px;
+    margin-left: -1px;
+    border: 1px solid #DDDDDD;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+  }
+  .gold-value-calculator .calculator-inputs #calculator-purity-input label,
+  .gold-value-calculator .calculator-inputs #calculator-purity-input select {
+    display: block;
+    padding-left: 0.25rem;
+    background-color: white;
+    color: #C8C8C8;
+    border: none;
+    width: 100%;
+  }
+  .gold-value-calculator .calculator-inputs #calculator-purity-input label {
+    font-size: 0.8rem;
+  }
+  .gold-value-calculator .calculator-inputs #calculator-purity-input select {
+    color: #3E3412;
+    font-size: 1.25rem;
+    padding: 0 1.5rem 0 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Arrow */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  	background-repeat: no-repeat, repeat;
+    background-position: right .6rem top 50%, 0 0;
+  	background-size: .5rem auto, 100%;
+    cursor: pointer;
+    width: auto;
+  }
+
+  .gold-value-calculator .calculator-result {
+    margin: 1.5rem 0;
+  }
+
+  .gold-value-calculator .calculator-result .result-label {
+    font-size: 0.8rem;
+    color: #7E7E7E;
+    margin-bottom: 0.25rem;
+  }
+  .gold-value-calculator .calculator-result .result-value {
+    font-size: 1.75rem;
+    font-weight: bold;
+  }
+  .gold-value-calculator .calculator-result .prefix {
+    font-size: 0.5em;
+    padding-right: 0.25rem;
+    vertical-align: 40%;
+    font-weight: 300;
+  }
   .gold-value-calculator .calculator-cta {
-    flex: 0 0 100%;
-  }
-  .gold-value-calculator .calculator-cta {
-    margin: 2rem 0 0;
     text-align: center;
   }
   .gold-value-calculator .calculator-cta a {
     display: block;
-    padding: 1rem;
-    border: 1px solid var(--thrifty-calculator-primary-color);
+    padding: 1.25rem 0.25rem;
+    border: 1px solid #3B83FB;
+    border-radius: 0.5rem;
     color: white;
-    font-size: 1.25rem;
-    background-color: var(--thrifty-calculator-primary-accent-color);
+    font-size: 1rem;
+    background-color: #3B83FB;
     text-decoration: none;
-    text-transform: uppercase;
     transition: color 150ms ease-in-out,
                 background-color 150ms ease-in-out,
                 border-color 150ms ease-in-out;
   }
-  .gold-value-calculator .calculator-cta a.pulse-red {
-    animation: pulser-red 0.5s linear;
-  }
   .gold-value-calculator .calculator-cta a:hover,
   .gold-value-calculator .calculator-cta a:focus {
-    border-color: var(--thrifty-calculator-primary-accent-color);
-    background-color: white;
-    color: var(--thrifty-calculator-primary-accent-color);
+    background-color: #454952;
+    border-color: #454952;
+    box-shadow: 0 0 0 0.1rem #454952;
     outline: none;
   }
-  @keyframes pulser-red {
-  	0% { box-shadow: 0 0 0 0 rgba(217, 33, 118, 0.7); }
-    100% { box-shadow: 0 0 0 10px rgba(217, 33, 118, 0); }
-  }
-  .gold-value-calculator div.calculator-title {
-    flex: 0 0 100%;
+  .gold-value-calculator .calculator-footer {
+    padding: 0 0 2rem;
     text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--thrifty-calculator-primary-color);
-    margin-bottom: 1.5rem;
-  }
-  .gold-value-calculator div.calculator-group-title {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--thrifty-calculator-line-color);
-    font-weight: bold;
-  }
-  .gold-value-calculator .calculator-field {
-    margin: 1rem 0;
-  }
-  .gold-value-calculator .calculator-field--inline {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  .gold-value-calculator .calculator-field label {
-    flex: 2 0 10%;
-    min-width: 10%;
-    display: flex;
-    font-size: 0.9rem;
-  }
-
-  .gold-value-calculator .calculator-field .calculator-value {
-    flex: 0 0 auto;
-    border: 1px solid var(--thrifty-calculator-line-color);
-
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    transition: border-color 150ms ease-in-out;
-  }
-  .gold-value-calculator .calculator-field .calculator-value:focus-within {
-    border-color: var(--thrifty-calculator-primary-color);
-  }
-  .gold-value-calculator .calculator-field .calculator-value--output {
-    border-color: transparent;
-  }
-
-  .gold-value-calculator .calculator-field .calculator-value .input-prefix,
-  .gold-value-calculator .calculator-field .calculator-value .input-suffix {
-    flex: 0 0 auto;
-    color: var(--thrifty-calculator-line-color);
     font-size: 0.8rem;
-    padding: 0.5rem;
-  }
-
-  .gold-value-calculator .calculator-field .calculator-value select,
-  .gold-value-calculator .calculator-field .calculator-value input {
-    flex: 0 0 auto;
-    font-size: 0.8rem;
-    border: none;
-    padding: 0.5rem 0;
-  }
-  .gold-value-calculator .calculator-field .calculator-value input {
-    text-align: right;
-    max-width: 3rem;
-    padding: 0.5rem 0.5rem;
-  }
-  .gold-value-calculator .calculator-field .calculator-value select:hover,
-  .gold-value-calculator .calculator-field .calculator-value select:focus,
-  .gold-value-calculator .calculator-field .calculator-value input:hover,
-  .gold-value-calculator .calculator-field .calculator-value input:focus {
-    outline: none;
-  }
-  .gold-value-calculator .calculator-field .calculator-value select option {
-    text-align-last: right;
-  }
-  .gold-value-calculator .calculator-field .calculator-value select option {
-    direction: rtl;
-  }
-  .gold-value-calculator .calculator-field input.percent {
-    text-align: right;
-  }
-  input[type=number]:read-only::-webkit-inner-spin-button,
-  input[type=number]:read-only::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-  }
-
-  input[type=number]:read-only {
-    -moz-appearance: textfield;
-  }
-
-  .gold-value-calculator .calculator-field .calculator-value select {
-    flex: 0 0 auto;
-    font-size: 0.8rem;
-    line-height: 1.45;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    padding: 0.5em 2em 0.5em 0.5em;
-    color: black;
-    border: none;
-    background-color: var(--thrifty-calculator-background-color);
-    transition: background-color 150ms, border-color 150ms;
-    /* Arrow */
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
-  	background-repeat: no-repeat, repeat;
-  	background-position: right .7em top 50%, 0 0;
-  	background-size: .65em auto, 100%;
-    cursor: pointer;
-    width: auto;
-  }
-  .gold-value-calculator .calculator-field[data-error]:after {
-    flex: 0 0 100%;
-    font-size: 0.8rem;
-    content: attr(data-error);
-    color: var(--thrifty-calculator-error-color);
-    margin-bottom: 1em;
-  }
-  .gold-value-calculator .calculator-field[data-error] .calculator-value {
-    border-color: var(--thrifty-calculator-error-color);
-  }
-  .gold-value-calculator .calculator-field .calculator-button-set {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    color: #909090;
   }
 </style>
 <div class="gold-value-calculator" id="gold-value-calculator">
-  <div class="calculator-title">Gold Calculator</div>
-  <div class="calculator-inputs">
-    <div class="calculator-group">
-      <div class="calculator-meta" id="price-quote">
-        <div class="calculator-meta-title" id="latest-date">Latest Gold Price</div>
-        <div class="calculator-meta-value" id="latest-price">Loading</div>
-        <div class="calculator-meta-label">London gold price reported by Quandl</div>
+  <div class="calculator-header">
+    <div class="calculator-title">Gold Calculator</div>
+    <div class="calculator-price"><span class="prefix">$ </span><span id="latest-price">Loading</span><span class="suffix"> /oz</span></div>
+    <div id="latest-date">Latest Gold Price</div>
+  </div>
+  <div class="calculator-body">
+    <div class="calculator-question">How much gold do you have?</div>
+    <div class="calculator-inputs">
+      <div id="calculator-weight-input">
+        <select name="weight-unit" id="weight-unit">
+          <option value="0.03527396" selected="selected">Grams</option>
+          <option value="1">Ounces</option>
+          <option value="0.054857">Pennyweight</option>
+        </select>
+        <input type="number" name="weight" id="weight" placeholder="0.00" min="0" step="0.01" />
       </div>
-      <div class="calculator-field calculator-field--inline">
-        <label for="weight">Weight</label>
-        <div class="calculator-value">
-          <input type="number" name="weight" id="weight" value="0" min="0" />
-        </div>
-        <div class="calculator-value">
-          <select name="weight-unit" id="weight-unit">
-            <option value="0.03527396" selected="selected">grams</option>
-            <option value="1">ounces</option>
-            <option value="0.054857">pennyweight</option>
-          </select>
-        </div>
-      </div>
-      <div class="calculator-field calculator-field--inline">
+      <div id="calculator-purity-input">
         <label for="karat-purity">Purity</label>
-        <div class="calculator-value">
-          <select name="karat-purity" id="karat-purity">
-            <option value="0.999" selected="selected">24K</option>
-            <option value="0.916">22K</option>
-            <option value="0.750">18K</option>
-            <option value="0.585">14K</option>
-            <option value="0.500">12K</option>
-            <option value="0.417">10K</option>
-            <option value="0.333">8K</option>
-          </select>
-        </div>
+        <select name="karat-purity" id="karat-purity">
+          <option value="0.999" selected="selected">24K</option>
+          <option value="0.916">22K</option>
+          <option value="0.750">18K</option>
+          <option value="0.585">14K</option>
+          <option value="0.500">12K</option>
+          <option value="0.417">10K</option>
+          <option value="0.333">8K</option>
+        </select>
       </div>
     </div>
-  </div>
-  <div class="calculator-result">
-    <div class="calculator-field-group">
-      <div class="calculator-meta calculator-meta--emphasis">
-        <div class="calculator-meta-title">Your Value</div>
-        <div class="calculator-meta-value" id="total-value">Loading</div>
-        <div class="calculator-meta-label">Estimated</div>
-      </div>
-      <div class="calculator-cta">
-        <a href="#" id="calculator-cta" data-base-uri="https://cashforgoldusa.com/">Sell Now?<br />Get a $50 bonus!</a>
-      </div>
+    <div class="calculator-result">
+      <div class="result-label">Your estimated value</div>
+      <div class="result-value"><span class="prefix">$ </span><span id="total-value">Loading</span></div>
+    </div>
+    <div class="calculator-cta">
+      <a href="#" id="calculator-cta" data-base-uri="https://cashforgoldusa.com/">Sell now? (+$50 bonus!)</a>
     </div>
   </div>
+  <div class="calculator-footer">London gold price reported by Quandl</div>
 </div>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {
@@ -309,7 +305,7 @@ sitemap: false
         latestDateResult.innerHTML = latestDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' Gold Price';
 
         const latestPriceResult = calculator.querySelector('#latest-price');
-        latestPriceResult.innerHTML = toCurrency(latestPrice) + '/oz';
+        latestPriceResult.innerHTML = latestPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2});
 
         const inputs = calculator.querySelectorAll('input');
         const selects = calculator.querySelectorAll('select');
@@ -328,16 +324,9 @@ sitemap: false
           const weightUnit = parseFloat(weightUnitInput.value) || 0;
           const karatRating = parseFloat(karatRatingInput.value) || 0;
 
-          delete weightField.dataset.error;
-
-          if (weight < 0) {
-            weightField.dataset.error = "Set weight greater than zero";
-            resultLine.innerHTML = 'Error in inputs. Please correct as instructed above';
-          }
-
           const value = weight * weightUnit * karatRating * latestPrice;
 
-          resultLine.innerHTML = toCurrency(value);
+          resultLine.innerHTML = value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2});
 
           ctaLink.classList.remove('pulse-red');
           setTimeout(() => { ctaLink.classList.add('pulse-red'); }, 150);
