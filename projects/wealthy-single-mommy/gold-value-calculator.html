@@ -258,7 +258,7 @@ sitemap: false
     </div>
     <div class="calculator-title">Gold Calculator</div>
     <div class="calculator-price"><span class="prefix">$ </span><span id="latest-price">Loading</span><span class="suffix"> /oz</span></div>
-    <div class="calculator-note">Latest Gold Price</div>
+    <div class="calculator-note">Today's Gold Price</div>
     <div id="latest-date">Latest Gold Price</div>
   </div>
   <div class="calculator-body">
@@ -286,7 +286,7 @@ sitemap: false
       </div>
     </div>
     <div class="calculator-result">
-      <div class="result-label">Your estimated value</div>
+      <div class="result-label">Your estimated value:</div>
       <div class="result-value"><span class="prefix">$ </span><span id="total-value">Loading</span></div>
     </div>
     <div class="calculator-cta">
@@ -322,7 +322,7 @@ sitemap: false
       const request = new Request("https://www.quandl.com/api/v3/datasets/LBMA/GOLD.json?api_key=TXJ7UvEoGxoLmrrV3kuV&order=desc&limit=1");
 
       fetch(request).then(response => { return response.json() }).then( json => {
-        const latestDate = new Date(json.dataset.data[0][0]);
+        const latestDate = new Date();
         const amValue = json.dataset.data[0][1];
         const pmValue = json.dataset.data[0][2];
         const latestPrice = pmValue || amValue;
