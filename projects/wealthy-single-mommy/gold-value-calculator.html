@@ -1,7 +1,7 @@
 ---
 layout: none
 permalink: /wealthy-single-mommy/gold-value
-published: true
+published: false
 sitemap: false
 ---
 <!DOCTYPE html>
@@ -10,6 +10,7 @@ sitemap: false
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel='stylesheet' id='fl-builder-layout-12569-css'  href='https://www.wealthysinglemommy.com/wp-content/cache/autoptimize/css/autoptimize_single_47c917222824789fa278f780cb0c5e15.css' type='text/css' media='all' /><link rel='stylesheet' id='fl-builder-layout--css'  href='https://www.wealthysinglemommy.com/wp-content/cache/autoptimize/css/autoptimize_single_aeed5418795e5bac1282f223ea4e87aa.css' type='text/css' media='all' /><link rel='stylesheet' id='ultimate-icons-css'  href='https://www.wealthysinglemommy.com/wp-content/cache/autoptimize/css/autoptimize_single_7516ca6496f8e85430522aff56b440b9.css' type='text/css' media='all' /><link rel='stylesheet' id='fl-builder-layout-12567-css'  href='https://www.wealthysinglemommy.com/wp-content/cache/autoptimize/css/autoptimize_single_2e92232d6c4a50245f425cf628071c4e.css' type='text/css' media='all' /><link rel='stylesheet' id='theme-style-css'  href='https://www.wealthysinglemommy.com/wp-content/cache/autoptimize/css/autoptimize_single_4581581dc44ab8fdb2904a1e35194d85.css' type='text/css' media='all' /><link rel='stylesheet' id='fl-automator-skin-css'  href='https://www.wealthysinglemommy.com/wp-content/cache/autoptimize/css/autoptimize_single_7117dd4e58202eaa00bd9301413f4f93.css' type='text/css' media='all' /><link rel='stylesheet' id='fl-child-theme-css'  href='https://www.wealthysinglemommy.com/wp-content/cache/autoptimize/css/autoptimize_single_16979db4371067021e4584284f902927.css' type='text/css' media='all' />
 </head>
 <body style="background-color: #F2F2F2">
 <div id="thrifty-calculator-utm-holder" data-cid="470" data-aid="makemoney" style="display:none;"></div>
@@ -28,6 +29,8 @@ sitemap: false
     width: calc(100% - 1rem);
     max-width: 300px;
     margin: 2rem auto;
+
+    line-height: 1.175;
 
     border-radius: 0.5rem;
     background-color: white;
@@ -120,6 +123,9 @@ sitemap: false
     color: #846F2A;
     border: none;
     width: 100%;
+    height: initial !important;
+    padding: 0;
+    line-height: inherit;
   }
   .gold-value-calculator .calculator-inputs #calculator-weight-input input:focus,
   .gold-value-calculator .calculator-inputs #calculator-weight-input select:focus,
@@ -165,10 +171,10 @@ sitemap: false
     color: #846F2A;
     border: none;
     width: 100%;
+    font-weight: normal;
   }
   .gold-value-calculator .calculator-inputs #calculator-purity-input label {
     font-size: 0.8rem;
-    margin-bottom: 0.75rem;
   }
   .gold-value-calculator .calculator-inputs #calculator-purity-input select {
     color: #3E3412;
@@ -184,6 +190,7 @@ sitemap: false
   	background-size: .5rem auto, 100%;
     cursor: pointer;
     width: auto;
+    height: initial !important;
   }
 
   .gold-value-calculator .calculator-result {
@@ -211,6 +218,7 @@ sitemap: false
     text-align: center;
   }
   .gold-value-calculator .calculator-cta a {
+    box-shadow: none;
     display: block;
     padding: 1rem 0.25rem 0.75rem;
     border: 1px solid #F18263;
@@ -319,16 +327,16 @@ sitemap: false
 
       ctaLink.href = ctaLink.dataset.baseUri + '?' + queryString;
 
+      const latestDate = new Date();
+      const latestDateResult = calculator.querySelector('#latest-date');
+      latestDateResult.innerHTML = latestDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
       const request = new Request("https://www.quandl.com/api/v3/datasets/LBMA/GOLD.json?api_key=TXJ7UvEoGxoLmrrV3kuV&order=desc&limit=1");
 
       fetch(request).then(response => { return response.json() }).then( json => {
-        const latestDate = new Date();
         const amValue = json.dataset.data[0][1];
         const pmValue = json.dataset.data[0][2];
         const latestPrice = pmValue || amValue;
-
-        const latestDateResult = calculator.querySelector('#latest-date');
-        latestDateResult.innerHTML = latestDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
         const latestPriceResult = calculator.querySelector('#latest-price');
         latestPriceResult.innerHTML = latestPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2});
