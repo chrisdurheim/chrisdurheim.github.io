@@ -1,0 +1,201 @@
+---
+layout: none
+permalink: /well-kept-wallet/debt-snowball
+published: true
+sitemap: false
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+</head>
+<body style="background-color: #f5f5f5">
+<style>
+  :root{
+    --calculator-primary-color: #2bb34b;
+    --calculator-line-color: #333;
+    --calculator-heading-font: raleway, sans-serif;
+    --calculator-paragraph-font: nunito, sans-serif;
+  }
+  .debt-snowball-calculator {
+    font-size: 16px;
+    font-family: var(--calculator-paragraph-font);
+    width: calc(100% - 1rem);
+    max-width: 800px;
+    margin: 2rem auto;
+
+    border-radius: 0.5rem;
+    background-color: white;
+    overflow: hidden;
+  }
+</style>
+<script async type="text/javascript">
+  const countCell = (count) => {
+    const cell = document.createElement('td');
+    cell.classList.add('calculator-debt-line-number');
+    cell.append(document.createTextNode(count + 1));
+    return cell;
+  }
+  const lenderCell = (updateResults) => {
+    const cell = document.createElement('td');
+    const input = document.createElement('input');
+    input.setAttribute('type', 'text');
+    input.setAttribute('name', 'lender');
+    input.addEventListener('input', updateResults);
+    cell.classList.add('calculator-debt-line-lender');
+    cell.appendChild(input);
+    return cell;
+  }
+  const amountOwedCell = (updateResults) => {
+    const cell = document.createElement('td');
+    const input = document.createElement('input');
+    input.setAttribute('type', 'number');
+    input.setAttribute('name', 'amount-owed');
+    input.addEventListener('input', updateResults);
+    cell.classList.add('calculator-debt-line-amount-owed');
+    cell.appendChild(input);
+    return cell;
+  }
+  const interestRateCell = (updateResults) => {
+    const cell = document.createElement('td');
+    const input = document.createElement('input');
+    input.setAttribute('type', 'number');
+    input.setAttribute('name', 'interest-rate');
+    input.addEventListener('input', updateResults);
+    cell.classList.add('calculator-debt-line-interest-rate');
+    cell.appendChild(input);
+    return cell;
+  }
+  const minimumPaymentCell = (updateResults) => {
+    const cell = document.createElement('td');
+    const input = document.createElement('input');
+    input.setAttribute('type', 'number');
+    input.setAttribute('name', 'minimum-payment');
+    input.addEventListener('input', updateResults);
+    cell.classList.add('calculator-debt-line-minimum-payment');
+    cell.appendChild(input);
+    return cell;
+  }
+  const deleteButton = (updateResults) => {
+    const cell = document.createElement('td');
+    const button = document.createElement('button');
+    button.appendChild(document.createTextNode('X'));
+    button.classList.add('calculator-debt-line-delete-button');
+    button.addEventListener('click', () => {
+      const row = cell.parentNode;
+      const tbody = row.parentNode;
+      tbody.removeChild(row);
+      updateResults();
+    });
+    cell.appendChild(button);
+    return cell;
+  }
+  const addDebtLine = (debtLineTable, updateResults) => {
+    const lineHolder = debtLineTable.querySelector('tbody');
+    const lineCount = lineHolder.querySelectorAll('tr').length;
+    const newLine = document.createElement('tr');
+
+    newLine.appendChild(countCell(lineCount));
+    newLine.appendChild(lenderCell(updateResults));
+    newLine.appendChild(amountOwedCell(updateResults));
+    newLine.appendChild(interestRateCell(updateResults));
+    newLine.appendChild(minimumPaymentCell(updateResults));
+    newLine.appendChild(deleteButton(updateResults));
+
+    lineHolder.appendChild(newLine);
+  }
+  const parseDebtLine = (debtLine) => {
+    const lineNumber = parseInt(debtLine.querySelector('td.calculator-debt-line-number').value) || 0;
+    const lender = debtLine.querySelector('input[name=lender]').value || '';
+    const amountOwed = parseFloat(debtLine.querySelector('input[name=amount-owed]').value) || 0;
+    const interestRate = parseFloat(debtLine.querySelector('input[name=interest-rate]').value) / 100.0 || 0;
+    const minimumPayment = parseFloat(debtLine.querySelector('input[name=minimum-payment]').value) || 0;
+    return { lineNumber, lender, amountOwed, interestRate, minimumPayment };
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("Calculator js running");
+    const toCurrency = (value, digits = 2, symbol = '$') => {
+      return symbol + value.toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits});
+    }
+    console.log("Calculator helper functions loaded");
+
+    const calculators = document.querySelectorAll('.debt-snowball-calculator');
+    calculators.forEach((calculator) => {
+      if (calculator) {
+
+        console.log("Calculator found");
+
+        const inputs = calculator.querySelectorAll('input');
+        const selects = calculator.querySelectorAll('select');
+        const buttons = calculator.querySelectorAll('button');
+
+        const surplusInput = calculator.querySelector('input[name=surplus-payment]');
+
+        const output = calculator.querySelector('.calculator-outputs');
+
+        const updateResults = () => {
+          const surplus = parseFloat(surplusInput.value) || 0;
+
+          const debtLines = calculator.querySelectorAll('table.calculator-debt-lines tbody tr');
+          const debts = Array.from(debtLines).map((debtLine) => parseDebtLine(debtLine));
+
+          console.log('Debts: ');
+          console.log(debts);
+          console.log('Surplus: ' + surplus);
+
+          //resultLine.innerHTML = value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+
+        const addRowButton = calculator.querySelector('.calculator-debt-lines-button--add');
+        const debtLineTable = calculator.querySelector('table.calculator-debt-lines')
+
+        surplusInput.addEventListener('input', updateResults)
+        addRowButton.addEventListener('click', () => addDebtLine(debtLineTable, updateResults));
+
+        addDebtLine(debtLineTable, updateResults);
+        updateResults();
+      }
+    });
+  });
+</script>
+
+<div class="debt-snowball-calculator">
+  <div class="calculator-header">
+    <div class="calculator-title">Debt Snowball Calculator</div>
+  </div>
+  <div class="calculator-body">
+    <div class="calculator-inputs">
+      <table class="calculator-debt-lines">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Lender</th>
+            <th>Amount Owed</th>
+            <th>Interest Rate</th>
+            <th>Minimum Payment</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      <div class="calculator-debt-lines-buttons">
+        <button class="calculator-debt-lines-button calculator-debt-lines-button--add">+ Add Row</button>
+      </div>
+      <div class="calculator-surplus-payment">
+        <label for="surplus-payment">Surplus Payment</label>
+        <input name="surplus-payment" type="number"></input>
+      </div>
+    </div>
+    <div class="calculator-outputs">
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
