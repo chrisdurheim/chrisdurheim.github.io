@@ -32,6 +32,8 @@ sitemap: false
     overflow: hidden;
   }
 </style>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chartkick/2.3.0/chartkick.min.js"></script>
 <script async type="text/javascript">
   const countCell = (count) => {
     const cell = document.createElement('td');
@@ -113,14 +115,123 @@ sitemap: false
     const amountOwed = parseFloat(debtLine.querySelector('input[name=amount-owed]').value) || 0;
     const interestRate = parseFloat(debtLine.querySelector('input[name=interest-rate]').value) / 100.0 || 0;
     const minimumPayment = parseFloat(debtLine.querySelector('input[name=minimum-payment]').value) || 0;
-    return { lineNumber, lender, amountOwed, interestRate, minimumPayment };
+    const payments = [];
+    const interest = [];
+    return { lineNumber, lender, amountOwed, interestRate, minimumPayment, payments, interest };
   }
+  const summarizeDebts = (debts) => {
+    debts.forEach((debt) => {
+      debt.totalPaid = debt.payments.reduce((total, payment) => total + payment, 0);
+      debt.totalInterest = debt.interest.reduce((total, interest) => total + interest, 0);
+      debt.paidOffMonth = debt.payments.findIndex((payment) => payment === 0) + 1 || debt.payments.length;
+    })
+  }
+  const runScenario = (rawDebts, rawSurplus) => {
+    const debts = JSON.parse(JSON.stringify(rawDebts))
+    let paidOff = false;
+    const debtPayment = debts.reduce((total, element) => total + element.minimumPayment, rawSurplus)
 
+    for (let i = 0; i < 1200 && !paidOff; i++) {
+      let paymentRemaining = debtPayment;
+      /* Accrue interest and make minimum payment */
+      debts.forEach((debt) => {
+        const interestAccrued = debt.amountOwed * (debt.interestRate / 12.0)
+        debt.amountOwed = debt.amountOwed + interestAccrued
+        debt.interest[i] = interestAccrued;
+
+        if (debt.minimumPayment >= 0 && debt.amountOwed >= debt.minimumPayment) {
+          debt.payments[i] = debt.minimumPayment;
+          debt.amountOwed -= debt.minimumPayment;
+          paymentRemaining -= debt.minimumPayment;
+        }
+      });
+      /* Apply surplus starting with smallest balance and working through */
+      debts.forEach((debt) => {
+        const payment = Math.min(debt.amountOwed, paymentRemaining);
+        debt.amountOwed -= payment;
+        paymentRemaining -= payment;
+        if (payment > 0) {
+          debt.payments[i] = (debt.payments[i] || 0) + payment;
+        }
+      });
+
+      const debtRemaining = debts.reduce((total, element) => total + element.amountOwed, 0)
+      paidOff = (debtRemaining === 0) ? i + 1 : false;
+
+      summarizeDebts(debts);
+    }
+
+    const scenario = {
+      debts,
+      paidOff,
+    }
+
+    return scenario;
+  }
+  function summaryTable(debts) {
+    const table = document.createElement('table');
+    const heading = document.createElement('thead');
+    const headingRow = document.createElement('tr');
+    const headingCol1 = document.createElement('th');
+    headingCol1.appendChild(document.createTextNode('Order'))
+    const headingCol2 = document.createElement('th');
+    headingCol2.appendChild(document.createTextNode('Lender'))
+    const headingCol3 = document.createElement('th');
+    headingCol3.appendChild(document.createTextNode('Total Payments'))
+    const headingCol4 = document.createElement('th');
+    headingCol4.appendChild(document.createTextNode('Total Interest'))
+    const headingCol5 = document.createElement('th');
+    headingCol5.appendChild(document.createTextNode('Payoff Date'))
+    headingRow.appendChild(headingCol1);
+    headingRow.appendChild(headingCol2);
+    headingRow.appendChild(headingCol3);
+    headingRow.appendChild(headingCol4);
+    headingRow.appendChild(headingCol5);
+    heading.appendChild(headingRow);
+    table.appendChild(heading);
+
+    const body = document.createElement('tbody');
+
+    debts.forEach((debt, index) => {
+      const row = document.createElement('tr');
+      const order = document.createElement('td');
+      order.appendChild(document.createTextNode(index + 1));
+      const lender = document.createElement('td');
+      lender.appendChild(document.createTextNode(debt.lender))
+      const totalPayments = document.createElement('td');
+      totalPayments.appendChild(document.createTextNode(toCurrency(debt.totalPaid)));
+      const totalInterest = document.createElement('td');
+      totalInterest.appendChild(document.createTextNode(toCurrency(debt.totalInterest)));
+      const payoffDate = document.createElement('td');
+      payoffDate.appendChild(document.createTextNode(`in ${toYearsAndMonths(debt.paidOffMonth)}`));
+      row.appendChild(order);
+      row.appendChild(lender);
+      row.appendChild(totalPayments);
+      row.appendChild(totalInterest);
+      row.appendChild(payoffDate);
+      body.appendChild(row);
+    });
+    table.appendChild(body);
+    return table;
+  }
+  const toYearsAndMonths = (rawMonths) => {
+    const years = Math.floor(rawMonths / 12);
+    const months = rawMonths - years * 12;
+
+    const monthString = (months === 1) ? "1 month" : `${months} months`;
+
+    if (years === 0) { return monthString }
+
+    const yearString = (years === 1) ? "1 year" : `${years} years`;
+
+    return `${yearString} ${monthString}`;
+  }
+  const toCurrency = (value, digits = 2, symbol = '$') => {
+    return symbol + value.toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits});
+  }
   document.addEventListener('DOMContentLoaded', () => {
     console.log("Calculator js running");
-    const toCurrency = (value, digits = 2, symbol = '$') => {
-      return symbol + value.toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits});
-    }
+
     console.log("Calculator helper functions loaded");
 
     const calculators = document.querySelectorAll('.debt-snowball-calculator');
@@ -141,13 +252,19 @@ sitemap: false
           const surplus = parseFloat(surplusInput.value) || 0;
 
           const debtLines = calculator.querySelectorAll('table.calculator-debt-lines tbody tr');
-          const debts = Array.from(debtLines).map((debtLine) => parseDebtLine(debtLine));
+          const debts = Array.from(debtLines)
+                             .map((debtLine) => parseDebtLine(debtLine))
+                             .sort((debtOne, debtTwo) => debtOne.amountOwed - debtTwo.amountOwed);
 
-          console.log('Debts: ');
-          console.log(debts);
-          console.log('Surplus: ' + surplus);
 
-          //resultLine.innerHTML = value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2});
+          const summary = runScenario(debts, surplus)
+          if (summary.paidOff) {
+            const payoffTimeline = toYearsAndMonths(summary.paidOff)
+            output.innerHTML = `You're on track for debt freedom in ${payoffTimeline}`;
+            output.appendChild(summaryTable(summary.debts));
+          } else {
+            output.innerHTML = 'Your debt payoff is more than 100 years out... try increasing your "surplus" payment'
+          }
         }
 
         const addRowButton = calculator.querySelector('.calculator-debt-lines-button--add');
@@ -158,6 +275,14 @@ sitemap: false
 
         addDebtLine(debtLineTable, updateResults);
         updateResults();
+
+        const data = [
+          {name: "Apple", data: {"Tuesday": 3, "Friday": 4}, stack: "fruit"},
+          {name: "Pear", data: {"Tuesday": 1, "Friday": 8}, stack: "fruit"},
+          {name: "Carrot", data: {"Tuesday": 3, "Friday": 4}, stack: "vegetable"},
+          {name: "Beet", data: {"Tuesday": 1, "Friday": 8}, stack: "vegetable"}
+        ]
+        new Chartkick.BarChart("chart-1", data, {stacked: true})
       }
     });
   });
@@ -194,6 +319,7 @@ sitemap: false
     <div class="calculator-outputs">
 
     </div>
+    <div id="chart-1" style="width:300px"></div>
   </div>
 </div>
 
