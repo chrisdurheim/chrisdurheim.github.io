@@ -10,15 +10,17 @@ sitemap: false
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body style="background-color: #f5f5f5">
+<body style="background-color: white">
 <style>
   :root{
     --calculator-primary-color: #2bb34b;
-    --calculator-line-color: #333;
-    --calculator-heading-font: raleway, sans-serif;
-    --calculator-paragraph-font: nunito, sans-serif;
+    --calculator-error-color: red;
+    --calculator-line-color: #e3e3e3;
+    --calculator-focus-color: #333;
+    --calculator-heading-font: "Raleway", sans-serif;
+    --calculator-paragraph-font: "Nunito Sans", sans-serif;
   }
   .debt-snowball-calculator {
     font-size: 16px;
@@ -28,8 +30,131 @@ sitemap: false
     margin: 2rem auto;
 
     border-radius: 0.5rem;
-    background-color: white;
+    background-color: #f5f5f5;
     overflow: hidden;
+  }
+  .debt-snowball-calculator * {
+    box-sizing: border-box;
+  }
+  .debt-snowball-calculator .calculator-header {
+    font-family: var(--calculator-heading-font);
+    margin: 1rem 0;
+    padding: 0 2rem;
+    text-align: center;
+  }
+  .debt-snowball-calculator .calculator-header .calculator-title {
+    font-size: 2rem;
+    text-transform: uppercase;
+  }
+  .debt-snowball-calculator .calculator-body {
+
+  }
+  .debt-snowball-calculator .calculator-body .calculator-inputs table.calculator-debt-lines {
+    margin: 0 auto;
+  }
+  .debt-snowball-calculator .calculator-body .calculator-inputs tbody {
+    font-family: var(--calculator-heading-font);
+  }
+  .debt-snowball-calculator .calculator-body .calculator-inputs input {
+    display: relative;
+    margin: 0.25rem 0.5rem;
+    padding: 1rem;
+    outline: none;
+    border: 1px solid var(--calculator-line-color);
+    border-radius: 0.2rem;
+    width: auto;
+
+    transition: color 150ms ease-in-out,
+                background-color 150ms ease-in-out,
+                border-color 150ms ease-in-out;
+  }
+  .debt-snowball-calculator .calculator-body .calculator-inputs input:focus {
+    outline: none;
+    border-color: var(--calculator-focus-color);
+  }
+  .debt-snowball-calculator .calculator-body .calculator-debt-lines-buttons,
+  .debt-snowball-calculator .calculator-body .calculator-input-buttons {
+    text-align: center;
+  }
+  .debt-snowball-calculator .calculator-body button {
+    padding: 0.5rem;
+    border-radius: 0.2rem;
+    font-family: var(--calculator-paragraph-font);
+    font-size: 0.75rem;
+    transition: color 150ms ease-in-out,
+                background-color 150ms ease-in-out,
+                border-color 150ms ease-in-out;
+  }
+  .debt-snowball-calculator .calculator-body button.calculator-input-button--calculate {
+    background-color: var(--calculator-primary-color);
+    color: white;
+    text-transform: uppercase;
+    font-size: 1.25rem;
+  }
+  .debt-snowball-calculator .calculator-body button:hover,
+  .debt-snowball-calculator .calculator-body button:focus {
+    outline: none;
+    background-color: var(--calculator-focus-color);
+    color: white;
+  }
+  .debt-snowball-calculator .calculator-body .calculator-debt-lines-buttons button {
+    margin: 0.5rem 1rem;
+    width: 20rem;
+  }
+  .debt-snowball-calculator .calculator-body .calculator-input-buttons button {
+    margin: 1rem 0;
+    width: 100%;
+    border: none;
+  }
+  .debt-snowball-calculator .calculator-body .calculator-surplus-payment {
+    text-align: center;
+  }
+  .debt-snowball-calculator .calculator-body .calculator-surplus-payment label {
+    font-family: var(--calculator-heading-font);
+    font-weight: bold;
+  }
+  .debt-snowball-calculator .calculator-body .calculator-result-summary .result-summary-line {
+    margin: 2rem;
+    font-family: var(--calculator-heading-font);
+    font-weight: bold;
+    font-size: 2rem;
+    text-align: center;
+  }
+  .debt-snowball-calculator .calculator-body .calculator-result-summary,
+  .debt-snowball-calculator .calculator-body .calculator-result-table {
+    text-align: center;
+  }
+  .debt-snowball-calculator .calculator-body .calculator-result-summary table,
+  .debt-snowball-calculator .calculator-body .calculator-result-table table {
+    margin: 0 auto;
+    border-collapse: collapse;
+  }
+
+  .debt-snowball-calculator .calculator-body .calculator-result-summary table th,
+  .debt-snowball-calculator .calculator-body .calculator-result-table table th,
+  .debt-snowball-calculator .calculator-body .calculator-result-summary table td,
+  .debt-snowball-calculator .calculator-body .calculator-result-table table td {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--calculator-line-color);
+  }
+
+  .debt-snowball-calculator .calculator-body .summary-table-container {
+    margin: 1rem 0;
+  }
+
+  .debt-snowball-calculator .calculator-body .summary-table-heading {
+    margin: 0 2rem;
+    font-family: var(--calculator-heading-font);
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  #calculator-result-chart {
+    margin: 2rem auto;
+  }
+
+  .calculator-result-table {
+    margin: 2rem auto;
   }
 </style>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
@@ -277,6 +402,14 @@ sitemap: false
     return table;
   }
   const summaryTable = (debts) => {
+    const container = document.createElement('div');
+    container.classList.add('summary-table-container');
+
+    const tableHeading = document.createElement('div');
+    tableHeading.classList.add('summary-table-heading');
+    tableHeading.innerHTML = "Debt Payoff Summary"
+    container.appendChild(tableHeading);
+
     const table = document.createElement('table');
     const heading = document.createElement('thead');
     const headingRow = document.createElement('tr');
@@ -320,7 +453,8 @@ sitemap: false
       body.appendChild(row);
     });
     table.appendChild(body);
-    return table;
+    container.appendChild(table);
+    return container;
   }
   const chartData = (debts) => {
     return debts.map((debt) => {
@@ -365,6 +499,8 @@ sitemap: false
 
         const surplusInput = calculator.querySelector('input[name=surplus-payment]');
 
+        const calculateButton = calculator.querySelector('button.calculator-input-button--calculate');
+
         const resultSummary = calculator.querySelector('.calculator-result-summary');
         const resultTable = calculator.querySelector('.calculator-result-table');
 
@@ -383,8 +519,12 @@ sitemap: false
 
           const summary = runScenario(debts, surplus)
           if (summary.paidOff) {
+            resultSummary.innerHTML = '';
             const payoffTimeline = toYearsAndMonths(summary.paidOff)
-            resultSummary.innerHTML = `You're on track for debt freedom in ${payoffTimeline}`;
+            const summaryLine = document.createElement('div');
+            summaryLine.classList.add('result-summary-line');
+            summaryLine.innerHTML = `You're on track for debt freedom in<br />${payoffTimeline}`;
+            resultSummary.appendChild(summaryLine);
             resultSummary.appendChild(summaryTable(summary.debts));
             resultTable.innerHTML = '';
             resultTable.appendChild(buildResultTable(summary.debts, summary.tableData))
@@ -398,6 +538,10 @@ sitemap: false
                   zeros: true,
                   prefix: '$',
                   points: false,
+                  xtitle: 'Months',
+                  ytitle: 'Debt Remaining',
+                  legend: 'right',
+                  download: true
                 }
               );
             } catch(error) {
@@ -411,8 +555,9 @@ sitemap: false
         const addRowButton = calculator.querySelector('.calculator-debt-lines-button--add');
         const debtLineTable = calculator.querySelector('table.calculator-debt-lines')
 
-        surplusInput.addEventListener('blur', updateResults)
+        surplusInput.addEventListener('blur', updateResults);
         addRowButton.addEventListener('click', () => addDebtLine(debtLineTable, updateResults));
+        calculateButton.addEventListener('click', updateResults);
 
         addDebtLine(debtLineTable, updateResults);
         updateResults();
@@ -432,7 +577,7 @@ sitemap: false
           <tr>
             <th>Lender</th>
             <th>Amount Owed</th>
-            <th>Interest Rate</th>
+            <th>Interest Rate (%)</th>
             <th>Minimum Payment</th>
             <th></th>
           </tr>
@@ -446,6 +591,9 @@ sitemap: false
       <div class="calculator-surplus-payment">
         <label for="surplus-payment">Surplus Payment</label>
         <input name="surplus-payment" type="number"></input>
+      </div>
+      <div class="calculator-input-buttons">
+        <button class="calculator-input-button calculator-input-button--calculate">Calculate</button>
       </div>
     </div>
     <div class="calculator-result-summary">
