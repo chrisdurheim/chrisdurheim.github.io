@@ -55,6 +55,19 @@ sitemap: false
   .debt-snowball-calculator .calculator-body .calculator-inputs tbody {
     font-family: var(--calculator-heading-font);
   }
+  .debt-snowball-calculator .calculator-body .calculator-inputs thead {
+    display: none;
+  }
+  .debt-snowball-calculator .calculator-body .calculator-inputs tr {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--calculator-focus-color)
+  }
+  .debt-snowball-calculator .calculator-body .calculator-inputs td {
+    flex: 0 0 100%;
+  }
   .debt-snowball-calculator .calculator-body .calculator-inputs input {
     display: relative;
     margin: 0.25rem 0.5rem;
@@ -62,7 +75,7 @@ sitemap: false
     outline: none;
     border: 1px solid var(--calculator-line-color);
     border-radius: 0.2rem;
-    width: 8rem;
+    width: calc(100% - 1rem);
 
     transition: color 150ms ease-in-out,
                 background-color 150ms ease-in-out,
@@ -71,6 +84,25 @@ sitemap: false
   .debt-snowball-calculator .calculator-body .calculator-inputs input:focus {
     outline: none;
     border-color: var(--calculator-focus-color);
+  }
+  @media screen and (min-width: 768px) {
+    .debt-snowball-calculator .calculator-body .calculator-inputs thead {
+      display: table-header-group;
+    }
+    .debt-snowball-calculator .calculator-body .calculator-inputs table.calculator-debt-lines tr {
+      display: table-row;
+      border-color: transparent;
+    }
+
+    .debt-snowball-calculator .calculator-body .calculator-inputs input {
+      width: 8rem;
+    }
+    .debt-snowball-calculator .calculator-body .calculator-inputs label {
+      display: none;
+    }
+    .debt-snowball-calculator .calculator-body .calculator-inputs .calculator-surplus-payment label {
+      display: initial;
+    }
   }
   .debt-snowball-calculator .calculator-body .calculator-debt-lines-buttons,
   .debt-snowball-calculator .calculator-body .calculator-input-buttons {
@@ -125,6 +157,23 @@ sitemap: false
   .debt-snowball-calculator .calculator-body .calculator-debt-lines-buttons button {
     margin: 0.5rem 1rem;
     width: 20rem;
+    max-width: calc(100% - 2rem);
+  }
+  .debt-snowball-calculator .calculator-debt-line-delete-debt {
+    text-align: center;
+  }
+  .debt-snowball-calculator button.calculator-debt-line-delete-button {
+    margin: 0 auto;
+    width: 6rem;
+    height: 2rem;
+    position: relative;
+  }
+  .debt-snowball-calculator button.calculator-debt-line-delete-button::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    content: 'Delete';
   }
   .debt-snowball-calculator .calculator-body .calculator-input-buttons button {
     margin: 1rem 0;
@@ -149,9 +198,13 @@ sitemap: false
   .debt-snowball-calculator .calculator-body .calculator-result-table {
     text-align: center;
   }
-  .debt-snowball-calculator .calculator-body .calculator-result-summary table,
-  .debt-snowball-calculator .calculator-body .calculator-result-table table {
+  .debt-snowball-calculator .calculator-body .calculator-result-summary table {
     margin: 0 auto;
+    border-collapse: collapse;
+  }
+
+  .debt-snowball-calculator .calculator-body .calculator-result-table table {
+    margin: 2rem auto;
     border-collapse: collapse;
   }
 
@@ -159,12 +212,54 @@ sitemap: false
   .debt-snowball-calculator .calculator-body .calculator-result-table table th,
   .debt-snowball-calculator .calculator-body .calculator-result-summary table td,
   .debt-snowball-calculator .calculator-body .calculator-result-table table td {
-    padding: 0.5rem 1rem;
+    padding: 0.25rem;
     border: 1px solid var(--calculator-line-color);
+  }
+
+  .debt-snowball-calculator .calculator-body .calculator-result-summary table tr,
+  .debt-snowball-calculator .calculator-body .calculator-result-table table tr {
+    transition: background-color 150ms ease-in-out,
+                color 150ms ease-in-out;
+  }
+
+  .debt-snowball-calculator .calculator-body .calculator-result-summary table th,
+  .debt-snowball-calculator .calculator-body .calculator-result-table table th,
+  .debt-snowball-calculator .calculator-body .calculator-result-summary table tr:hover,
+  .debt-snowball-calculator .calculator-body .calculator-result-table table tr:hover {
+    background-color: var(--calculator-primary-color);
+    color: white;
+  }
+
+  .debt-snowball-calculator .calculator-body .calculator-result-summary tr th:first-child,
+  .debt-snowball-calculator .calculator-body .calculator-result-summary tr td:first-child {
+    display: none;
+  }
+
+  .calculator-result-table {
+    display: none;
+    margin: 2rem auto;
+    overflow-x: scroll;
+  }
+
+  @media screen and (min-width: 768px) {
+    .debt-snowball-calculator .calculator-body .calculator-result-summary table th,
+    .debt-snowball-calculator .calculator-body .calculator-result-summary table td {
+      padding: 0.5rem 1rem;
+    }
+
+    .debt-snowball-calculator .calculator-body .calculator-result-summary tr th:first-child,
+    .debt-snowball-calculator .calculator-body .calculator-result-summary tr td:first-child {
+      display: table-cell;
+    }
+
+    .debt-snowball-calculator .calculator-body .calculator-result-table {
+      display: initial;
+    }
   }
 
   .debt-snowball-calculator .calculator-body .summary-table-container {
     margin: 1rem 0;
+    overflow-x: scroll;
   }
 
   .debt-snowball-calculator .calculator-body .summary-table-heading {
@@ -177,16 +272,15 @@ sitemap: false
   #calculator-result-chart {
     margin: 2rem auto;
   }
-
-  .calculator-result-table {
-    margin: 2rem auto;
-  }
 </style>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chartkick/2.3.0/chartkick.min.js"></script>
 <script async type="text/javascript">
   const lenderCell = (updateResults) => {
     const cell = document.createElement('td');
+    const label = document.createElement('label');
+    label.innerHTML = 'Lender Name'
+    cell.appendChild(label);
     const input = document.createElement('input');
     input.setAttribute('type', 'text');
     input.setAttribute('name', 'lender');
@@ -204,6 +298,9 @@ sitemap: false
   }
   const amountOwedCell = (updateResults) => {
     const cell = document.createElement('td');
+    const label = document.createElement('label');
+    label.innerHTML = 'Amount Owed'
+    cell.appendChild(label);
     const input = document.createElement('input');
     input.setAttribute('type', 'number');
     input.setAttribute('name', 'amount-owed');
@@ -222,6 +319,9 @@ sitemap: false
   }
   const interestRateCell = (updateResults) => {
     const cell = document.createElement('td');
+    const label = document.createElement('label');
+    label.innerHTML = 'Interest Rate (%)'
+    cell.appendChild(label);
     const input = document.createElement('input');
     input.setAttribute('type', 'number');
     input.setAttribute('name', 'interest-rate');
@@ -240,6 +340,9 @@ sitemap: false
   }
   const minimumPaymentCell = (updateResults) => {
     const cell = document.createElement('td');
+    const label = document.createElement('label');
+    label.innerHTML = 'Minimum Payment'
+    cell.appendChild(label);
     const input = document.createElement('input');
     input.setAttribute('type', 'number');
     input.setAttribute('name', 'minimum-payment');
@@ -259,7 +362,6 @@ sitemap: false
   const deleteButton = (updateResults) => {
     const cell = document.createElement('td');
     const button = document.createElement('button');
-    button.appendChild(document.createTextNode('X'));
     button.classList.add('calculator-debt-line-delete-button');
     button.addEventListener('click', () => {
       const row = cell.parentNode;
@@ -267,6 +369,7 @@ sitemap: false
       tbody.removeChild(row);
       updateResults();
     });
+    cell.classList.add('calculator-debt-line-delete-debt');
     cell.appendChild(button);
     return cell;
   }
@@ -450,7 +553,7 @@ sitemap: false
     const headingCol4 = document.createElement('th');
     headingCol4.appendChild(document.createTextNode('Total Interest'))
     const headingCol5 = document.createElement('th');
-    headingCol5.appendChild(document.createTextNode('Payoff Date'))
+    headingCol5.appendChild(document.createTextNode('Payoff Time'))
     headingRow.appendChild(headingCol1);
     headingRow.appendChild(headingCol2);
     headingRow.appendChild(headingCol3);
@@ -468,11 +571,11 @@ sitemap: false
       const lender = document.createElement('td');
       lender.appendChild(document.createTextNode(debt.lender))
       const totalPayments = document.createElement('td');
-      totalPayments.appendChild(document.createTextNode(toCurrency(debt.totalPaid)));
+      totalPayments.appendChild(document.createTextNode(toCurrency(debt.totalPaid, 0)));
       const totalInterest = document.createElement('td');
-      totalInterest.appendChild(document.createTextNode(toCurrency(debt.totalInterest)));
+      totalInterest.appendChild(document.createTextNode(toCurrency(debt.totalInterest, 0)));
       const payoffDate = document.createElement('td');
-      payoffDate.appendChild(document.createTextNode(`in ${toYearsAndMonths(debt.paidOffMonth)}`));
+      payoffDate.appendChild(document.createTextNode(`${toYearsAndMonths(debt.paidOffMonth)}`));
       row.appendChild(order);
       row.appendChild(lender);
       row.appendChild(totalPayments);
@@ -534,6 +637,7 @@ sitemap: false
         const calculateButton = calculator.querySelector('button.calculator-input-button--calculate');
 
         const resultSummary = calculator.querySelector('.calculator-result-summary');
+        const resultChart = document.querySelector('#calculator-result-chart');
         const resultTable = calculator.querySelector('.calculator-result-table');
 
         const updateResults = () => {
@@ -545,22 +649,26 @@ sitemap: false
                              .filter((debt) => { return debt })
                              .sort((debtOne, debtTwo) => debtOne.amountOwed - debtTwo.amountOwed);
 
+          resultSummary.innerHTML = '';
+          resultChart.innerHTML = '';
+          resultTable.innerHTML = '';
+
           if (debts.length === 0) {
+            resultChart.style.height = '0';
             return;
           }
 
           const summary = runScenario(debts, surplus)
           if (summary.paidOff) {
-            resultSummary.innerHTML = '';
             const payoffTimeline = toYearsAndMonths(summary.paidOff)
             const summaryLine = document.createElement('div');
             summaryLine.classList.add('result-summary-line');
-            summaryLine.innerHTML = `You're on track for debt freedom in<br />${payoffTimeline}`;
+            summaryLine.innerHTML = `You're on track to be DEBT FREE in<br />${payoffTimeline}`;
             resultSummary.appendChild(summaryLine);
             resultSummary.appendChild(summaryTable(summary.debts));
-            resultTable.innerHTML = '';
             resultTable.appendChild(buildResultTable(summary.debts, summary.tableData))
             try {
+              resultChart.style.height = '400px';
               new Chartkick.AreaChart(
                 "calculator-result-chart",
                 chartData(summary.debts),
@@ -571,9 +679,9 @@ sitemap: false
                   prefix: '$',
                   points: false,
                   xtitle: 'Months',
-                  ytitle: 'Debt Remaining',
-                  legend: 'right',
-                  download: true
+                  legend: 'bottom',
+                  download: true,
+                  colors: ['#2bb34b', '#45CD65', '#5EE67E', '#78FF98', '#91FFB1', '#AAFFCA', '#C4FFE4', '#DEFFFE', '#F7FFFF', '#FFFFFF']
                 }
               );
             } catch(error) {
@@ -581,8 +689,6 @@ sitemap: false
             }
           } else {
             resultSummary.innerHTML = 'Your debt payoff is more than 100 years out... try increasing your "surplus" payment';
-            document.querySelector('#calculator-result-chart').innerHTML = '';
-            resultTable.innerHTML = '';
           }
         }
 
@@ -631,9 +737,8 @@ sitemap: false
       </div>
     </div>
     <div class="calculator-result-summary">
-
     </div>
-    <div id="calculator-result-chart" style="width:80%; height: 400px;"></div>
+    <div id="calculator-result-chart" style="width: 80%;"></div>
     <div class="calculator-result-table"></div>
   </div>
 </div>
