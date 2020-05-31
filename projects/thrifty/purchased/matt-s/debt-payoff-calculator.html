@@ -1,7 +1,7 @@
 ---
 layout: none
 permalink: /matt-s/debt-payoff
-published: false
+published: true
 sitemap: false
 ---
 <!DOCTYPE html>
@@ -136,6 +136,9 @@ sitemap: false
     .thrifty-calculators-calculator .calculator-field .calculator-value {
       flex: 1 0 10rem;
     }
+    .thrifty-calculators-calculator .calculator-result .calculator-field .calculator-value {
+      flex: 0 0 4rem;
+    }
   }
   .thrifty-calculators-calculator .calculator-field .calculator-value:focus-within {
     border-color: var(--thrifty-calculator-primary-color);
@@ -159,17 +162,23 @@ sitemap: false
     border: none;
     padding: 0.5rem 0;
   }
+  .thrifty-calculators-calculator .calculator-result .calculator-value input {
+    flex: 0 0 4rem;
+    max-width: 4rem;
+    text-align: right;
+  }
   .thrifty-calculators-calculator .calculator-field .calculator-value select:hover,
   .thrifty-calculators-calculator .calculator-field .calculator-value select:focus,
   .thrifty-calculators-calculator .calculator-field .calculator-value input:hover,
   .thrifty-calculators-calculator .calculator-field .calculator-value input:focus {
     outline: none;
   }
-  .thrifty-calculators-calculator .calculator-field input {
-    text-align: right;
-  }
   .thrifty-calculators-calculator .calculator-field input.currency {
     text-align: left;
+  }
+  .thrifty-calculators-calculator .calculator-field input,
+  .thrifty-calculators-calculator .calculator-result .calculator-field input {
+    text-align: right;
   }
   input[type=number]:read-only::-webkit-inner-spin-button,
   input[type=number]:read-only::-webkit-outer-spin-button {
@@ -270,11 +279,7 @@ sitemap: false
 
 </style>
 <div class="thrifty-calculators-calculator" id="debt-payoff-calculator">
-  <div class="calculator-title">Debt Payoff Calculator</div>
   <div class="calculator-container">
-    <div class="calculator-description">Use this calculator to find out how much time and money you could save by paying extra towards your debt each month.</div>
-    <div class="calculator-description">Hint: most student loan terms are 120 months (10 years) and most car loan terms are 60-72 months (5-6 years)</div>
-    <div class="calculator-description calculator-description--disclaimer">*Not for credit cards or mortgages.</div>
     <div class="calculator-inputs">
       <div class="calculator-group">
         <div class="calculator-field calculator-field--inline">
@@ -317,7 +322,7 @@ sitemap: false
     <div class="calculator-result">
       <div class="calculator-field-group">
         <div class="calculator-group-title">Results</div>
-        <p id="net-result">With your extra payments each month, you'll pay off your debt X months faster and save $Y in interest</p>
+        <p id="net-result">With your extra payments each month, you'll pay off your debt X months faster and save $Y in interest.</p>
       </div>
       <div class="calculator-field-group">
         <div class="calculator-group-title">Summary</div>
@@ -352,8 +357,8 @@ sitemap: false
         <div class="calculator-field calculator-field--inline">
           <label for="prepay-months">Months Until Payoff with Extra Payments</label>
           <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">&nbsp;</span>
             <input type="number" name="prepay-months" id="prepay-months" value="42" increment="0.1" readonly/>
-            <span class="input-suffix">months</span>
           </div>
         </div>
       </div>
