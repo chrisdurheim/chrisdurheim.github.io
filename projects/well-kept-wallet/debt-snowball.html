@@ -777,6 +777,7 @@ sitemap: false
         }
 
         const updateResults = () => {
+          calculateButton.innerHTML = 'Calculate';
           const surplus = parseFloat(surplusInput.value) || 0;
           const debtFreeTimelineGoal = parseInt(debtFreeTimelineGoalInput.value);
 
@@ -840,10 +841,7 @@ sitemap: false
         debtFreeTimelineGoalInput.addEventListener('input', updateTimelineLabel);
         debtFreeTimelineGoalInput.addEventListener('blur', updateResults);
         addRowButton.addEventListener('click', () => addDebtLine(debtLineTable, updateResults));
-        calculateButton.addEventListener('click', () => {
-          calculateButton.innerHTML = 'Calculate';
-          updateResults();
-        });
+        calculateButton.addEventListener('click', updateResults);
 
         addDebtLine(debtLineTable, updateResults);
         updateResults();
