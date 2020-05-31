@@ -488,7 +488,7 @@ sitemap: false
         const timeSavings = termRemainingMonths - prepayRemainingMonths;
         const interestSavings = payment * termRemainingMonths - prepayPayment * prepayRemainingMonths
 
-        resultLine.innerHTML = "With your extra payments each month, you'll pay off your debt " + timeSavings.toFixed(1) + " months faster and save " + toCurrency(interestSavings) + " in interest";
+        resultLine.innerHTML = "With your extra payments each month, you'll pay off your debt " + timeSavings.toFixed(1) + " months faster and save " + toCurrency(interestSavings) + " in interest.";
 
         monthlyPaymentOutput.value = payment.toFixed(2);
         monthlyPrepaymentOutput.value = (payment + extraMonthlyPrincipal).toFixed(2);
