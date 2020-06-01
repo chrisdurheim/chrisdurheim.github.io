@@ -65,7 +65,18 @@ sitemap: false
     line-height: 2.5;
     color: var(--thrifty-calculator-secondary-color);
   }
+  .thrifty-calculators-calculator #yield-group input,
+  .thrifty-calculators-calculator #years-to-maturity-group input {
+    text-align: right;
+  }
   .thrifty-calculators-calculator .calculator-input .input-prefix {
+    flex: 0 0 auto;
+    padding: 0.5em;
+    margin: 0 0.25em;
+    line-height: 2em;
+    text-align: right;
+  }
+  .thrifty-calculators-calculator .calculator-input .input-suffix {
     flex: 0 0 auto;
     padding: 0.5em;
     margin: 0 0.25em;
@@ -89,6 +100,9 @@ sitemap: false
       flex-basis: auto;
     }
     .thrifty-calculators-calculator .calculator-input .input-prefix {
+      flex-grow: 1;
+    }
+    .thrifty-calculators-calculator #yield-group label {
       flex-grow: 1;
     }
     .thrifty-calculators-calculator .calculator-input input {
@@ -275,14 +289,15 @@ sitemap: false
   </div>
   <div class="calculator-input-group" id="yield-group">
     <div class="calculator-input">
-      <label for="yield" id="yield-label">2.875% period interest rate (I)</label>
-      <input type="range" class="slider slider--percent" name="yield" id="yield" value="0.02875" min="0.00125" max="0.5" step="0.00125" />
+      <label for="yield" id="yield-label">Period interest rate (I)</label>
+      <input type="number" class="" name="yield" id="yield" value="0.240" min="0.001" step="0.001" />
+      <span class="input-suffix">%</span>
     </div>
   </div>
   <div class="calculator-input-group" id="years-to-maturity-group">
     <div class="calculator-input">
-      <label for="years-to-maturity" id="years-to-maturity-label">180 periods (N)</label>
-      <input type="range" class="slider" name="years-to-maturity" id="years-to-maturity" value="180" min="1" max="480" step="1" />
+      <label for="years-to-maturity" id="years-to-maturity-label">Periods (N)</label>
+      <input type="number" class="" name="years-to-maturity" id="years-to-maturity" value="180" min="1" step="1" />
     </div>
   </div>
   <div class="calculator-result"></div>
@@ -406,9 +421,7 @@ sitemap: false
       const faceValueInput = calculator.querySelector('input#face-value');
       const faceValueLabel = calculator.querySelector('#face-value-label');
       const yieldInput = calculator.querySelector('input#yield');
-      const yieldLabel = calculator.querySelector('#yield-label');
       const yearsToMaturityInput = calculator.querySelector('input#years-to-maturity');
-      const yearsToMaturityLabel = calculator.querySelector('#years-to-maturity-label');
       const outputDiv = calculator.querySelector('#tvm-calculator .calculator-result');
       function structureInputs(solveForId) {
         calculator.querySelector('#price-group').style.display = "block";
@@ -427,11 +440,9 @@ sitemap: false
         const price = Math.abs(parseFloat(priceInput.value)) || 0;
         const coupon = parseFloat(couponInput.value) || 0;
         const faceValue = parseFloat(faceValueInput.value) || 0;
-        const yield = parseFloat(yieldInput.value) || 0;
+        const yield = parseFloat(yieldInput.value) / 100.0 || 0;
         const yearsToMaturity = parseFloat(yearsToMaturityInput.value) || 0;
         const compoundingFrequency = 1;
-        yieldLabel.innerHTML = (yield * 100.0).toFixed(3) + "% interest rate (I)" ;
-        yearsToMaturityLabel.innerHTML = yearsToMaturity + " periods (N)" ;
         if (outputDiv) {
           if (faceValue < 0) {
             outputDiv.innerHTML = '';

@@ -376,16 +376,16 @@ sitemap: false
       }
     }
     function pmt(pv, rate, months) {
-      const periodRate = rate / 12.0
+      const periodRate = rate / 12.0;
       return periodRate * pv / (1 - Math.pow(1 + periodRate, -months));
 
     }
     function nper(pv, rate, payment) {
-      const periodRate = rate / 12.0
+      const periodRate = rate / 12.0;
       return Math.log(payment / (payment - pv * periodRate)) / Math.log(1 + periodRate)
     }
     function pv(payment, rate, months) {
-      const periodRate = rate / 12.0
+      const periodRate = rate / 12.0;
       return payment * (1 - Math.pow(1 + periodRate, -months)) / periodRate;
 
     }
@@ -479,14 +479,14 @@ sitemap: false
           return;
         }
 
-        const payment = pmt(startingAmount, interestRate, initialTermMonths)
-        const amountRemaining = pv(payment, interestRate, termRemainingMonths)
+        const payment = pmt(startingAmount, interestRate, initialTermMonths);
+        const amountRemaining = pv(payment, interestRate, termRemainingMonths);
 
-        const prepayPayment = payment + extraMonthlyPrincipal
+        const prepayPayment = payment + extraMonthlyPrincipal;
         const prepayRemainingMonths = nper(amountRemaining, interestRate, prepayPayment);
 
         const timeSavings = termRemainingMonths - prepayRemainingMonths;
-        const interestSavings = payment * termRemainingMonths - prepayPayment * prepayRemainingMonths
+        const interestSavings = payment * termRemainingMonths - prepayPayment * prepayRemainingMonths;
 
         resultLine.innerHTML = "With your extra payments each month, you'll pay off your debt " + timeSavings.toFixed(1) + " months faster and save " + toCurrency(interestSavings) + " in interest.";
 
