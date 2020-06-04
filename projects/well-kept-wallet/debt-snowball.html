@@ -428,7 +428,7 @@ sitemap: false
       debt.paidOffMonth = debt.payments.findIndex((payment) => payment === 0) + 1 || debt.payments.length;
       debt.chartData = debt.balance.map((balance, index) => [index + 1, balance]);
       debt.chartData.unshift([0, debt.startingBalance]);
-    })
+    });
 
     const tableData = [];
 
@@ -438,7 +438,7 @@ sitemap: false
       debts.forEach((debt) => {
         balances[debt.lender] = debt.balance[i];
         payments[debt.lender] = debt.payments[i];
-      })
+      });
       tableData.push({
         month: i + 1,
         totalRemaining: debts.reduce((total, debt) => total + debt.balance[i], 0.0),
@@ -456,7 +456,7 @@ sitemap: false
     let paidOff = false;
     const debtPayment = debts.reduce((total, element) => total + element.minimumPayment, rawSurplus);
 
-    for (let i = 0; i < 1200 && !paidOff; i++) {
+    for (let i = 0; i < 1200; i++) {
       let paymentRemaining = debtPayment;
       /* Accrue interest and make minimum payment */
       debts.forEach((debt) => {
@@ -488,6 +488,9 @@ sitemap: false
 
       const debtRemaining = debts.reduce((total, element) => total + element.amountOwed, 0.0);
       paidOff = (debtRemaining === 0) ? i + 1 : false;
+      if (paidOff) {
+        break;
+      }
     }
 
     const tableData = summarizeDebts(debts, paidOff);
@@ -712,7 +715,7 @@ sitemap: false
           } else {
             resultSummaryLine.innerHTML = 'Your debt payoff is more than 100 years out... try increasing your "extra" payment';
           }
-        }
+        };
 
         const addRowButton = calculator.querySelector('.calculator-debt-lines-button--add');
         const debtLineTable = calculator.querySelector('table.calculator-debt-lines');
