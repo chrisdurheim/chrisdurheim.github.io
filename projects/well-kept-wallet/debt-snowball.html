@@ -81,6 +81,16 @@ sitemap: false
                 background-color 150ms ease-in-out,
                 border-color 150ms ease-in-out;
   }
+
+  .debt-snowball-calculator .calculator-body .calculator-inputs input::-webkit-outer-spin-button,
+  .debt-snowball-calculator .calculator-body .calculator-inputs input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .debt-snowball-calculator .calculator-body .calculator-inputs input[type=number] {
+    -moz-appearance: textfield;
+  }
+
   .debt-snowball-calculator .calculator-body .calculator-inputs input:focus {
     outline: none;
     border-color: var(--calculator-focus-color);
@@ -103,31 +113,6 @@ sitemap: false
     .debt-snowball-calculator .calculator-body .calculator-inputs .calculator-surplus-payment label {
       display: initial;
     }
-    .debt-snowball-calculator .calculator-body .calculator-inputs .calculator-accelerate-input label {
-      display: initial;
-    }
-  }
-  .debt-snowball-calculator .calculator-accelerate-optional {
-    margin: 2rem auto;
-    width: calc(100% - 1rem);
-    max-width: 30rem;
-  }
-  .debt-snowball-calculator .calculator-accelerate-input {
-    padding: 2rem;
-    text-align: center;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    border: 1px solid var(--calculator-line-color);
-  }
-  .debt-snowball-calculator .calculator-accelerate-input label,
-  .debt-snowball-calculator .calculator-accelerate-input input,
-  .debt-snowball-calculator .calculator-accelerate-input .calculator-accelerate-title {
-    flex: 0 0 100%;
-  }
-  .debt-snowball-calculator .calculator-accelerate-input .calculator-accelerate-title {
-    font-style: italic;
-  }
   .debt-snowball-calculator .calculator-body .calculator-debt-lines-buttons,
   .debt-snowball-calculator .calculator-body .calculator-input-buttons {
     text-align: center;
@@ -173,12 +158,16 @@ sitemap: false
     color: white;
     text-transform: uppercase;
     font-size: 1.25rem;
+    border: 2px solid var(--calculator-primary-color);
   }
-  .debt-snowball-calculator .calculator-body button:hover,
-  .debt-snowball-calculator .calculator-body button:focus {
+  .debt-snowball-calculator .calculator-body button:hover {
     outline: none;
     background-color: var(--calculator-focus-color);
     color: white;
+  }
+  .debt-snowball-calculator .calculator-body button:focus {
+    border-color: var(--calculator-focus-color);
+    outline: none;
   }
   .debt-snowball-calculator .calculator-body .calculator-debt-lines-buttons button {
     margin: 0.5rem 1rem;
@@ -204,7 +193,7 @@ sitemap: false
   .debt-snowball-calculator .calculator-body .calculator-input-buttons button {
     margin: 1rem 0;
     width: 100%;
-    border: none;
+
   }
   .debt-snowball-calculator .calculator-body .calculator-surplus-payment {
     margin: 1rem 0;
@@ -298,71 +287,6 @@ sitemap: false
 
   #calculator-result-chart {
     margin: 2rem auto;
-  }
-
-  .debt-snowball-calculator .calculator-body .calculator-inputs input.slider {
-    margin-top: 1em;
-    flex: 1 0 auto;
-    max-width: 25rem;
-  }
-  .debt-snowball-calculator .slider {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 0.5rem;
-    border-radius: 0.25rem;
-    border-color: var(--calculator-focus-color);
-    color: var(--calculator-primary-color);
-    background: var(--calculator-line-color);
-    outline: none;
-    margin-top: 1rem !important;
-    margin-bottom: 1rem !important;
-    padding: 0 !important;
-    cursor: pointer;
-  }
-  .debt-snowball-calculator .slider::-moz-range-thumb {
-    width: 1.5rem;
-    height: 1.5rem;
-    border: 1px solid var(--calculator-line-color);
-    border-radius: 0.25rem;
-    background: var(--calculator-primary-color);
-    cursor: pointer;
-    transition: background-color 150ms, border-color: 150ms;
-  }
-  .debt-snowball-calculator .slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 1.5rem;
-    height: 1.5rem;
-    border: 1px solid var(--calculator-primary-color);
-    border-radius: 0.25rem;
-    background: var(--calculator-primary-color);
-    cursor: pointer;
-    transition: background-color 150ms, border-color: 150ms;
-  }
-  .debt-snowball-calculator .slider:focus::-moz-range-thumb,
-  .debt-snowball-calculator .slider:hover::-moz-range-thumb {
-    width: 1.5rem;
-    height: 1.5rem;
-    border: 1px solid var(--calculator-focus-color);
-    border-radius: 0.25rem;
-    background: var(--calculator-primary-color);
-    cursor: pointer;
-  }
-  .debt-snowball-calculator .slider:focus::-webkit-slider-thumb,
-  .debt-snowball-calculator .slider:hover::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 1.5rem;
-    height: 1.5rem;
-    border: 1px solid var(--calculator-focus-color);
-    border-radius: 0.5em;
-    background: var(--calculator-primary-color);
-    cursor: pointer;
-  }
-  .debt-snowball-calculator .calculator-result-accelerate {
-    margin: 2rem 1rem;
-    text-align: center;
-    font-style: italic;
   }
 </style>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
@@ -526,35 +450,6 @@ sitemap: false
       });
     }
     return tableData;
-  }
-  const findSurplusForMonth = (monthTarget, debts) => {
-    let min = 0.0;
-    let max = 100000.0;
-    if (runScenario(debts, max).paidOff > monthTarget) {
-      return `Even with $100,000 surplus a month, you couldn't get debt free within ${toYearsAndMonths(monthTarget)}`;
-    }
-    if (runScenario(debts, min).paidOff < monthTarget) {
-      return `With $0 surplus per month, you'd be debt free before ${toYearsAndMonths(monthTarget)}`;
-    }
-
-    let monthsWithTestSurplus = -1;
-
-    let i = 0;
-    let testSurplus = (min + max) / 2.0;
-
-    while (monthsWithTestSurplus != monthTarget && i < 50) {
-      monthsWithTestSurplus = Math.round(runScenario(debts, testSurplus).paidOff);
-
-      if (monthsWithTestSurplus < monthTarget) {
-        max = testSurplus;
-      } else if (monthsWithTestSurplus > monthTarget) {
-        min = testSurplus;
-      }
-      testSurplus = (min + max) / 2.0;
-      i += 1;
-    }
-
-    return `With a monthly surplus of ${toCurrency(testSurplus)}, you could be debt free in ${toYearsAndMonths(monthTarget)}`;
   }
   const runScenario = (rawDebts, rawSurplus) => {
     const debts = JSON.parse(JSON.stringify(rawDebts));
@@ -756,30 +651,17 @@ sitemap: false
         const buttons = calculator.querySelectorAll('button');
 
         const surplusInput = calculator.querySelector('input[name=surplus-payment]');
-        const debtFreeTimelineGoalInput = calculator.querySelector('input[name=target-surplus-timeline]');
-        const debtFreeTimelineGoalLabel = calculator.querySelector('label[for=target-surplus-timeline]');
 
         const calculateButton = calculator.querySelector('button.calculator-input-button--calculate');
 
         const resultSummaryLine = calculator.querySelector('.calculator-result-summary-line');
-        const resultAccelerate = calculator.querySelector('.calculator-result-accelerate');
         const resultSummaryTable = calculator.querySelector('.calculator-result-summary-table');
         const resultChart = calculator.querySelector('#calculator-result-chart');
         const resultTable = calculator.querySelector('.calculator-result-table');
 
-
-        const updateTimelineLabel = () => {
-          const debtFreeTimelineGoal = parseInt(debtFreeTimelineGoalInput.value);
-          debtFreeTimelineGoalLabel.innerHTML = toYearsAndMonths(debtFreeTimelineGoal);
-          if (resultSummaryLine.innerHTML !== '') {
-            calculateButton.innerHTML = 'Re-calculate';
-          }
-        }
-
         const updateResults = () => {
           calculateButton.innerHTML = 'Calculate';
           const surplus = parseFloat(surplusInput.value) || 0;
-          const debtFreeTimelineGoal = parseInt(debtFreeTimelineGoalInput.value);
 
           const debtLines = calculator.querySelectorAll('table.calculator-debt-lines tbody tr');
           const debts = Array.from(debtLines)
@@ -791,16 +673,15 @@ sitemap: false
           resultSummaryTable.innerHTML = '';
           resultChart.innerHTML = '';
           resultTable.innerHTML = '';
-          resultAccelerate.innerHTML = '';
 
           if (debts.length === 0) {
             resultChart.style.height = '0';
+            resultSummaryLine.innerHTML = 'Enter one or more debts to see results';
             return;
           }
 
           const summary = runScenario(debts, surplus);
           if (summary.paidOff) {
-            const surplusTarget = findSurplusForMonth(debtFreeTimelineGoal, debts);
             const payoffTimeline = toYearsAndMonths(summary.paidOff);
             const summaryLine = document.createElement('div');
             summaryLine.classList.add('result-summary-line');
@@ -808,7 +689,6 @@ sitemap: false
             resultSummaryLine.appendChild(summaryLine);
             resultSummaryTable.appendChild(summaryTable(summary.debts));
             resultTable.appendChild(buildResultTable(summary.debts, summary.tableData));
-            resultAccelerate.innerHTML = surplusTarget;
             try {
               resultChart.style.height = '400px';
               new Chartkick.AreaChart(
@@ -830,7 +710,7 @@ sitemap: false
               console.log(summary.debts);
             }
           } else {
-            resultSummaryLine.innerHTML = 'Your debt payoff is more than 100 years out... try increasing your "surplus" payment';
+            resultSummaryLine.innerHTML = 'Your debt payoff is more than 100 years out... try increasing your "extra" payment';
           }
         }
 
@@ -838,8 +718,6 @@ sitemap: false
         const debtLineTable = calculator.querySelector('table.calculator-debt-lines');
 
         surplusInput.addEventListener('blur', updateResults);
-        debtFreeTimelineGoalInput.addEventListener('input', updateTimelineLabel);
-        debtFreeTimelineGoalInput.addEventListener('blur', updateResults);
         addRowButton.addEventListener('click', () => addDebtLine(debtLineTable, updateResults));
         calculateButton.addEventListener('click', updateResults);
 
@@ -873,23 +751,14 @@ sitemap: false
         <button class="calculator-debt-lines-button calculator-debt-lines-button--add">+ Add Row</button>
       </div>
       <div class="calculator-surplus-payment">
-        <label for="surplus-payment">Surplus Payment</label>
+        <label for="surplus-payment">Extra Payment</label>
         <input name="surplus-payment" type="number" step="0.01"></input>
-      </div>
-      <div class="calculator-accelerate-optional">
-        <div class="calculator-accelerate-input">
-          <div class="calculator-accelerate-title">Optional: What's your ideal debt payoff timeline?</div>
-          <input class="slider" name="target-surplus-timeline" type="range" value="180" min="1" max="180" step="1"></input>
-          <label for="target-surplus-timeline">15 years</label>
-        </div>
       </div>
       <div class="calculator-input-buttons">
         <button class="calculator-input-button calculator-input-button--calculate">Calculate</button>
       </div>
     </div>
     <div class="calculator-result-summary-line">
-    </div>
-    <div class="calculator-result-accelerate">
     </div>
     <div class="calculator-result-summary-table">
     </div>
