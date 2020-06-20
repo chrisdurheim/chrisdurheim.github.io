@@ -65,8 +65,8 @@ sitemap: false
     line-height: 2.5;
     color: var(--thrifty-calculator-secondary-color);
   }
-  .thrifty-calculators-calculator #yield-group input,
-  .thrifty-calculators-calculator #years-to-maturity-group input {
+  .thrifty-calculators-calculator #rate-group input,
+  .thrifty-calculators-calculator #nper-group input {
     text-align: right;
   }
   .thrifty-calculators-calculator .calculator-input .input-prefix {
@@ -102,7 +102,7 @@ sitemap: false
     .thrifty-calculators-calculator .calculator-input .input-prefix {
       flex-grow: 1;
     }
-    .thrifty-calculators-calculator #yield-group label {
+    .thrifty-calculators-calculator #rate-group label {
       flex-grow: 1;
     }
     .thrifty-calculators-calculator .calculator-input input {
@@ -257,47 +257,47 @@ sitemap: false
     <div class="calculator-input">
       <label for="i-want-to-solve-for" id="i-want-to-solve-for-label">I want to solve for</label>
       <select class="" name="i-want-to-solve-for" id="i-want-to-solve-for">
-        <option value="price-group">Present Value (PV)</option>
-        <option value="coupon-group">Payment (PMT)</option>
-        <option value="face-value-group">Future Value (FV)</option>
-        <option value="yield-group">Interest Rate (I)</option>
-        <option value="years-to-maturity-group">Periods (N)</option>
+        <option value="pv-group">Present Value (PV)</option>
+        <option value="pmt-group">Payment (PMT)</option>
+        <option value="fv-group">Future Value (FV)</option>
+        <option value="rate-group">Interest Rate (I)</option>
+        <option value="nper-group">Periods (N)</option>
       </select>
     </div>
   </div>
   <hr />
-  <div class="calculator-input-group" id="price-group">
+  <div class="calculator-input-group" id="pv-group">
     <div class="calculator-input">
-      <label for="price" id="price-label">Present Value (PV)</label>
+      <label for="pv" id="pv-label">Present Value (PV)</label>
       <span class="input-prefix">$</span>
-      <input type="number" class="currency" name="price" id="price" value="204500" min="0" />
+      <input type="number" class="currency" name="pv" id="pv" value="204500" />
     </div>
   </div>
-  <div class="calculator-input-group" id="coupon-group">
+  <div class="calculator-input-group" id="pmt-group">
     <div class="calculator-input">
-      <label for="coupon" id="coupon-label">Payment (PMT)</label>
+      <label for="pmt" id="pmt-label">Payment (PMT)</label>
       <span class="input-prefix">$</span>
-      <input type="number" class="currency" name="coupon" id="coupon" value="1400" min="0" />
+      <input type="number" class="currency" name="pmt" id="pmt" value="-1400" />
     </div>
   </div>
-  <div class="calculator-input-group" id="face-value-group">
+  <div class="calculator-input-group" id="fv-group">
     <div class="calculator-input">
-      <label for="face-value" id="face-value-label">Future Value (FV)</label>
+      <label for="fv" id="fv-label">Future Value (FV)</label>
       <span class="input-prefix">$</span>
-      <input type="number" class="currency" name="face-value" id="face-value" value="0" min="0" />
+      <input type="number" class="currency" name="fv" id="fv" value="0" />
     </div>
   </div>
-  <div class="calculator-input-group" id="yield-group">
+  <div class="calculator-input-group" id="rate-group">
     <div class="calculator-input">
-      <label for="yield" id="yield-label">Period interest rate (I)</label>
-      <input type="number" class="" name="yield" id="yield" value="0.240" min="0.001" step="0.001" />
+      <label for="rate" id="rate-label">Period interest rate (I)</label>
+      <input type="number" class="" name="rate" id="rate" value="0.23960225" step="0.001" />
       <span class="input-suffix">%</span>
     </div>
   </div>
-  <div class="calculator-input-group" id="years-to-maturity-group">
+  <div class="calculator-input-group" id="nper-group">
     <div class="calculator-input">
-      <label for="years-to-maturity" id="years-to-maturity-label">Periods (N)</label>
-      <input type="number" class="" name="years-to-maturity" id="years-to-maturity" value="180" min="1" step="1" />
+      <label for="nper" id="nper-label">Periods (N)</label>
+      <input type="number" class="" name="nper" id="nper" value="180" step="1" />
     </div>
   </div>
   <div class="calculator-result"></div>
@@ -335,39 +335,39 @@ sitemap: false
         return '$' + value.toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits})
       }
     }
-    function computePrice(coupon, faceValue, yieldValue, yearsToMaturity, compoundingFrequency) {
-      const periods = yearsToMaturity * compoundingFrequency;
-      const periodRate = yieldValue / compoundingFrequency;
-      const periodCoupon = coupon / compoundingFrequency;
+    function computePV(pmt, fv, rateValue, nper, compoundingFrequency) {
+      const periods = nper * compoundingFrequency;
+      const periodRate = rateValue / compoundingFrequency;
+      const periodPMT = pmt / compoundingFrequency;
 
-      const cashFlowPV = periodCoupon * (1 - Math.pow(1 + periodRate, -periods)) / periodRate;
-      const faceValuePV = faceValue / Math.pow(1 + periodRate, periods);
+      const cashFlowPV = periodPMT * (1 - Math.pow(1 + periodRate, -periods)) / periodRate;
+      const fvPV = fv / Math.pow(1 + periodRate, periods);
 
-      return cashFlowPV + faceValuePV;
+      return -(cashFlowPV + fvPV);
     }
-    function computeCoupon(price, faceValue, yieldValue, yearsToMaturity, compoundingFrequency) {
-      const periods = yearsToMaturity * compoundingFrequency;
-      const periodRate = yieldValue / compoundingFrequency;
+    function computePMT(pv, fv, rateValue, nper, compoundingFrequency) {
+      const periods = nper * compoundingFrequency;
+      const periodRate = rateValue / compoundingFrequency;
 
-      const periodCoupon = ( price - faceValue / Math.pow(1 + periodRate, periods)) * periodRate / (1 - Math.pow(1 + periodRate, -periods));
+      const periodPMT = -( pv + fv / Math.pow(1 + periodRate, periods)) * periodRate / (1 - Math.pow(1 + periodRate, -periods));
 
-      return periodCoupon * compoundingFrequency;
+      return periodPMT * compoundingFrequency;
     }
-    function computeFaceValue(price, coupon, yieldValue, yearsToMaturity, compoundingFrequency) {
-      const periods = yearsToMaturity * compoundingFrequency;
-      const periodRate = yieldValue / compoundingFrequency;
-      const periodCoupon = coupon / compoundingFrequency;
-      const faceValue = price * Math.pow(1 + periodRate, periods) - periodCoupon / periodRate * (Math.pow(1 + periodRate, periods) - 1);
+    function computeFV(pv, pmt, rateValue, nper, compoundingFrequency) {
+      const periods = nper * compoundingFrequency;
+      const periodRate = rateValue / compoundingFrequency;
+      const periodPMT = pmt / compoundingFrequency;
+      const fv = -(pv * Math.pow(1 + periodRate, periods) + periodPMT / periodRate * (Math.pow(1 + periodRate, periods) - 1));
 
-      return faceValue;
+      return fv;
     }
-    function computeYieldValue(price, coupon, faceValue, yearsToMaturity, compoundingFrequency) {
-      const periods = yearsToMaturity * compoundingFrequency;
-      const periodCoupon = coupon / compoundingFrequency;
+    function computeRateValue(pv, pmt, fv, nper, compoundingFrequency) {
+      const periods = nper * compoundingFrequency;
+      const periodPMT = pmt / compoundingFrequency;
 
       attempts = 0;
 
-      min = 0.0;
+      min = -0.999;
       max = 100.0;
       do {
         if (min === max) {
@@ -375,12 +375,21 @@ sitemap: false
           break;
         }
         guess = (min + max) / 2;
-        error = computePrice(coupon, faceValue, guess, yearsToMaturity, compoundingFrequency) - price;
-        if (error > 0) {
-          min = guess;
+        calculated = computePV(pmt, fv, guess, nper, compoundingFrequency);
+        error = calculated - pv;
+        if (error < 0) {
+          if (pv < 0) {
+            min = guess;
+          } else {
+            max = guess;
+          }
         }
         else {
-          max = guess;
+          if (pv < 0) {
+            max = guess;
+          } else {
+            min = guess;
+          }
         }
         attempts += 1
       } while((Math.abs(error) > 0.000001) && (attempts <= 100));
@@ -391,12 +400,12 @@ sitemap: false
         return guess;
       }
     }
-    function computeYearsToMaturity(price, coupon, faceValue, yieldValue, compoundingFrequency) {
-      const periodRate = yieldValue / compoundingFrequency;
-      const periodCoupon = coupon / compoundingFrequency;
+    function computeNPER(pv, pmt, fv, rateValue, compoundingFrequency) {
+      const periodRate = rateValue / compoundingFrequency;
+      const periodPMT = pmt / compoundingFrequency;
 
-      const numerator = faceValue - periodCoupon / periodRate;
-      const denomenator = price - periodCoupon / periodRate;
+      const numerator = -(fv - periodPMT / periodRate);
+      const denomenator = pv + periodPMT / periodRate;
 
       const periods = baseLog(numerator / denomenator, 1 + periodRate);
 
@@ -414,21 +423,21 @@ sitemap: false
       const currencyInputs = calculator.querySelectorAll('input.currency');
       const iWantToSolveForInput = calculator.querySelector('select#i-want-to-solve-for');
       const iWantToSolveForLabel = calculator.querySelector('#i-want-to-solve-for-label');
-      const priceInput = calculator.querySelector('input#price');
-      const priceLabel = calculator.querySelector('#price-label');
-      const couponInput = calculator.querySelector('input#coupon');
-      const couponLabel = calculator.querySelector('#coupon-label');
-      const faceValueInput = calculator.querySelector('input#face-value');
-      const faceValueLabel = calculator.querySelector('#face-value-label');
-      const yieldInput = calculator.querySelector('input#yield');
-      const yearsToMaturityInput = calculator.querySelector('input#years-to-maturity');
+      const pvInput = calculator.querySelector('input#pv');
+      const pvLabel = calculator.querySelector('#pv-label');
+      const pmtInput = calculator.querySelector('input#pmt');
+      const pmtLabel = calculator.querySelector('#pmt-label');
+      const fvInput = calculator.querySelector('input#fv');
+      const fvLabel = calculator.querySelector('#fv-label');
+      const rateInput = calculator.querySelector('input#rate');
+      const nperInput = calculator.querySelector('input#nper');
       const outputDiv = calculator.querySelector('#tvm-calculator .calculator-result');
       function structureInputs(solveForId) {
-        calculator.querySelector('#price-group').style.display = "block";
-        calculator.querySelector('#coupon-group').style.display = "block";
-        calculator.querySelector('#face-value-group').style.display = "block";
-        calculator.querySelector('#yield-group').style.display = "block";
-        calculator.querySelector('#years-to-maturity-group').style.display = "block";
+        calculator.querySelector('#pv-group').style.display = "block";
+        calculator.querySelector('#pmt-group').style.display = "block";
+        calculator.querySelector('#fv-group').style.display = "block";
+        calculator.querySelector('#rate-group').style.display = "block";
+        calculator.querySelector('#nper-group').style.display = "block";
 
         const solvingInput = calculator.querySelector('#' + solveForId);
         solvingInput.style.display = "none";
@@ -437,24 +446,14 @@ sitemap: false
         const iWantToSolveFor = iWantToSolveForInput.value;
         structureInputs(iWantToSolveFor);
 
-        const price = Math.abs(parseFloat(priceInput.value)) || 0;
-        const coupon = parseFloat(couponInput.value) || 0;
-        const faceValue = parseFloat(faceValueInput.value) || 0;
-        const yield = parseFloat(yieldInput.value) / 100.0 || 0;
-        const yearsToMaturity = parseFloat(yearsToMaturityInput.value) || 0;
+        const pv = parseFloat(pvInput.value) || 0;
+        const pmt = parseFloat(pmtInput.value) || 0;
+        const fv = parseFloat(fvInput.value) || 0;
+        const rate = parseFloat(rateInput.value) / 100.0 || 0;
+        const nper = parseFloat(nperInput.value) || 0;
         const compoundingFrequency = 1;
         if (outputDiv) {
-          if (faceValue < 0) {
-            outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', "Set future value to at least 0", 'result-error'));
-            return;
-          }
-          if (yield < 0) {
-            outputDiv.innerHTML = '';
-            outputDiv.appendChild(tag('span', "Set period interest rate to at least 0%", 'result-error'));
-            return;
-          }
-          if (yearsToMaturity < 1) {
+          if (nper < 1) {
             outputDiv.innerHTML = '';
             outputDiv.appendChild(tag('span', "Set periods to at least 1", 'result-error'));
             return;
@@ -466,8 +465,8 @@ sitemap: false
             let baseText = tag('div', null, 'calculator-highlighted-result');
 
             switch(iWantToSolveFor) {
-              case 'price-group':
-                result = computePrice(coupon, faceValue, yield, yearsToMaturity, compoundingFrequency);
+              case 'pv-group':
+                result = computePV(pmt, fv, rate, nper, compoundingFrequency);
                 if (isNaN(result) || result == Infinity || result == -Infinity) {
                   outputDiv.appendChild(tag('span', "Error: Present Value could not be calculated", 'result-error'));
                   return;
@@ -476,8 +475,8 @@ sitemap: false
                   baseText.appendChild(tag('span', toCurrency(result), 'result-value'));
                 }
                 break;
-              case 'coupon-group':
-                result = computeCoupon(price, faceValue, yield, yearsToMaturity, compoundingFrequency);
+              case 'pmt-group':
+                result = computePMT(pv, fv, rate, nper, compoundingFrequency);
                 if (isNaN(result) || result == Infinity || result == -Infinity) {
                   outputDiv.appendChild(tag('span', "Error: Payment could not be calculated", 'result-error'));
                   return;
@@ -487,8 +486,8 @@ sitemap: false
                   baseText.appendChild(document.createTextNode(" per period."));
                 }
                 break;
-              case 'face-value-group':
-                result = computeFaceValue(price, coupon, yield, yearsToMaturity, compoundingFrequency);
+              case 'fv-group':
+                result = computeFV(pv, pmt, rate, nper, compoundingFrequency);
                 if (isNaN(result) || result == Infinity || result == -Infinity) {
                   outputDiv.appendChild(tag('span', "Error: Future value (FV) could not be calculated", 'result-error'));
                   return;
@@ -497,28 +496,28 @@ sitemap: false
                   baseText.appendChild(tag('span', toCurrency(result), 'result-value'));
                 }
                 break;
-              case 'yield-group':
-                result = computeYieldValue(price, coupon, faceValue, yearsToMaturity, compoundingFrequency);
+              case 'rate-group':
+                result = computeRateValue(pv, pmt, fv, nper, compoundingFrequency);
                 if (isNaN(result) || result == Infinity || result == -Infinity) {
                   outputDiv.appendChild(tag('span', "Error: Period interest rate (I) could not be calculated", 'result-error'));
                   return;
                 } else {
                   baseText.appendChild(document.createTextNode("The period interest rate (I) is "));
-                  baseText.appendChild(tag('span', toPercent(result, 3), 'result-value'));
+                  baseText.appendChild(tag('span', toPercent(result, 8), 'result-value'));
                 }
                 break;
-              case 'years-to-maturity-group':
-                if (price === faceValue) {
+              case 'nper-group':
+                if (pv === fv) {
                   outputDiv.appendChild(tag('span', "When present value and future value are equal, the periods could be any value.", 'result-error'));
                   return;
                 } else {
-                  result = computeYearsToMaturity(price, coupon, faceValue, yield, compoundingFrequency);
+                  result = computeNPER(pv, pmt, fv, rate, compoundingFrequency);
                   if (result < 0.0 || isNaN(result) || result == Infinity || result == -Infinity) {
                     outputDiv.appendChild(tag('span', "Error: Periods (N) could not be calculated", 'result-error'));
                     return;
                   } else {
                     baseText.appendChild(document.createTextNode("The number of periods (N) is "));
-                    baseText.appendChild(tag('span', result.toFixed(0), 'result-value'));
+                    baseText.appendChild(tag('span', result.toFixed(2), 'result-value'));
                   }
                 }
                 break;
