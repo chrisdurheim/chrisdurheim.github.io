@@ -296,7 +296,11 @@ sitemap: false
               .filter((element) => element != null)
               .join('&');
 
-          ctaLink.href = calculator.dataset.baseUri + '?' + queryString;
+          if (ctaLink && calculator.dataset.baseUri) {
+            ctaLink.href = calculator.dataset.baseUri + '?' + queryString;
+          } else {
+            calculator.querySelector('.calculator-cta').style = 'display: none;'
+          }
 
           const inputs = calculator.querySelectorAll('input');
           const selects = calculator.querySelectorAll('select');
@@ -319,8 +323,8 @@ sitemap: false
 
             resultLine.innerHTML = value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2});
 
-            ctaLink.classList.remove('pulse-red');
-            setTimeout(() => { ctaLink.classList.add('pulse-red'); }, 150);
+            if (ctaLink) { ctaLink.classList.remove('pulse-red') }
+            setTimeout(() => { if (ctaLink) { ctaLink.classList.add('pulse-red') } }, 150);
           }
 
           /* Set calculator to auto-update on input changes */
