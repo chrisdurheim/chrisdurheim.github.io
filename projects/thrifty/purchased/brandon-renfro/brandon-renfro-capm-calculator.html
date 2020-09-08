@@ -1,0 +1,348 @@
+---
+layout: none
+permalink: /brandonrenfro/capm
+published: true
+sitemap: false
+---
+<!DOCTYPE html><html lang="en-US">
+<body>
+<style>
+  :root {
+    --thrifty-calculator-primary-color: #36474D;
+    --thrifty-calculator-primary-accent-color: #44BEC7;
+    --thrifty-calculator-secondary-color: #333;
+    --thrifty-calculator-background-color: white;
+    --thrifty-calculator-error-color: #b71c1c;
+    --thrifty-calculator-font: 'Lato', sans-serif;
+  }
+  .thrifty-calculators-calculator {
+    font-size: 16px;
+    font-family: var(--thrifty-calculator-font);
+    background-color: var(--thrifty-calculator-background-color);
+    margin: 2em auto;
+    padding: 2em 2em 0;
+    border-radius: 1em;
+    border: 2px solid var(--thrifty-calculator-primary-color);
+    max-width: 480px;
+    clear: both;
+  }
+  .thrifty-calculators-calculator .calculator-input-group {
+    padding: 0;
+  }
+  .thrifty-calculators-calculator div.calculator-title {
+    font-size: 1.75em;
+    margin: 0 0 1em;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: var(--thrifty-calculator-primary-color);
+    border-radius: 0.25em;
+    color: white;
+    padding: 0.25em;
+  }
+  .thrifty-calculators-calculator div.calculator-group-title {
+    background-color: var(--thrifty-calculator-primary-color);
+    margin-bottom: 1em;
+    padding: 0.5em;
+    color: white;
+    text-align: center;
+  }
+  .thrifty-calculators-calculator hr {
+    margin: 2em 0;
+  }
+
+  .thrifty-calculators-calculator .calculator-input {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1em 0 0;
+    justify-content: space-between;
+  }
+  .thrifty-calculators-calculator .calculator-input label {
+    flex: 1 0 100%;
+    padding: 0.25em 0;
+    line-height: 2.5;
+    color: var(--thrifty-calculator-secondary-color);
+  }
+  .thrifty-calculators-calculator .calculator-input .input-prefix {
+    flex: 0 0 auto;
+    padding: 0.5em;
+    margin: 0 0.25em;
+    line-height: 2em;
+    text-align: right;
+  }
+  .thrifty-calculators-calculator .calculator-input .input-suffix {
+    flex: 0 0 auto;
+    padding: 0.5em;
+    margin: 0 0.25em;
+    line-height: 2em;
+    text-align: right;
+  }
+  .thrifty-calculators-calculator .calculator-input input {
+    flex: 1 0 auto;
+    font-size: 1em;
+    padding: 0.5em;
+    margin: 0 0.25em;
+    background-color: var(--thrifty-calculator-background-color);
+    border: 0.1em solid var(--thrifty-calculator-secondary-color);
+    text-align: right;
+    color: black;
+    border-radius: 0.5em;
+    transition: background-color 150ms, border-color 150ms;
+  }
+  @media screen and (min-width: 425px) {
+    .thrifty-calculators-calculator .calculator-input label {
+      flex-basis: auto;
+    }
+    .thrifty-calculators-calculator .calculator-input .input-prefix {
+      flex-grow: 1;
+    }
+    .thrifty-calculators-calculator .calculator-input input {
+      flex-grow: 0;
+    }
+  }
+  .thrifty-calculators-calculator .calculator-input input:focus,
+  .thrifty-calculators-calculator .calculator-input input:hover {
+    outline: none;
+    background-color: var(--thrifty-calculator-primary-accent-color);
+    border: 0.1em solid var(--thrifty-calculator-primary-color);
+  }
+  .thrifty-calculators-calculator .calculator-input select {
+    flex: 1 1 auto;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    font-size: 1em;
+    padding: 0.5em;
+    margin: 0 0.25em;
+    border: 0.1em solid var(--thrifty-calculator-secondary-color);
+    color: black;
+    border-radius: 0.5em;
+    max-width: 20em;
+    background-color: var(--thrifty-calculator-background-color);
+    transition: background-color 150ms, border-color 150ms;
+    /* Arrow */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  	background-repeat: no-repeat, repeat;
+  	background-position: right .7em top 50%, 0 0;
+  	background-size: .65em auto, 100%;
+    cursor: pointer;
+  }
+  .thrifty-calculators-calculator .calculator-input select:focus,
+  .thrifty-calculators-calculator .calculator-input select:hover {
+    outline: none;
+    background-color: var(--thrifty-calculator-primary-accent-color);
+    border: 0.1em solid var(--thrifty-calculator-primary-color);
+  }
+  .thrifty-calculators-calculator input.slider {
+    margin-top: 1em;
+    width: 100%;
+    max-width: 100%;
+  }
+  .thrifty-calculators-calculator .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 0.5em;
+    border-radius: 0.5em;
+    border-color: var(--thrifty-calculator-secondary-color);
+    color: var(--thrifty-calculator-background-color);
+    background: var(--thrifty-calculator-primary-accent-color);
+    outline: none;
+    margin-top: 1em !important;
+    margin-bottom: 1em !important;
+    padding: 0 !important;
+    cursor: pointer;
+  }
+  .thrifty-calculators-calculator .slider::-moz-range-thumb {
+    width: 1.5em;
+    height: 1.5em;
+    border: 0.1em solid var(--thrifty-calculator-primary-color);
+    border-radius: 0.5em;
+    background: var(--thrifty-calculator-primary-color);
+    cursor: pointer;
+    transition: background-color 250ms, border-color: 250ms;
+  }
+  .thrifty-calculators-calculator .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1.5em;
+    height: 1.5em;
+    border: 0.1em solid var(--thrifty-calculator-primary-color);
+    border-radius: 0.5em;
+    background: var(--thrifty-calculator-primary-color);
+    cursor: pointer;
+    transition: background-color 250ms, border-color: 250ms;
+  }
+  .thrifty-calculators-calculator .slider:focus::-moz-range-thumb,
+  .thrifty-calculators-calculator .slider:hover::-moz-range-thumb {
+    width: 1.5em;
+    height: 1.5em;
+    border: 0.1em solid var(--thrifty-calculator-secondary-color);
+    border-radius: 0.5em;
+    background: var(--thrifty-calculator-primary-color);
+    cursor: pointer;
+  }
+  .thrifty-calculators-calculator .slider:focus::-webkit-slider-thumb,
+  .thrifty-calculators-calculator .slider:hover::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1.5em;
+    height: 1.5em;
+    border: 0.1em solid var(--thrifty-calculator-secondary-color);
+    border-radius: 0.5em;
+    background: var(--thrifty-calculator-primary-color);
+    cursor: pointer;
+  }
+
+  .thrifty-calculators-calculator .calculator-result {
+    margin: 2em 0;
+    overflow-x: auto;
+  }
+  .thrifty-calculators-calculator .calculator-highlighted-result {
+    display: block;
+    text-align: center;
+    border: 0.1em solid var(--thrifty-calculator-primary-color);
+    border-radius: 0.5em;
+    padding: 1em;
+    background-color: var(--thrifty-calculator-primary-accent-color);
+  }
+  .thrifty-calculators-calculator .calculator-result .result-value {
+    font-weight: bold;
+  }
+  .thrifty-calculators-calculator .calculator-result .result-error {
+    display: block;
+    text-align: center;
+    border: 0.1em solid var(--thrifty-calculator-error-color);
+    border-radius: 0.5em;
+    padding: 1em;
+    color: var(--thrifty-calculator-error-color);
+  }
+  .thrifty-calculators-calculator h3, .thrifty-calculators-calculator h4, .thrifty-calculators-calculator h5, .thrifty-calculators-calculator h6 {
+    text-transform: uppercase;
+  }
+  .thrifty-calculators-calculator h3 {
+    font-size: 1.75em;
+  }
+  .thrifty-calculators-calculator h4 {
+    font-size: 1.5em;
+  }
+  .thrifty-calculators-calculator h5 {
+    font-size: 1.25em;
+  }
+  .thrifty-calculators-calculator h6 {
+    font-size: 1.125em;
+  }
+  .thrifty-calculators-calculator input, .thrifty-calculators-calculator p, .thrifty-calculators-calculator li {
+    font-size: 1.0em;
+  }
+</style>
+<div class="thrifty-calculators-calculator" id="capm-calculator">
+  <div class="calculator-title">CAPM Calculator</div>
+  <div class="calculator-input-group" id="market-return-group">
+    <div class="calculator-input">
+      <label for="market-return" id="market-return-label">Market Return</label>
+      <input type="number" class="" name="market-return" id="market-return" value="8.5" step="0.001" />
+      <span class="input-suffix">%</span>
+    </div>
+  </div>
+  <div class="calculator-input-group" id="risk-free-rate-group">
+    <div class="calculator-input">
+      <label for="risk-free-rate" id="risk-free-rate-label">Risk-Free Rate</label>
+      <input type="number" class="" name="risk-free-rate" id="risk-free-rate" value="2.8" step="0.001" />
+      <span class="input-suffix">%</span>
+    </div>
+  </div>
+  <div class="calculator-input-group" id="beta-group">
+    <div class="calculator-input">
+      <label for="beta" id="beta-label">Beta</label>
+      <input type="number" class="" name="beta" id="beta" value="1" step="0.001" />
+    </div>
+  </div>
+  <div class="calculator-result"></div>
+</div>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("Calculator js running");
+    function tag(type, value = undefined, klass = undefined, id = undefined) {
+      let el = document.createElement(type);
+      if (klass) {
+        el.setAttribute('class', klass);
+      }
+      if (id) {
+        el.setAttribute('id', id);
+      }
+      if (value) {
+        el.innerText = value;
+      }
+      return el;
+    }
+    function baseLog(x, y) {
+      return Math.log(x) / Math.log(y);
+    }
+    function toPercent(value, digits = 2) {
+      if (value == 0) {
+        return '-%';
+      } else {
+        return (value * 100).toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits}) + '%'
+      }
+    }
+    function toCurrency(value, digits = 2) {
+      if (value == 0) {
+        return '-';
+      } else {
+        return '$' + value.toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits})
+      }
+    }
+
+    console.log("Calculator helper functions loaded");
+    const calculator = document.querySelector('#capm-calculator');
+
+    if (calculator) {
+      console.log("Calculator found");
+
+      const inputs = calculator.querySelectorAll('input');
+      const selects = calculator.querySelectorAll('select');
+      const marketReturnInput = calculator.querySelector('input#market-return');
+      const riskFreeRateInput = calculator.querySelector('input#risk-free-rate');
+      const betaInput = calculator.querySelector('input#beta');
+      const outputDiv = calculator.querySelector('.calculator-result');
+      function updateResults() {
+        const marketReturn = parseFloat(marketReturnInput.value) / 100.0 || 0;
+        const riskFreeRate = parseFloat(riskFreeRateInput.value) / 100.0 || 0;
+        const beta = parseFloat(betaInput.value) || 0;
+
+        if (outputDiv) {
+          const expectedReturn = riskFreeRate + beta * (marketReturn - riskFreeRate);
+
+          let outputText = document.createDocumentFragment();
+          let baseText = tag('div', null, 'calculator-highlighted-result');
+
+          baseText.appendChild(document.createTextNode("Expected Return: "));
+          baseText.appendChild(tag('span', toPercent(expectedReturn, 3), 'result-value'));
+          outputText.appendChild(baseText);
+
+          outputDiv.innerHTML = '';
+
+          if (outputText != undefined) {
+            outputDiv.appendChild(outputText);
+          }
+        }
+      }
+
+      /* Set calculator to auto-update on input changes */
+      for (let i = 0; i < inputs.length; i += 1) {
+        inputs[i].addEventListener('input', () => {
+          updateResults();
+        });
+      }
+
+      for (let i = 0; i < selects.length; i += 1) {
+        selects[i].addEventListener('input', () => {
+          updateResults();
+        });
+      }
+
+      updateResults();
+    }
+  });
+</script>
+</body>
+</html>
