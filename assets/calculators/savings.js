@@ -12,10 +12,11 @@ templateSavingsCalculator.innerHTML = `
       --line-color: gray;
       --standard-radius: var(--half-cem);
       --line-height: 1.5;
+      --max-width: calc(25 * var(--cem));
     }
     .calculator {
       font-size: var(--cem);
-      max-width: calc(25 * var(--cem));
+      max-width: var(--max-width);
       margin: var(--cem) auto;
       padding: var(--cem) var(--cem);
       border: 1px solid black;
@@ -182,6 +183,11 @@ class SavingsCalculator extends HTMLElement {
       const lineHeightAttribute = this.attributes.getNamedItem('line-height');
       if (lineHeightAttribute) {
         this.style.setProperty("--line-height", lineHeightAttribute.value);
+      }
+
+      const maxWidthAttribute = this.attributes.getNamedItem('max-width');
+      if (maxWidthAttribute) {
+        this.style.setProperty("--max-width", maxWidthAttribute.value);
       }
     }
 
