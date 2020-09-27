@@ -37,7 +37,7 @@ templateSavingsCalculator.innerHTML = `
       text-align: center;
     }
     h3 {
-      flex: 0 0 auto;
+      flex: 0 0 100%;
       max-width: 100%;
     }
     .calculator-input {
