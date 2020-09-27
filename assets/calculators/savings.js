@@ -136,7 +136,6 @@ class SavingsCalculator extends HTMLElement {
     constructor() {
       super();
       this._root = this.attachShadow({ 'mode': 'open' });
-      // Initial state
       this.$futureValue = 1250;
       this.$nper = 6;
       this.$interestRate = 0.015;
@@ -191,7 +190,6 @@ class SavingsCalculator extends HTMLElement {
       }
     }
 
-
     connectedCallback() {
       this._root.appendChild(templateSavingsCalculator.content.cloneNode(true));
       this.$savingsGoalElement = this._root.querySelector('input#savings-goal');
@@ -218,7 +216,6 @@ class SavingsCalculator extends HTMLElement {
     updateNper() {
       const years = parseInt(this.$yearsElement.value || 0);
       const months = parseInt(this.$monthsElement.value || 0);
-      // Always ensure at least one month
       this.$nper = Math.max(12 * years + months, 1);
       this._render();
     }
@@ -231,27 +228,24 @@ class SavingsCalculator extends HTMLElement {
     disconnectedCallback() { }
 
     _render() {
-        // update inputs
         this.$savingsGoalElement.value = this.$futureValue.toFixed(0);
         this.$yearsElement.value = Math.floor(this.$nper / 12).toFixed(0);
         this.$monthsElement.value = (this.$nper % 12).toFixed(0);
         this.$interestElement.value = (this.$interestRate * 100.0).toFixed(2);
 
-        // update outputs
         if (!this.$resultElement) return;
         this.$resultElement.innerHTML = '';
         let monthlyGoal;
         if (this.$interestRate === 0) {
           monthlyGoal = this.$futureValue / this.$nper;
         } else {
-          // PMT = FV / (((1 + i)^n - 1) / i * (1 + i))
           const trueInterest = (1 + this.$interestRate) ** (1.0/12.0) - 1;
           const pmt = this.$futureValue / (((1 + trueInterest) ** this.$nper - 1) / trueInterest);
           monthlyGoal = pmt;
         }
 
         if (monthlyGoal < 1.0) {
-          this.$resultElement.innerHTML = "Less than $1"
+          this.$resultElement.innerHTML = "Less than $1";
         } else {
           this.$resultElement.innerHTML = `$${monthlyGoal.toFixed(0)}`;
         }
