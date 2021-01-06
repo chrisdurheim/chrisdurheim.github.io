@@ -1,0 +1,603 @@
+---
+layout: none
+permalink: /brandonrenfro/403b
+published: true
+sitemap: false
+---
+<!DOCTYPE html>
+<html lang="en-US">
+
+<body>
+  <style>
+    :root {
+      --thrifty-calculator-primary-color: #36474D;
+      --thrifty-calculator-primary-accent-color: #44BEC7;
+      --thrifty-calculator-secondary-color: #333;
+      --thrifty-calculator-background-color: white;
+      --thrifty-calculator-error-color: #b71c1c;
+      --thrifty-calculator-font: 'Lato', sans-serif;
+    }
+    .thrifty-calculators-calculator {
+      font-size: 16px;
+      font-family: var(--thrifty-calculator-font);
+      background-color: var(--thrifty-calculator-background-color);
+      margin: 2em auto;
+      padding: 2em 2em 0;
+      border-radius: 1em;
+      border: 2px solid var(--thrifty-calculator-primary-color);
+      max-width: 480px;
+      clear: both;
+    }
+    .thrifty-calculators-calculator .calculator-input-group {
+      padding: 0;
+    }
+    .thrifty-calculators-calculator div.calculator-title {
+      font-size: 1.75em;
+      margin: 0 0 1em;
+      text-align: center;
+      text-transform: uppercase;
+      background-color: var(--thrifty-calculator-primary-color);
+      border-radius: 0.25em;
+      color: white;
+      padding: 0.25em;
+    }
+    .thrifty-calculators-calculator .calculator-section {
+      margin: 1rem 0;
+    }
+    .thrifty-calculators-calculator div.calculator-section-title {
+      font-size: 1.4em;
+      margin: 0 0 1em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .thrifty-calculators-calculator div.calculator-group-title {
+      background-color: var(--thrifty-calculator-primary-color);
+      margin-bottom: 1em;
+      padding: 0.5em;
+      color: white;
+      text-align: center;
+    }
+    .thrifty-calculators-calculator hr {
+      margin: 2em 0;
+    }
+
+    .thrifty-calculators-calculator .calculator-input {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 1em 0 0;
+      justify-content: space-between;
+    }
+    .thrifty-calculators-calculator .calculator-input label {
+      flex: 1 0 100%;
+      padding: 0.25em 0;
+      line-height: 2.5;
+      color: var(--thrifty-calculator-secondary-color);
+    }
+    .thrifty-calculators-calculator .calculator-input .input-prefix {
+      flex: 0 0 auto;
+      padding: 0.5em;
+      margin: 0 0.25em;
+      line-height: 2em;
+      text-align: right;
+    }
+    .thrifty-calculators-calculator .calculator-input .input-suffix {
+      flex: 0 0 1rem;
+      padding: 0.5em;
+      margin: 0 0.25em;
+      line-height: 2em;
+      text-align: right;
+    }
+    .thrifty-calculators-calculator .calculator-input input {
+      flex: 1 0 auto;
+      font-size: 1em;
+      padding: 0.5em;
+      margin: 0 0.25em;
+      background-color: var(--thrifty-calculator-background-color);
+      border: 0.1em solid var(--thrifty-calculator-secondary-color);
+      text-align: right;
+      color: black;
+      border-radius: 0.5em;
+      transition: background-color 150ms, border-color 150ms;
+    }
+    @media screen and (min-width: 425px) {
+      .thrifty-calculators-calculator .calculator-input label {
+        flex-basis: auto;
+      }
+      .thrifty-calculators-calculator .calculator-input .input-prefix {
+        flex-grow: 1;
+      }
+      .thrifty-calculators-calculator .calculator-input input {
+        flex-grow: 0;
+      }
+    }
+    .thrifty-calculators-calculator .calculator-input input:focus,
+    .thrifty-calculators-calculator .calculator-input input:hover {
+      outline: none;
+      background-color: var(--thrifty-calculator-primary-accent-color);
+      border: 0.1em solid var(--thrifty-calculator-primary-color);
+    }
+    .thrifty-calculators-calculator .calculator-input select {
+      flex: 1 1 auto;
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      appearance:none;
+      font-size: 1em;
+      padding: 0.5em;
+      margin: 0 0.25em;
+      border: 0.1em solid var(--thrifty-calculator-secondary-color);
+      color: black;
+      border-radius: 0.5em;
+      max-width: 20em;
+      background-color: var(--thrifty-calculator-background-color);
+      transition: background-color 150ms, border-color 150ms;
+      /* Arrow */
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+      background-repeat: no-repeat, repeat;
+      background-position: right .7em top 50%, 0 0;
+      background-size: .65em auto, 100%;
+      cursor: pointer;
+    }
+    .thrifty-calculators-calculator .calculator-input select:focus,
+    .thrifty-calculators-calculator .calculator-input select:hover {
+      outline: none;
+      background-color: var(--thrifty-calculator-primary-accent-color);
+      border: 0.1em solid var(--thrifty-calculator-primary-color);
+    }
+    .thrifty-calculators-calculator input.slider {
+      margin-top: 1em;
+      width: 100%;
+      max-width: 100%;
+    }
+    .thrifty-calculators-calculator .slider {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 0.5em;
+      border-radius: 0.5em;
+      border-color: var(--thrifty-calculator-secondary-color);
+      color: var(--thrifty-calculator-background-color);
+      background: var(--thrifty-calculator-primary-accent-color);
+      outline: none;
+      margin-top: 1em !important;
+      margin-bottom: 1em !important;
+      padding: 0 !important;
+      cursor: pointer;
+    }
+    .thrifty-calculators-calculator .slider::-moz-range-thumb {
+      width: 1.5em;
+      height: 1.5em;
+      border: 0.1em solid var(--thrifty-calculator-primary-color);
+      border-radius: 0.5em;
+      background: var(--thrifty-calculator-primary-color);
+      cursor: pointer;
+      transition: background-color 250ms, border-color: 250ms;
+    }
+    .thrifty-calculators-calculator .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 1.5em;
+      height: 1.5em;
+      border: 0.1em solid var(--thrifty-calculator-primary-color);
+      border-radius: 0.5em;
+      background: var(--thrifty-calculator-primary-color);
+      cursor: pointer;
+      transition: background-color 250ms, border-color: 250ms;
+    }
+    .thrifty-calculators-calculator .slider:focus::-moz-range-thumb,
+    .thrifty-calculators-calculator .slider:hover::-moz-range-thumb {
+      width: 1.5em;
+      height: 1.5em;
+      border: 0.1em solid var(--thrifty-calculator-secondary-color);
+      border-radius: 0.5em;
+      background: var(--thrifty-calculator-primary-color);
+      cursor: pointer;
+    }
+    .thrifty-calculators-calculator .slider:focus::-webkit-slider-thumb,
+    .thrifty-calculators-calculator .slider:hover::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 1.5em;
+      height: 1.5em;
+      border: 0.1em solid var(--thrifty-calculator-secondary-color);
+      border-radius: 0.5em;
+      background: var(--thrifty-calculator-primary-color);
+      cursor: pointer;
+    }
+
+    .thrifty-calculators-calculator .calculator-result {
+      margin: 2em 0;
+      overflow-x: auto;
+    }
+    .thrifty-calculators-calculator .calculator-highlighted-result {
+      display: block;
+      text-align: center;
+      border: 0.1em solid var(--thrifty-calculator-primary-color);
+      border-radius: 0.5em;
+      padding: 1em;
+      background-color: var(--thrifty-calculator-primary-accent-color);
+    }
+    .thrifty-calculators-calculator .calculator-highlighted-result.calculator-highlighted-result--important {
+      background-color: var(--thrifty-calculator-secondary-color);
+      color: white;
+    }
+
+    .thrifty-calculators-calculator .calculator-result .result-value {
+      font-weight: bold;
+    }
+    .thrifty-calculators-calculator .calculator-result .result-error {
+      display: block;
+      text-align: center;
+      border: 0.1em solid var(--thrifty-calculator-error-color);
+      border-radius: 0.5em;
+      padding: 1em;
+      color: var(--thrifty-calculator-error-color);
+    }
+    .thrifty-calculators-calculator h3, .thrifty-calculators-calculator h4, .thrifty-calculators-calculator h5, .thrifty-calculators-calculator h6 {
+      text-transform: uppercase;
+    }
+    .thrifty-calculators-calculator h3 {
+      font-size: 1.75em;
+    }
+    .thrifty-calculators-calculator h4 {
+      font-size: 1.5em;
+    }
+    .thrifty-calculators-calculator h5 {
+      font-size: 1.25em;
+    }
+    .thrifty-calculators-calculator h6 {
+      font-size: 1.125em;
+    }
+    .thrifty-calculators-calculator input, .thrifty-calculators-calculator p, .thrifty-calculators-calculator li {
+      font-size: 1.0em;
+    }
+  </style>
+  <div class="thrifty-calculators-calculator" id="calculator-403b">
+    <div class="calculator-title">403(b) Savings Calculator</div>
+    <section class="calculator-section">
+    <section class="calculator-section">
+      <div class="calculator-section-title">Your Contributions</div>
+      <div class="calculator-input-group" id="salary-group">
+        <div class="calculator-input">
+          <label for="salary" id="salary-label">Annual Salary</label>
+          <span class="input-prefix">$</span>
+          <input type="number" class="" name="salary" id="salary" value="60000" step="1" />
+          <span class="input-suffix"></span>
+        </div>
+      </div>
+      <div class="calculator-input-group" id="annual-increase-group">
+        <div class="calculator-input">
+          <label for="annual-increase" id="annual-increase-label">Annual Increase</label>
+          <input type="number" class="" name="annual-increase" id="annual-increase" value="2.5" step="0.05" />
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+      <div class="calculator-input-group" id="contribution-percentage-group">
+        <div class="calculator-input">
+          <label for="contribution-percentage" id="contribution-percentage-label">403(b) Contribution</label>
+          <input type="number" class="" name="contribution-percentage" id="contribution-percentage" value="10" step="0.1" />
+          <span class="input-suffix">%</span>
+        </div>
+      <div class="calculator-result" id="result-contribution"></div>
+    </section>
+    <section class="calculator-section">
+      <div class="calculator-section-title">Your Employer's Contributions</div>
+      <div class="calculator-input-group" id="empl-contribution-percentage-group">
+        <div class="calculator-input">
+          <label for="empl-contribution-percentage" id="empl-contribution-percentage-label">Percent of Salary</label>
+          <input type="number" class="" name="empl-contribution-percentage" id="empl-contribution-percentage" value="0" step="0.1" />
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+      <div class="calculator-result" id="result-employer"></div>
+    </section>
+    <div class="calculator-section-title">403(b) Performance</div>
+      <div class="calculator-input-group" id="current-balance-group">
+        <div class="calculator-input">
+          <label for="current-balance" id="current-balance-label">Current Balance</label>
+          <span class="input-prefix">$</span>
+          <input type="number" class="" name="current-balance" id="current-balance" value="5000" step="1" />
+          <span class="input-suffix"></span>
+        </div>
+      </div>
+      <div class="calculator-input-group" id="annual-rate-group">
+        <div class="calculator-input">
+          <label for="annual-rate" id="annual-ratecontribution-percentage-label">Annual Return Rate</label>
+          <input type="number" class="" name="annual-rate" id="annual-rate" value="6.5" step="0.1" />
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+      <div class="calculator-input-group" id="annual-fee-group">
+        <div class="calculator-input">
+          <label for="annual-fee" id="annual-fee-label">Annual Fee Rate</label>
+          <input type="number" class="" name="annual-fee" id="annual-fee" value="1" step="0.05" />
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+      <div class="calculator-input-group" id="current-age">
+        <div class="calculator-input">
+          <label for="current-age" id="current-age-label">Current Age</label>
+          <input type="number" class="" name="current-age" id="current-age" value="30" step="1" />
+          <span class="input-suffix"></span>
+        </div>
+      </div>
+      <div class="calculator-input-group" id="retirement-age">
+        <div class="calculator-input">
+          <label for="retirement-age" id="retirement-age-label">Retirement Age</label>
+          <input type="number" class="" name="retirement-age" id="retirement-age" value="65" step="1" />
+          <span class="input-suffix"></span>
+        </div>
+      </div>
+    </section>
+    <div class="calculator-result" id="result-balance"></div>
+    <section class="calculator-section">
+      <div class="calculator-section-title">Amount You Can Withdraw in Retirement</div>
+      <div class="calculator-input-group" id="withdrawal-rate-group">
+        <div class="calculator-input">
+          <label for="withdrawal-rate" id="withdrawal-rate-label">Withdrawal Rate</label>
+          <input type="number" class="" name="withdrawal-rate" id="withdrawal-rate" value="4" step="0.05" />
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+      <div class="calculator-result" id="result-withdrawal"></div>
+    </section>
+  </div>
+</div>
+
+
+
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log("Calculator js running");
+      function tag(type, value = undefined, klass = undefined, id = undefined) {
+        let el = document.createElement(type);
+        if (klass) {
+          el.setAttribute('class', klass);
+        }
+        if (id) {
+          el.setAttribute('id', id);
+        }
+        if (value) {
+          el.innerText = value;
+        }
+        return el;
+      }
+      function baseLog(x, y) {
+        return Math.log(x) / Math.log(y);
+      }
+      function toPercent(value, digits = 2) {
+        if (value == 0) {
+          return '-%';
+        } else {
+          return (value * 100).toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits}) + '%'
+        }
+      }
+      function toCurrency(value, digits = 2) {
+        if (value == 0) {
+          return '-';
+        } else {
+          return '$' + value.toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits})
+        }
+      }
+      function futureValue(payment, returnRate, increaseRate, years, end = false) {
+        if (returnRate == increaseRate) {
+          return payment * years * Math.pow(1 + returnRate, years - 1);
+        } else {
+          let numerator = Math.pow(1 + returnRate, years) - Math.pow(1 + increaseRate, years);
+          let denomenator = (returnRate - increaseRate);
+          if (end) {
+            return payment * numerator / denomenator * (1 + returnRate);
+          }
+          else {
+            return payment * numerator / denomenator;
+          }
+        }
+      }
+
+      console.log("Calculator helper functions loaded");
+      const calculator = document.querySelector('#calculator-403b');
+
+      if (calculator) {
+        console.log("Calculator found");
+
+        const inputs = calculator.querySelectorAll('input');
+        const selects = calculator.querySelectorAll('select');
+
+        /* Inputs */
+        const salaryInput = calculator.querySelector('input#salary');
+        const currentBalanceInput = calculator.querySelector('input#current-balance');
+        const currentAgeInput = calculator.querySelector('input#current-age');
+        const retirementAgeInput = calculator.querySelector('input#retirement-age');
+        
+        const annualIncreaseInput = calculator.querySelector('input#annual-increase');
+        const contributionPercentageInput = calculator.querySelector('input#contribution-percentage');
+        const employerPercentageInput = calculator.querySelector('input#empl-contribution-percentage');
+        const withdrawalRateInput = calculator.querySelector('input#withdrawal-rate');
+        const annualRateInput = calculator.querySelector('input#annual-rate');
+        const annualFeeInput = calculator.querySelector('input#annual-fee');
+        
+        /* Outputs */
+        const resultContribOutput = calculator.querySelector('#result-contribution');
+        const resultEmployerOutput = calculator.querySelector('#result-employer');
+        const resultBalanceOutput = calculator.querySelector('#result-balance');
+        const resultWithdrawalOutput = calculator.querySelector('#result-withdrawal');
+
+        function updateResults() {
+          const salary = parseFloat(salaryInput.value) || 0;
+          const currentBalance = parseFloat(currentBalanceInput.value) || 0;
+          const currentAge = parseFloat(currentAgeInput.value) || 0;
+          const retirementAge = parseFloat(retirementAgeInput.value) || 0;
+          
+          const annualIncrease = parseFloat(annualIncreaseInput.value) / 100.0 || 0;
+          const contributionPercentage = parseFloat(contributionPercentageInput.value) / 100.0 || 0;
+          const employerPercentage = parseFloat(employerPercentageInput.value) / 100.0 || 0;
+          const withdrawalRate = parseFloat(withdrawalRateInput.value) / 100.0 || 0;
+          const annualRate = parseFloat(annualRateInput.value) / 100.0 || 0;
+          const annualFee = parseFloat(annualFeeInput.value) / 100.0 || 0;
+
+          let error = undefined;
+
+          resultContribOutput.innerHTML = '';
+          resultEmployerOutput.innerHTML = '';
+          resultBalanceOutput.innerHTML = '';
+          resultWithdrawalOutput.innerHTML = '';
+
+          if (salary < 0) {
+            let baseText = tag('div', null, 'result-error');
+            baseText.appendChild(document.createTextNode("Salary must be at least $0"));
+            resultContribOutput.appendChild(baseText);
+            return;
+          }
+
+          if (annualIncrease < 0) {
+            let baseText = tag('div', null, 'result-error');
+            baseText.appendChild(document.createTextNode("Annual Increase must be at least 0%"));
+            resultContribOutput.appendChild(baseText);
+            return;
+          }
+
+          if (contributionPercentage < 0) {
+            let baseText = tag('div', null, 'result-error');
+            baseText.appendChild(document.createTextNode("403(b) Contribution must be at least 0%"));
+            resultContribOutput.appendChild(baseText);
+            return;
+          }
+
+          if (employerPercentage < 0) {
+            let baseText = tag('div', null, 'result-error');
+            baseText.appendChild(document.createTextNode("Percent of Salary must be at least 0%"));
+            resultEmployerOutput.appendChild(baseText);
+            return;
+          }
+
+          if (currentBalance < 0) {
+            let baseText = tag('div', null, 'result-error');
+            baseText.appendChild(document.createTextNode("Current Balance must be at least 0"));
+            resultBalanceOutput.appendChild(baseText);
+            return;
+          }
+
+          if (annualRate < 0) {
+            let baseText = tag('div', null, 'result-error');
+            baseText.appendChild(document.createTextNode("Annual Rate must be at least 0"));
+            resultBalanceOutput.appendChild(baseText);
+            return;
+          }
+
+          if (annualFee < 0) {
+            let baseText = tag('div', null, 'result-error');
+            baseText.appendChild(document.createTextNode("Annual Fee must be at least 0"));
+            resultBalanceOutput.appendChild(baseText);
+            return;
+          }
+
+          if (currentAge < 0) {
+            let baseText = tag('div', null, 'result-error');
+            baseText.appendChild(document.createTextNode("Current Age must be at least 0"));
+            resultBalanceOutput.appendChild(baseText);
+            return;
+          }
+
+          if (retirementAge < 0) {
+            let baseText = tag('div', null, 'result-error');
+            baseText.appendChild(document.createTextNode("Retirement Age must be at least 0"));
+            resultBalanceOutput.appendChild(baseText);
+            return;
+          }
+
+          if (retirementAge <= currentAge) {
+            let baseText = tag('div', null, 'result-error');
+            baseText.appendChild(document.createTextNode("Retirement Age must be greater than Current Age"));
+            resultBalanceOutput.appendChild(baseText);
+            return;
+          }
+
+          if (withdrawalRate < 0) {
+            let baseText = tag('div', null, 'result-error');
+            baseText.appendChild(document.createTextNode("Withdrawal Rate must be at at least 0"));
+            resultWithdrawalOutput.appendChild(baseText);
+            return;
+          }
+
+          const years = retirementAge - currentAge;
+          const firstContrib = salary * contributionPercentage;
+          const firstEmplContrib = salary * employerPercentage;
+
+          const yourContributions = futureValue(firstContrib, 0.0, annualIncrease, years);
+          const employerContributions = futureValue(firstEmplContrib, 0.0, annualIncrease, years);
+
+          const contributionGains = futureValue(firstContrib + firstEmplContrib, annualRate - annualFee, annualIncrease, years);
+          const balanceGains = currentBalance * Math.pow(1 + (annualRate - annualFee), years);
+
+          const finalBalance = contributionGains + balanceGains;
+
+          const withdrawal = finalBalance * withdrawalRate;
+
+          if (resultContribOutput) {
+            let outputText = document.createDocumentFragment();
+            
+            let baseText = tag('div', null, 'calculator-highlighted-result');
+
+            baseText.appendChild(document.createTextNode("Your lifetime contributions: "));
+            baseText.appendChild(tag('span', toCurrency(yourContributions, 0), 'result-value'));
+            outputText.appendChild(baseText);
+
+            resultContribOutput.appendChild(outputText);
+          }
+
+          if (resultEmployerOutput) {
+            let outputText = document.createDocumentFragment();
+            
+            let baseText = tag('div', null, 'calculator-highlighted-result');
+
+            baseText.appendChild(document.createTextNode("Your employer's contributions: "));
+            baseText.appendChild(tag('span', toCurrency(employerContributions, 0), 'result-value'));
+            outputText.appendChild(baseText);
+
+            resultEmployerOutput.appendChild(outputText);
+          }
+
+          if (resultBalanceOutput) {
+            let outputText = document.createDocumentFragment();
+            
+            let baseText = tag('div', null, 'calculator-highlighted-result calculator-highlighted-result--important');
+
+            baseText.appendChild(document.createTextNode("Total balance at retirement: "));
+            baseText.appendChild(tag('span', toCurrency(finalBalance, 0), 'result-value'));
+            outputText.appendChild(baseText);
+
+            resultBalanceOutput.appendChild(outputText);
+          }
+
+          if (resultWithdrawalOutput) {
+            resultWithdrawalOutput.innerHTML = '';
+            let outputText = document.createDocumentFragment();
+            
+            let baseText = tag('div', null, 'calculator-highlighted-result');
+
+            baseText.appendChild(document.createTextNode("Amount you can withdraw in your first year of retirement: "));
+            baseText.appendChild(tag('span', toCurrency(withdrawal, 0), 'result-value'));
+            outputText.appendChild(baseText);
+
+            resultWithdrawalOutput.appendChild(outputText);
+          }
+        }
+
+        /* Set calculator to auto-update on input changes */
+        for (let i = 0; i < inputs.length; i += 1) {
+          inputs[i].addEventListener('input', () => {
+            updateResults();
+          });
+        }
+
+        for (let i = 0; i < selects.length; i += 1) {
+          selects[i].addEventListener('input', () => {
+            updateResults();
+          });
+        }
+
+        updateResults();
+      }
+    });
+  </script>
+</body>
+
+</html>
