@@ -1,7 +1,7 @@
 ---
 layout: none
-permalink: /matt-s/cc-payoff
-published: true
+permalink: /matt-s/debt-payoff
+published: false
 sitemap: false
 ---
 <!DOCTYPE html>
@@ -95,7 +95,6 @@ sitemap: false
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    align-content: flex-start;
   }
   .thrifty-calculators-calculator .calculator-field label {
     flex: 2 0 50%;
@@ -126,7 +125,7 @@ sitemap: false
 
   .thrifty-calculators-calculator .calculator-field .calculator-value {
     flex: 0 0 100%;
-    border: 1px solid var(--thrifty-calculator-line-color);
+    border: 1px solid var(--thrifty-calculator-line-color);border-color:
     margin: 0.25rem 0;
     display: flex;
     align-items: center;
@@ -134,29 +133,18 @@ sitemap: false
     transition: border-color 150ms ease-in-out;
   }
   @media screen and (min-width: 768px) {
-    .thrifty-calculators-calculator .calculator-field .calculator-value,
-    .thrifty-calculators-calculator .calculator-result .calculator-field .calculator-value {
+    .thrifty-calculators-calculator .calculator-field .calculator-value {
       flex: 1 0 10rem;
+    }
+    .thrifty-calculators-calculator .calculator-result .calculator-field .calculator-value {
+      flex: 0 0 4rem;
     }
   }
   .thrifty-calculators-calculator .calculator-field .calculator-value:focus-within {
     border-color: var(--thrifty-calculator-primary-color);
   }
-  .thrifty-calculators-calculator .calculator-result label {
-    display: block;
-    text-align: center;
-  }
-  .thrifty-calculators-calculator .calculator-result .calculator-value--output {
+  .thrifty-calculators-calculator .calculator-field .calculator-value--output {
     border-color: transparent;
-    padding: 1rem;
-    text-align: center;
-    font-size: 1.25rem;
-  }
-
-  .thrifty-calculators-calculator .calculator-result .secondary .calculator-value--output {
-    padding: 1rem;
-    text-align: center;
-    font-size: 1rem;
   }
 
   .thrifty-calculators-calculator .calculator-field .calculator-value .input-prefix,
@@ -175,10 +163,9 @@ sitemap: false
     padding: 0.5rem 0;
   }
   .thrifty-calculators-calculator .calculator-result .calculator-value input {
-    flex: 1 0 auto;
-    font-size: 0.8rem;
-    border: none;
-    padding: 0.5rem 0;
+    flex: 0 0 4rem;
+    max-width: 4rem;
+    text-align: right;
   }
   .thrifty-calculators-calculator .calculator-field .calculator-value select:hover,
   .thrifty-calculators-calculator .calculator-field .calculator-value select:focus,
@@ -237,23 +224,6 @@ sitemap: false
     align-items: center;
   }
 
-  .thrifty-calculators-calculator .calculator-field-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  .thrifty-calculators-calculator .calculator-field-group .calculator-field-group__title {
-    flex: 0 0 100%;
-    font-size: 0.9rem;
-    font-style: italic;
-    margin: 0.5rem 0 0;
-  }
-
-  .thrifty-calculators-calculator .calculator-field {
-    flex: 0 0 12rem;
-  }
-
   .thrifty-calculators-calculator .calculator-container {
     border: 1px solid var(--thrifty-calculator-line-color);
     padding: 2rem;
@@ -308,68 +278,87 @@ sitemap: false
   }
 
 </style>
-<div class="thrifty-calculators-calculator" id="cc-payoff-calculator">
+<div class="thrifty-calculators-calculator" id="debt-payoff-calculator">
   <div class="calculator-container">
     <div class="calculator-inputs">
       <div class="calculator-group">
         <div class="calculator-field calculator-field--inline">
-          <label for="current-balance">Current Balance</label>
+          <label for="starting-amount">Initial Debt Amount</label>
           <div class="calculator-value">
             <span class="input-prefix">$</span>
-            <input type="number" class="currency" name="current-balance" id="current-balance" value="5000" min="0" />
+            <input type="number" class="currency" name="starting-amount" id="starting-amount" value="5000" min="0" />
           </div>
         </div>
         <div class="calculator-field calculator-field--inline">
-          <label for="interest-rate">Interest Rate (APR)</label>
+          <label for="initial-term-months">Initial Term Length</label>
+          <div class="calculator-value">
+            <input type="number" name="initial-term-months" id="initial-term-months" value="60" min="1" max="480" />
+            <span class="input-suffix">months</span>
+          </div>
+        </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="term-remaining-months">Term Remaining</label>
+          <div class="calculator-value">
+            <input type="number" name="term-remaining-months" id="term-remaining-months" value="48" min="1" max="480" />
+            <span class="input-suffix">months</span>
+          </div>
+        </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="interest-rate">Interest Rate</label>
           <div class="calculator-value">
             <input type="number" class="percent" name="interest-rate" id="interest-rate" value="6.00" min="0.0" max="100.0" step="0.125"/>
             <span class="input-suffix">%</span>
           </div>
         </div>
-        <div class="calculator-field-group">
-          <div class="calculator-field-group__title">
-            Enter One
-          </div>
-          <div class="calculator-field calculator-field--inline">
-            <label for="monthly-payment">Payment Per Month</label>
-            <div class="calculator-value">
-              <span class="input-prefix">$</span>
-              <input type="number" class="currency" name="monthly-payment" id="monthly-payment" value="50" min="0" />
-            </div>
-          </div>
-          <div class="calculator-field calculator-field--inline">
-            <label for="months-to-payoff">Desired Months To Payoff</label>
-            <div class="calculator-value">
-              <input type="number" name="months-to-payoff" id="months-to-payoff" min="0" />
-              <span class="input-suffix">months</span>
-            </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="extra-monthly-principal">Extra Monthly Principal Payment</label>
+          <div class="calculator-value">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="extra-monthly-principal" id="extra-monthly-principal" value="50" min="0" />
           </div>
         </div>
       </div>
     </div>
     <div class="calculator-result">
-      <div class="calculator-group">
+      <div class="calculator-field-group">
         <div class="calculator-group-title">Results</div>
+        <p id="net-result">With your extra payments each month, you'll pay off your debt X months faster and save $Y in interest.</p>
       </div>
-      <div class="calculator-group">
-        <div class="calculator-field-group">
-          <div class="calculator-field">
-            <label for="monthly-payment-result">Payment Per Month</label>
-            <div class="calculator-value--output">
-              $<span class="result-value" id="monthly-payment-result"></span>
-            </div>
-          </div>
-          <div class="calculator-field">
-            <label for="months-to-payoff-result">Months to Pay Off</label>
-            <div class="calculator-value--output">
-              <span class="result-value" id="months-to-payoff-result"></span>&nbsp;months
-            </div>
+      <div class="calculator-field-group">
+        <div class="calculator-group-title">Summary</div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="monthly-payment">Monthly Payment Amount</label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="monthly-payment" id="monthly-payment" value="1000.00" readonly/>
           </div>
         </div>
-        <div class="calculator-field secondary">
-          <label for="total-interest-result">Total Interest</label>
-          <div class="calculator-value--output">
-            $<span class="result-value" id="total-interest-result"></span>
+        <div class="calculator-field calculator-field--inline">
+          <label for="monthly-prepayment">Monthly Payment Amount (with Extra Payment)</label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="monthly-prepayment" id="monthly-prepayment" value="1000.00" readonly/>
+          </div>
+        </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="original-interest">Total Original Interest Remaining</label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="original-interest" id="original-interest" value="10000.00" readonly/>
+          </div>
+        </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="prepay-interest">Total Interest Remaining with Extra Payments</label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">$</span>
+            <input type="number" class="currency" name="prepay-interest" id="prepay-interest" value="9000.00" readonly/>
+          </div>
+        </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="prepay-months">Months Until Payoff with Extra Payments</label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">&nbsp;</span>
+            <input type="number" name="prepay-months" id="prepay-months" value="42" increment="0.1" readonly/>
           </div>
         </div>
       </div>
@@ -395,86 +384,74 @@ sitemap: false
       const periodRate = rate / 12.0;
       return Math.log(payment / (payment - pv * periodRate)) / Math.log(1 + periodRate)
     }
-    
-    const calculator = document.querySelector('#cc-payoff-calculator');
+    function pv(payment, rate, months) {
+      const periodRate = rate / 12.0;
+      return payment * (1 - Math.pow(1 + periodRate, -months)) / periodRate;
+
+    }
+    console.log("Calculator helper functions loaded");
+    const calculator = document.querySelector('#debt-payoff-calculator');
 
     if (calculator) {
+      console.log("Calculator found");
 
-      console.log(`
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-*                                                       *  
-* Thrifty Calculators                                   *
-*                                                       *
-* Financial Calculators Copyright 2021 WhysWorks LLC    *
-*                                                       *
-* For more information, contact chris@chrisdurheim.com  *
-*                                                       *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-  `)
-      
       const inputs = calculator.querySelectorAll('input');
 
-      const currentBalanceInput = calculator.querySelector('input[name=current-balance]');
-      const monthsToPayoffInput = calculator.querySelector('input[name=months-to-payoff]');
+      const startingAmountInput = calculator.querySelector('input[name=starting-amount]');
+      const initialTermMonthsInput = calculator.querySelector('input[name=initial-term-months]');
+      const termRemainingMonthsInput = calculator.querySelector('input[name=term-remaining-months]');
       const interestRateInput = calculator.querySelector('input[name=interest-rate]');
-      const monthlyPaymentInput = calculator.querySelector('input[name=monthly-payment]');
+      const extraMonthlyPrincipalInput = calculator.querySelector('input[name=extra-monthly-principal]');
 
-      const currentBalanceField = currentBalanceInput.parentNode.parentNode;
-      const monthsToPayoffField = monthsToPayoffInput.parentNode.parentNode;
+      const resultLine = calculator.querySelector('#net-result');
+
+      const startingAmountField = startingAmountInput.parentNode.parentNode;
+      const initialTermMonthsField = initialTermMonthsInput.parentNode.parentNode;
+      const termRemainingMonthsField = termRemainingMonthsInput.parentNode.parentNode;
       const interestRateField = interestRateInput.parentNode.parentNode;
-      const monthlyPaymentField = monthlyPaymentInput.parentNode.parentNode;
-
-      let calculatedFromPayment = true;
-
-      function updateResultsFromPayment() {
-        monthsToPayoffInput.value = '';
-        calculatedFromPayment = true;
-        updateResults();
-      }
-
-      function updateResultsFromTerm() {
-        monthlyPaymentInput.value = '';
-        calculatedFromPayment = false;
-        updateResults();
-      }
+      const extraMonthlyPrincipalField = extraMonthlyPrincipalInput.parentNode.parentNode;
 
       function updateResults() {
-        const monthlyPaymentOutput = calculator.querySelector('#monthly-payment-result');
-        const totalInterestOutput = calculator.querySelector('#total-interest-result');
-        const monthsToPayoffOutput = calculator.querySelector('#months-to-payoff-result');
+        /* Get values */
+        const startingAmount = parseFloat(startingAmountInput.value) || 0;
+        const initialTermMonths = parseFloat(initialTermMonthsInput.value) || 1;
+        const termRemainingMonths = parseFloat(termRemainingMonthsInput.value) || 1;
+        const interestRate = parseFloat(interestRateInput.value) / 100.0 || 0;
+        const extraMonthlyPrincipal = parseFloat(extraMonthlyPrincipalInput.value) || 0;
 
-        delete currentBalanceField.dataset.error;
-        delete monthsToPayoffField.dataset.error;
+        const monthlyPaymentOutput = calculator.querySelector('#monthly-payment');
+        const monthlyPrepaymentOutput = calculator.querySelector('#monthly-prepayment');
+        const originalInterestOutput = calculator.querySelector('#original-interest');
+        const prepayInterestOutput = calculator.querySelector('#prepay-interest');
+        const prepayMonthsOutput = calculator.querySelector('#prepay-months');
+
+        delete startingAmountField.dataset.error;
+        delete initialTermMonthsField.dataset.error;
+        delete termRemainingMonthsField.dataset.error;
         delete interestRateField.dataset.error;
-        delete monthlyPaymentField.dataset.error;
+        delete extraMonthlyPrincipalField.dataset.error;
 
         let breakingError = false;
 
-        const currentBalance = parseFloat(currentBalanceInput.value) ?? 0;
-        const interestRate = parseFloat(interestRateInput.value) / 100.0 ?? 0;
-        const monthsToPayoff = parseFloat(monthsToPayoffInput.value) ?? 1;
-        const monthlyPayment = parseFloat(monthlyPaymentInput.value) ?? 1;
-
-        if (!currentBalanceInput.value) {
+        if (startingAmount <= 0) {
           breakingError = true;
-          currentBalanceField.dataset.error = "You must set current balance";
+          startingAmountField.dataset.error = "Set initial debt amount greater than zero";
         }
 
-        if (!interestRateInput.value) {
+        if (initialTermMonths <= 0) {
           breakingError = true;
-          interestRateField.dataset.error = "You must set interest rate";
+          initialTermMonthsField.dataset.error = "Set initial term length greater than zero";
         }
 
-        if (!monthsToPayoffInput.value && !monthlyPaymentInput.value) {
+        if (termRemainingMonths <= 0) {
           breakingError = true;
-          const message = "You must set either desired months to pay off or payment per month";
-          monthsToPayoffField.dataset.error = message;
-          monthlyPaymentField.dataset.error = message;
+          termRemainingMonthsField.dataset.error = "Set term remaining greater than zero";
         }
 
-        if (currentBalance <= 0) {
+        if (termRemainingMonths > initialTermMonths) {
           breakingError = true;
-          currentBalanceField.dataset.error = "Set initial amount greater than zero";
+          initialTermMonthsField.dataset.error = "Set initial term length higher than term remaining";
+          termRemainingMonthsField.dataset.error = "Set term remaining less than initial term length";
         }
 
         if (interestRate <= 0.0) {
@@ -487,52 +464,43 @@ sitemap: false
           interestRateField.dataset.error = "Set interest rate less than 100%";
         }
 
-        if (monthsToPayoff <= 0) {
+        if (extraMonthlyPrincipal <= 0) {
           breakingError = true;
-          monthsToPayoffField.dataset.error = "Set desired months to pay off greater than zero";
-        }
-
-        if (monthlyPayment <= 0) {
-          breakingError = true;
-          monthlyPaymentField.dataset.error = "Set payment per month greater than zero";
-        }
-
-        let paymentNeeded;
-        let monthsUntilPayoff;
-
-        if (calculatedFromPayment) {
-          paymentNeeded = monthlyPayment;
-          monthsUntilPayoff = nper(currentBalance, interestRate, monthlyPayment);  
-        } else {
-          paymentNeeded = pmt(currentBalance, interestRate, monthsToPayoff);
-          monthsUntilPayoff = monthsToPayoff;
-        }
-
-        const totalInterest = paymentNeeded * monthsUntilPayoff - currentBalance;
-
-        if (!breakingError && (!monthsUntilPayoff || (monthsUntilPayoff == Infinity))) {
-          breakingError = true;
-          monthlyPaymentField.dataset.error = "This payment is insufficient to ever pay off the debt. Increase payment amount.";
+          extraMonthlyPrincipalField.dataset.error = "Set extra monthly principal payment greater than zero";
         }
 
         if (breakingError) {
-          monthlyPaymentOutput.innerHTML = '';
-          monthsToPayoffOutput.innerHTML = '';
-          totalInterestOutput.innerHTML = '';
-          
+          monthlyPaymentOutput.value = 0;
+          monthlyPrepaymentOutput.value = 0;
+          originalInterestOutput.value = 0;
+          prepayInterestOutput.value = 0;
+          prepayMonthsOutput.value = 0;
+          resultLine.innerHTML = 'Error in inputs. Please correct as instructed above';
           return;
         }
 
-        monthlyPaymentOutput.innerHTML = paymentNeeded.toFixed(2);
-        totalInterestOutput.innerHTML = totalInterest.toFixed(2);
-        monthsToPayoffOutput.innerHTML = monthsUntilPayoff.toFixed(1);
+        const payment = pmt(startingAmount, interestRate, initialTermMonths);
+        const amountRemaining = pv(payment, interestRate, termRemainingMonths);
+
+        const prepayPayment = payment + extraMonthlyPrincipal;
+        const prepayRemainingMonths = nper(amountRemaining, interestRate, prepayPayment);
+
+        const timeSavings = termRemainingMonths - prepayRemainingMonths;
+        const interestSavings = payment * termRemainingMonths - prepayPayment * prepayRemainingMonths;
+
+        resultLine.innerHTML = "With your extra payments each month, you'll pay off your debt " + timeSavings.toFixed(1) + " months faster and save " + toCurrency(interestSavings) + " in interest.";
+
+        monthlyPaymentOutput.value = payment.toFixed(2);
+        monthlyPrepaymentOutput.value = (payment + extraMonthlyPrincipal).toFixed(2);
+        originalInterestOutput.value = (payment * termRemainingMonths - amountRemaining).toFixed(2);
+        prepayInterestOutput.value = (prepayPayment * prepayRemainingMonths - amountRemaining).toFixed(2);
+        prepayMonthsOutput.value = prepayRemainingMonths.toFixed(1);
       }
 
       /* Set calculator to auto-update on input changes */
-      currentBalanceInput.addEventListener('input', updateResults);
-      interestRateInput.addEventListener('input', updateResults);
-      monthlyPaymentInput.addEventListener('input', updateResultsFromPayment);
-      monthsToPayoffInput.addEventListener('input', updateResultsFromTerm);
+      for (let i = 0; i < inputs.length; i += 1) {
+        inputs[i].addEventListener('input', updateResults);
+      }
 
       updateResults();
     }
