@@ -142,22 +142,10 @@ sitemap: false
   .thrifty-calculators-calculator .calculator-field .calculator-value:focus-within {
     border-color: var(--thrifty-calculator-primary-color);
   }
-  .thrifty-calculators-calculator .calculator-result label {
-    display: block;
-    text-align: center;
-  }
   .thrifty-calculators-calculator .calculator-result .calculator-value--output {
     border-color: transparent;
-    padding: 1rem;
-    text-align: center;
-    font-size: 1.25rem;
   }
 
-  .thrifty-calculators-calculator .calculator-result .secondary .calculator-value--output {
-    padding: 1rem;
-    text-align: center;
-    font-size: 1rem;
-  }
 
   .thrifty-calculators-calculator .calculator-field .calculator-value .input-prefix,
   .thrifty-calculators-calculator .calculator-field .calculator-value .input-suffix {
@@ -186,7 +174,10 @@ sitemap: false
   .thrifty-calculators-calculator .calculator-field .calculator-value input:focus {
     outline: none;
   }
-  .thrifty-calculators-calculator .calculator-field input.currency {
+  .thrifty-calculators-calculator .calculator-field input.currency,
+  .thrifty-calculators-calculator .calculator-field input.left,
+  .thrifty-calculators-calculator .calculator-result .calculator-field input.currency,
+  .thrifty-calculators-calculator .calculator-result .calculator-field input.left {
     text-align: left;
   }
   .thrifty-calculators-calculator .calculator-field input,
@@ -322,27 +313,25 @@ sitemap: false
         <div class="calculator-field calculator-field--inline">
           <label for="interest-rate">Interest Rate (APR)</label>
           <div class="calculator-value">
-            <input type="number" class="percent" name="interest-rate" id="interest-rate" value="16.00" min="0.0" max="100.0" step="0.125"/>
+            <input type="number" class="percent" name="interest-rate" id="interest-rate" value="16" min="0.0" max="100.0" step="0.01"/>
             <span class="input-suffix">%</span>
           </div>
         </div>
-        <div class="calculator-field-group">
-          <div class="calculator-field-group__title">
-            Enter One
+        <div class="calculator-field-group__title">
+          Enter One:
+        </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="monthly-payment">Payment Per Month</label>
+          <div class="calculator-value">
+            <span class="input-prefix">$</span>
+            <input type="text" class="currency" name="monthly-payment" id="monthly-payment" pattern="[0-9]+([\.,][0-9]+)?" value="150" min="0" />
           </div>
-          <div class="calculator-field calculator-field--inline">
-            <label for="monthly-payment">Payment Per Month</label>
-            <div class="calculator-value">
-              <span class="input-prefix">$</span>
-              <input type="text" class="currency" name="monthly-payment" id="monthly-payment" pattern="[0-9]+([\.,][0-9]+)?" value="150" min="0" />
-            </div>
-          </div>
-          <div class="calculator-field calculator-field--inline">
-            <label for="months-to-payoff">Desired Months To Payoff</label>
-            <div class="calculator-value">
-              <input type="number" name="months-to-payoff" id="months-to-payoff" min="0" />
-              <span class="input-suffix">months</span>
-            </div>
+        </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="months-to-payoff">Desired Months To Payoff</label>
+          <div class="calculator-value">
+            <span class="input-prefix">&nbsp;</span>
+            <input type="number" class="left" name="months-to-payoff" id="months-to-payoff" min="0" />
           </div>
         </div>
       </div>
@@ -350,26 +339,32 @@ sitemap: false
     <div class="calculator-result">
       <div class="calculator-group">
         <div class="calculator-group-title">Results</div>
-      </div>
-      <div class="calculator-group">
-        <div class="calculator-field-group">
-          <div class="calculator-field">
-            <label for="monthly-payment-result">Payment Per Month</label>
-            <div class="calculator-value--output">
-              $<span class="result-value" id="monthly-payment-result"></span>
-            </div>
-          </div>
-          <div class="calculator-field">
-            <label for="months-to-payoff-result">Months to Pay Off</label>
-            <div class="calculator-value--output">
-              <span class="result-value" id="months-to-payoff-result"></span>&nbsp;months
-            </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="monthly-payment-result">Payment Per Month</label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">$</span>
+            <input class="currency" type="text" name="monthly-payment-result" id="monthly-payment-result" readonly/>
           </div>
         </div>
-        <div class="calculator-field secondary">
+        <div class="calculator-field calculator-field--inline">
+          <label for="months-to-payoff-result">Months to Pay Off</label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">&nbsp;</span>
+            <input type="text" class="left" name="months-to-payoff-result" id="months-to-payoff-result" readonly/>
+          </div>
+        </div>
+        <div class="calculator-field calculator-field--inline">
+          <label for="debt-free-date-result">Debt-Free Date</label>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">&nbsp;</span>
+            <input type="text" class="left" name="debt-free-date-result" id="debt-free-date-result" readonly/>
+          </div>
+        </div>
+        <div class="calculator-field calculator-field--inline">
           <label for="total-interest-result">Total Interest</label>
-          <div class="calculator-value--output">
-            $<span class="result-value" id="total-interest-result"></span>
+          <div class="calculator-value calculator-value--output">
+            <span class="input-prefix">$</span>
+            <input type="text" class="currency" name="total-interest-result" id="total-interest-result" readonly />
           </div>
         </div>
       </div>
@@ -397,14 +392,13 @@ sitemap: false
     }
 
     function commasBefore(string, cursorIndex) {
-      // THIS IS WHAT YOU NEED
       const commaRe = /,/g
       const str = string.substr(0,cursorIndex);
       
       return ((str || '').match(commaRe) || []).length
     }
     
-    const PRETTY_NUMBER_REGEX = /^[0-9\.,]+$/
+    const PRETTY_NUMBER_REGEX = /^[0-9,]+$/
     function prettyNumber(event) {
       const el = event.target;
       const cursorAt = el.selectionStart;
@@ -412,26 +406,34 @@ sitemap: false
       const lastVal = el.dataset.lastVal ?? el.defaultValue ?? '';
       const newVal = el.value;
 
+      const latestChar = newVal[cursorAt - 1];
+
       if (newVal === '') {
         el.dataset.lastVal = ''
       } else if (PRETTY_NUMBER_REGEX.test(newVal)) {
-        const newString = parseFloat(event.target.value.replace(/,/g, '')).toLocaleString();        
+        let newString = parseFloat(event.target.value.replace(/,/g, '')).toLocaleString();
+
         el.value = newString;
         el.dataset.lastVal = newString;
 
         const prevCommasBefore = commasBefore(lastVal, cursorAt);
         const newCommasBefore = commasBefore(newString, cursorAt);
 
-        console.log(lastVal, newString);
-        console.log(prevCommasBefore, newCommasBefore);
-
         const newCursor = cursorAt + (newCommasBefore - prevCommasBefore);
 
         el.setSelectionRange(newCursor, newCursor)
       } else {
         el.value = lastVal;
+        el.setSelectionRange(cursorAt - 1, cursorAt - 1)
       }
 
+    }
+
+    const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 
+      'September', 'October', 'November', 'December'];
+
+    function formattedDate(date) {
+      return MONTH_NAMES[date.getMonth()] + ' ' + date.getFullYear();
     }
 
     const calculator = document.querySelector('#cc-payoff-calculator');
@@ -480,6 +482,7 @@ sitemap: false
         const monthlyPaymentOutput = calculator.querySelector('#monthly-payment-result');
         const totalInterestOutput = calculator.querySelector('#total-interest-result');
         const monthsToPayoffOutput = calculator.querySelector('#months-to-payoff-result');
+        const debtFreeDateOutput = calculator.querySelector('#debt-free-date-result');
 
         delete currentBalanceField.dataset.error;
         delete monthsToPayoffField.dataset.error;
@@ -554,16 +557,21 @@ sitemap: false
         }
 
         if (breakingError) {
-          monthlyPaymentOutput.innerHTML = '';
-          monthsToPayoffOutput.innerHTML = '';
-          totalInterestOutput.innerHTML = '';
+          monthlyPaymentOutput.value = '';
+          monthsToPayoffOutput.value = '';
+          totalInterestOutput.value = '';
+          debtFreeDateOutput.value = '';
           
           return;
         }
 
-        monthlyPaymentOutput.innerHTML = paymentNeeded.toFixed(2);
-        totalInterestOutput.innerHTML = totalInterest.toFixed(2);
-        monthsToPayoffOutput.innerHTML = monthsUntilPayoff.toFixed(1);
+        const payoff = new Date();
+        payoff.setMilliseconds(1000 * 3600 * 24 * 365.2425/12.0 * monthsUntilPayoff);
+
+        monthlyPaymentOutput.value = paymentNeeded.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
+        totalInterestOutput.value = totalInterest.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
+        monthsToPayoffOutput.value = monthsUntilPayoff.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
+        debtFreeDateOutput.value = formattedDate(payoff);
       }
 
       currentBalanceInput.addEventListener('input', prettyNumber);
