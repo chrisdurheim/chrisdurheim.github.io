@@ -307,13 +307,13 @@ sitemap: false
           <label for="current-balance">Current Balance</label>
           <div class="calculator-value">
             <span class="input-prefix">$</span>
-            <input type="text" class="currency" name="current-balance" id="current-balance" pattern="[0-9]+([\.,][0-9]+)?" value="5,000" min="0" />
+            <input type="text" class="currency" name="current-balance" id="current-balance" pattern="[0-9]+([\.,][0-9]+)?"  placeholder="e.g. 5,000" min="0" />
           </div>
         </div>
         <div class="calculator-field calculator-field--inline">
           <label for="interest-rate">Interest Rate (APR)</label>
           <div class="calculator-value">
-            <input type="number" class="percent" name="interest-rate" id="interest-rate" value="16" min="0.0" max="100.0" step="0.01"/>
+            <input type="number" class="percent" name="interest-rate" id="interest-rate" placeholder="e.g. 16" min="0.0" max="100.0" step="0.01"/>
             <span class="input-suffix">%</span>
           </div>
         </div>
@@ -324,14 +324,14 @@ sitemap: false
           <label for="monthly-payment">Payment Per Month</label>
           <div class="calculator-value">
             <span class="input-prefix">$</span>
-            <input type="text" class="currency" name="monthly-payment" id="monthly-payment" pattern="[0-9]+([\.,][0-9]+)?" value="150" min="0" />
+            <input type="text" class="currency" name="monthly-payment" id="monthly-payment" pattern="[0-9]+([\.,][0-9]+)?" placeholder="e.g. 150" min="0" />
           </div>
         </div>
         <div class="calculator-field calculator-field--inline">
           <label for="months-to-payoff">Desired Months To Payoff</label>
           <div class="calculator-value">
             <span class="input-prefix">&nbsp;</span>
-            <input type="number" class="left" name="months-to-payoff" id="months-to-payoff" min="0" />
+            <input type="number" class="left" name="months-to-payoff" id="months-to-payoff" placeholder="e.g. 44" min="0" />
           </div>
         </div>
       </div>
@@ -498,19 +498,14 @@ sitemap: false
 
         if (!currentBalanceInput.value) {
           breakingError = true;
-          currentBalanceField.dataset.error = "You must set current balance";
         }
 
         if (!interestRateInput.value) {
           breakingError = true;
-          interestRateField.dataset.error = "You must set interest rate";
         }
 
         if (!monthsToPayoffInput.value && !monthlyPaymentInput.value) {
           breakingError = true;
-          const message = "You must set either desired months to pay off or payment per month";
-          monthsToPayoffField.dataset.error = message;
-          monthlyPaymentField.dataset.error = message;
         }
 
         if (currentBalance <= 0) {
