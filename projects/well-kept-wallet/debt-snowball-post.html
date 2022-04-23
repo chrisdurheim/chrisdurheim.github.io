@@ -2,7 +2,7 @@
 layout: none
 permalink: /well-kept-wallet/debt-snowball
 
-sitemap: false
+sitemap: true
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -44,6 +44,7 @@ sitemap: false
       padding: 0;
       vertical-align: initial;
       text-align: center;
+      border: none;
     }
     .debt-snowball-calculator .calculator-header {
       font-family: var(--calculator-heading-font);
@@ -60,6 +61,7 @@ sitemap: false
     }
     .debt-snowball-calculator .calculator-body .calculator-inputs table.calculator-debt-lines {
       margin: 0 auto;
+      border: none;
     }
     .debt-snowball-calculator .calculator-body .calculator-inputs tbody {
       font-family: var(--calculator-heading-font);
@@ -268,8 +270,7 @@ sitemap: false
       }
     }
 
-    @media screen and (min-width: 768px) and (max-width: 959px),
-           screen and (min-width: 1200px) {
+    @media screen and (min-width: 1130px) {
       .debt-snowball-calculator .calculator-body .calculator-inputs thead {
         display: table-header-group;
       }
