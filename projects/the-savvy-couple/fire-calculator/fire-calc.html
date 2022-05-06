@@ -1,0 +1,271 @@
+---
+layout: none
+permalink: /tsc/fire-calculator
+published: true
+sitemap: false
+---
+
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;1,400;1,500&family=Oswald:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #ffffff;
+      font-size: 18px;
+      font-family: Oswald;
+      --font-body: Oswald;
+      --font-heading: Oswald;
+      --color-line: rgba(127,127,127,0.5);
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const t=window.ShadowRoot&&(void 0===window.ShadyCSS||window.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,e=Symbol(),r=new Map;class i{constructor(t,r){if(this._$cssResult$=!0,r!==e)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t}get styleSheet(){let e=r.get(this.cssText);return t&&void 0===e&&(r.set(this.cssText,e=new CSSStyleSheet),e.replaceSync(this.cssText)),e}toString(){return this.cssText}}const o=(t,...r)=>{const o=1===t.length?t[0]:r.reduce(((e,r,i)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(r)+t[i+1]),t[0]);return new i(o,e)},s=t?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let r="";for(const e of t.cssRules)r+=e.cssText;return(t=>new i("string"==typeof t?t:t+"",e))(r)})(t):t;var n;const l=window.trustedTypes,a=l?l.emptyScript:"",u=window.reactiveElementPolyfillSupport,c={toAttribute(t,e){switch(e){case Boolean:t=t?a:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let r=t;switch(e){case Boolean:r=null!==t;break;case Number:r=null===t?null:Number(t);break;case Object:case Array:try{r=JSON.parse(t)}catch(t){r=null}}return r}},d=(t,e)=>e!==t&&(e==e||t==t),h={attribute:!0,type:String,converter:c,reflect:!1,hasChanged:d};class p extends HTMLElement{constructor(){super(),this._$Et=new Map,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Ei=null,this.o()}static addInitializer(t){var e;null!==(e=this.l)&&void 0!==e||(this.l=[]),this.l.push(t)}static get observedAttributes(){this.finalize();const t=[];return this.elementProperties.forEach(((e,r)=>{const i=this._$Eh(r,e);void 0!==i&&(this._$Eu.set(i,r),t.push(i))})),t}static createProperty(t,e=h){if(e.state&&(e.attribute=!1),this.finalize(),this.elementProperties.set(t,e),!e.noAccessor&&!this.prototype.hasOwnProperty(t)){const r="symbol"==typeof t?Symbol():"__"+t,i=this.getPropertyDescriptor(t,r,e);void 0!==i&&Object.defineProperty(this.prototype,t,i)}}static getPropertyDescriptor(t,e,r){return{get(){return this[e]},set(i){const o=this[t];this[e]=i,this.requestUpdate(t,o,r)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)||h}static finalize(){if(this.hasOwnProperty("finalized"))return!1;this.finalized=!0;const t=Object.getPrototypeOf(this);if(t.finalize(),this.elementProperties=new Map(t.elementProperties),this._$Eu=new Map,this.hasOwnProperty("properties")){const t=this.properties,e=[...Object.getOwnPropertyNames(t),...Object.getOwnPropertySymbols(t)];for(const r of e)this.createProperty(r,t[r])}return this.elementStyles=this.finalizeStyles(this.styles),!0}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const r=new Set(t.flat(1/0).reverse());for(const t of r)e.unshift(s(t))}else void 0!==t&&e.push(s(t));return e}static _$Eh(t,e){const r=e.attribute;return!1===r?void 0:"string"==typeof r?r:"string"==typeof t?t.toLowerCase():void 0}o(){var t;this._$Ep=new Promise((t=>this.enableUpdating=t)),this._$AL=new Map,this._$Em(),this.requestUpdate(),null===(t=this.constructor.l)||void 0===t||t.forEach((t=>t(this)))}addController(t){var e,r;(null!==(e=this._$Eg)&&void 0!==e?e:this._$Eg=[]).push(t),void 0!==this.renderRoot&&this.isConnected&&(null===(r=t.hostConnected)||void 0===r||r.call(t))}removeController(t){var e;null===(e=this._$Eg)||void 0===e||e.splice(this._$Eg.indexOf(t)>>>0,1)}_$Em(){this.constructor.elementProperties.forEach(((t,e)=>{this.hasOwnProperty(e)&&(this._$Et.set(e,this[e]),delete this[e])}))}createRenderRoot(){var e;const r=null!==(e=this.shadowRoot)&&void 0!==e?e:this.attachShadow(this.constructor.shadowRootOptions);return((e,r)=>{t?e.adoptedStyleSheets=r.map((t=>t instanceof CSSStyleSheet?t:t.styleSheet)):r.forEach((t=>{const r=document.createElement("style"),i=window.litNonce;void 0!==i&&r.setAttribute("nonce",i),r.textContent=t.cssText,e.appendChild(r)}))})(r,this.constructor.elementStyles),r}connectedCallback(){var t;void 0===this.renderRoot&&(this.renderRoot=this.createRenderRoot()),this.enableUpdating(!0),null===(t=this._$Eg)||void 0===t||t.forEach((t=>{var e;return null===(e=t.hostConnected)||void 0===e?void 0:e.call(t)}))}enableUpdating(t){}disconnectedCallback(){var t;null===(t=this._$Eg)||void 0===t||t.forEach((t=>{var e;return null===(e=t.hostDisconnected)||void 0===e?void 0:e.call(t)}))}attributeChangedCallback(t,e,r){this._$AK(t,r)}_$ES(t,e,r=h){var i,o;const s=this.constructor._$Eh(t,r);if(void 0!==s&&!0===r.reflect){const n=(null!==(o=null===(i=r.converter)||void 0===i?void 0:i.toAttribute)&&void 0!==o?o:c.toAttribute)(e,r.type);this._$Ei=t,null==n?this.removeAttribute(s):this.setAttribute(s,n),this._$Ei=null}}_$AK(t,e){var r,i,o;const s=this.constructor,n=s._$Eu.get(t);if(void 0!==n&&this._$Ei!==n){const t=s.getPropertyOptions(n),l=t.converter,a=null!==(o=null!==(i=null===(r=l)||void 0===r?void 0:r.fromAttribute)&&void 0!==i?i:"function"==typeof l?l:null)&&void 0!==o?o:c.fromAttribute;this._$Ei=n,this[n]=a(e,t.type),this._$Ei=null}}requestUpdate(t,e,r){let i=!0;void 0!==t&&(((r=r||this.constructor.getPropertyOptions(t)).hasChanged||d)(this[t],e)?(this._$AL.has(t)||this._$AL.set(t,e),!0===r.reflect&&this._$Ei!==t&&(void 0===this._$EC&&(this._$EC=new Map),this._$EC.set(t,r))):i=!1),!this.isUpdatePending&&i&&(this._$Ep=this._$E_())}async _$E_(){this.isUpdatePending=!0;try{await this._$Ep}catch(t){Promise.reject(t)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){var t;if(!this.isUpdatePending)return;this.hasUpdated,this._$Et&&(this._$Et.forEach(((t,e)=>this[e]=t)),this._$Et=void 0);let e=!1;const r=this._$AL;try{e=this.shouldUpdate(r),e?(this.willUpdate(r),null===(t=this._$Eg)||void 0===t||t.forEach((t=>{var e;return null===(e=t.hostUpdate)||void 0===e?void 0:e.call(t)})),this.update(r)):this._$EU()}catch(t){throw e=!1,this._$EU(),t}e&&this._$AE(r)}willUpdate(t){}_$AE(t){var e;null===(e=this._$Eg)||void 0===e||e.forEach((t=>{var e;return null===(e=t.hostUpdated)||void 0===e?void 0:e.call(t)})),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EU(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$Ep}shouldUpdate(t){return!0}update(t){void 0!==this._$EC&&(this._$EC.forEach(((t,e)=>this._$ES(e,this[e],t))),this._$EC=void 0),this._$EU()}updated(t){}firstUpdated(t){}}var f;p.finalized=!0,p.elementProperties=new Map,p.elementStyles=[],p.shadowRootOptions={mode:"open"},null==u||u({ReactiveElement:p}),(null!==(n=globalThis.reactiveElementVersions)&&void 0!==n?n:globalThis.reactiveElementVersions=[]).push("1.3.1");const m=globalThis.trustedTypes,v=m?m.createPolicy("lit-html",{createHTML:t=>t}):void 0,b=`lit$${(Math.random()+"").slice(9)}$`,g="?"+b,$=`<${g}>`,y=document,_=(t="")=>y.createComment(t),A=t=>null===t||"object"!=typeof t&&"function"!=typeof t,x=Array.isArray,E=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,w=/-->/g,S=/>/g,C=/>|[ 	\n\r](?:([^\s"'>=/]+)([ 	\n\r]*=[ 	\n\r]*(?:[^ 	\n\r"'`<>=]|("|')|))|$)/g,R=/'/g,k=/"/g,U=/^(?:script|style|textarea|title)$/i,P=(t=>(e,...r)=>({_$litType$:t,strings:e,values:r}))(1),N=Symbol.for("lit-noChange"),H=Symbol.for("lit-nothing"),T=new WeakMap,M=y.createTreeWalker(y,129,null,!1),O=(t,e)=>{const r=t.length-1,i=[];let o,s=2===e?"<svg>":"",n=E;for(let e=0;e<r;e++){const r=t[e];let l,a,u=-1,c=0;for(;c<r.length&&(n.lastIndex=c,a=n.exec(r),null!==a);)c=n.lastIndex,n===E?"!--"===a[1]?n=w:void 0!==a[1]?n=S:void 0!==a[2]?(U.test(a[2])&&(o=RegExp("</"+a[2],"g")),n=C):void 0!==a[3]&&(n=C):n===C?">"===a[0]?(n=null!=o?o:E,u=-1):void 0===a[1]?u=-2:(u=n.lastIndex-a[2].length,l=a[1],n=void 0===a[3]?C:'"'===a[3]?k:R):n===k||n===R?n=C:n===w||n===S?n=E:(n=C,o=void 0);const d=n===C&&t[e+1].startsWith("/>")?" ":"";s+=n===E?r+$:u>=0?(i.push(l),r.slice(0,u)+"$lit$"+r.slice(u)+b+d):r+b+(-2===u?(i.push(void 0),e):d)}const l=s+(t[r]||"<?>")+(2===e?"</svg>":"");if(!Array.isArray(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return[void 0!==v?v.createHTML(l):l,i]};class V{constructor({strings:t,_$litType$:e},r){let i;this.parts=[];let o=0,s=0;const n=t.length-1,l=this.parts,[a,u]=O(t,e);if(this.el=V.createElement(a,r),M.currentNode=this.el.content,2===e){const t=this.el.content,e=t.firstChild;e.remove(),t.append(...e.childNodes)}for(;null!==(i=M.nextNode())&&l.length<n;){if(1===i.nodeType){if(i.hasAttributes()){const t=[];for(const e of i.getAttributeNames())if(e.endsWith("$lit$")||e.startsWith(b)){const r=u[s++];if(t.push(e),void 0!==r){const t=i.getAttribute(r.toLowerCase()+"$lit$").split(b),e=/([.?@])?(.*)/.exec(r);l.push({type:1,index:o,name:e[2],strings:t,ctor:"."===e[1]?D:"?"===e[1]?j:"@"===e[1]?F:B})}else l.push({type:6,index:o})}for(const e of t)i.removeAttribute(e)}if(U.test(i.tagName)){const t=i.textContent.split(b),e=t.length-1;if(e>0){i.textContent=m?m.emptyScript:"";for(let r=0;r<e;r++)i.append(t[r],_()),M.nextNode(),l.push({type:2,index:++o});i.append(t[e],_())}}}else if(8===i.nodeType)if(i.data===g)l.push({type:2,index:o});else{let t=-1;for(;-1!==(t=i.data.indexOf(b,t+1));)l.push({type:7,index:o}),t+=b.length-1}o++}}static createElement(t,e){const r=y.createElement("template");return r.innerHTML=t,r}}function z(t,e,r=t,i){var o,s,n,l;if(e===N)return e;let a=void 0!==i?null===(o=r._$Cl)||void 0===o?void 0:o[i]:r._$Cu;const u=A(e)?void 0:e._$litDirective$;return(null==a?void 0:a.constructor)!==u&&(null===(s=null==a?void 0:a._$AO)||void 0===s||s.call(a,!1),void 0===u?a=void 0:(a=new u(t),a._$AT(t,r,i)),void 0!==i?(null!==(n=(l=r)._$Cl)&&void 0!==n?n:l._$Cl=[])[i]=a:r._$Cu=a),void 0!==a&&(e=z(t,a._$AS(t,e.values),a,i)),e}class L{constructor(t,e){this.v=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}p(t){var e;const{el:{content:r},parts:i}=this._$AD,o=(null!==(e=null==t?void 0:t.creationScope)&&void 0!==e?e:y).importNode(r,!0);M.currentNode=o;let s=M.nextNode(),n=0,l=0,a=i[0];for(;void 0!==a;){if(n===a.index){let e;2===a.type?e=new I(s,s.nextSibling,this,t):1===a.type?e=new a.ctor(s,a.name,a.strings,this,t):6===a.type&&(e=new W(s,this,t)),this.v.push(e),a=i[++l]}n!==(null==a?void 0:a.index)&&(s=M.nextNode(),n++)}return o}m(t){let e=0;for(const r of this.v)void 0!==r&&(void 0!==r.strings?(r._$AI(t,r,e),e+=r.strings.length-2):r._$AI(t[e])),e++}}class I{constructor(t,e,r,i){var o;this.type=2,this._$AH=H,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=r,this.options=i,this._$Cg=null===(o=null==i?void 0:i.isConnected)||void 0===o||o}get _$AU(){var t,e;return null!==(e=null===(t=this._$AM)||void 0===t?void 0:t._$AU)&&void 0!==e?e:this._$Cg}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=z(this,t,e),A(t)?t===H||null==t||""===t?(this._$AH!==H&&this._$AR(),this._$AH=H):t!==this._$AH&&t!==N&&this.$(t):void 0!==t._$litType$?this.T(t):void 0!==t.nodeType?this.k(t):(t=>{var e;return x(t)||"function"==typeof(null===(e=t)||void 0===e?void 0:e[Symbol.iterator])})(t)?this.S(t):this.$(t)}M(t,e=this._$AB){return this._$AA.parentNode.insertBefore(t,e)}k(t){this._$AH!==t&&(this._$AR(),this._$AH=this.M(t))}$(t){this._$AH!==H&&A(this._$AH)?this._$AA.nextSibling.data=t:this.k(y.createTextNode(t)),this._$AH=t}T(t){var e;const{values:r,_$litType$:i}=t,o="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=V.createElement(i.h,this.options)),i);if((null===(e=this._$AH)||void 0===e?void 0:e._$AD)===o)this._$AH.m(r);else{const t=new L(o,this),e=t.p(this.options);t.m(r),this.k(e),this._$AH=t}}_$AC(t){let e=T.get(t.strings);return void 0===e&&T.set(t.strings,e=new V(t)),e}S(t){x(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let r,i=0;for(const o of t)i===e.length?e.push(r=new I(this.M(_()),this.M(_()),this,this.options)):r=e[i],r._$AI(o),i++;i<e.length&&(this._$AR(r&&r._$AB.nextSibling,i),e.length=i)}_$AR(t=this._$AA.nextSibling,e){var r;for(null===(r=this._$AP)||void 0===r||r.call(this,!1,!0,e);t&&t!==this._$AB;){const e=t.nextSibling;t.remove(),t=e}}setConnected(t){var e;void 0===this._$AM&&(this._$Cg=t,null===(e=this._$AP)||void 0===e||e.call(this,t))}}class B{constructor(t,e,r,i,o){this.type=1,this._$AH=H,this._$AN=void 0,this.element=t,this.name=e,this._$AM=i,this.options=o,r.length>2||""!==r[0]||""!==r[1]?(this._$AH=Array(r.length-1).fill(new String),this.strings=r):this._$AH=H}get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}_$AI(t,e=this,r,i){const o=this.strings;let s=!1;if(void 0===o)t=z(this,t,e,0),s=!A(t)||t!==this._$AH&&t!==N,s&&(this._$AH=t);else{const i=t;let n,l;for(t=o[0],n=0;n<o.length-1;n++)l=z(this,i[r+n],e,n),l===N&&(l=this._$AH[n]),s||(s=!A(l)||l!==this._$AH[n]),l===H?t=H:t!==H&&(t+=(null!=l?l:"")+o[n+1]),this._$AH[n]=l}s&&!i&&this.C(t)}C(t){t===H?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,null!=t?t:"")}}class D extends B{constructor(){super(...arguments),this.type=3}C(t){this.element[this.name]=t===H?void 0:t}}const q=m?m.emptyScript:"";class j extends B{constructor(){super(...arguments),this.type=4}C(t){t&&t!==H?this.element.setAttribute(this.name,q):this.element.removeAttribute(this.name)}}class F extends B{constructor(t,e,r,i,o){super(t,e,r,i,o),this.type=5}_$AI(t,e=this){var r;if((t=null!==(r=z(this,t,e,0))&&void 0!==r?r:H)===N)return;const i=this._$AH,o=t===H&&i!==H||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,s=t!==H&&(i===H||o);o&&this.element.removeEventListener(this.name,this,i),s&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){var e,r;"function"==typeof this._$AH?this._$AH.call(null!==(r=null===(e=this.options)||void 0===e?void 0:e.host)&&void 0!==r?r:this.element,t):this._$AH.handleEvent(t)}}class W{constructor(t,e,r){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=r}get _$AU(){return this._$AM._$AU}_$AI(t){z(this,t)}}const G=window.litHtmlPolyfillSupport;var J,K;null==G||G(V,I),(null!==(f=globalThis.litHtmlVersions)&&void 0!==f?f:globalThis.litHtmlVersions=[]).push("2.2.2");class Y extends p{constructor(){super(...arguments),this.renderOptions={host:this},this._$Dt=void 0}createRenderRoot(){var t,e;const r=super.createRenderRoot();return null!==(t=(e=this.renderOptions).renderBefore)&&void 0!==t||(e.renderBefore=r.firstChild),r}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Dt=((t,e,r)=>{var i,o;const s=null!==(i=null==r?void 0:r.renderBefore)&&void 0!==i?i:e;let n=s._$litPart$;if(void 0===n){const t=null!==(o=null==r?void 0:r.renderBefore)&&void 0!==o?o:null;s._$litPart$=n=new I(e.insertBefore(_(),t),t,void 0,null!=r?r:{})}return n._$AI(t),n})(e,this.renderRoot,this.renderOptions)}connectedCallback(){var t;super.connectedCallback(),null===(t=this._$Dt)||void 0===t||t.setConnected(!0)}disconnectedCallback(){var t;super.disconnectedCallback(),null===(t=this._$Dt)||void 0===t||t.setConnected(!1)}render(){return N}}Y.finalized=!0,Y._$litElement$=!0,null===(J=globalThis.litElementHydrateSupport)||void 0===J||J.call(globalThis,{LitElement:Y});const Z=globalThis.litElementPolyfillSupport;null==Z||Z({LitElement:Y}),(null!==(K=globalThis.litElementVersions)&&void 0!==K?K:globalThis.litElementVersions=[]).push("3.2.0");function Q(t,e,r){return e in t?Object.defineProperty(t,e,{value:r,enumerable:!0,configurable:!0,writable:!0}):t[e]=r,t}const X=t=>{const e=t.toString().replace(/[^\d.-]/g,"").split(".");return e.length>1?e[0]+"."+e[1]:e[0]},tt=(t,e=0)=>{const r=X(t).split(".");let i=r[0].replace(/\B(?=(\d{3})+(?!\d))/g,",");return r.length<=1||0===e?i:i+"."+r[1].substr(0,e)};window.customElements.define("thrifty-calculator",class extends Y{static get styles(){return o`
+      :host {
+        display: block;
+        padding: 25px;
+        color: var(--thrifty-calculator-text-color, #000);
+      }
+    `}static get properties(){return{title:{type:String},counter:{type:Number}}}constructor(){super(),this.title="Hey there",this.counter=5}__increment(){this.counter+=1}render(){return P`
+      <h2>${this.title} Nr. ${this.counter}!</h2>
+      <button @click=${this.__increment}>increment</button>
+    `}}),window.customElements.define("fire-calculator",class extends Y{static get styles(){return o`
+      :host {
+      }
+      .calculator-panel {
+        box-shadow: 0 0 10px 1px rgb(0 0 0 / 11%);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: left;
+        margin: 2rem;
+        max-width: 480px;
+        padding: 1em;
+      }
+      h2 {
+        flex: 0 0 100%;
+        color: var(--color-primary, blue);
+        font-family: var(--font-heading, serif);
+        text-align: center;
+        text-transform: uppercase;
+      }
+      input-numeric, .button-holder {
+        flex: 0 0 50%;
+        --size: calc(100% - 1em);
+      }
+      .button-holder {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 1em 0 2.25em;
+        max-width: calc(100% - 1em);
+      }
+      .button-holder button {
+        background-color: var(--color-accent, blue);
+        color: var(--color-background, white);
+        font-size: 1.5em;
+        font-family: var(--font-heading, serif);
+        text-shadow: 0 0 0 rgb(0 0 0 / 30%);
+        background-color: ;
+        text-transform: uppercase;
+        padding: 0.5em 1em;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        outline: none;
+      }
+      .button-holder button:focus {
+        outline: var(--color-primary) solid 2px;
+      }
+      .results {
+        display: flex;
+        flex: 0 0 100%;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: stretch;
+      }
+      .results result-box {
+        flex: 1 0 5em;
+        margin: 1em;
+      }
+      @media screen and (max-width: 1024px) {
+        .calculator-panel {
+          max-width: 300px;
+        }
+        input-numeric {
+          flex: 0 0 100%;
+        }
+        .button-holder {
+          flex: 0 0 100%;
+          max-width: 100%;
+        }
+      }
+    `}static get properties(){return{}}constructor(){super(),Q(this,"inputs",(()=>this.renderRoot.querySelectorAll("input-numeric"))),Q(this,"invalid",(()=>{const t=this.inputs();t.forEach((t=>{const e=parseFloat(t.value);e||0==e||(t.dataset.error="Enter a value")}));return Array.from(t).some((t=>t.dataset.error))})),Q(this,"_calculate",(()=>{if(this.invalid())return this.fireAgeResultElement.value="---",void(this.fireGoalResultElement.value="---");const t=this.startingAge,e=Math.pow(1+this.investmentRateOfReturn,1/12)-1,r=this.monthlyContribution,i=this.annualRetirementExpenses/.04;let o,s=this.startingPortfolio;for(o=0;o<=1200&&!(s>i);o+=1)s=s*(1+e)+r;this.fireAgeResultElement.value=s>=i?`${tt(t+o/12)}`:"Never",this.fireGoalResultElement.value=`$${tt(i)}`}))}firstUpdated(){this.renderRoot.querySelector(".button-holder button").addEventListener("click",this._calculate)}get startingAge(){return parseFloat(this.renderRoot.querySelector('input-numeric[name="age"]').value)}get startingPortfolio(){return parseFloat(this.renderRoot.querySelector('input-numeric[name="portfolio"]').value)}get monthlyContribution(){return parseFloat(this.renderRoot.querySelector('input-numeric[name="contribution"]').value)}get investmentRateOfReturn(){return parseFloat(this.renderRoot.querySelector('input-numeric[name="rate"]').value)/100}get annualRetirementExpenses(){return parseFloat(this.renderRoot.querySelector('input-numeric[name="expenses"]').value)}get fireAgeResultElement(){return this.renderRoot.querySelector('result-box[name="fire-age"]')}get fireGoalResultElement(){return this.renderRoot.querySelector('result-box[name="fire-goal"]')}render(){return P`
+      <div class="calculator-panel">
+        <h2>FIRE Calculator</h2>
+        <input-numeric name="age" label="Current Age" suffix="years" min=0 max=120></input-numeric>
+        <input-numeric name="portfolio" label="Retirement Portfolio" prefix="$" min=0></input-numeric>
+        <input-numeric name="contribution" label="Monthly Contribution" prefix="$" suffix="/month" min=0></input-numeric>
+        <input-numeric name="rate" label="Investment Rate of Return" suffix="%" min=0 max=20 max-decimals=2></input-numeric>
+        <input-numeric name="expenses" label="Annual Expenses" prefix="$" suffix="/year" min=1></input-numeric>
+        <div class="button-holder"><button>Calculate</button></div>
+        <div class="results">
+          <result-box name="fire-age" label="Your FIRE Age"></result-box>
+          <result-box name="fire-goal" label="Your FIRE Goal"></result-box>
+        </div>
+      </div>
+    `}}),window.customElements.define("input-numeric",class extends Y{static get styles(){return o`
+      :host {
+        --default-color-accent: yellow;
+        --default-color-basic: black;
+        --default-color-background: white;
+        --default-color-disabled: darkgray;
+        --default-color-error: red;
+        --default-color-line: darkgray;
+        --default-color-primary: blue;
+        --default-font-body: Open Sans, Helvetica, sans-serif;
+
+        color: var(--color-basic, var(--default-color-basic));
+        font-family: var(--font-body, var(--default-font-body));
+      }
+      .input {
+        background-color: var(--color-background, var(--default-color-background));
+        border: 1px solid var(--color-line, var(--default-color-line));
+        border-radius: 0.25em;
+        display: flex;
+        flex-wrap: nowrap;
+        line-height: 1.5;
+        margin: 1em 0.5em 2.25em;
+        max-width: var(--size, 12em);
+        min-width: fit-content;
+        min-height: 1.5em;
+        padding: 0.5em 0.25em;
+        position: relative;
+      }
+      .input:focus-within {
+        border-color: var(--color-primary, var(--default-color-primary));
+        color: var(--color-primary, var(--default-color-primary));
+      }
+      .input input {
+        background-color: var(--color-background, var(--default-color-background));
+        border: none;
+        flex: 1 0 1em;
+        font-family: var(--font-body, var(--default-font-body));
+        font-size: 1em;
+        line-height: 1.5;
+        width: 1em;
+        outline: none;
+        padding: 0 0.25em;
+      }
+      .input:focus-within input {
+        color: var(--color-primary, var(--default-color-primary));
+      }
+      .input .prefix,
+      .input .suffix {
+        color: var(--color-basic, var(--default-color-basic));
+        flex: 0 0 auto;
+      }
+      .input:focus-within .prefix,
+      .input:focus-within .suffix {
+        color: var(--color-primary, var(--default-color-primary));
+      }
+      .input label {
+        background-color: transparent;
+        border-radius: 0.25em;
+        color: var(--color-disabled, var(--default-color-disabled));
+        padding: 0 0.25em;
+        position: absolute;
+        left: 0;
+        transition: transform 150ms, background-color 150ms;
+      }
+      .input:focus-within input + label,
+      .input input:not(:placeholder-shown) + label,
+      .input .prefix + input + label,
+      .input input + .suffix + label {
+        background-color: var(--color-background, var(--default-color-background));
+        color: var(--color-basic, var(--default-color-basic));
+        transform: scale(0.75) translate(calc(-100% / 6 + 0.5em), calc(-1.5em - 12.5%));
+      }
+      .input input:focus-within + label,
+      .input input:focus-within + .suffix + label {
+        color: var(--color-primary, var(--default-color-primary));
+      }
+
+      .input[data-error]:not([data-error=""]) {
+        border-color: var(--color-error, var(--default-color-error));
+      }
+
+      .input[data-error]:not([data-error=""]) input,
+      .input[data-error]:not([data-error=""]) label,
+      .input[data-error]:not([data-error=""]) .prefix,
+      .input[data-error]:not([data-error=""]) .suffix {
+        color: var(--color-error, var(--default-color-error)) !important;
+      }
+
+      .input[data-error]:not([data-error=""])::after {
+        color: var(--color-error, var(--default-color-error));
+        content: attr(data-error);
+        min-width: max-content;
+        position: absolute;
+        transform: scale(0.75) translate(calc(-100% / 6), 2.5em);
+      }
+    `}static get properties(){return{prefix:{type:String},suffix:{type:String},label:{type:String},value:{type:Number,attribute:"value",reflect:!0},maxDecimals:{type:Number,attribute:"max-decimals",reflect:!0},minValue:{type:Number,attribute:"min",reflect:!0},maxValue:{type:Number,attribute:"max",reflect:!0},dataError:{type:Number,attribute:"data-error",reflect:!0}}}constructor(){super(),Q(this,"_updateValue",(t=>{t.target.value=tt(t.target.value,this.maxDecimals),this.value=X(t.target.value),this._validate(),this.dispatchEvent(new CustomEvent("input",{bubbles:!0,composed:!0}))})),this.value=null}connectedCallback(){super.connectedCallback()}firstUpdated(){this.renderRoot.querySelector("input").addEventListener("input",this._updateValue)}_validate(){const t=parseFloat(this.value);(this.minValue||0===this.minValue)&&t<parseFloat(this.minValue)?this.dataset.error=`Must be at least ${this.minValue}`:(this.maxValue||0===this.maxValue)&&t>parseFloat(this.maxValue)?this.dataset.error=`Must be less than ${this.maxValue}`:delete this.dataset.error}render(){const t=this.prefix?P`<span class="prefix">${this.prefix}</span>`:P``,e=this.suffix?P`<span class="suffix">${this.suffix}</span>`:P``;return P`
+      <div class="input" data-error="${this.dataset.error}">
+        ${t}
+        <input id="input" type="text" placeholder=" " inputmode="numeric" autocomplete="off" />
+        ${e}
+        <label for="input">${this.label}</label>
+      </div>
+    `}}),window.customElements.define("result-box",class extends Y{static get styles(){return o`
+      :host {
+        --default-color-accent: yellow;
+        --default-color-basic: black;
+        --default-color-background: white;
+        --default-color-disabled: darkgray;
+        --default-color-error: red;
+        --default-color-line: darkgray;
+        --default-color-primary: blue;
+        --default-font-body: Open Sans, Helvetica, sans-serif;
+
+        background-color: var(--color-primary, var(--default-color-primary));)
+        border: 1px solid var(--color-line, var(--default-color-line));
+        color: var(--color-background, var(--default-color-background));
+        font-family: var(--font-body, var(--default-font-body));
+        padding: 1em;
+
+      }
+      h3 {
+        margin: 0;
+        text-align: center;
+
+      }
+      .value {
+        text-align: center;
+      }
+    `}static get properties(){return{label:{type:String,attribute:"label",reflect:!0},value:{type:Number,attribute:"value",reflect:!0}}}constructor(){super(),this.value="---"}connectedCallback(){super.connectedCallback()}render(){return P`
+      <h3>${this.label}</h3>
+      <div class="value">${this.value}</div>
+    `}});
+  </script>
+  <style>
+    fire-calculator {
+      --color-accent: #f5c711;
+      --color-primary: #268e97;
+      --color-basic: black;
+      --color-background: white;
+      --color-disabled: darkgrey;
+      --color-error: red;
+      --color-line: silver;
+      --font-body: Oswald;
+      --font-heading: Oswald;
+      font-size: 16px;
+    }
+  </style>
+  <fire-calculator></fire-calculator>
+</body>
+</html>
