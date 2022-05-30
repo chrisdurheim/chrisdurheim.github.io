@@ -1,0 +1,472 @@
+---
+layout: none
+permalink: /well-kept-wallet/mortgage-payoff
+sitemap: false
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body style="background-color: white">
+  <style>
+    :root{
+      --calculator-primary-color: #2bb34b;
+      --calculator-error-color: red;
+      --calculator-line-color: #e3e3e3;
+      --calculator-focus-color: #333;
+      --calculator-heading-font: "Raleway", sans-serif;
+      --calculator-paragraph-font: "Nunito Sans", sans-serif;
+    }
+    .mortgage-payoff-calculator {
+      font-size: 16px;
+      font-family: var(--calculator-paragraph-font);
+      width: calc(100% - 1rem);
+      max-width: 800px;
+      margin: 2rem auto;
+
+      border-radius: 0.5rem;
+      background-color: #f5f5f5;
+      overflow: hidden;
+    }
+    .mortgage-payoff-calculator * {
+      box-sizing: border-box;
+    }
+    .mortgage-payoff-calculator table {
+      width: auto;
+    }
+    .mortgage-payoff-calculator th,
+    .mortgage-payoff-calculator td {
+      padding: 0;
+      vertical-align: initial;
+      text-align: center;
+      border: none;
+    }
+    .mortgage-payoff-calculator .calculator-header {
+      font-family: var(--calculator-heading-font);
+      margin: 1rem 0;
+      padding: 0 2rem;
+      text-align: center;
+    }
+    .mortgage-payoff-calculator .calculator-header .calculator-title {
+      font-size: 2rem;
+      text-transform: uppercase;
+    }
+    .mortgage-payoff-calculator .calculator-body .calculator-inputs {
+      margin: 2rem;
+    }
+    .mortgage-payoff-calculator .calculator-body .calculator-inputs input {
+      margin: 0.25rem 0.5rem;
+      padding: 1rem;
+      outline: none;
+      border: 1px solid var(--calculator-line-color);
+      border-radius: 0.2rem;
+      width: calc(100% - 1rem);
+
+      transition: color 150ms ease-in-out,
+                  background-color 150ms ease-in-out,
+                  border-color 150ms ease-in-out;
+    }
+
+    .mortgage-payoff-calculator .calculator-body .calculator-inputs input::-webkit-outer-spin-button,
+    .mortgage-payoff-calculator .calculator-body .calculator-inputs input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .mortgage-payoff-calculator .calculator-body .calculator-inputs input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    .mortgage-payoff-calculator .calculator-body .calculator-inputs input:focus {
+      outline: none;
+      border-color: var(--calculator-focus-color);
+    }
+    .mortgage-payoff-calculator .calculator-body .calculator-debt-lines-buttons,
+    .mortgage-payoff-calculator .calculator-body .calculator-input-buttons {
+      text-align: center;
+    }
+    .mortgage-payoff-calculator button {
+      -webkit-appearance: button;
+      -webkit-writing-mode: horizontal-tb !important;
+      writing-mode: horizontal-tb !important;
+      text-rendering: auto;
+      color: buttontext;
+      letter-spacing: normal;
+      word-spacing: normal;
+      text-transform: none;
+      text-indent: 0px;
+      text-shadow: none;
+      display: inline-block;
+      text-align: center;
+      align-items: flex-start;
+      cursor: default;
+      background-color: buttonface;
+      box-sizing: border-box;
+      margin: 0em;
+      font: 400 11px system-ui;
+      padding: 1px 7px 2px;
+      border-width: 1px;
+      border-style: solid;
+      border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
+      border-image: initial;
+
+      cursor: pointer;
+
+      background-color: white;
+
+      padding: 0.5rem;
+      border-radius: 0.2rem;
+      font-family: var(--calculator-paragraph-font);
+      font-size: 0.75rem;
+      transition: color 150ms ease-in-out,
+                  background-color 150ms ease-in-out,
+                  border-color 150ms ease-in-out;
+    }
+    .mortgage-payoff-calculator .calculator-body button.calculator-input-button--calculate {
+      background-color: var(--calculator-primary-color);
+      color: white;
+      text-transform: uppercase;
+      font-size: 1.25rem;
+      border: 2px solid var(--calculator-primary-color);
+    }
+    .mortgage-payoff-calculator .calculator-body button:hover {
+      outline: none;
+      background-color: var(--calculator-focus-color);
+      color: white;
+    }
+    .mortgage-payoff-calculator .calculator-body button:focus {
+      border-color: var(--calculator-focus-color);
+      outline: none;
+    }
+    .mortgage-payoff-calculator .calculator-body .calculator-debt-lines-buttons button {
+      margin: 0.5rem 1rem;
+      width: 20rem;
+      max-width: calc(100% - 2rem);
+    }
+    .mortgage-payoff-calculator td.calculator-debt-line-delete-debt {
+      text-align: center;
+    }
+    .mortgage-payoff-calculator td button.calculator-debt-line-delete-button {
+      margin: 0 auto;
+      width: 6rem;
+      height: 2rem;
+      position: relative;
+    }
+    .mortgage-payoff-calculator td button.calculator-debt-line-delete-button::after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      content: 'Delete';
+    }
+    .mortgage-payoff-calculator .calculator-body .calculator-input-buttons button {
+      margin: 1rem 0;
+      width: 100%;
+    }
+    .mortgage-payoff-calculator .calculator-body label {
+      font-family: var(--calculator-heading-font);
+      font-weight: bold;
+    }
+    .mortgage-payoff-calculator .calculator-body .calculator-result-summary-line {
+      margin: 2rem;
+      font-family: var(--calculator-heading-font);
+      font-weight: bold;
+      font-size: 2rem;
+      text-align: center;
+    }
+    .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table,
+    .mortgage-payoff-calculator .calculator-body .calculator-result-table {
+      text-align: center;
+    }
+    .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table table {
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+
+    .mortgage-payoff-calculator .calculator-body .calculator-result-table table {
+      margin: 2rem auto;
+      border-collapse: collapse;
+    }
+
+    .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table table th,
+    .mortgage-payoff-calculator .calculator-body .calculator-result-table table th,
+    .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table table td,
+    .mortgage-payoff-calculator .calculator-body .calculator-result-table table td {
+      padding: 0.25rem;
+      border: 1px solid var(--calculator-line-color);
+    }
+
+    .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table table tr,
+    .mortgage-payoff-calculator .calculator-body .calculator-result-table table tr {
+      transition: background-color 150ms ease-in-out,
+                  color 150ms ease-in-out;
+    }
+
+    .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table table th,
+    .mortgage-payoff-calculator .calculator-body .calculator-result-table table th,
+    .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table table tr:hover,
+    .mortgage-payoff-calculator .calculator-body .calculator-result-table table tr:hover {
+      background-color: var(--calculator-primary-color);
+      color: white;
+    }
+
+    .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table tr th:first-child,
+    .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table tr td:first-child {
+      display: none;
+    }
+
+    .calculator-result-table {
+      display: none;
+      margin: 2rem auto;
+      overflow-x: auto;
+    }
+
+    .mortgage-payoff-calculator .calculator-body .summary-table-container {
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+
+    .mortgage-payoff-calculator .calculator-body .summary-table-heading {
+      margin: 0 2rem;
+      font-family: var(--calculator-heading-font);
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    #calculator-result-chart {
+      margin: 2rem auto;
+    }
+    @media screen and (min-width: 360px) {
+      .mortgage-payoff-calculator .calculator-body .calculator-result-table {
+        display: block;
+      }
+    }
+
+    @media screen and (min-width: 768px) {
+      .mortgage-payoff-calculator .calculator-body .calculator-inputs input {
+        max-width: 20rem;
+      }
+      .mortgage-payoff-calculator .calculator-body .calculator-inputs label {
+        display: block;
+      }
+      .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table table th,
+      .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table table td {
+        padding: 0.5rem 1rem;
+      }
+
+      .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table tr th:first-child,
+      .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table tr td:first-child {
+        display: table-cell;
+      }
+    }
+  </style>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+  <script async type="text/javascript">
+    const toYearsAndMonths = (rawMonths) => {
+      const years = Math.floor(rawMonths / 12);
+      const months = rawMonths - years * 12;
+
+      const monthString = (months === 1) ? "1 month" : `${months} months`;
+
+      if (years === 0) { return monthString; }
+
+      const yearString = (years === 1) ? "1 year" : `${years} years`;
+
+      if (months === 0) { return yearString; }
+
+      return `${yearString} ${monthString}`;
+    };
+    const toCurrency = (value, digits = 2, symbol = '$') => {
+      if (value === 0) {
+        return "-";
+      }
+      return symbol + value.toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits});
+    };
+    const roundToPlaces = (value, digits) => {
+      const scalar = Math.pow(10, digits);
+      return Math.round((value + Number.EPSILON) * scalar) / scalar;
+    };
+    const payment = (pv, annualRate, months) => {
+      const monthlyRate = Math.pow(1 + annualRate, 1.0 / 12) - 1;
+      return pv * monthlyRate /(1-Math.pow(1 + monthlyRate, -months));
+    }
+    const nper = (pv, annualRate, payment) => {
+      const monthlyRate = Math.pow(1 + annualRate, 1.0 / 12) - 1;
+      const unroundedNper = Math.log(payment / (payment - monthlyRate * pv)) / Math.log(1 + monthlyRate)
+      return roundToPlaces(unroundedNper, 3);
+    }
+    const remBalance = (originalBalance, annualRate, payment, nper) => {
+      const monthlyRate = Math.pow(1 + annualRate, 1.0 / 12) - 1;
+      return payment / monthlyRate * (1 - (1 / Math.pow(1 + monthlyRate, nper)));
+    }
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const toMonth = (date) => {
+      if (!date) { return undefined }
+      return `${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
+    }
+    const monthsBetween = (start, end) => {
+      if (start) {
+        if (end) {
+          const endMonths = end.getUTCFullYear() * 12 + end.getUTCMonth();
+          const startMonths = start.getUTCFullYear() * 12 + start.getUTCMonth();
+          return endMonths - startMonths;
+        }
+      }
+      return undefined;
+    }
+    const advanceMonths = (date, months) => {
+      if (!date) { return undefined }
+      const newDate = new Date(date.getTime());
+      newDate.setUTCMonth(newDate.getUTCMonth() + Math.ceil(months));
+      return newDate;
+    }
+    const runScenario = (currentBalance, interestRate, basePayment, startDate, today, extraPayment = 0, extraPaymentFreq = undefined) => {
+      const monthlyRate = Math.pow(1 + interestRate, 1.0 / 12) - 1;
+
+      const amortizationTable = [];
+      /* If no frequency, one-time right now */
+      let intermedBalance = extraPaymentFreq ? currentBalance : currentBalance - extraPayment;
+      while(intermedBalance > 0) {
+        const start = intermedBalance;
+        const interest = start * monthlyRate;
+
+        let proposedPayment = basePayment;
+        if (extraPaymentFreq) {
+          if (extraPaymentFreq > 0 && extraPaymentFreq < 1) {
+            proposedPayment += (extraPayment / extraPaymentFreq);
+          } else if (amortizationTable.length % extraPaymentFreq === 0) {
+            proposedPayment += extraPayment
+          }
+        }
+
+        const paymentMade = Math.min(proposedPayment, start + interest);
+        const end = intermedBalance + interest - paymentMade;
+        amortizationTable.push({
+          start,
+          interest,
+          payment: paymentMade,
+          end
+        })
+        intermedBalance = end;
+      }
+
+      const remainingNper = amortizationTable.length
+      const remainingTotalCost = amortizationTable.reduce((total, element) => {
+        return total + element.payment;
+      }, 0.0)
+      const remainingInterest = remainingTotalCost - currentBalance;
+
+      return {
+        remainingNper,
+        remainingTotalCost,
+        remainingInterest,
+        amortizationTable,
+        dates: {
+          start: toMonth(startDate),
+          current: toMonth(today),
+          end: toMonth(advanceMonths(today, remainingNper)),
+        }
+      };
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log("Calculator helper functions loaded");
+
+      const calculators = document.querySelectorAll('.mortgage-payoff-calculator');
+      calculators.forEach((calculator) => {
+        if (calculator) {
+          console.log("Calculator instance found");
+
+          const inputs = calculator.querySelectorAll('input');
+          const selects = calculator.querySelectorAll('select');
+          const buttons = calculator.querySelectorAll('button');
+
+          const updateResults = () => {
+            console.log('Calculator updating');
+            const loanAmount = parseFloat(calculator.querySelector('#current-loan-amount').value);
+            const startDate = new Date(Date.parse(calculator.querySelector('#first-payment-date').value));
+            const loanTerm = parseFloat(calculator.querySelector('#loan-term').value) * 12;
+            const interestRate = parseFloat(calculator.querySelector('#interest-rate').value) / 100.0;
+            const extraPaymentAmount = parseFloat(calculator.querySelector('#extra-payment-amount').value);
+            const extraPaymentFrequency = parseFloat(calculator.querySelector('#extra-payment-frequency').value)
+
+            /* Interim calculation */
+            const today = new Date();
+            const monthsElapsed = monthsBetween(startDate, today);
+
+            /* Interim calculations - open for override */
+            const basePayment = payment(loanAmount, interestRate, loanTerm)
+            const currentBalance = remBalance(loanAmount, interestRate, basePayment, loanTerm - monthsElapsed)
+
+            /* Base scenario */
+            const baseScenario = runScenario(currentBalance, interestRate, basePayment, startDate, today);
+            console.log(baseScenario);
+
+            /* Prepay scenario */
+            const prepayScenario = runScenario(currentBalance, interestRate, basePayment, startDate, today, extraPaymentAmount, extraPaymentFrequency);
+            console.log(prepayScenario);
+          };
+
+          updateResults();
+
+          inputs.forEach((input) => { input.addEventListener('blur', updateResults)});
+          selects.forEach((select) => { select.addEventListener('change', updateResults)})
+        };
+      });
+    });
+  </script>
+
+  <div class="mortgage-payoff-calculator">
+    <div class="calculator-header">
+      <div class="calculator-title">Mortgage Payoff Calculator</div>
+    </div>
+    <div class="calculator-body">
+      <div class="calculator-inputs calculator-inputs--mortgage">
+        <div class="calculator-input">
+          <label for="current-loan-amount">Current Loan Amount</label>
+          <span class="input-prefix">$</span>
+          <input type="number" id="current-loan-amount" min="0"/>
+        </div>
+        <div class="calculator-input">
+          <label for="first-payment-date">First Payment</label>
+          <input type="month" id="first-payment-date"/>
+        </div>
+        <div class="calculator-input">
+          <label for="loan-term">Loan Term</label>
+          <input type="number" id="loan-term"/>
+          <span class="input-suffix">years</span>
+        </div>
+        <div class="calculator-input">
+          <label for="interest-rate">Interest Rate</label>
+          <input type="number" id="interest-rate"/>
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+      <div class="calculator-inputs calculator-inputs--extra">
+        <div class="calculator-input">
+          <label for="extra-payment-amount">Extra Payment</label>
+          <span class="input-prefix">$</span>
+          <input type="number" id="extra-payment-amount"/>
+          <select name="extra-payment-frequency" id="extra-payment-frequency">
+            <option value=0>One time</option>
+            <option value=0.23013679714>Weekly</option>
+            <option value=1 selected>Monthly</option>
+            <option value=3>Quarterly</option>
+            <option value=12>Yearly</option>
+          </select>
+        </div>
+      </div>
+      <div class="calculator-inputs calculator-inputs--interim">
+        <div class="calculator-input">
+
+        </div>
+      </div>
+      <div clas="calculator-outputs">
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
