@@ -141,27 +141,6 @@ sitemap: false
       border-color: var(--calculator-focus-color);
       outline: none;
     }
-    .mortgage-payoff-calculator .calculator-body .calculator-debt-lines-buttons button {
-      margin: 0.5rem 1rem;
-      width: 20rem;
-      max-width: calc(100% - 2rem);
-    }
-    .mortgage-payoff-calculator td.calculator-debt-line-delete-debt {
-      text-align: center;
-    }
-    .mortgage-payoff-calculator td button.calculator-debt-line-delete-button {
-      margin: 0 auto;
-      width: 6rem;
-      height: 2rem;
-      position: relative;
-    }
-    .mortgage-payoff-calculator td button.calculator-debt-line-delete-button::after {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      content: 'Delete';
-    }
     .mortgage-payoff-calculator .calculator-body .calculator-input-buttons button {
       margin: 1rem 0;
       width: 100%;
@@ -239,6 +218,47 @@ sitemap: false
     #calculator-result-chart {
       margin: 2rem auto;
     }
+
+    .mortgage-payoff-calculator .calculator-output--line {
+      margin: 2rem auto 1rem;
+      font-size: 1.5rem;
+      padding: 1rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .mortgage-payoff-calculator .calculator-output--result-table {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 1rem;
+    }
+
+    .mortgage-payoff-calculator .calculator-output--result-table .result-table__row {
+      display: flex;
+      flex: 0 0 100%;
+      flex-wrap: nowrap;
+      flex-direction: row;
+    }
+
+    .mortgage-payoff-calculator .calculator-output--result-table .result-table__cell {
+      border: 1px solid var(--calculator-line-color);
+      flex: 1 0 5rem;
+      padding: 1rem;
+      text-align: center;
+    }
+    .mortgage-payoff-calculator .calculator-output--result-table .result-table__cell:empty {
+      border-top-color: transparent;
+      border-left-color: transparent;
+    }
+    .mortgage-payoff-calculator .result-table__row--heading {
+      font-weight: bold;
+      text-align: center;
+    }
+    .mortgage-payoff-calculator .result-table__row .result-table__cell:first-child {
+      font-weight: bold;
+      text-align: left;
+    }
+
     @media screen and (min-width: 360px) {
       .mortgage-payoff-calculator .calculator-body .calculator-result-table {
         display: block;
@@ -407,6 +427,16 @@ sitemap: false
             /* Prepay scenario */
             const prepayScenario = runScenario(currentBalance, interestRate, basePayment, startDate, today, extraPaymentAmount, extraPaymentFrequency);
             console.log(prepayScenario);
+
+            calculator.querySelector('.result-table__cell--with-pp-date').innerHTML = prepayScenario.dates.end;
+            calculator.querySelector('.result-table__cell--with-pp-interest').innerHTML = toCurrency(prepayScenario.remainingInterest, 0);
+            calculator.querySelector('.result-table__cell--with-pp-total').innerHTML = toCurrency(prepayScenario.remainingTotalCost, 0);
+
+            calculator.querySelector('.result-table__cell--wo-pp-date').innerHTML = baseScenario.dates.end;
+            calculator.querySelector('.result-table__cell--wo-pp-interest').innerHTML = toCurrency(baseScenario.remainingInterest, 0);
+            calculator.querySelector('.result-table__cell--wo-pp-total').innerHTML = toCurrency(baseScenario.remainingTotalCost, 0);
+
+            calculator.querySelector('.calculator-output--line').innerHTML = `With prepayment, you'll save ${toCurrency(baseScenario.remainingTotalCost - prepayScenario.remainingTotalCost, 0)}`
           };
 
           updateResults();
@@ -463,7 +493,41 @@ sitemap: false
 
         </div>
       </div>
+      <hr />
       <div clas="calculator-outputs">
+        <div class="calculator-output calculator-output--line">
+          With prepayment, you'll save $100,000
+        </div>
+        <div class="calculator-output calculator-output--result-table">
+          <div class="result-table__row result-table__row--heading">
+            <div class="result-table__cell"></div>
+            <div class="result-table__cell">Payoff Date</div>
+            <div class="result-table__cell">Remaining Interest</div>
+            <div class="result-table__cell">Remaining Cost</div>
+          </div>
+          <div class="result-table__row">
+            <div class="result-table__cell">With Prepayment</div>
+            <div class="result-table__cell result-table__cell--with-pp-date">March 2025</div>
+            <div class="result-table__cell result-table__cell--with-pp-interest">$20,000</div>
+            <div class="result-table__cell result-table__cell--with-pp-total">$80,000</div>
+          </div>
+          <div class="result-table__row">
+            <div class="result-table__cell">Without Prepayment</div>
+            <div class="result-table__cell result-table__cell--wo-pp-date">March 2027</div>
+            <div class="result-table__cell result-table__cell--wo-pp-interest">$25,000</div>
+            <div class="result-table__cell result-table__cell--wo-pp-total">$85,000</div>
+          </div>
+        </div>
+        <div class="calculator-output calculator-output--interest-chart">
+
+        </div>
+        <div class="calculator-output calculator-output--balance-chart">
+
+        </div>
+        <div class="calculator-output calculator-output--amortization-table">
+
+        </div>
+
       </div>
     </div>
   </div>
