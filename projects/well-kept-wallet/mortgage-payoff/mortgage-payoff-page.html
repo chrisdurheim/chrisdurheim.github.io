@@ -56,19 +56,69 @@ sitemap: false
       text-transform: uppercase;
     }
     .mortgage-payoff-calculator .calculator-body .calculator-inputs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       margin: 2rem;
     }
-    .mortgage-payoff-calculator .calculator-body .calculator-inputs input {
-      margin: 0.25rem 0.5rem;
-      padding: 1rem;
-      outline: none;
+
+    .mortgage-payoff-calculator .calculator-body .calculator-input {
+      background-color: white;
       border: 1px solid var(--calculator-line-color);
       border-radius: 0.2rem;
-      width: calc(100% - 1rem);
-
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      margin: 2rem 0.5rem;
+      padding: 0.5rem 1rem;
+      position: relative;
+      flex: 1 0 auto;
+      max-width: 30%;
+      min-width: 15rem;
       transition: color 150ms ease-in-out,
                   background-color 150ms ease-in-out,
                   border-color 150ms ease-in-out;
+    }
+    .mortgage-payoff-calculator .calculator-body .calculator-input:focus-within {
+      border-color: var(--calculator-primary-color);
+    }
+
+    .mortgage-payoff-calculator .calculator-body .calculator-input--wide {
+      max-width: calc(60% + 3rem);
+    }
+
+    .mortgage-payoff-calculator .calculator-body .calculator-input label {
+      position: absolute;
+      top: -1.25rem;
+      left: 0;
+    }
+
+    .mortgage-payoff-calculator .calculator-body .calculator-input .prefix,
+    .mortgage-payoff-calculator .calculator-body .calculator-input .suffix {
+      flex: 0 0 auto;
+    }
+
+    .mortgage-payoff-calculator .calculator-body .calculator-inputs input,
+    .mortgage-payoff-calculator .calculator-body .calculator-inputs select {
+      flex: 1 0 auto;
+      font-family: var(--calculator-paragraph-font);
+      margin: 0 0.25rem;
+      outline: none;
+      border: none;
+      background-color: transparent;
+    }
+
+    .mortgage-payoff-calculator .calculator-body .calculator-inputs select {
+      flex: 0 0 auto;
+      text-align: right;
+      border-left: 1px solid var(--calculator-line-color);
+      transition: color 150ms ease-in-out,
+                  background-color 150ms ease-in-out,
+                  border-color 150ms ease-in-out;
+    }
+
+    .mortgage-payoff-calculator .calculator-body .calculator-input:focus-within select {
+      border-left-color: var(--calculator-primary-color);
     }
 
     .mortgage-payoff-calculator .calculator-body .calculator-inputs input::-webkit-outer-spin-button,
@@ -267,7 +317,7 @@ sitemap: false
 
     @media screen and (min-width: 768px) {
       .mortgage-payoff-calculator .calculator-body .calculator-inputs input {
-        max-width: 20rem;
+
       }
       .mortgage-payoff-calculator .calculator-body .calculator-inputs label {
         display: block;
@@ -405,6 +455,12 @@ sitemap: false
 
           const updateResults = () => {
             console.log('Calculator updating');
+            inputs.forEach((input) => {
+              input.reportValidity();
+            })
+            selects.forEach((select) => {
+              select.reportValidity();
+            })
             const loanAmount = parseFloat(calculator.querySelector('#current-loan-amount').value);
             const startDate = new Date(Date.parse(calculator.querySelector('#first-payment-date').value));
             const loanTerm = parseFloat(calculator.querySelector('#loan-term').value) * 12;
@@ -457,28 +513,26 @@ sitemap: false
         <div class="calculator-input">
           <label for="current-loan-amount">Current Loan Amount</label>
           <span class="input-prefix">$</span>
-          <input type="number" id="current-loan-amount" min="0"/>
+          <input type="number" id="current-loan-amount" min="0" inputmode="numeric" autocomplete="off" />
         </div>
         <div class="calculator-input">
           <label for="first-payment-date">First Payment</label>
-          <input type="month" id="first-payment-date"/>
+          <input type="month" id="first-payment-date" pattern="[0-9]{4}-[0-9]{2}"/>
         </div>
         <div class="calculator-input">
           <label for="loan-term">Loan Term</label>
-          <input type="number" id="loan-term"/>
+          <input type="number" id="loan-term" style="text-align: right;" min="1" max="100" inputmode="numeric" autocomplete="off" />
           <span class="input-suffix">years</span>
         </div>
         <div class="calculator-input">
           <label for="interest-rate">Interest Rate</label>
-          <input type="number" id="interest-rate"/>
+          <input type="number" id="interest-rate" style="text-align: right;" min="0" max="25" inputmode="numeric" autocomplete="off" />
           <span class="input-suffix">%</span>
         </div>
-      </div>
-      <div class="calculator-inputs calculator-inputs--extra">
-        <div class="calculator-input">
+        <div class="calculator-input calculator-input--wide">
           <label for="extra-payment-amount">Extra Payment</label>
           <span class="input-prefix">$</span>
-          <input type="number" id="extra-payment-amount"/>
+          <input type="number" id="extra-payment-amount" inputmode="numeric" autocomplete="off" />
           <select name="extra-payment-frequency" id="extra-payment-frequency">
             <option value=0>One time</option>
             <option value=0.23013679714>Weekly</option>
@@ -489,9 +543,6 @@ sitemap: false
         </div>
       </div>
       <div class="calculator-inputs calculator-inputs--interim">
-        <div class="calculator-input">
-
-        </div>
       </div>
       <hr />
       <div clas="calculator-outputs">
