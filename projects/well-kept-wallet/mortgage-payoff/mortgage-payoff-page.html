@@ -112,6 +112,7 @@ sitemap: false
       flex: 0 0 auto;
       text-align: right;
       border-left: 1px solid var(--calculator-line-color);
+      padding-left: 0.75rem;
       transition: color 150ms ease-in-out,
                   background-color 150ms ease-in-out,
                   border-color 150ms ease-in-out;
@@ -280,7 +281,7 @@ sitemap: false
     .mortgage-payoff-calculator .calculator-output--result-table {
       display: flex;
       flex-wrap: wrap;
-      padding: 1rem;
+      padding: 2rem;
     }
 
     .mortgage-payoff-calculator .calculator-output--result-table .result-table__row {
@@ -333,7 +334,7 @@ sitemap: false
       }
     }
   </style>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
   <script async type="text/javascript">
     const toYearsAndMonths = (rawMonths) => {
       const years = Math.floor(rawMonths / 12);
@@ -380,17 +381,22 @@ sitemap: false
     const monthsBetween = (start, end) => {
       if (start) {
         if (end) {
+          if (end <= start) {
+            return 0;
+          }
+
           const endMonths = end.getUTCFullYear() * 12 + end.getUTCMonth();
           const startMonths = start.getUTCFullYear() * 12 + start.getUTCMonth();
-          return endMonths - startMonths;
+          return endMonths - startMonths + 1;
         }
       }
       return undefined;
     }
     const advanceMonths = (date, months) => {
       if (!date) { return undefined }
-      const newDate = new Date(date.getTime());
-      newDate.setUTCMonth(newDate.getUTCMonth() + Math.ceil(months));
+      const newDate = new Date(typeof date === 'number' ? date : date.getTime());
+      newDate.setUTCMonth(newDate.getUTCMonth() + months);
+      newDate.setUTCDate(1);
       return newDate;
     }
     const runScenario = (currentBalance, interestRate, basePayment, startDate, today, extraPayment = 0, extraPaymentFreq = undefined) => {
@@ -399,25 +405,30 @@ sitemap: false
       const amortizationTable = [];
       /* If no frequency, one-time right now */
       let intermedBalance = extraPaymentFreq ? currentBalance : currentBalance - extraPayment;
-      while(intermedBalance > 0) {
+      while(intermedBalance > 0.01) {
         const start = intermedBalance;
         const interest = start * monthlyRate;
 
         let proposedPayment = basePayment;
         if (extraPaymentFreq) {
-          if (extraPaymentFreq > 0 && extraPaymentFreq < 1) {
-            proposedPayment += (extraPayment / extraPaymentFreq);
+          if (extraPaymentFreq > 0)
+            if (extraPaymentFreq < 1) {
+              proposedPayment += (extraPayment / extraPaymentFreq);
+            } else if (amortizationTable.length % extraPaymentFreq === 0) {
+            proposedPayment += extraPayment
           } else if (amortizationTable.length % extraPaymentFreq === 0) {
             proposedPayment += extraPayment
           }
         }
 
         const paymentMade = Math.min(proposedPayment, start + interest);
-        const end = intermedBalance + interest - paymentMade;
+        const end = roundToPlaces(intermedBalance + interest - paymentMade, 8);
         amortizationTable.push({
           start,
           interest,
           payment: paymentMade,
+          principal: paymentMade - interest,
+          date: toMonth(advanceMonths(today, amortizationTable.length + 1)),
           end
         })
         intermedBalance = end;
@@ -437,10 +448,174 @@ sitemap: false
         dates: {
           start: toMonth(startDate),
           current: toMonth(today),
-          end: toMonth(advanceMonths(today, remainingNper)),
+          end: toMonth(advanceMonths(Math.max(today, startDate), remainingNper)),
         }
       };
     }
+    const setupCharts = (calculator) => {
+      const interestChartElement = calculator.querySelector('.calculator-output--interest-chart canvas');
+      const interestChart = new Chart(interestChartElement, {
+          type: 'bar',
+          data: {
+              labels: ['Without Prepayment', 'With Prepayment'],
+              datasets: [{
+                  label: 'Remaining Interest',
+                  data: [],
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)'
+                  ],
+                  borderColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)'
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            scales: {
+                y: {
+                    min: 0
+                },
+                x: {
+                  ticks: {
+                    callback: function(value, index, ticks) {
+                        return toCurrency(value, 0);
+                    }
+                }
+                }
+            },
+            plugins: {
+              legend: {
+                position: 'none',
+              },
+              title: {
+                display: true,
+                text: 'Remaining Interest'
+              },
+              tooltip: {
+                callbacks: {
+                  label: (context) => {
+                    let label = context.dataset.label || '';
+
+                    if (label) {
+                      label += ': ';
+                    }
+                    if (context.parsed.x !== null) {
+                      label += toCurrency(context.parsed.x, 0);
+                    }
+                    return label;
+                  }
+                }
+              },
+            }
+          }
+      });
+
+      const balanceChartElement = calculator.querySelector('.calculator-output--balance-chart canvas');
+      const balanceChart = new Chart(balanceChartElement, {
+          type: 'line',
+          data: {
+            labels: ['Jan 2022', 'Feb 2022', 'Mar 2022', 'Apr 2022', 'May 2022'],
+              datasets: [{
+                  label: 'Without Prepayment',
+                  data: [1, 2, 3, 4, 5],
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)'
+                  ],
+                  borderColor: [
+                      'rgba(255, 99, 132, 1)'
+                  ],
+                  borderWidth: 1
+              },
+              {
+                  label: 'With Prepayment',
+                  data: [5, 4, 3, 2, 1],
+                  backgroundColor: [
+                      'rgba(132, 99, 255, 0.2)'
+                  ],
+                  borderColor: [
+                      'rgba(132, 99, 255, 1)'
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+                y: {
+                  ticks: {
+                    callback: function(value, index, ticks) {
+                        return toCurrency(value, 0);
+                    }
+                }
+                }
+            },
+            plugins: {
+              legend: {
+                position: 'none',
+              },
+              title: {
+                display: true,
+                text: 'Principal Balance'
+              },
+              tooltip: {
+                callbacks: {
+                  label: (context) => {
+                    let label = context.dataset.label || '';
+
+                    if (label) {
+                      label += ': ';
+                    }
+                    if (context.parsed.y !== null) {
+                      label += toCurrency(context.parsed.y, 0);
+                    }
+                    return label;
+                  }
+                }
+              }
+            }
+          }
+      });
+      return {
+        interest: interestChart,
+        balance: balanceChart
+      };
+    }
+
+    const updateChartData = (charts, baseScenario, prepayScenario) => {
+      charts.interest.data.datasets[0].data = [baseScenario.remainingInterest, prepayScenario.remainingInterest];
+      charts.interest.update();
+
+      charts.balance.data.labels = baseScenario.amortizationTable.map((month) => month.date);
+      charts.balance.data.datasets[0].data = baseScenario.amortizationTable.map((month) => month.end);
+      charts.balance.data.datasets[1].data = prepayScenario.amortizationTable.map((month) => month.end);
+      charts.balance.update();
+    }
+
+    const updateTableData = (table, baseScenario, prepayScenario) => {
+      const rows = table.querySelectorAll('tr');
+      for(let i = 1; i < rows.length; i += 1) {
+        table.removeChild(rows[i]);
+      }
+
+      prepayScenario.amortizationTable.forEach((month) => {
+        const row = document.createElement('tr');
+        ['date', 'start', 'payment', 'interest', 'principal', 'end'].forEach((attr) => {
+          const cell = document.createElement('td');
+          if (attr !== 'date') {
+            cell.appendChild(document.createTextNode(toCurrency(month[attr], 0)));
+          } else {
+            cell.appendChild(document.createTextNode(month[attr]));
+          }
+          row.appendChild(cell);
+        })
+        table.appendChild(row);
+      })
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       console.log("Calculator helper functions loaded");
 
@@ -453,6 +628,9 @@ sitemap: false
           const selects = calculator.querySelectorAll('select');
           const buttons = calculator.querySelectorAll('button');
 
+          const charts = setupCharts(calculator);
+          const table = calculator.querySelector('.calculator-output--amortization-table table');
+
           const updateResults = () => {
             console.log('Calculator updating');
             inputs.forEach((input) => {
@@ -461,7 +639,7 @@ sitemap: false
             selects.forEach((select) => {
               select.reportValidity();
             })
-            const loanAmount = parseFloat(calculator.querySelector('#current-loan-amount').value);
+            const loanAmount = parseFloat(calculator.querySelector('#original-loan-amount').value);
             const startDate = new Date(Date.parse(calculator.querySelector('#first-payment-date').value));
             const loanTerm = parseFloat(calculator.querySelector('#loan-term').value) * 12;
             const interestRate = parseFloat(calculator.querySelector('#interest-rate').value) / 100.0;
@@ -475,6 +653,9 @@ sitemap: false
             /* Interim calculations - open for override */
             const basePayment = payment(loanAmount, interestRate, loanTerm)
             const currentBalance = remBalance(loanAmount, interestRate, basePayment, loanTerm - monthsElapsed)
+
+            calculator.querySelector('#current-loan-amount').value = currentBalance.toFixed(2);
+            calculator.querySelector('#monthly-payment').value = basePayment.toFixed(2);
 
             /* Base scenario */
             const baseScenario = runScenario(currentBalance, interestRate, basePayment, startDate, today);
@@ -492,7 +673,10 @@ sitemap: false
             calculator.querySelector('.result-table__cell--wo-pp-interest').innerHTML = toCurrency(baseScenario.remainingInterest, 0);
             calculator.querySelector('.result-table__cell--wo-pp-total').innerHTML = toCurrency(baseScenario.remainingTotalCost, 0);
 
-            calculator.querySelector('.calculator-output--line').innerHTML = `With prepayment, you'll save ${toCurrency(baseScenario.remainingTotalCost - prepayScenario.remainingTotalCost, 0)}`
+            calculator.querySelector('.calculator-output--line').innerHTML = `With prepayment, you'll save ${toCurrency(baseScenario.remainingTotalCost - prepayScenario.remainingTotalCost, 0)} and ${toYearsAndMonths(baseScenario.remainingNper - prepayScenario.remainingNper)}`
+
+            updateChartData(charts, baseScenario, prepayScenario);
+            updateTableData(table, baseScenario, prepayScenario);
           };
 
           updateResults();
@@ -511,9 +695,9 @@ sitemap: false
     <div class="calculator-body">
       <div class="calculator-inputs calculator-inputs--mortgage">
         <div class="calculator-input">
-          <label for="current-loan-amount">Current Loan Amount</label>
+          <label for="original-loan-amount">Original Loan Amount</label>
           <span class="input-prefix">$</span>
-          <input type="number" id="current-loan-amount" min="0" inputmode="numeric" autocomplete="off" />
+          <input type="number" id="original-loan-amount" min="0" inputmode="numeric" autocomplete="off" />
         </div>
         <div class="calculator-input">
           <label for="first-payment-date">First Payment</label>
@@ -521,12 +705,12 @@ sitemap: false
         </div>
         <div class="calculator-input">
           <label for="loan-term">Loan Term</label>
-          <input type="number" id="loan-term" style="text-align: right;" min="1" max="100" inputmode="numeric" autocomplete="off" />
+          <input type="number" id="loan-term" style="text-align: right;" min="1" max="100" step="0.25" inputmode="numeric" autocomplete="off" />
           <span class="input-suffix">years</span>
         </div>
         <div class="calculator-input">
           <label for="interest-rate">Interest Rate</label>
-          <input type="number" id="interest-rate" style="text-align: right;" min="0" max="25" inputmode="numeric" autocomplete="off" />
+          <input type="number" id="interest-rate" style="text-align: right;" min="0" max="25" step="0.001" inputmode="numeric" autocomplete="off" />
           <span class="input-suffix">%</span>
         </div>
         <div class="calculator-input calculator-input--wide">
@@ -542,12 +726,23 @@ sitemap: false
           </select>
         </div>
       </div>
+      <hr />
       <div class="calculator-inputs calculator-inputs--interim">
+        <div class="calculator-input">
+          <label for="current-loan-amount">Current Loan Amount</label>
+          <span class="input-prefix">$</span>
+          <input type="number" id="current-loan-amount" min="0" step="0.01" inputmode="numeric" autocomplete="off" />
+        </div>
+        <div class="calculator-input">
+          <label for="monthly-payment">Monthly Payment</label>
+          <span class="input-prefix">$</span>
+          <input type="number" id="monthly-payment" min="0" step="0.01" inputmode="numeric" autocomplete="off" />
+        </div>
       </div>
       <hr />
       <div clas="calculator-outputs">
         <div class="calculator-output calculator-output--line">
-          With prepayment, you'll save $100,000
+          Calculator Loading...
         </div>
         <div class="calculator-output calculator-output--result-table">
           <div class="result-table__row result-table__row--heading">
@@ -557,26 +752,35 @@ sitemap: false
             <div class="result-table__cell">Remaining Cost</div>
           </div>
           <div class="result-table__row">
-            <div class="result-table__cell">With Prepayment</div>
-            <div class="result-table__cell result-table__cell--with-pp-date">March 2025</div>
-            <div class="result-table__cell result-table__cell--with-pp-interest">$20,000</div>
-            <div class="result-table__cell result-table__cell--with-pp-total">$80,000</div>
+            <div class="result-table__cell">Without<br />Prepayment</div>
+            <div class="result-table__cell result-table__cell--wo-pp-date"></div>
+            <div class="result-table__cell result-table__cell--wo-pp-interest"></div>
+            <div class="result-table__cell result-table__cell--wo-pp-total"></div>
           </div>
           <div class="result-table__row">
-            <div class="result-table__cell">Without Prepayment</div>
-            <div class="result-table__cell result-table__cell--wo-pp-date">March 2027</div>
-            <div class="result-table__cell result-table__cell--wo-pp-interest">$25,000</div>
-            <div class="result-table__cell result-table__cell--wo-pp-total">$85,000</div>
+            <div class="result-table__cell">With<br />Prepayment</div>
+            <div class="result-table__cell result-table__cell--with-pp-date"></div>
+            <div class="result-table__cell result-table__cell--with-pp-interest"></div>
+            <div class="result-table__cell result-table__cell--with-pp-total"></div>
           </div>
         </div>
         <div class="calculator-output calculator-output--interest-chart">
-
+          <canvas width="400" height="100"></canvas>
         </div>
         <div class="calculator-output calculator-output--balance-chart">
-
+          <canvas width="400" height="200"></canvas>
         </div>
         <div class="calculator-output calculator-output--amortization-table">
-
+          <table>
+            <tr>
+              <th>Month</th>
+              <th>Starting Balance</th>
+              <th>Total Payment</th>
+              <th>Toward Interest</th>
+              <th>Toward Principal</th>
+              <th>Ending Balance</th>
+            </tr>
+          </table>
         </div>
 
       </div>
