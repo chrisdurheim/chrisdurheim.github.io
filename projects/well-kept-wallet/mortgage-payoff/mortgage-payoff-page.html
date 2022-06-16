@@ -144,9 +144,16 @@ sitemap: false
       outline: none;
       border-color: var(--calculator-focus-color);
     }
-    .mortgage-payoff-calculator .calculator-body .calculator-debt-lines-buttons,
     .mortgage-payoff-calculator .calculator-body .calculator-input-buttons {
+      flex: 0 0 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       text-align: center;
+    }
+    .mortgage-payoff-calculator .calculator-body .calculator-input-buttons button {
+      flex: 0 0 auto;
+      margin: 1rem;
     }
     .mortgage-payoff-calculator button {
       -webkit-appearance: button;
@@ -192,18 +199,31 @@ sitemap: false
       font-size: 1.25rem;
       border: 2px solid var(--calculator-primary-color);
     }
-    .mortgage-payoff-calculator .calculator-body button:hover {
+    .mortgage-payoff-calculator .calculator-body button.calculator-input-button--calculate:hover {
       outline: none;
       background-color: var(--calculator-focus-color);
       color: white;
     }
-    .mortgage-payoff-calculator .calculator-body button:focus {
+    .mortgage-payoff-calculator .calculator-body button.calculator-input-button--calculate:focus {
       border-color: var(--calculator-focus-color);
       outline: none;
     }
-    .mortgage-payoff-calculator .calculator-body .calculator-input-buttons button {
-      margin: 1rem 0;
-      width: 100%;
+    .mortgage-payoff-calculator .calculator-body button.calculator-input-button--back {
+      background-color: transparent;
+      color: var(--calculator-primary-color);
+      text-transform: uppercase;
+      font-size: 1rem;
+      border: 2px solid transparent;
+      padding: 0;
+      margin: 0;
+    }
+    .mortgage-payoff-calculator .calculator-body button.calculator-input-button--back:hover {
+      outline: none;
+      color: black;
+    }
+    .mortgage-payoff-calculator .calculator-body button.calculator-input-button--back:focus {
+      border-color: var(--calculator-focus-color);
+      outline: none;
     }
     .mortgage-payoff-calculator .calculator-body label {
       font-family: var(--calculator-heading-font);
@@ -279,17 +299,42 @@ sitemap: false
       margin: 2rem auto;
     }
 
-    .mortgage-payoff-calculator .calculator-outputs.hidden-calc-section,
-    .mortgage-payoff-calculator .calculator-inputs--interim.hidden-calc-section {
+    .mortgage-payoff-calculator .calculator-inputs--mortgage.hidden-calc-section,
+    .mortgage-payoff-calculator .calculator-outputs.hidden-calc-section
+     {
       display: none;
     }
 
+    .mortgage-payoff-calculator .calculator-inputs.calculator-inputs--summary {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+      margin: 0 2rem;
+    }
+
+    .mortgage-payoff-calculator .calculator-inputs.calculator-inputs--summary > * {
+      flex: 0 0 auto;
+    }
+
+    .mortgage-payoff-calculator .calculator-inputs.calculator-inputs--summary ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
     .mortgage-payoff-calculator .calculator-output {
-      margin: 2rem;
+      margin: 0 2rem 2rem;
     }
 
     .mortgage-payoff-calculator .calculator-output--line {
       margin: 2rem auto 1rem;
+      font-size: 1.5rem;
+      padding: 1rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .mortgage-payoff-calculator .calculator-output--title {
+      margin: 0 auto 1rem;
       font-size: 1.5rem;
       padding: 1rem;
       font-weight: bold;
@@ -446,7 +491,7 @@ sitemap: false
           interest,
           payment: paymentMade,
           principal: paymentMade - interest,
-          date: toMonth(advanceMonths(today, amortizationTable.length + 1)),
+          date: toMonth(advanceMonths(Math.max(startDate, today), amortizationTable.length)),
           end
         })
         intermedBalance = end;
@@ -466,7 +511,7 @@ sitemap: false
         dates: {
           start: toMonth(startDate),
           current: toMonth(today),
-          end: toMonth(advanceMonths(Math.max(today, startDate), remainingNper)),
+          end: toMonth(advanceMonths(Math.max(today, startDate), startDate > today ? remainingNper - 1 : remainingNper)),
         }
       };
     }
@@ -512,7 +557,7 @@ sitemap: false
                 position: 'none',
               },
               title: {
-                display: true,
+                display: false,
                 text: 'Remaining Interest',
                 font: {
                   family: 'Raleway, sans-serif',
@@ -582,7 +627,7 @@ sitemap: false
                 position: 'none',
               },
               title: {
-                display: true,
+                display: false,
                 text: 'Principal Balance',
                 font: {
                   family: 'Raleway, sans-serif',
@@ -656,10 +701,50 @@ sitemap: false
           const selects = calculator.querySelectorAll('select');
           const buttons = calculator.querySelectorAll('button');
 
+          const inputSection = calculator.querySelector('.calculator-inputs--mortgage');
           const outputSection = calculator.querySelector('.calculator-outputs');
-          const interimSection = calculator.querySelector('.calculator-inputs--interim');
+
           const charts = setupCharts(calculator);
           const table = calculator.querySelector('.calculator-output--amortization-table table');
+
+          let states = ['basic', 'results'];
+          let currentState = 'basic';
+
+          const advanceState = () => {
+            const startIndex = states.findIndex((state) => state === currentState);
+            const endIndex = Math.min(startIndex + 1, states.length - 1);
+            currentState = states[endIndex];
+            renderState();
+          }
+          const retreatState = () => {
+            const startIndex = states.findIndex((state) => state === currentState);
+            const endIndex = Math.max(startIndex - 1, 0);
+            currentState = states[endIndex];
+            renderState();
+          }
+
+          const validateInputs = () => {
+            const allValid = Array.from(inputs).every((input) => {
+              return input.value ? input.checkValidity() : false;
+            });
+            if (!allValid) {
+              currentState = 'basic';
+            }
+          }
+
+          const renderState = () => {
+            validateInputs();
+            switch(currentState) {
+              case 'basic':
+                inputSection.classList.remove('hidden-calc-section')
+                outputSection.classList.add('hidden-calc-section')
+                break;
+              case 'results':
+                inputSection.classList.add('hidden-calc-section')
+                outputSection.classList.remove('hidden-calc-section')
+                break;
+            }
+          }
 
           const updateResults = () => {
             console.log('Calculator updating');
@@ -676,10 +761,6 @@ sitemap: false
             const extraPaymentAmount = parseFloat(calculator.querySelector('#extra-payment-amount').value);
             const extraPaymentFrequency = parseFloat(calculator.querySelector('#extra-payment-frequency').value)
 
-            let allValid = Array.from(inputs).every((input) => {
-              return input.value ? input.checkValidity : false;
-            });
-
             /* Interim calculation */
             const today = new Date();
             const monthsElapsed = monthsBetween(startDate, today);
@@ -690,6 +771,21 @@ sitemap: false
 
             calculator.querySelector('#current-loan-amount').value = currentBalance.toFixed(2);
             calculator.querySelector('#monthly-payment').value = basePayment.toFixed(2);
+            calculator.querySelector('.calculator-inputs--summary span[name=original-amount-summary]').innerHTML = toCurrency(loanAmount, 0);
+            calculator.querySelector('.calculator-inputs--summary span[name=loan-term]').innerHTML = `${Math.round(loanTerm / 12)} years`;
+            calculator.querySelector('.calculator-inputs--summary span[name=interest-rate]').innerHTML = `${interestRate * 100.0}%`;
+            calculator.querySelector('.calculator-inputs--summary span[name=first-payment]').innerHTML = toMonth(startDate);
+            let extraPaymentTag = '';
+            switch(extraPaymentFrequency) {
+              case 0: extraPaymentTag = 'once'; break;
+              case 0.23013679714: extraPaymentTag = 'per week'; break;
+              case 1: extraPaymentTag = 'per month'; break;
+              case 3: extraPaymentTag = 'per quarter'; break;
+              case 12: extraPaymentTag = 'per year'; break;
+            }
+            if (extraPaymentFrequency >= 1) {
+              calculator.querySelector('.calculator-inputs--summary span[name=extra-payment]').innerHTML = `${toCurrency(extraPaymentAmount, 2)} ${extraPaymentTag}`
+            }
 
             /* Base scenario */
             const baseScenario = runScenario(currentBalance, interestRate, basePayment, startDate, today);
@@ -712,19 +808,15 @@ sitemap: false
             updateChartData(charts, baseScenario, prepayScenario);
             updateTableData(table, baseScenario, prepayScenario);
 
-            if (allValid) {
-              outputSection.classList.remove('hidden-calc-section');
-              interimSection.classList.remove('hidden-calc-section');
-            } else {
-              outputSection.classList.add('hidden-calc-section');
-              interimSection.classList.add('hidden-calc-section');
-            }
+            renderState();
           };
 
           updateResults();
 
           inputs.forEach((input) => { input.addEventListener('blur', updateResults)});
           selects.forEach((select) => { select.addEventListener('change', updateResults)})
+          calculator.querySelector('button[name=submit-interim]').addEventListener('click', advanceState);
+          calculator.querySelector('button[name=back-results]').addEventListener('click', retreatState);
         };
       });
     });
@@ -755,6 +847,16 @@ sitemap: false
           <input type="number" id="interest-rate" style="text-align: right;" min="0" max="25" step="0.001" inputmode="numeric" autocomplete="off" />
           <span class="input-suffix">%</span>
         </div>
+        <div class="calculator-input calculator-input--disabled">
+          <label for="current-loan-amount">Current Loan Amount</label>
+          <span class="input-prefix">$</span>
+          <input type="number" id="current-loan-amount" min="0" step="0.01" inputmode="numeric" autocomplete="off" disabled />
+        </div>
+        <div class="calculator-input calculator-input--disabled">
+          <label for="monthly-payment">Monthly Payment</label>
+          <span class="input-prefix">$</span>
+          <input type="number" id="monthly-payment" min="0" step="0.01" inputmode="numeric" autocomplete="off" disabled />
+        </div>
         <div class="calculator-input calculator-input--wide">
           <label for="extra-payment-amount">Extra Payment</label>
           <span class="input-prefix">$</span>
@@ -767,25 +869,29 @@ sitemap: false
             <option value=12>Yearly</option>
           </select>
         </div>
-      </div>
-      <div class="calculator-inputs calculator-inputs--interim">
-        <div class="calculator-input calculator-input--disabled">
-          <label for="current-loan-amount">Current Loan Amount</label>
-          <span class="input-prefix">$</span>
-          <input type="number" id="current-loan-amount" min="0" step="0.01" inputmode="numeric" autocomplete="off" disabled />
-        </div>
-        <div class="calculator-input calculator-input--disabled">
-          <label for="monthly-payment">Monthly Payment</label>
-          <span class="input-prefix">$</span>
-          <input type="number" id="monthly-payment" min="0" step="0.01" inputmode="numeric" autocomplete="off" disabled />
+        <div class="calculator-input-buttons">
+          <button class="calculator-input-button--calculate" name="submit-interim">Next</button>
         </div>
       </div>
       <div class="calculator-outputs">
-        <hr />
         <div class="calculator-output calculator-output--line">
           Calculator Loading...
         </div>
+        <div class="calculator-inputs calculator-inputs--summary">
+          <ul>
+            <li>Original Amount: <span name="original-amount-summary"></span></li>
+            <li>Loan Term: <span name="loan-term"></span></li>
+            <li>Interest Rate: <span name="interest-rate"></span></li>
+            <li>First Payment: <span name="first-payment"></span></li>
+            <li>Extra Payment: <span name="extra-payment"></span></li>
+          </ul>
+          <div class="calculator-input-buttons">
+            <button class="calculator-input-button--back" name="back-results">Edit</button>
+          </div>
+        </div>
+        <hr />
         <div class="calculator-output calculator-output--result-table">
+          <div class="calculator-output--title">Payoff Comparison</div>
           <div class="result-table__row result-table__row--heading">
             <div class="result-table__cell"></div>
             <div class="result-table__cell">Payoff Date</div>
@@ -805,13 +911,19 @@ sitemap: false
             <div class="result-table__cell result-table__cell--with-pp-total"></div>
           </div>
         </div>
+        <hr />
         <div class="calculator-output calculator-output--interest-chart">
+          <div class="calculator-output--title">Remaining Interest</div>
           <canvas width="400" height="100"></canvas>
         </div>
+        <hr />
         <div class="calculator-output calculator-output--balance-chart">
+          <div class="calculator-output--title">Balance Payoff</div>
           <canvas width="400" height="200"></canvas>
         </div>
+        <hr />
         <div class="calculator-output calculator-output--amortization-table calculator-result-summary-table">
+          <div class="calculator-output--title">Amortization Table (with prepayment)</div>
           <table>
             <tr>
               <th>Month</th>
@@ -823,10 +935,8 @@ sitemap: false
             </tr>
           </table>
         </div>
-
       </div>
     </div>
   </div>
-
 </body>
 </html>
