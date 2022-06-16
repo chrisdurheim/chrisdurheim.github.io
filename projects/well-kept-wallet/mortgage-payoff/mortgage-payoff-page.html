@@ -87,6 +87,15 @@ sitemap: false
       max-width: calc(60% + 3rem);
     }
 
+    .mortgage-payoff-calculator .calculator-body .calculator-input--disabled,
+    .mortgage-payoff-calculator .calculator-body .calculator-input--disabled label,
+    .mortgage-payoff-calculator .calculator-body .calculator-input--disabled input,
+    .mortgage-payoff-calculator .calculator-body .calculator-input--disabled .prefix,
+    .mortgage-payoff-calculator .calculator-body .calculator-input--disabled .suffix {
+      background-color: var(--line-color);
+      cursor: not-allowed;
+    }
+
     .mortgage-payoff-calculator .calculator-body .calculator-input label {
       position: absolute;
       top: -1.25rem;
@@ -270,6 +279,15 @@ sitemap: false
       margin: 2rem auto;
     }
 
+    .mortgage-payoff-calculator .calculator-outputs.hidden-calc-section,
+    .mortgage-payoff-calculator .calculator-inputs--interim.hidden-calc-section {
+      display: none;
+    }
+
+    .mortgage-payoff-calculator .calculator-output {
+      margin: 2rem;
+    }
+
     .mortgage-payoff-calculator .calculator-output--line {
       margin: 2rem auto 1rem;
       font-size: 1.5rem;
@@ -373,10 +391,10 @@ sitemap: false
       const monthlyRate = Math.pow(1 + annualRate, 1.0 / 12) - 1;
       return payment / monthlyRate * (1 - (1 / Math.pow(1 + monthlyRate, nper)));
     }
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const months = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
     const toMonth = (date) => {
       if (!date) { return undefined }
-      return `${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
+      return `${months[date.getUTCMonth()]} '${date.getUTCFullYear().toFixed(0).substr(-2,2)}`;
     }
     const monthsBetween = (start, end) => {
       if (start) {
@@ -453,6 +471,8 @@ sitemap: false
       };
     }
     const setupCharts = (calculator) => {
+      Chart.defaults.font.size = 16;
+      Chart.defaults.font.family = "Nunito Sans, sans-serif";
       const interestChartElement = calculator.querySelector('.calculator-output--interest-chart canvas');
       const interestChart = new Chart(interestChartElement, {
           type: 'bar',
@@ -462,12 +482,12 @@ sitemap: false
                   label: 'Remaining Interest',
                   data: [],
                   backgroundColor: [
-                      'rgba(255, 99, 132, 0.2)',
-                      'rgba(54, 162, 235, 0.2)'
+                    '#333333',
+                    '#2bb34b'
                   ],
                   borderColor: [
-                      'rgba(255, 99, 132, 1)',
-                      'rgba(54, 162, 235, 1)'
+                    '#333333',
+                    '#2bb34b'
                   ],
                   borderWidth: 1
               }]
@@ -493,7 +513,11 @@ sitemap: false
               },
               title: {
                 display: true,
-                text: 'Remaining Interest'
+                text: 'Remaining Interest',
+                font: {
+                  family: 'Raleway, sans-serif',
+                  size: 20,
+                }
               },
               tooltip: {
                 callbacks: {
@@ -523,10 +547,10 @@ sitemap: false
                   label: 'Without Prepayment',
                   data: [1, 2, 3, 4, 5],
                   backgroundColor: [
-                      'rgba(255, 99, 132, 0.2)'
+                    '#333333'
                   ],
                   borderColor: [
-                      'rgba(255, 99, 132, 1)'
+                    '#333333'
                   ],
                   borderWidth: 1
               },
@@ -534,10 +558,10 @@ sitemap: false
                   label: 'With Prepayment',
                   data: [5, 4, 3, 2, 1],
                   backgroundColor: [
-                      'rgba(132, 99, 255, 0.2)'
+                    '#2bb34b'
                   ],
                   borderColor: [
-                      'rgba(132, 99, 255, 1)'
+                    '#2bb34b'
                   ],
                   borderWidth: 1
               }]
@@ -559,7 +583,11 @@ sitemap: false
               },
               title: {
                 display: true,
-                text: 'Principal Balance'
+                text: 'Principal Balance',
+                font: {
+                  family: 'Raleway, sans-serif',
+                  size: 20,
+                }
               },
               tooltip: {
                 callbacks: {
@@ -628,6 +656,8 @@ sitemap: false
           const selects = calculator.querySelectorAll('select');
           const buttons = calculator.querySelectorAll('button');
 
+          const outputSection = calculator.querySelector('.calculator-outputs');
+          const interimSection = calculator.querySelector('.calculator-inputs--interim');
           const charts = setupCharts(calculator);
           const table = calculator.querySelector('.calculator-output--amortization-table table');
 
@@ -645,6 +675,10 @@ sitemap: false
             const interestRate = parseFloat(calculator.querySelector('#interest-rate').value) / 100.0;
             const extraPaymentAmount = parseFloat(calculator.querySelector('#extra-payment-amount').value);
             const extraPaymentFrequency = parseFloat(calculator.querySelector('#extra-payment-frequency').value)
+
+            let allValid = Array.from(inputs).every((input) => {
+              return input.value ? input.checkValidity : false;
+            });
 
             /* Interim calculation */
             const today = new Date();
@@ -677,6 +711,14 @@ sitemap: false
 
             updateChartData(charts, baseScenario, prepayScenario);
             updateTableData(table, baseScenario, prepayScenario);
+
+            if (allValid) {
+              outputSection.classList.remove('hidden-calc-section');
+              interimSection.classList.remove('hidden-calc-section');
+            } else {
+              outputSection.classList.add('hidden-calc-section');
+              interimSection.classList.add('hidden-calc-section');
+            }
           };
 
           updateResults();
@@ -726,21 +768,20 @@ sitemap: false
           </select>
         </div>
       </div>
-      <hr />
       <div class="calculator-inputs calculator-inputs--interim">
-        <div class="calculator-input">
+        <div class="calculator-input calculator-input--disabled">
           <label for="current-loan-amount">Current Loan Amount</label>
           <span class="input-prefix">$</span>
-          <input type="number" id="current-loan-amount" min="0" step="0.01" inputmode="numeric" autocomplete="off" />
+          <input type="number" id="current-loan-amount" min="0" step="0.01" inputmode="numeric" autocomplete="off" disabled />
         </div>
-        <div class="calculator-input">
+        <div class="calculator-input calculator-input--disabled">
           <label for="monthly-payment">Monthly Payment</label>
           <span class="input-prefix">$</span>
-          <input type="number" id="monthly-payment" min="0" step="0.01" inputmode="numeric" autocomplete="off" />
+          <input type="number" id="monthly-payment" min="0" step="0.01" inputmode="numeric" autocomplete="off" disabled />
         </div>
       </div>
-      <hr />
-      <div clas="calculator-outputs">
+      <div class="calculator-outputs">
+        <hr />
         <div class="calculator-output calculator-output--line">
           Calculator Loading...
         </div>
@@ -770,15 +811,15 @@ sitemap: false
         <div class="calculator-output calculator-output--balance-chart">
           <canvas width="400" height="200"></canvas>
         </div>
-        <div class="calculator-output calculator-output--amortization-table">
+        <div class="calculator-output calculator-output--amortization-table calculator-result-summary-table">
           <table>
             <tr>
               <th>Month</th>
-              <th>Starting Balance</th>
-              <th>Total Payment</th>
-              <th>Toward Interest</th>
-              <th>Toward Principal</th>
-              <th>Ending Balance</th>
+              <th>Start</th>
+              <th>Payment</th>
+              <th>Interest</th>
+              <th>Principal</th>
+              <th>End</th>
             </tr>
           </table>
         </div>
