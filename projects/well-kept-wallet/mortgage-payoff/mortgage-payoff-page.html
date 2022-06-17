@@ -321,20 +321,25 @@ sitemap: false
       padding-left: 0;
     }
 
+    .mortgage-payoff-calculator .calculator-center-text {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
     .mortgage-payoff-calculator .calculator-output {
       margin: 0 2rem 2rem;
     }
 
     .mortgage-payoff-calculator .calculator-output--line {
-      margin: 2rem auto 1rem;
+      margin: 2rem auto 0;
       font-size: 1.5rem;
-      padding: 1rem;
+      padding: 1rem 1rem 0;
       font-weight: bold;
       text-align: center;
     }
 
     .mortgage-payoff-calculator .calculator-output--title {
-      margin: 0 auto 1rem;
+      margin: 1rem auto 0;
       font-size: 1.5rem;
       padding: 1rem;
       font-weight: bold;
@@ -775,6 +780,8 @@ sitemap: false
             calculator.querySelector('.calculator-inputs--summary span[name=loan-term]').innerHTML = `${Math.round(loanTerm / 12)} years`;
             calculator.querySelector('.calculator-inputs--summary span[name=interest-rate]').innerHTML = `${interestRate * 100.0}%`;
             calculator.querySelector('.calculator-inputs--summary span[name=first-payment]').innerHTML = toMonth(startDate);
+            calculator.querySelector('.calculator-inputs--summary span[name=current-balance]').innerHTML = toCurrency(currentBalance, 0);
+            calculator.querySelector('.calculator-inputs--summary span[name=standard-payment]').innerHTML = toCurrency(basePayment, 2);
             let extraPaymentTag = '';
             switch(extraPaymentFrequency) {
               case 0: extraPaymentTag = 'once'; break;
@@ -803,7 +810,7 @@ sitemap: false
             calculator.querySelector('.result-table__cell--wo-pp-interest').innerHTML = toCurrency(baseScenario.remainingInterest, 0);
             calculator.querySelector('.result-table__cell--wo-pp-total').innerHTML = toCurrency(baseScenario.remainingTotalCost, 0);
 
-            calculator.querySelector('.calculator-output--line').innerHTML = `With prepayment, you'll save ${toCurrency(baseScenario.remainingTotalCost - prepayScenario.remainingTotalCost, 0)} and ${toYearsAndMonths(baseScenario.remainingNper - prepayScenario.remainingNper)}`
+            calculator.querySelector('.calculator-output--line').innerHTML = `With prepayment, you'll save ${toCurrency(baseScenario.remainingTotalCost - prepayScenario.remainingTotalCost, 0)} and ${toYearsAndMonths(baseScenario.remainingNper - prepayScenario.remainingNper)}!`
 
             updateChartData(charts, baseScenario, prepayScenario);
             updateTableData(table, baseScenario, prepayScenario);
@@ -874,22 +881,25 @@ sitemap: false
         </div>
       </div>
       <div class="calculator-outputs">
-        <div class="calculator-output calculator-output--line">
-          Calculator Loading...
+        <div class="calculator-output">
+          <div class="calculator-output--line">Calculator Loading...</div>
         </div>
+        <div class="calculator-center-text">Want more details? See below for your detailed analysis.</div>
+        <div class="calculator-output--title">Your Inputs</div>
+        <div class="calculator-center-text"><button class="calculator-input-button--back" name="back-results">Edit</button></div>
         <div class="calculator-inputs calculator-inputs--summary">
           <ul>
             <li>Original Amount: <span name="original-amount-summary"></span></li>
             <li>Loan Term: <span name="loan-term"></span></li>
             <li>Interest Rate: <span name="interest-rate"></span></li>
             <li>First Payment: <span name="first-payment"></span></li>
+          </ul>
+          <ul>
+            <li>Current Balance: <span name="current-balance"></span></li>
+            <li>Standard Payment: <span name="standard-payment"></span></li>
             <li>Extra Payment: <span name="extra-payment"></span></li>
           </ul>
-          <div class="calculator-input-buttons">
-            <button class="calculator-input-button--back" name="back-results">Edit</button>
-          </div>
         </div>
-        <hr />
         <div class="calculator-output calculator-output--result-table">
           <div class="calculator-output--title">Payoff Comparison</div>
           <div class="result-table__row result-table__row--heading">
@@ -911,17 +921,14 @@ sitemap: false
             <div class="result-table__cell result-table__cell--with-pp-total"></div>
           </div>
         </div>
-        <hr />
         <div class="calculator-output calculator-output--interest-chart">
           <div class="calculator-output--title">Remaining Interest</div>
           <canvas width="400" height="100"></canvas>
         </div>
-        <hr />
         <div class="calculator-output calculator-output--balance-chart">
           <div class="calculator-output--title">Balance Payoff</div>
           <canvas width="400" height="200"></canvas>
         </div>
-        <hr />
         <div class="calculator-output calculator-output--amortization-table calculator-result-summary-table">
           <div class="calculator-output--title">Amortization Table (with prepayment)</div>
           <table>
