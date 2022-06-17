@@ -323,7 +323,6 @@ sitemap: false
 
     .mortgage-payoff-calculator .calculator-center-text {
       text-align: center;
-      margin-bottom: 1rem;
     }
 
     .mortgage-payoff-calculator .calculator-output {
@@ -368,14 +367,26 @@ sitemap: false
     .mortgage-payoff-calculator .calculator-output--result-table .result-table__cell:empty {
       border-top-color: transparent;
       border-left-color: transparent;
+      background-color: initial !important;
+      color: initial !important;
     }
     .mortgage-payoff-calculator .result-table__row--heading {
       font-weight: bold;
       text-align: center;
     }
+    .mortgage-payoff-calculator .result-table__row--heading .result-table__cell {
+      background-color: black;
+      color: white;
+    }
+
     .mortgage-payoff-calculator .result-table__row .result-table__cell:first-child {
       font-weight: bold;
       text-align: left;
+      background-color: black;
+      color: white;
+    }
+    .mortgage-payoff-calculator .result-table__row:nth-child(4) .result-table__cell:first-child {
+      background-color: var(--calculator-primary-color);
     }
 
     @media screen and (min-width: 360px) {
@@ -880,13 +891,12 @@ sitemap: false
           <button class="calculator-input-button--calculate" name="submit-interim">Next</button>
         </div>
       </div>
-      <div class="calculator-outputs">
+      <div class="calculator-outputs hidden-calc-section">
         <div class="calculator-output">
           <div class="calculator-output--line">Calculator Loading...</div>
         </div>
         <div class="calculator-center-text">Want more details? See below for your detailed analysis.</div>
         <div class="calculator-output--title">Your Inputs</div>
-        <div class="calculator-center-text"><button class="calculator-input-button--back" name="back-results">Edit</button></div>
         <div class="calculator-inputs calculator-inputs--summary">
           <ul>
             <li>Original Amount: <span name="original-amount-summary"></span></li>
@@ -900,6 +910,7 @@ sitemap: false
             <li>Extra Payment: <span name="extra-payment"></span></li>
           </ul>
         </div>
+        <div class="calculator-center-text"><button class="calculator-input-button--back" name="back-results">Edit</button></div>
         <div class="calculator-output calculator-output--result-table">
           <div class="calculator-output--title">Payoff Comparison</div>
           <div class="result-table__row result-table__row--heading">
