@@ -478,7 +478,7 @@ sitemap: false
       newDate.setUTCDate(1);
       return newDate;
     }
-    const runScenario = (currentBalance, interestRate, basePayment, startDate, today, extraPayment = 0, extraPaymentFreq = undefined) => {
+    const runScenario = (currentBalance, interestRate, basePayment, startDate, today, monthless, extraPayment = 0, extraPaymentFreq = undefined) => {
       const monthlyRate = Math.pow(1 + interestRate, 1.0 / 12) - 1;
 
       const amortizationTable = [];
@@ -502,12 +502,13 @@ sitemap: false
 
         const paymentMade = Math.min(proposedPayment, start + interest);
         const end = roundToPlaces(intermedBalance + interest - paymentMade, 8);
+        const entryDate = monthless ? `Month ${amortizationTable.length + 1}` : toMonth(advanceMonths(Math.max(startDate, today), amortizationTable.length));
         amortizationTable.push({
           start,
           interest,
           payment: paymentMade,
           principal: paymentMade - interest,
-          date: toMonth(advanceMonths(Math.max(startDate, today), amortizationTable.length)),
+          date: entryDate,
           end
         })
         intermedBalance = end;
@@ -525,9 +526,9 @@ sitemap: false
         remainingInterest,
         amortizationTable,
         dates: {
-          start: toMonth(startDate),
-          current: toMonth(today),
-          end: toMonth(advanceMonths(Math.max(today, startDate), startDate > today ? remainingNper - 1 : remainingNper)),
+          start: monthless ? `Month 1` : toMonth(startDate),
+          current: monthless ? `Month 1` : toMonth(today),
+          end: monthless ? `Month ${remainingNper}` : toMonth(advanceMonths(Math.max(today, startDate), startDate > today ? remainingNper - 1 : remainingNper)),
         }
       };
     }
@@ -741,7 +742,10 @@ sitemap: false
 
           const validateInputs = () => {
             const allValid = Array.from(inputs).every((input) => {
-              return input.value ? input.checkValidity() : false;
+              if (input.type === 'month') {
+                return input.reportValidity();
+              }
+              return input.value ? input.reportValidity() : false;
             });
             if (!allValid) {
               currentState = 'basic';
@@ -770,15 +774,18 @@ sitemap: false
             selects.forEach((select) => {
               select.reportValidity();
             })
+            console.log('diggity')
             const loanAmount = parseFloat(calculator.querySelector('#original-loan-amount').value);
-            const startDate = new Date(Date.parse(calculator.querySelector('#first-payment-date').value));
+            const startDateEntered = Date.parse(calculator.querySelector('#first-payment-date').value);
             const loanTerm = parseFloat(calculator.querySelector('#loan-term').value) * 12;
             const interestRate = parseFloat(calculator.querySelector('#interest-rate').value) / 100.0;
             const extraPaymentAmount = parseFloat(calculator.querySelector('#extra-payment-amount').value);
             const extraPaymentFrequency = parseFloat(calculator.querySelector('#extra-payment-frequency').value)
 
-            /* Interim calculation */
             const today = new Date();
+            const startDate = startDateEntered ? new Date(startDateEntered) : new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+            /* Interim calculation */
             const monthsElapsed = monthsBetween(startDate, today);
 
             /* Interim calculations - open for override */
@@ -790,7 +797,7 @@ sitemap: false
             calculator.querySelector('.calculator-inputs--summary span[name=original-amount-summary]').innerHTML = toCurrency(loanAmount, 0);
             calculator.querySelector('.calculator-inputs--summary span[name=loan-term]').innerHTML = `${Math.round(loanTerm / 12)} years`;
             calculator.querySelector('.calculator-inputs--summary span[name=interest-rate]').innerHTML = `${interestRate * 100.0}%`;
-            calculator.querySelector('.calculator-inputs--summary span[name=first-payment]').innerHTML = toMonth(startDate);
+            calculator.querySelector('.calculator-inputs--summary span[name=first-payment]').innerHTML = startDateEntered ? toMonth(startDate) : 'Not Entered';
             calculator.querySelector('.calculator-inputs--summary span[name=current-balance]').innerHTML = toCurrency(currentBalance, 0);
             calculator.querySelector('.calculator-inputs--summary span[name=standard-payment]').innerHTML = toCurrency(basePayment, 2);
             let extraPaymentTag = '';
@@ -806,11 +813,11 @@ sitemap: false
             }
 
             /* Base scenario */
-            const baseScenario = runScenario(currentBalance, interestRate, basePayment, startDate, today);
+            const baseScenario = runScenario(currentBalance, interestRate, basePayment, startDate, today, !startDateEntered);
             console.log(baseScenario);
 
             /* Prepay scenario */
-            const prepayScenario = runScenario(currentBalance, interestRate, basePayment, startDate, today, extraPaymentAmount, extraPaymentFrequency);
+            const prepayScenario = runScenario(currentBalance, interestRate, basePayment, startDate, today, !startDateEntered, extraPaymentAmount, extraPaymentFrequency);
             console.log(prepayScenario);
 
             calculator.querySelector('.result-table__cell--with-pp-date').innerHTML = prepayScenario.dates.end;
@@ -841,19 +848,12 @@ sitemap: false
   </script>
 
   <div class="mortgage-payoff-calculator">
-    <div class="calculator-header">
-      <div class="calculator-title">Mortgage Payoff Calculator</div>
-    </div>
     <div class="calculator-body">
       <div class="calculator-inputs calculator-inputs--mortgage">
         <div class="calculator-input">
           <label for="original-loan-amount">Original Loan Amount</label>
           <span class="input-prefix">$</span>
           <input type="number" id="original-loan-amount" min="0" inputmode="numeric" autocomplete="off" />
-        </div>
-        <div class="calculator-input">
-          <label for="first-payment-date">First Payment</label>
-          <input type="month" id="first-payment-date" pattern="[0-9]{4}-[0-9]{2}"/>
         </div>
         <div class="calculator-input">
           <label for="loan-term">Loan Term</label>
@@ -865,15 +865,19 @@ sitemap: false
           <input type="number" id="interest-rate" style="text-align: right;" min="0" max="25" step="0.001" inputmode="numeric" autocomplete="off" />
           <span class="input-suffix">%</span>
         </div>
-        <div class="calculator-input calculator-input--disabled">
-          <label for="current-loan-amount">Current Loan Amount</label>
-          <span class="input-prefix">$</span>
-          <input type="number" id="current-loan-amount" min="0" step="0.01" inputmode="numeric" autocomplete="off" disabled />
+        <div class="calculator-input">
+          <label for="first-payment-date">First Payment (optional)</label>
+          <input type="month" id="first-payment-date" pattern="(|[0-9]{4}-[0-9]{2})"/>
         </div>
         <div class="calculator-input calculator-input--disabled">
           <label for="monthly-payment">Monthly Payment</label>
           <span class="input-prefix">$</span>
           <input type="number" id="monthly-payment" min="0" step="0.01" inputmode="numeric" autocomplete="off" disabled />
+        </div>
+        <div class="calculator-input calculator-input--disabled">
+          <label for="current-loan-amount">Current Loan Amount</label>
+          <span class="input-prefix">$</span>
+          <input type="number" id="current-loan-amount" min="0" step="0.01" inputmode="numeric" autocomplete="off" disabled />
         </div>
         <div class="calculator-input calculator-input--wide">
           <label for="extra-payment-amount">Extra Payment</label>
