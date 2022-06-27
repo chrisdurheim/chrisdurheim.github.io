@@ -11,6 +11,19 @@ sitemap: false
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
 </head>
+<style>
+  body {
+    max-width: 1100px;
+  }
+  body > div {
+    max-width: calc(100% - 330px);
+  }
+  @media screen and (max-width: 768px) {
+    body > div {
+      max-width: 100%;
+    }
+  }
+</style>
 <body style="background-color: white">
   <style>
     :root{
@@ -24,16 +37,16 @@ sitemap: false
     .mortgage-payoff-calculator {
       font-size: 16px;
       font-family: var(--calculator-paragraph-font);
-      width: calc(100% - 1rem);
-      max-width: 800px;
-      margin: 2rem auto;
+      margin: 2em auto;
 
-      border-radius: 0.5rem;
+      border-radius: 0.5em;
       background-color: #f5f5f5;
       overflow: hidden;
+      line-height: 1;
     }
     .mortgage-payoff-calculator * {
       box-sizing: border-box;
+      align-self: center;
     }
     .mortgage-payoff-calculator table {
       width: auto;
@@ -47,34 +60,34 @@ sitemap: false
     }
     .mortgage-payoff-calculator .calculator-header {
       font-family: var(--calculator-heading-font);
-      margin: 1rem 0;
-      padding: 0 2rem;
+      margin: 1em 0;
+      padding: 0 2em;
       text-align: center;
     }
     .mortgage-payoff-calculator .calculator-header .calculator-title {
-      font-size: 2rem;
+      font-size: 2em;
       text-transform: uppercase;
     }
     .mortgage-payoff-calculator .calculator-body .calculator-inputs {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      margin: 2rem;
+      margin: 2em 0.25em;
     }
 
     .mortgage-payoff-calculator .calculator-body .calculator-input {
       background-color: white;
       border: 1px solid var(--calculator-line-color);
-      border-radius: 0.2rem;
+      border-radius: 0.2em;
       display: flex;
       flex-wrap: nowrap;
       justify-content: space-between;
-      margin: 2rem 0.5rem;
-      padding: 0.5rem 1rem;
+      margin: 2em 0.5em;
+      padding: 0.5em 1em;
       position: relative;
       flex: 1 0 auto;
       max-width: 30%;
-      min-width: 12rem;
+      min-width: 12em;
       transition: color 150ms ease-in-out,
                   background-color 150ms ease-in-out,
                   border-color 150ms ease-in-out;
@@ -83,12 +96,12 @@ sitemap: false
       border-color: var(--calculator-primary-color);
     }
 
-    .mortgage-payoff-calculator .calculator-body .calculator-input--wide {
-      max-width: calc(60% + 3rem);
+    .mortgage-payoff-calculator .calculator-body .calculator-inputs .calculator-input--wide {
+      max-width: calc(60% + 3em);
     }
 
     .mortgage-payoff-calculator .calculator-body .calculator-input--wide input {
-      max-width: calc(100% - 7rem);
+      max-width: calc(100% - 9em) !important;
     }
 
     .mortgage-payoff-calculator .calculator-body .calculator-input--disabled,
@@ -102,30 +115,34 @@ sitemap: false
 
     .mortgage-payoff-calculator .calculator-body .calculator-input label {
       position: absolute;
-      top: -1.25rem;
+      top: -1.5em;
       left: 0;
     }
 
     .mortgage-payoff-calculator .calculator-body .calculator-input .prefix,
     .mortgage-payoff-calculator .calculator-body .calculator-input .suffix {
       flex: 0 0 auto;
+      align-self: center;
     }
 
     .mortgage-payoff-calculator .calculator-body .calculator-inputs input,
     .mortgage-payoff-calculator .calculator-body .calculator-inputs select {
+      font-size: 1em;
       flex: 1 0 auto;
       font-family: var(--calculator-paragraph-font);
-      margin: 0 0.25rem;
+      margin: 0 0.25em;
       outline: none;
       border: none;
       background-color: transparent;
+      max-width: 100%;
+      padding: 0;
     }
 
     .mortgage-payoff-calculator .calculator-body .calculator-inputs select {
       flex: 0 0 auto;
       text-align: right;
       border-left: 1px solid var(--calculator-line-color);
-      padding-left: 0.75rem;
+      padding-left: 0.75em;
       transition: color 150ms ease-in-out,
                   background-color 150ms ease-in-out,
                   border-color 150ms ease-in-out;
@@ -158,11 +175,11 @@ sitemap: false
     .mortgage-payoff-calculator .calculator-body .calculator-input-toggler {
       text-align: center;
       flex: 0 0 100%;
-      margin: 1rem;
+      margin: 1em;
     }
     .mortgage-payoff-calculator .calculator-body .calculator-input-buttons button {
       flex: 0 0 auto;
-      margin: 1rem;
+      margin: 1em;
     }
     .mortgage-payoff-calculator button {
       -webkit-appearance: button;
@@ -193,10 +210,10 @@ sitemap: false
 
       background-color: white;
 
-      padding: 0.5rem;
-      border-radius: 0.2rem;
+      padding: 0.5em;
+      border-radius: 0.2em;
       font-family: var(--calculator-paragraph-font);
-      font-size: 0.75rem;
+      font-size: 0.75em;
       transition: color 150ms ease-in-out,
                   background-color 150ms ease-in-out,
                   border-color 150ms ease-in-out;
@@ -205,7 +222,7 @@ sitemap: false
       background-color: var(--calculator-primary-color);
       color: white;
       text-transform: uppercase;
-      font-size: 1.25rem;
+      font-size: 1.25em;
       border: 2px solid var(--calculator-primary-color);
     }
     .mortgage-payoff-calculator .calculator-body button.calculator-input-button--calculate:hover {
@@ -221,7 +238,7 @@ sitemap: false
       background-color: transparent;
       color: var(--calculator-primary-color);
       text-transform: uppercase;
-      font-size: 1rem;
+      font-size: 1em;
       border: 2px solid transparent;
       padding: 0;
       margin: 0;
@@ -239,10 +256,10 @@ sitemap: false
       font-weight: bold;
     }
     .mortgage-payoff-calculator .calculator-body .calculator-result-summary-line {
-      margin: 2rem;
+      margin: 2em;
       font-family: var(--calculator-heading-font);
       font-weight: bold;
-      font-size: 2rem;
+      font-size: 2em;
       text-align: center;
     }
     .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table,
@@ -255,7 +272,7 @@ sitemap: false
     }
 
     .mortgage-payoff-calculator .calculator-body .calculator-result-table table {
-      margin: 2rem auto;
+      margin: 2em auto;
       border-collapse: collapse;
     }
 
@@ -263,7 +280,7 @@ sitemap: false
     .mortgage-payoff-calculator .calculator-body .calculator-result-table table th,
     .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table table td,
     .mortgage-payoff-calculator .calculator-body .calculator-result-table table td {
-      padding: 0.25rem;
+      padding: 0.25em;
       border: 1px solid var(--calculator-line-color);
     }
 
@@ -288,24 +305,24 @@ sitemap: false
 
     .calculator-result-table {
       display: none;
-      margin: 2rem auto;
+      margin: 2em auto;
       overflow-x: auto;
     }
 
     .mortgage-payoff-calculator .calculator-body .summary-table-container {
-      margin: 1rem 0;
+      margin: 1em 0;
       overflow-x: auto;
     }
 
     .mortgage-payoff-calculator .calculator-body .summary-table-heading {
-      margin: 0 2rem;
+      margin: 0 2em;
       font-family: var(--calculator-heading-font);
       font-weight: bold;
       text-transform: uppercase;
     }
 
     #calculator-result-chart {
-      margin: 2rem auto;
+      margin: 2em auto;
     }
 
     .mortgage-payoff-calculator .hidden-calc-section {
@@ -316,7 +333,7 @@ sitemap: false
       display: flex;
       flex-wrap: wrap;
       justify-content: space-evenly;
-      margin: 0 2rem;
+      margin: 0 2em;
     }
 
     .mortgage-payoff-calculator .calculator-inputs.calculator-inputs--summary > * {
@@ -333,33 +350,33 @@ sitemap: false
     }
 
     .mortgage-payoff-calculator .calculator-output {
-      margin: 0 1rem 2rem;
+      margin: 0 1em 2em;
     }
 
     .mortgage-payoff-calculator .calculator-output--line {
-      margin: 2rem auto 0;
-      font-size: 1.5rem;
-      padding: 1rem 1rem 0;
+      margin: 2em auto 0;
+      font-size: 1.5em;
+      padding: 1em 1em 0;
       font-weight: bold;
       text-align: center;
     }
 
     .mortgage-payoff-calculator .calculator-output--title {
-      margin: 1rem auto 0;
-      font-size: 1.5rem;
-      padding: 1rem;
+      margin: 1em auto 0;
+      font-size: 1.5em;
+      padding: 1em;
       font-weight: bold;
       text-align: center;
     }
 
     .calculator-output.calculator-output--amortization-table.calculator-result-summary-table {
-      font-size: 0.6rem;
+      font-size: 0.6em;
     }
 
     .mortgage-payoff-calculator .calculator-output--result-table {
       display: flex;
       flex-wrap: wrap;
-      padding: 2rem;
+      padding: 2em;
     }
 
     .mortgage-payoff-calculator .calculator-output--result-table .result-table__row {
@@ -371,9 +388,10 @@ sitemap: false
 
     .mortgage-payoff-calculator .calculator-output--result-table .result-table__cell {
       border: 1px solid var(--calculator-line-color);
-      flex: 1 0 5rem;
-      padding: 1rem;
+      flex: 1 0 5em;
+      padding: 1em;
       text-align: center;
+      align-self: stretch;
     }
     .mortgage-payoff-calculator .calculator-output--result-table .result-table__cell:empty {
       border-top-color: transparent;
@@ -395,6 +413,7 @@ sitemap: false
       font-weight: bold;
       background-color: black;
       color: white;
+      width: 100%;
     }
     .mortgage-payoff-calculator .result-table__row:nth-child(4) .result-table__cell:first-child {
       background-color: var(--calculator-primary-color);
@@ -409,13 +428,13 @@ sitemap: false
 
     @media screen and (min-width: 425px) {
       .calculator-output.calculator-output--amortization-table.calculator-result-summary-table {
-        font-size: 0.8rem;
+        font-size: 0.8em;
       }
     }
 
     @media screen and (min-width: 640px) {
       .mortgage-payoff-calculator .calculator-body .calculator-input {
-        min-width: 15rem;
+        min-width: 15em;
       }
 
       .mortgage-payoff-calculator .calculator-output--result-table .result-table__row .result-table__cell:first-child {
@@ -428,7 +447,7 @@ sitemap: false
         display: inherit;
       }
       .calculator-output.calculator-output--amortization-table.calculator-result-summary-table {
-        font-size: 0.95rem;
+        font-size: 0.95em;
       }
       .mortgage-payoff-calculator .calculator-body .calculator-input {
       }
@@ -440,7 +459,7 @@ sitemap: false
       }
       .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table table th,
       .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table table td {
-        padding: 0.5rem 1rem;
+        padding: 0.5em 1em;
       }
 
       .mortgage-payoff-calculator .calculator-body .calculator-result-summary-table tr th:first-child,
