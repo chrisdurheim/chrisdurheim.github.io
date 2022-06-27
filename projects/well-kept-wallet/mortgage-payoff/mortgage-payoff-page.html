@@ -345,6 +345,14 @@ sitemap: false
       padding-left: 0;
     }
 
+    .mortgage-payoff-calculator .calculator-inputs--summary li {
+      font-weight: bold;
+    }
+
+    .mortgage-payoff-calculator .calculator-inputs--summary li span {
+      font-weight: normal;
+    }
+
     .mortgage-payoff-calculator .calculator-center-text {
       text-align: center;
     }
@@ -999,6 +1007,10 @@ sitemap: false
           <div class="calculator-output--line">Calculator Loading...</div>
         </div>
         <div class="calculator-output calculator-center-text">Want more details? See below for your detailed analysis.</div>
+        <div class="calculator-output calculator-output--balance-chart">
+          <div class="calculator-output--title">Balance Payoff</div>
+          <canvas width="300" height="200"></canvas>
+        </div>
         <div class="calculator-output--title">Your Inputs</div>
         <div class="calculator-inputs calculator-inputs--summary">
           <ul>
@@ -1037,10 +1049,6 @@ sitemap: false
         </div>
         <div class="calculator-output calculator-output--interest-chart">
           <div class="calculator-output--title">Remaining Interest</div>
-          <canvas width="300" height="200"></canvas>
-        </div>
-        <div class="calculator-output calculator-output--balance-chart">
-          <div class="calculator-output--title">Balance Payoff</div>
           <canvas width="300" height="200"></canvas>
         </div>
         <div class="calculator-output calculator-output--amortization-table calculator-result-summary-table">
