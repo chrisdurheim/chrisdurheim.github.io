@@ -538,7 +538,7 @@ sitemap: false
 
         const paymentMade = Math.min(proposedPayment, start + interest);
         const end = roundToPlaces(intermedBalance + interest - paymentMade, 8);
-        const entryDate = monthless ? `Month ${amortizationTable.length + 1}` : toMonth(advanceMonths(Math.max(startDate, today), amortizationTable.length));
+        const entryDate = monthless ? `Month ${amortizationTable.length + 1}` : toMonth(advanceMonths(Math.max(startDate, today), amortizationTable.length + 1));
         amortizationTable.push({
           start,
           interest,
