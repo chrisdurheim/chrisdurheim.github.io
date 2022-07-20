@@ -505,21 +505,21 @@ sitemap: false
     const payment = (pv, annualRate, months) => {
       const monthlyRate = Math.pow(1 + annualRate, 1.0 / 12) - 1;
       return pv * monthlyRate /(1-Math.pow(1 + monthlyRate, -months));
-    }
+    };
     const nper = (pv, annualRate, payment) => {
       const monthlyRate = Math.pow(1 + annualRate, 1.0 / 12) - 1;
-      const unroundedNper = Math.log(payment / (payment - monthlyRate * pv)) / Math.log(1 + monthlyRate)
+      const unroundedNper = Math.log(payment / (payment - monthlyRate * pv)) / Math.log(1 + monthlyRate);
       return roundToPlaces(unroundedNper, 3);
-    }
+    };
     const remBalance = (originalBalance, annualRate, payment, nper) => {
       const monthlyRate = Math.pow(1 + annualRate, 1.0 / 12) - 1;
       return payment / monthlyRate * (1 - (1 / Math.pow(1 + monthlyRate, nper)));
-    }
+    };
     const months = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
     const toMonth = (date) => {
       if (!date) { return undefined }
       return `${months[date.getUTCMonth()]} '${date.getUTCFullYear().toFixed(0).substr(-2,2)}`;
-    }
+    };
     const monthsBetween = (start, end) => {
       if (start) {
         if (end) {
@@ -533,14 +533,14 @@ sitemap: false
         }
       }
       return undefined;
-    }
+    };
     const advanceMonths = (date, months) => {
       if (!date) { return undefined }
       const newDate = new Date(typeof date === 'number' ? date : date.getTime());
       newDate.setUTCMonth(newDate.getUTCMonth() + months);
       newDate.setUTCDate(1);
       return newDate;
-    }
+    };
     const runScenario = (currentBalance, interestRate, basePayment, startDate, today, monthless, extraPayment = 0, extraPaymentFreq = undefined) => {
       const monthlyRate = Math.pow(1 + interestRate, 1.0 / 12) - 1;
 
@@ -573,14 +573,14 @@ sitemap: false
           principal: paymentMade - interest,
           date: entryDate,
           end
-        })
+        });
         intermedBalance = end;
       }
 
-      const remainingNper = amortizationTable.length
+      const remainingNper = amortizationTable.length;
       const remainingTotalCost = amortizationTable.reduce((total, element) => {
         return total + element.payment;
-      }, 0.0)
+      }, 0.0);
       const remainingInterest = remainingTotalCost - currentBalance;
 
       return {
@@ -594,7 +594,7 @@ sitemap: false
           end: monthless ? `Month ${remainingNper}` : toMonth(advanceMonths(Math.max(today, startDate), startDate > today ? remainingNper - 1 : remainingNper)),
         }
       };
-    }
+    };
     const setupCharts = (calculator) => {
       Chart.defaults.font.size = 16;
       Chart.defaults.font.family = "Nunito Sans, sans-serif";
@@ -729,7 +729,7 @@ sitemap: false
         interest: interestChart,
         balance: balanceChart
       };
-    }
+    };
 
     const updateChartData = (charts, baseScenario) => {
       charts.interest.data.datasets[0].data = [baseScenario.remainingInterest];
@@ -738,7 +738,7 @@ sitemap: false
       charts.balance.data.labels = baseScenario.amortizationTable.map((month) => month.date);
       charts.balance.data.datasets[0].data = baseScenario.amortizationTable.map((month) => month.end);
       charts.balance.update();
-    }
+    };
 
     const updateTableData = (table, baseScenario) => {
       const rows = table.querySelectorAll('tr');
@@ -756,10 +756,10 @@ sitemap: false
             cell.appendChild(document.createTextNode(month[attr]));
           }
           row.appendChild(cell);
-        })
+        });
         table.appendChild(row);
       })
-    }
+    };
 
     document.addEventListener('DOMContentLoaded', () => {
       console.log("Calculator helper functions loaded");
@@ -787,13 +787,13 @@ sitemap: false
             const endIndex = Math.min(startIndex + 1, states.length - 1);
             currentState = states[endIndex];
             renderState();
-          }
+          };
           const retreatState = () => {
             const startIndex = states.findIndex((state) => state === currentState);
             const endIndex = Math.max(startIndex - 1, 0);
             currentState = states[endIndex];
             renderState();
-          }
+          };
 
           let overrideInputs = false;
 
@@ -806,7 +806,7 @@ sitemap: false
               calculator.querySelector('#monthly-payment').readOnly = false;
               calculator.querySelector('#current-loan-amount').parentNode.classList.remove('calculator-input--disabled');
               calculator.querySelector('#monthly-payment').parentNode.classList.remove('calculator-input--disabled');
-              calculator.querySelector('button[name=input-toggle]').innerHTML = 'Calculate payment and loan amount'
+              calculator.querySelector('button[name=input-toggle]').innerHTML = 'Calculate payment and loan amount';
             } else {
               calculator.querySelector('#original-loan-amount').parentNode.classList.remove('hidden-calc-section');
               calculator.querySelector('#loan-term').parentNode.classList.remove('hidden-calc-section');
@@ -814,9 +814,9 @@ sitemap: false
               calculator.querySelector('#monthly-payment').readOnly = true;
               calculator.querySelector('#current-loan-amount').parentNode.classList.add('calculator-input--disabled');
               calculator.querySelector('#monthly-payment').parentNode.classList.add('calculator-input--disabled');
-              calculator.querySelector('button[name=input-toggle]').innerHTML = 'Set payment and loan amount directly'
+              calculator.querySelector('button[name=input-toggle]').innerHTML = 'Set payment and loan amount directly';
             }
-          }
+          };
 
           const validateInputs = () => {
             const allValid = Array.from(inputs).every((input) => {
@@ -836,30 +836,30 @@ sitemap: false
             if (!allValid) {
               currentState = 'basic';
             }
-          }
+          };
 
           const renderState = () => {
             validateInputs();
             switch(currentState) {
               case 'basic':
-                inputSection.classList.remove('hidden-calc-section')
-                outputSection.classList.add('hidden-calc-section')
+                inputSection.classList.remove('hidden-calc-section');
+                outputSection.classList.add('hidden-calc-section');
                 break;
               case 'results':
-                inputSection.classList.add('hidden-calc-section')
-                outputSection.classList.remove('hidden-calc-section')
+                inputSection.classList.add('hidden-calc-section');
+                outputSection.classList.remove('hidden-calc-section');
                 break;
             }
-          }
+          };
 
           const updateResults = () => {
             console.log('Calculator updating');
             inputs.forEach((input) => {
               input.reportValidity();
-            })
+            });
             selects.forEach((select) => {
               select.reportValidity();
-            })
+            });
             const loanAmount = parseFloat(calculator.querySelector('#original-loan-amount').value);
             const startDateEntered = Date.parse(calculator.querySelector('#first-payment-date').value);
             const loanTerm = parseFloat(calculator.querySelector('#loan-term').value) * 12;
@@ -879,8 +879,8 @@ sitemap: false
               basePayment = parseFloat(calculator.querySelector('#monthly-payment').value);
               currentBalance = parseFloat(calculator.querySelector('#current-loan-amount').value);
             } else {
-              basePayment = payment(loanAmount, interestRate, loanTerm)
-              currentBalance = remBalance(loanAmount, interestRate, basePayment, loanTerm - monthsElapsed)
+              basePayment = payment(loanAmount, interestRate, loanTerm);
+              currentBalance = remBalance(loanAmount, interestRate, basePayment, loanTerm - monthsElapsed);
               calculator.querySelector('#current-loan-amount').value = currentBalance.toFixed(2);
               calculator.querySelector('#monthly-payment').value = basePayment.toFixed(2);
             }
@@ -899,7 +899,7 @@ sitemap: false
             calculator.querySelector('.result-table__cell--wo-pp-interest').innerHTML = toCurrency(baseScenario.remainingInterest, 0);
             calculator.querySelector('.result-table__cell--wo-pp-total').innerHTML = toCurrency(baseScenario.remainingTotalCost, 0);
 
-            calculator.querySelector('.calculator-output--line').innerHTML = `You'll pay ${toCurrency(baseScenario.remainingInterest + currentBalance, 0)} total over the next ${toYearsAndMonths(baseScenario.remainingNper)}`
+            calculator.querySelector('.calculator-output--line').innerHTML = `You'll pay ${toCurrency(baseScenario.remainingInterest + currentBalance, 0)} total over the next ${toYearsAndMonths(baseScenario.remainingNper)}`;
 
             updateChartData(charts, baseScenario);
             updateTableData(table, baseScenario);
@@ -910,7 +910,7 @@ sitemap: false
           updateResults();
 
           inputs.forEach((input) => { input.addEventListener('blur', updateResults)});
-          selects.forEach((select) => { select.addEventListener('change', updateResults)})
+          selects.forEach((select) => { select.addEventListener('change', updateResults)});
           calculator.querySelector('button[name=submit-interim]').addEventListener('click', advanceState);
           calculator.querySelector('button[name=back-results]').addEventListener('click', retreatState);
           calculator.querySelector('button[name=input-toggle]').addEventListener('click', toggleInputs);
